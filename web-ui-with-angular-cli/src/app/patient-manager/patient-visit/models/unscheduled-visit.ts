@@ -15,6 +15,7 @@ import { Patient } from '../../../patient-manager/patients/models/patient';
 
 const UnscheduledVisitRecord = Record({
     id: 0,
+    calendarEventId:0,
     isUnscheduledVisitType: true,
     case: null,
     caseId: 0,
@@ -32,8 +33,10 @@ const UnscheduledVisitRecord = Record({
     referralId: 0,
     status: '',
     orignatorCompanyId: 0,
+    visitStatusId:0,
+    visitUpdateStatus: true,
     // visitStatusId: VisitStatus.SCHEDULED,
-    // calendarEvent: null,
+     calendarEvent: null,
     // isDeleted: false,
     // createByUserId: 0,
     // updateByUserId: 0,
@@ -42,9 +45,10 @@ const UnscheduledVisitRecord = Record({
 });
 
 
-export class UnscheduledVisit extends UnscheduledVisitRecord {
+export class UnscheduledVisit extends UnscheduledVisitRecord implements IEventWrapper {
 
     id: number;
+    calendarEventId: number;
     isUnscheduledVisitType: boolean;
     case: Case;
     caseId: number;
@@ -63,8 +67,10 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     status: string;
     orignatorCompanyId: number;
     visitTimeStatus: boolean;
+    visitUpdateStatus: boolean;
+    visitStatusId: number;
     // visitStatusId: VisitStatus;
-    // calendarEvent: ScheduledEvent;
+     calendarEvent: ScheduledEvent;
     // isDeleted: boolean;
     // createByUserId: number;
     // updateByUserId: number;
@@ -82,5 +88,54 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
         }
         return isCreatedByCompany;
     }
-   
+
+    get eventColor(): string {        
+            return this.specialty ? this.specialty.color : '';        
+        // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
+        // // let color: any = _.sample(colorCodes);
+        // if (this.doctorId) {
+        //     return '#7A3DB8';
+        // } else {
+        //     return '#CC6666';
+        // }
+        // return color;
+    }
+
+    get visitStatusLabel(): string {
+        return UnscheduledVisit.getvisitStatusLabel(this.visitStatusId);
+    }
+
+    static getvisitStatusLabel(visitStatus: VisitStatus): string {
+        switch (visitStatus) {
+            case VisitStatus.SCHEDULED:
+                return 'Scheduled';
+            case VisitStatus.COMPLETE:
+                return 'Complete';
+            case VisitStatus.RESCHEDULE:
+                return 'Rescheduled';
+            case VisitStatus.NOSHOW:
+                return 'Noshow';
+        }
+    }
+
+    get visitDisplayString(): string {       
+        let visitInfo: string = ``;
+        
+            visitInfo = `${visitInfo}Location Name: ${this.locationName} - `;
+
+        if (this.patientId && this.caseId && this.patient) {            
+            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.firstName} ${this.patient.user.lastName} - Case Id: ${this.caseId} - `;
+        }
+       
+        visitInfo = `${visitInfo}Doctor Name: ${this.doctorName}`;
+        if (this.specialtyId && this.specialty) {
+            visitInfo = `${visitInfo} - Speciality: ${this.specialty.name}`;
+        }
+
+        if (this.eventStart) {
+            visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY')}`;
+        }
+
+        return visitInfo;
+    }   
 }

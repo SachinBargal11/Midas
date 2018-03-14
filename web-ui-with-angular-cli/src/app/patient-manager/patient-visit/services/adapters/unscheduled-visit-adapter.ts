@@ -15,6 +15,7 @@ export class UnscheduledVisitAdapter {
         unscheduledVisit = new UnscheduledVisit({
             id: data.id,
             case: CaseAdapter.parseResponse(data.case),
+            calendarEventId: data.calendarEventId,
             caseId: data.caseId,
             patient: PatientAdapter.parseResponse(data.patient),
             patientId: data.patientId,
@@ -30,7 +31,9 @@ export class UnscheduledVisitAdapter {
             referralId: data.referralId,
             status: data.status,
             orignatorCompanyId: data.orignatorCompanyId,
-
+            calendarEvent: data.calendarEvent ? ScheduledEventAdapter.parseResponse(data.calendarEvent) : null, 
+            visitUpdateStatus: data.visitUpdateStatus,
+            visitStatusId: data.visitStatusId
         });
 
         return unscheduledVisit;

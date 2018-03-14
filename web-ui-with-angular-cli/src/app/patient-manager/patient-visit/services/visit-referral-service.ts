@@ -168,5 +168,22 @@ export class VisitReferralService {
         });
         return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
+    getUnscheduledVisitByCompanyId(): Observable<UnscheduledVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/getPatientVisitUnscheduledByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+            .subscribe((data: Array<Object>) => {
+                let parsedData = (<Object[]>data).map((data: any) => {
+                    return UnscheduledVisitAdapter.parseResponse(data);
+                });
+                resolve(parsedData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
+    }
 }
 

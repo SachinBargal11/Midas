@@ -83,11 +83,16 @@ export class UnscheduledVisitComponent implements OnInit {
     tests: Tests[];
     @Input() caseId: number;
     @Input() idPatient: number;
+    @Input() id: number;
     caseDetail: Case;
     patient: Patient;
     selectedVisit;
     doctorName: string;
     selectedPendingReferral: PendingReferralList;
+    medicalProviderName: string='';
+    locationName: string='';
+    notes: string='';
+    calendarEventId: number=0;
     @Input() routeFrom = 'doctorVisit';
     @Input() set pendingReferral(value: PendingReferralList) {
         if (value) {
@@ -157,10 +162,13 @@ export class UnscheduledVisitComponent implements OnInit {
     ngOnInit() {
         this.eventStartAsDate = moment().toDate();
         if (this.idPatient && this.caseId) {
-            let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
-            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+            debugger;
+            if(this.id == undefined || this.id == 0)
+            {
+                let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+                let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 
-            Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                Observable.forkJoin([fetchPatient, fetchCaseDetail])
                 .subscribe(
                 (results: any) => {
                     this.patient = results[0];
@@ -173,6 +181,39 @@ export class UnscheduledVisitComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+            }
+            else
+            {
+                let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+                let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+                Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                .subscribe(
+                (results: any) => {
+                    this.patient = results[0];
+                    this.caseDetail = results[1];
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+                
+             this._patientVisitsStore.getUnscheduledVisitDetailById(this.id)
+             .subscribe((visit: UnscheduledVisit) => {
+                 this.medicalProviderName = visit.medicalProviderName;
+                 this.locationName = visit.locationName;
+                 this.doctorName = visit.doctorName;
+                 this.notes = visit.notes;            
+                 this.eventStartAsDate = moment(visit.eventStart).toDate();
+                 this.calendarEventId = visit.calendarEventId;
+                 this.selectedMode = visit.specialtyId == null ? 2: 1;
+                 this.selectedSpecialityId = visit.specialtyId;                 
+                 this.selectedTestId = visit.roomTestId;
+             });
+            }
         }
         this._patientsStore.getPatientsWithOpenCases()
             .subscribe(
@@ -252,6 +293,7 @@ export class UnscheduledVisitComponent implements OnInit {
     }
 
     saveEvent() {
+        debugger;
         this.isSaveProgress = true;
         let unscheduledFormValues = this.unscheduledForm.value;
         let result;
@@ -269,24 +311,48 @@ export class UnscheduledVisitComponent implements OnInit {
                 patient: null,
                 case: null,
                 createByUserID: this.sessionStore.session.account.user.id,
-                eventStart: moment(this.eventStartAsDate),
+                eventStart: moment(this.eventStartAsDate).toDate(),
                 orignatorCompanyId: this.sessionStore.session.currentCompany.id,
-
+                calendarEventId: this.calendarEventId,
+                id: this.id
             });
 
             this._progressBarService.show();
 
+            // let updatedAddNewVisit: UnscheduledVisit = new UnscheduledVisit(_.extend(unscheduled.toJS(), {
+            //     id: 0,
+            //     calendarEventId: 0,
+            //     calendarEvent: new ScheduledEvent(_.extend(unscheduled.calendarEvent.toJS(), {
+            //         id: 0                    
+            //     })),
+            //     createByUserID: this.sessionStore.session.account.user.id
+            // }));
+
             result = this._patientVisitsStore.addUnscheduledVisit(unscheduled);
             result.subscribe(
                 (response) => {
-                    let notification = new Notification({
-                        'title': 'Event added successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this.closeDialog();
-                    this.refreshImeEvents();
+                    if(this.id == 0)
+                    {
+                        let notification = new Notification({
+                            'title': 'Event added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this.closeDialog();
+                        this.refreshImeEvents();
+                    }
+                    else
+                    {
+                        let notification = new Notification({
+                            'title': 'Event updated successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this.closeDialog();
+                        this.refreshImeEvents();
+                    }
                 },
                 (error) => {
                     let errString = 'Unable to add event!';
@@ -300,6 +366,7 @@ export class UnscheduledVisitComponent implements OnInit {
                 },
                 () => {
                     this._progressBarService.hide();
+                    this.isSaveProgress = false;
                 });
         } else if (this.routeFrom == 'pendingReferral') {
             let unscheduledVisitReferral = new UnscheduledVisitReferral({
@@ -347,6 +414,7 @@ export class UnscheduledVisitComponent implements OnInit {
                 },
                 () => {
                     this._progressBarService.hide();
+                    this.isSaveProgress = false;
                 });
         }
     }

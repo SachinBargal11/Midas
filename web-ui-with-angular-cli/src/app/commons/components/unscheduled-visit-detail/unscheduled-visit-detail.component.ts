@@ -139,30 +139,30 @@ export class UnscheduledVisitDetailComponent implements OnInit {
     }
 
     fetchPatient() {
-        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this._progressBarService.show();
-            let result;
-            if (this.patientId) {
-                result = this._patientStore.fetchPatientById(this.patientId);
-            } else {
-                result = this._patientStore.fetchPatientById(this.selectedVisit.patientId);
-                this.patientId = this.selectedVisit.patientId;
-            }
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
-                    // this.visitInfo = `${this.visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        })
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        //     this._progressBarService.show();
+        //     let result;
+        //     if (this.patientId) {
+        //         result = this._patientStore.fetchPatientById(this.patientId);
+        //     } else {
+        //         result = this._patientStore.fetchPatientById(this.selectedVisit.patientId);
+        //         this.patientId = this.selectedVisit.patientId;
+        //     }
+        //     result.subscribe(
+        //         (patient: Patient) => {
+        //             this.patient = patient;
+        //             this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+        //             // this.visitInfo = `${this.visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // })
     }
 
     // checkVisitForCompany() {
