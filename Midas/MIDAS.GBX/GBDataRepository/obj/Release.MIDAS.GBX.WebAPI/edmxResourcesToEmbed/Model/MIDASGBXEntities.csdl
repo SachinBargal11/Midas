@@ -1445,6 +1445,7 @@
     <NavigationProperty Name="Specialty" Relationship="Self.FK_PatientVisitUnscheduled_Specialty_SpecialtyId" FromRole="PatientVisitUnscheduled" ToRole="Specialty" />
     <Property Name="CalendarEventId" Type="Int32" />
     <NavigationProperty Name="CalendarEvent" Relationship="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="PatientVisitUnscheduled" ToRole="CalendarEvent" />
+    <Property Name="VisitStatusId" Type="Byte" />
   </EntityType>
   <EntityType Name="PendingReferral">
     <Key>

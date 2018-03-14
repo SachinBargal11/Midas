@@ -1216,6 +1216,7 @@
     <EntitySetMapping Name="PatientVisitUnscheduleds">
       <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
         <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
+          <ScalarProperty Name="VisitStatusId" ColumnName="VisitStatusId" />
           <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CaseId" ColumnName="CaseId" />

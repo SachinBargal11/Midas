@@ -32,6 +32,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public int OrignatorCompanyId { get; set; }
         public string LocationName { get; set; }
         public Nullable<int> CalendarEventId { get; set; }
+        public Nullable<byte> VisitStatusId { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }

@@ -67,6 +67,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("visitTimeStatus")]
         public bool VisitTimeStatus { get; set; }
+
+        [JsonProperty("visitUpdateStatus")]
+        public bool VisitUpdateStatus { get; set; }
+
+        [JsonProperty("visitStatusId")]
+        public byte? VisitStatusId { get; set; }
     }
 
     public class ReferralVisitUnscheduled : GbObject

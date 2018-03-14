@@ -178,3 +178,6 @@ F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\bin\zh-H
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.csprojResolveAssemblyReference.cache
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.dll
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.pdb
+F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.csprojResolveAssemblyReference.cache
+F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.dll
+F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.AttorneyWebAPI\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.AttorneyWebAPI.pdb

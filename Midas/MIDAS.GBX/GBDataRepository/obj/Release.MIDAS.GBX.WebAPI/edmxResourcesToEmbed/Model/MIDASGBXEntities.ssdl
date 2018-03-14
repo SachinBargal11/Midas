@@ -1173,6 +1173,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="UpdateDate" Type="datetime2" Precision="7" />
     <Property Name="OrignatorCompanyId" Type="int" Nullable="false" />
     <Property Name="LocationName" Type="nvarchar" MaxLength="128" />
+    <Property Name="VisitStatusId" Type="tinyint" />
   </EntityType>
   <EntityType Name="PendingReferral">
     <Key>

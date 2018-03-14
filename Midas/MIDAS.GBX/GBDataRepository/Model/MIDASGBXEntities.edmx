@@ -1178,6 +1178,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="OrignatorCompanyId" Type="int" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VisitStatusId" Type="tinyint" />
         </EntityType>
         <EntityType Name="PendingReferral">
           <Key>
@@ -6572,6 +6573,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Specialty" Relationship="Self.FK_PatientVisitUnscheduled_Specialty_SpecialtyId" FromRole="PatientVisitUnscheduled" ToRole="Specialty" />
           <Property Name="CalendarEventId" Type="Int32" />
           <NavigationProperty Name="CalendarEvent" Relationship="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="PatientVisitUnscheduled" ToRole="CalendarEvent" />
+          <Property Name="VisitStatusId" Type="Byte" />
         </EntityType>
         <EntityType Name="PendingReferral">
           <Key>
@@ -11905,6 +11907,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PatientVisitUnscheduleds">
             <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
               <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
+                <ScalarProperty Name="VisitStatusId" ColumnName="VisitStatusId" />
                 <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />

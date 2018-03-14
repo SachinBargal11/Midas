@@ -101,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (s <= 1)
                     {
                         //var calendaritem = _context.CalendarEvents.Where(p => p.Id == item.CalendarEventId)
-                        if (patientVisit.CalendarEvent.EventStart > DateTime.Now.Date)
+                        if (patientVisit.CalendarEvent.EventStart > DateTime.UtcNow)
                         {
                             patientVisitBO.VisitTimeStatus = false;                            
                         }
@@ -119,14 +119,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        patientVisitBO.VisitTimeStatus = false;
+                        patientVisitBO.VisitTimeStatus = true;
                     }
                 }
                 else
                 {
                     if (patientVisitBO.CalendarEvent != null)
                     {
-                        if (patientVisitBO.CalendarEvent.EventStart > DateTime.Now.Date)
+                        if (patientVisitBO.CalendarEvent.EventStart > DateTime.UtcNow)
                         {
                             patientVisitBO.VisitTimeStatus = false;
                         }
@@ -144,7 +144,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        patientVisitBO.VisitTimeStatus = false;
+                        if(patientVisitBO.VisitStatusId == 4)
+                        {
+                            patientVisitBO.VisitTimeStatus = false;
+                        }
+                        else
+                        {
+                            patientVisitBO.VisitTimeStatus = true;
+                        }
+                        
                     }
                 }
 

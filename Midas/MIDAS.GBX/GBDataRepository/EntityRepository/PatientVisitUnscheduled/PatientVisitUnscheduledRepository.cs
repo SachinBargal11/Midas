@@ -52,7 +52,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
                 PatientVisitUnscheduledBO.UpdateByUserID = PatientVisitUnscheduledDB.UpdateByUserID;
                 PatientVisitUnscheduledBO.CalendarEventId = PatientVisitUnscheduledDB.CalendarEventId;
-                PatientVisitUnscheduledBO.VisitTimeStatus = false;                    
+                PatientVisitUnscheduledBO.VisitTimeStatus = true;
+                PatientVisitUnscheduledBO.VisitStatusId = PatientVisitUnscheduledDB.VisitStatusId;
+                if (PatientVisitUnscheduledBO.VisitStatusId == null)
+                {
+                    if (PatientVisitUnscheduledBO.VisitStatusId == 0)
+                    {
+                        PatientVisitUnscheduledBO.VisitUpdateStatus = true;
+                    }
+                    {
+                        if(PatientVisitUnscheduledBO.UpdateDate.Value.Date > System.DateTime.UtcNow.Date)
+                        {
+                            PatientVisitUnscheduledBO.VisitUpdateStatus = false;
+                        }                        
+                        else
+                        {
+                            PatientVisitUnscheduledBO.VisitUpdateStatus = false;
+                        }
+                    }
+                }
+                else
+                {
+                    PatientVisitUnscheduledBO.VisitUpdateStatus = true;
+                }
+                
                 
 
                 if (PatientVisitUnscheduledDB.Patient != null)
@@ -198,7 +221,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 CalendarEventDB.RecurrenceException = "";
                 CalendarEventDB.IsAllDay = false;
 
-                if (IsEditMode == false)
+                if (Add_CalendarEventDB == true)
                 {
                     CalendarEventDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                     CalendarEventDB.CreateDate = DateTime.UtcNow;
@@ -259,8 +282,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
                     PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
                     PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
+                    PatientVisitUnscheduledDB.VisitStatusId = PatientVisitUnscheduledBO.VisitStatusId;
 
-                    if (IsEditMode == false)
+                    if (Add_patientVisitUnscheduledDB == true)
                     {
                         PatientVisitUnscheduledDB.ReferralId = PatientVisitUnscheduledBO.ReferralId;
                         PatientVisitUnscheduledDB.OrignatorCompanyId = PatientVisitUnscheduledBO.OrignatorCompanyId;
@@ -282,10 +306,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 #endregion
 
-
-
                 dbContextTransaction.Commit();
-
 
                 if (PatientVisitUnscheduledDB != null)
                 {

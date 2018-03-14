@@ -10,3 +10,4 @@ F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release.MIDAS.GBX.WebAPI\Newtonsoft.Json.xml
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.BusinessObjects.dll
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.BusinessObjects.pdb
+F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.BusinessObjects.csprojResolveAssemblyReference.cache
