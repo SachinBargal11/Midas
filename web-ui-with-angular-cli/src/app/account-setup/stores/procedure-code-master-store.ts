@@ -130,4 +130,33 @@ export class ProcedureCodeMasterStore {
         return <Observable<Procedure>>Observable.from(promise);
     }
 
+
+    updatePreffredProcedureMappingMultiple(selProcedure: Procedure[]): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.updatePreffredProcedureMappingMultiple(selProcedure).subscribe((selProcedure: Procedure[]) => {
+                _.forEach(selProcedure, (proc: Procedure) => {
+                    this._procedure.next(this._procedure.getValue().push(proc));
+                });
+                resolve(selProcedure);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.from(promise);
+    }
+
+    RemoveupdatePreffredProcedureMappingMultiple(selProcedure: Procedure[]): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.RemoveupdatePreffredProcedureMappingMultiple(selProcedure).subscribe((selProcedure: Procedure[]) => {
+                _.forEach(selProcedure, (proc: Procedure) => {
+                    this._procedure.next(this._procedure.getValue().push(proc));
+                });
+                resolve(selProcedure);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.from(promise);
+    }
+
 }

@@ -417,6 +417,134 @@ export class ProcedureCodeComponent implements OnInit {
         }
     }
 
+
+    setPreffferedProcedureMappingsMultiple() {
+        if (this.selectedProceduresCodes.length > 0) {
+              this.setpreffredMsg = 'Do you want to set this to preffered code list?';
+              this.setpreffredMsgIcon = 'fa fa-floppy-o';
+          
+            this.confirmationService.confirm({
+                message: this.setpreffredMsg,
+                header: 'Confirmation',
+                icon: this.setpreffredMsgIcon,
+                accept: () => {
+                  
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        this._procedureCodeMasterStore.updatePreffredProcedureMappingMultiple(this.selectedProceduresCodes,)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Preffered Procedure code updated successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                if (this.selectedOption == 0) {
+                                    this.loadProceduresByCompanyId();
+                                } else if (this.selectedOption == 1) {
+                                    this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
+                                } else {
+                                    this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
+                                }
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.success('Success!', 'Preffered Procedure code updated successfully');
+                                this.selectedProceduresCodes = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to update preffered procedure code';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedProceduresCodes = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'Select procedure to update preffered procedure code',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Select procedure to update preffered procedure code');
+        }
+    }
+
+
+    RemoveupdatePreffredProcedureMappingMultiple() {
+        if (this.selectedProceduresCodes.length > 0) {
+              this.setpreffredMsg = 'Do you want to remove this from preffered code list?';
+              this.setpreffredMsgIcon = 'fa fa-trash';
+          
+            this.confirmationService.confirm({
+                message: this.setpreffredMsg,
+                header: 'Confirmation',
+                icon: this.setpreffredMsgIcon,
+                accept: () => {
+                  
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        this._procedureCodeMasterStore.RemoveupdatePreffredProcedureMappingMultiple(this.selectedProceduresCodes,)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Preffered Procedure code removed successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                if (this.selectedOption == 0) {
+                                    this.loadProceduresByCompanyId();
+                                } else if (this.selectedOption == 1) {
+                                    this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
+                                } else {
+                                    this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
+                                }
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.success('Success!', 'Preffered Procedure code removed successfully');
+                                this.selectedProceduresCodes = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to remove preffered procedure code';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedProceduresCodes = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'Select procedure to remove preffered procedure code',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Select procedure to remove preffered procedure code');
+        }
+    }
+
     EditableRow(currentprocedure:Procedure){        
         this.roweditable = currentprocedure.id;
         alert(currentprocedure.id);

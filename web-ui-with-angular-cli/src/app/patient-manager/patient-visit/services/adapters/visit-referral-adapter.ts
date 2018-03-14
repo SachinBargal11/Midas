@@ -42,7 +42,8 @@ export class visitReferralAdapter {
                 updateByUserId: data.updateByUserId,
                 createDate: moment(data.createDate), // Moment
                 updateDate: moment(data.updateDate), // Moment
-                originalResponse: data
+                originalResponse: data,
+                doctorSignature : data.doctorSignature
             });
         }
         return visitReferral;

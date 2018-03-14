@@ -388,6 +388,7 @@ export class EoVisitComponent implements OnInit {
         let endDate = moment(this.eventEndAsDate).format('YYYY-MM-DD');
         let endDateTime = new Date(startDate + ' ' + eoScheduleFormValues.eventEndTime) ;
         let eo = new EoVisit({
+            id: this.selectedVisit.id ? this.selectedVisit.id : 0,
             doctorId: this.eoScheduleForm.value.doctorId,
             caseId: null,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
@@ -398,6 +399,8 @@ export class EoVisitComponent implements OnInit {
                 // eventStart: moment(this.eventStartAsDate),
                 // eventEnd: moment(this.eventEndAsDate).add(this.duration, 'minutes'),
                 // eventEnd: moment(this.eventEndAsDate),
+                id: this.selectedVisit.calendarEventId ? this.selectedVisit.calendarEventId : 0,
+                name:  this.eoScheduleForm.value.name,
                 eventStart: moment(startDateTime),
                 eventEnd: moment(endDateTime),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),

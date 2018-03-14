@@ -79,7 +79,7 @@ export class ProcedureService {
 
     getPreferredProceduresBySpecialityIdForVisitUpdate(specialityId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/GetPreffredProcedureCodesForVisitUpdate/' + companyId + '/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getPreffredProcedureCodesForVisitUpdate/' + companyId + '/' + specialityId, {
                 headers: this._headers
             })
                 .map(res => res.json())

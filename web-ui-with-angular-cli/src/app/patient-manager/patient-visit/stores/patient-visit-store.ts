@@ -258,6 +258,18 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
+    fetchImeVisitById(id: number): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getImeVisit(id).subscribe((imeVisitDetail: ImeVisit) => {
+                resolve(imeVisitDetail);
+            }, error => {
+                reject(error);
+            });
+            // }
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
     addPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.addPatientVisit(patientVisitDetail).subscribe((patientVisitDetail: PatientVisit) => {
@@ -619,6 +631,18 @@ export class PatientVisitsStore {
     getImeVisitByCompanyId(companyId: number): Observable<ImeVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getImeVisitByCompanyId().subscribe((imeVisits: ImeVisit[]) => {
+                // this._imeVisits.next(List(imeVisits));
+                resolve(imeVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getImeVisitByCaseId(caseId: number): Observable<ImeVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getImeVisitByCaseId(caseId).subscribe((imeVisits: ImeVisit[]) => {
                 // this._imeVisits.next(List(imeVisits));
                 resolve(imeVisits);
             }, error => {

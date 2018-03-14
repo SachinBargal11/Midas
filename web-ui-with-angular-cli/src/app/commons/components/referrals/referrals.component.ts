@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges,QueryList,ElementRef,ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as moment from 'moment';
@@ -20,6 +20,7 @@ import { VisitReferral } from '../../../patient-manager/patient-visit/models/vis
 import { VisitReferralProcedureCode } from '../../../patient-manager/patient-visit/models/visit-referral-procedure-code';
 import { VisitReferralStore } from '../../../patient-manager/patient-visit/stores/visit-referral-store';
 import { PatientVisitsStore } from '../../../patient-manager/patient-visit/stores/patient-visit-store';
+import { SignatureFieldComponent } from '../../../commons/components/signature-field/signature-field.component';
 
 @Component({
   selector: 'app-referrals',
@@ -27,6 +28,8 @@ import { PatientVisitsStore } from '../../../patient-manager/patient-visit/store
   styleUrls: ['./referrals.component.scss']
 })
 export class ReferralsComponent implements OnInit {
+  private _penColorForSignature = '#000000';
+  private _signaturePadColor = '#e9e9e9';
   procedureForm: FormGroup;
   procedures: Procedure[];
   selectedProcedures: Procedure[] = [];
@@ -46,12 +49,16 @@ export class ReferralsComponent implements OnInit {
   msg: string;
   selectedEvent;
   iscomplete: boolean;
-  
+  digitalForm: FormGroup;
+  diableSave:boolean = true;
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<VisitReferral[]> = new EventEmitter();
   // @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
+
+  @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
+  @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
 
   constructor(
     private _notificationsService: NotificationsService,
@@ -65,6 +72,10 @@ export class ReferralsComponent implements OnInit {
     private _specialityService: SpecialityService,
     private _patientVisitStore: PatientVisitsStore
   ) {
+    this.digitalForm = this.fb.group({
+      signatureField: ['']
+    });
+    this.showSignature();
   }
 
   ngOnInit() {
@@ -77,6 +88,7 @@ export class ReferralsComponent implements OnInit {
     //   this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     // }
     // this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
+    
   }
   loadAllSpecialitiesAndTests() {
     // this._progressBarService.show();
@@ -124,8 +136,8 @@ export class ReferralsComponent implements OnInit {
       });
   }
 
-  CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {    
-     this._progressBarService.show();
+  CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {
+       this._progressBarService.show();
      this.iscomplete = false;
      let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdSpecialityId(this.selectedVisit.id, specialityId);
      result.subscribe(
@@ -282,6 +294,7 @@ export class ReferralsComponent implements OnInit {
   addToList() {
     let flag: Procedure = null;
     if (this.selectedProcedures) {
+      this.diableSave = false;
       if (this.selectedProcedures.length > 0) {
         _.forEach(this.selectedProcedures, (currentProcedure: Procedure) => {
           if (this.proceduresList.length > 0) {
@@ -369,6 +382,8 @@ export class ReferralsComponent implements OnInit {
     this.selectedProcedures = [];
   }
 
+  
+
   fetchSelectedSpeciality(specialityId: number) {
     this.selectedSpeciality = _.find(this.specialities, (currentSpeciality: Speciality) => {
       return currentSpeciality.id === specialityId;
@@ -383,7 +398,6 @@ export class ReferralsComponent implements OnInit {
   saveReferral() {
     let procedureCodes = [];
     let visitReferralDetails: VisitReferral[] = [];
-
     let uniqSpeciality = _.uniq(this.proceduresList, (currentProc: Procedure) => {
       return currentProc.specialityId
     })
@@ -408,7 +422,8 @@ export class ReferralsComponent implements OnInit {
           forRoomId: null,
           forRoomTestId: null,
           isReferralCreated: false,
-          pendingReferralProcedureCode: procedureCodes
+          pendingReferralProcedureCode: procedureCodes,
+          doctorSignature: this.sigs.first.signature
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
@@ -439,12 +454,13 @@ export class ReferralsComponent implements OnInit {
           forRoomId: null,
           forRoomTestId: currentRoomTestId,
           isReferralCreated: false,
-          pendingReferralProcedureCode: procedureCodes
+          pendingReferralProcedureCode: procedureCodes,
+          doctorSignature: this.sigs.first.signature
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
       }
-    })    
+    })
     if(visitReferralDetails.length == 0)
     {
       let visitReferral = new VisitReferral({
@@ -456,17 +472,27 @@ export class ReferralsComponent implements OnInit {
         forRoomId: null,
         forRoomTestId: null,
         isReferralCreated: false,
-        pendingReferralProcedureCode: procedureCodes
+        pendingReferralProcedureCode: procedureCodes,
+        doctorSignature: this.sigs.first.signature
       });
       visitReferralDetails.push(visitReferral);
       procedureCodes = [];
     }
 
     this.save.emit(visitReferralDetails);
+    this.digitalForm.reset();
+    this.clear();
+    this.diableSave = true;
     // this.save.emit(this.proceduresList);
   }
 
-  deleteProcedureCode(proc) {    
+
+  clear() {
+    this.sigs.first.clear();
+    this.sigs.first.signature = undefined;
+  }
+
+  deleteProcedureCode(proc) {
     if(proc.specialityId != null)
     {
       this.CheckReferralPtVisitStatusForUpdatebySpecialty(proc.specialityId, proc.id, true);
@@ -475,6 +501,8 @@ export class ReferralsComponent implements OnInit {
     {
       this.CheckReferralPtVisitStatusForUpdatebyRoomTest(proc.specialityId, proc.id, true);
     }
+
+    this.diableSave = false;
     // let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
     //   return currentProcedure.id;
     // });
@@ -485,5 +513,48 @@ export class ReferralsComponent implements OnInit {
     //this.proceduresList = procedureCodeDetails;
     //this.selectOption(this.selectedEvent);
     //this.selectedProceduresToDelete = null;
+  }
+
+
+  beResponsive() {
+    debugger;
+    this.size(this.signatureContainer.first, this.sigs.first);
+  }
+
+  size(container: ElementRef, sig: SignatureFieldComponent) {
+    var cWidth = 517;
+    if(container.nativeElement.offsetWidth  == 0)
+    {
+      cWidth = 517;
+    }
+    else{
+      cWidth = container.nativeElement.offsetWidth;
+    }
+
+    var cHeight = 300;
+    if(container.nativeElement.offsetHeight  == 0)
+    {
+      cHeight = 300;
+    }
+    else{
+      cHeight = container.nativeElement.offsetHeight;
+    }
+    sig.signaturePad.set('canvasWidth', cWidth);
+    sig.signaturePad.set('canvasHeight', cHeight);
+  }
+
+  setOptions() {
+    this.sigs.first.signaturePad.set('penColor', this._penColorForSignature);
+    this.sigs.first.signaturePad.set('backgroundColor', this._signaturePadColor);
+    this.sigs.first.signaturePad.clear(); // clearing is needed to set the background colour
+  }
+
+  showSignature()
+  {
+    _.defer(() => {
+      debugger;
+      this.beResponsive();
+      this.setOptions();
+    });
   }
 }

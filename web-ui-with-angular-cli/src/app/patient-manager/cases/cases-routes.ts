@@ -27,6 +27,7 @@ import { AddReferralComponent } from './components/add-referral';
 import { VisitShellComponent } from './components/visit-shell';
 import { PatientVisitListDoctorComponent } from './components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './components/treatingroom-visit';
+import { PatientVisitListImeComponent } from './components/ime-visit';
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
@@ -240,6 +241,57 @@ export const CasesShellRoutes: Routes = [
                                     {
                                         path: '',
                                         component: PatientVisitListTreatingRoomComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+
+
+                                    },
+                                    {
+                                        path: ':visitId',
+                                        component: PatientVisitListShellComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+                                        children: [
+                                            {
+                                                path: '',
+                                                redirectTo: 'visit-note',
+                                                pathMatch: 'full'
+                                            },
+                                            {
+                                                path: 'visit-note',
+                                                component: PatientVisitNotesComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Visit Notes'
+                                                }
+                                            },
+                                            {
+                                                path: 'visit-document',
+                                                component: VisitDocumentsUploadComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Documents Upload'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                path: 'ime-visit',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'IME Visits'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: PatientVisitListImeComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'root'

@@ -57,6 +57,27 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
+    getImeVisit(imeVisitId: Number): Observable<ImeVisit> {
+        let promise: Promise<ImeVisit> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/get/' + imeVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let imeVisits = null;
+                    if (data) {
+                        imeVisits = ImeVisitAdapter.parseResponse(data);
+                        resolve(imeVisits);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByLocationId(locationId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/PatientVisit/getByLocationId/' + locationId, {
@@ -851,6 +872,25 @@ export class PatientVisitService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let imeVisits = (<Object[]>data).map((data: any) => {
+                        return ImeVisitAdapter.parseResponse(data);
+                    });
+                    resolve(imeVisits);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+
+
+    getImeVisitByCaseId(caseId:number): Observable<ImeVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/getByCaseId/' + caseId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
