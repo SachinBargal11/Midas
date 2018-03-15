@@ -412,7 +412,7 @@
 </p-dialog>
 
 <p-dialog [minWidth]="600" [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}" (closeDialog)="closePatientVisitDialog()">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <!--<app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="1" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>-->
         <p-tabView>

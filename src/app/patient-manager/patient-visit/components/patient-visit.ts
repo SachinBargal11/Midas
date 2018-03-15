@@ -1616,15 +1616,42 @@ export class PatientVisitComponent implements OnInit {
                     this.patientId = visit.patientId;
                     this.caseId = visit.caseId;
                     let isinpast = visit.eventStart.isBefore(moment());
+                    this.visitInfo = '';
+                    if (this.unscheduledVisit.locationName) {
+                        this.visitInfo = `${this.visitInfo}Location Name: ${this.unscheduledVisit.locationName} - `;
+                    }
+                    if (this.unscheduledVisit.patientId && this.unscheduledVisit.caseId && this.unscheduledVisit.patient) {
+                        this.visitInfo = `${this.visitInfo}Patient Name: ${this.unscheduledVisit.patient.user.displayName} - Case Id: ${this.caseId} - `;
+                    }
+                    if (this.unscheduledVisit.doctorName) {
+                        this.visitInfo = `${this.visitInfo}Doctor Name: ${this.unscheduledVisit.doctorName}`;
+                        if (this.unscheduledVisit.specialtyId && this.unscheduledVisit.specialty) {
+                            this.visitInfo = `${this.visitInfo} - Speciality: ${this.unscheduledVisit.specialty.name}`;
+                        }
+                    }
+                    if (this.unscheduledVisit.roomTestId && this.unscheduledVisit.roomTest) {
+                        this.visitInfo = `${this.visitInfo} Test ${this.unscheduledVisit.roomTest.name}`;
+                        // if (this.room.roomTest) {
+                        //     visitInfo = `${visitInfo} - Test: ${this.room.roomTest.name}`;
+                        // }
+                    }
+            
+                    // if (this.eventStart) {
+                    //     visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
+                    // }                   
+                    //this.selectedVisit = null; 
                     if(isinpast)
-                    {
-                        this.id = 0;                        
+                    {                        
+                        this.id = null;                                 
+                        this.visitDialogVisible = null;              
                         this.unscheduledDialogVisible = true;
-                        this.unscheduledEditVisitDialogVisible = false;
+                        this.unscheduledEditVisitDialogVisible = null;
                     }
                     else{
+                        this.unscheduledVisit = null;
                         this.id = visit.id;
-                        this.unscheduledDialogVisible = false;
+                        this.visitDialogVisible = null;
+                        this.unscheduledDialogVisible = null;
                         this.unscheduledEditVisitDialogVisible = true;                       
                     }                    
                 });
@@ -1684,21 +1711,19 @@ export class PatientVisitComponent implements OnInit {
             this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
             this.visitDialogVisible = true;            
-        } else {
             if(this.selectedVisit.isUnscheduledVisitType)
             {
-                this.eventDialogUnscheduleVisible = true;
-                this.eventDialogVisible = false;
+            this.visitDialogVisible = null;      
             }
-            else
-            {
+        } else {
+            
                 if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
                     this.confirmEditingEventOccurance();
                 } else {
                     this.eventDialogVisible = true;
                     this.eventDialogUnscheduleVisible = false;
                 }
-            }          
+                      
         }
     }
 

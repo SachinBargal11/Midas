@@ -11,6 +11,9 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseDocument } from '../models/case-document';
 import { Document } from '../../../commons/models/document';
 import { Consent } from '../models/consent';
+import { PatientsStore } from '../../patients/stores/patients-store';
+import { PendingReferral } from '../../referals/models/pending-referral';
+import * as _ from 'underscore';
 
 @Injectable()
 export class CasesStore {
@@ -21,7 +24,8 @@ export class CasesStore {
 
     constructor(
         private _casesService: CaseService,
-        private _sessionStore: SessionStore
+        private _sessionStore: SessionStore,
+        private _patientStore: PatientsStore
     ) {
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
@@ -277,4 +281,45 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+
+    MatchReferal(patientId: number) {       
+        let referredToMe: boolean = false;     
+        let caseResult = this.getOpenCaseForPatient(patientId);
+        let result = this._patientStore.getPatientById(patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                debugger;
+                 let caseDetails = results[0];
+                 if (caseDetails.length > 0) {
+                     let matchedCompany = null;
+                     matchedCompany = _.find(caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                         return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
+                     })
+                     if (matchedCompany) {
+                         referredToMe = true;
+                     } else {
+                         referredToMe = false;
+                     }
+                 } else {
+                     referredToMe = false;
+                } 
+                                                         
+                // if(result[0].companyId == this._sessionStore.session.currentCompany.id)
+                //     {
+                //         referredToMe = false;
+                //     }
+                //     else{                        
+                //         referredToMe = true;
+                //     }      
+            },
+            (error) => {
+                return referredToMe;
+            },
+            () => {
+                return referredToMe;
+            });    
+
+            return referredToMe;
+    }    
 }

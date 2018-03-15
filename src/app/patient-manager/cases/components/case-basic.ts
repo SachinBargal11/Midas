@@ -24,6 +24,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'case-basic',
@@ -47,7 +48,9 @@ export class CaseBasicComponent implements OnInit {
     // transportation: any;
     attorneyId: number = 0;
     currentAttorneyId: number;
-    companyId: number;
+    companyId:  number;
+    caseDetails: Case[];
+    referredToMe: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -74,6 +77,7 @@ export class CaseBasicComponent implements OnInit {
             debugger;
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
+            this.MatchReferal();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
@@ -307,4 +311,36 @@ export class CaseBasicComponent implements OnInit {
                 // this._progressBarService.hide();
             });
     }
+
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
+    }    
 }
