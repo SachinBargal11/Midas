@@ -24,6 +24,10 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { PatientsStore } from '../../patients/stores/patients-store';
+import { PendingReferral } from '../../referals/models/pending-referral';
+import { Observable } from 'rxjs/Rx';
+
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
@@ -75,6 +79,8 @@ export class AddConsentComponent implements OnInit {
     caseStatusId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    caseDetails: Case[];    
+    referredToMe: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -90,8 +96,7 @@ export class AddConsentComponent implements OnInit {
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
         private confirmationService: ConfirmationService,
-
-
+        private _patientStore: PatientsStore,
     ) {
         this.consentForm = this.fb.group({
             // doctor: ['', Validators.required]
@@ -101,6 +106,11 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {    
+            debugger;        
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();
+        });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             if (routeParams.caseId) {
                 this.caseId = parseInt(routeParams.caseId, 10);
@@ -350,6 +360,37 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.hide();
     }
 
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
+    }
 }
 
 
