@@ -21,6 +21,10 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { Adjuster } from '../../../account-setup/models/adjuster';
 import { AdjusterMasterStore } from '../../../account-setup/stores/adjuster-store';
 import * as _ from 'underscore';
+import { PendingReferral } from '../../referals/models/pending-referral';
+import { Observable } from 'rxjs/Rx';
+import { Case } from '../models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'add-insurance',
@@ -59,6 +63,8 @@ export class AddInsuranceComponent implements OnInit {
     insuranceContactPerson:string = '';
     showAdjusterList = false;
     adjusterMasterId = '';
+    caseDetails: Case[];    
+    referredToMe: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -74,7 +80,8 @@ export class AddInsuranceComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _faxNoFormatPipe: FaxNoFormatPipe
+        private _faxNoFormatPipe: FaxNoFormatPipe,
+        private _casesStore: CasesStore
     ) {
 
         this.eventStartAsDate = moment().toDate();
@@ -82,9 +89,9 @@ export class AddInsuranceComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId);
         });
 
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-            debugger;
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
             this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();
             this.clearInsuranceFields();
             this.clearInsuranceAdjusterFields();
         });
@@ -534,5 +541,37 @@ export class AddInsuranceComponent implements OnInit {
         else{
             this.clearInsuranceFields();
         }
+    }
+
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientsStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
     }
 }

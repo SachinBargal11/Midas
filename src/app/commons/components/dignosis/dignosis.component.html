@@ -10,7 +10,7 @@
         </div>
         <div class="col-lg-6">
          <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredDiagnosisCodes()">
-          <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Preferred Diagnosis Code</span>
+          <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Diagnosis Code Groups</span>
          </a>
         </div>
     </div>
@@ -61,7 +61,7 @@
     </ng-template>
     </p-listbox>-->
     <p-dataTable [value]="diagnosisCodesCompArr" [(selection)]="selectedDiagnosisCodes" [rows]="7" [paginator]="true" [globalFilter]="gb2" [responsive]="true" #dt2>
-        <header>Preffered Diagnosis Codes</header>
+        <header>Diagnosis Code Groups</header>
         <p-headerColumnGroup>
           <p-row>
             <p-column [style]="{'width':'38px'}"></p-column>

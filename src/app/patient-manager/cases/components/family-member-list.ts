@@ -15,6 +15,8 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
 import * as _ from "underscore";
+import { Observable } from 'rxjs/Rx';
+import { PatientsStore } from '../../patients/stores/patients-store';
 
 @Component({
     selector: 'family-member-list',
@@ -31,6 +33,8 @@ export class FamilyMemberListComponent implements OnInit {
     totalRecords: number;
     isDeleteProgress: boolean = false;
     caseStatusId: number;
+    patientId: number;
+    caseDetails: Case[];    
 
     constructor(
         private _router: Router,
@@ -41,9 +45,13 @@ export class FamilyMemberListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
-        private _sessionStore: SessionStore
-
+        private _sessionStore: SessionStore,
+        private _patientsStore: PatientsStore
     ) {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();            
+        });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
@@ -169,6 +177,38 @@ export class FamilyMemberListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select family member to delete');
         }
+    }
+
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientsStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
     }
 
 }

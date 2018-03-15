@@ -27,7 +27,7 @@
     </p-column>
     <p-column field="policyNo" header="Policy Number" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
-    <p-column styleClass="actions-cell" header="Actions">
+    <p-column styleClass="actions-cell" header="Actions" *ngIf="referredToMe == false" >
         <ng-template let-insurance="rowData" pTemplate="body">
             <a routerLink="edit/{{insurance.id}}"><i class="glyphicon glyphicon-edit"></i></a>
         </ng-template>
