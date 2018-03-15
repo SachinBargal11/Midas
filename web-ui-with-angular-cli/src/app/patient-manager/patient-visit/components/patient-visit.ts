@@ -1648,8 +1648,8 @@ export class PatientVisitComponent implements OnInit {
                         this.unscheduledEditVisitDialogVisible = null;
                     }
                     else{
-                        this.unscheduledVisit = null;
                         this.id = visit.id;
+                        this.unscheduledVisit = null;                        
                         this.visitDialogVisible = null;
                         this.unscheduledDialogVisible = null;
                         this.unscheduledEditVisitDialogVisible = true;                       
@@ -1710,20 +1710,24 @@ export class PatientVisitComponent implements OnInit {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
             this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
-            this.visitDialogVisible = true;            
-            if(this.selectedVisit.isUnscheduledVisitType)
+            if(!patientVisit.isUnscheduledVisitType)
             {
-            this.visitDialogVisible = null;      
-            }
+                this.visitDialogVisible = true;                        
+            }            
         } else {
             
                 if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
                     this.confirmEditingEventOccurance();
                 } else {
-                    this.eventDialogVisible = true;
-                    this.eventDialogUnscheduleVisible = false;
-                }
-                      
+                    if(!patientVisit.isUnscheduledVisitType)
+                    {
+                        this.eventDialogVisible = true;                        
+                    }
+                    else
+                    {
+                        this.eventDialogVisible = false;                        
+                    }
+                }                      
         }
     }
 
