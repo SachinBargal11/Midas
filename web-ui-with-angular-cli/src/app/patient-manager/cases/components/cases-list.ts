@@ -16,11 +16,13 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import * as _ from 'underscore';
+import { Observable } from 'rxjs/Rx';
 import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { ConsentStore } from '../../cases/stores/consent-store';
 import { Document } from '../../../commons/models/document';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'caseslist',
@@ -45,6 +47,8 @@ export class CasesListComponent implements OnInit {
     caseId: number;
     companyId: number;
     url;
+    caseDetail: Case[];
+    referredToMe: boolean = false;
 
     constructor(
         public _route: ActivatedRoute,
@@ -316,5 +320,37 @@ export class CasesListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select case to delete');
         }
+    }
+
+    MatchReferal() {    
+        debugger;
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetail = results[0];
+                if (this.caseDetail.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
     }
 }

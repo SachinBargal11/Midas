@@ -20,13 +20,15 @@ import { Case } from '../models/case';
 import { environment } from '../../../../environments/environment';
 import { AccidentTreatment } from '../models/accident-treatment';
 import { AccidentWitness } from '../models/accident-witness';
+import { Observable } from 'rxjs/Rx';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'accident',
     templateUrl: './accident.html'
 })
 
-export class AccidentInfoComponent implements OnInit {
+export class AccidentInfoComponent implements OnInit {    
     states: any[];
     dateOfAdmission: Date;
     accidentDate: Date;
@@ -52,6 +54,7 @@ export class AccidentInfoComponent implements OnInit {
     hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
+    caseDetails: Case[];
     caseViewedByOriginator: boolean = false;
 
     policeAtScene = '0';
@@ -79,6 +82,7 @@ export class AccidentInfoComponent implements OnInit {
     treatmentDoctorName: string;
     treatmentContactNumber: string;
     treatmentAddress: string;
+    referredToMe: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -91,8 +95,13 @@ export class AccidentInfoComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _notificationsService: NotificationsService,
+        private _patientStore: PatientsStore,
         private _casesStore: CasesStore,
     ) {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {                
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();
+        });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
@@ -258,7 +267,7 @@ export class AccidentInfoComponent implements OnInit {
             return currFile == file;
         })
         this.files = _.union(this.files);
-    }
+    }    
 
     myUploader(event) {
         this.files = event.files;
@@ -468,5 +477,37 @@ export class AccidentInfoComponent implements OnInit {
         }
     }
 
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
+    
+        }
 }
 

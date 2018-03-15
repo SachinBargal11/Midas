@@ -19,6 +19,9 @@ import { environment } from '../../../../environments/environment';
 import { AutoInformation } from '../models/autoInformation';
 import { AutoInformationStore } from '../stores/autoInformation-store';
 import { DefendantAutoInformation } from '../models/defendantAutoInformation';
+import { PatientsStore } from '../../patients/stores/patients-store';
+import { Observable } from 'rxjs/Rx';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'autoInformation',
@@ -45,7 +48,10 @@ export class AutoInformationInfoComponent implements OnInit {
     vehicleClientHaveTitle: false;
     defendantAutoInformation: DefendantAutoInformation;
     caseStatusId:number;
-    
+    caseDetails: Case[];
+    patientId: number;
+    referredToMe: boolean = false;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -58,7 +64,13 @@ export class AutoInformationInfoComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _casesStore: CasesStore,
         private _autoInformationStore: AutoInformationStore,
+        private _patientStore: PatientsStore,
     ) {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            debugger;
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();
+        });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
@@ -247,5 +259,36 @@ export class AutoInformationInfoComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
+    }
+    MatchReferal() {    
+        //this._casesStore.MatchReferal(this.patientId);
+        this._progressBarService.show();
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        let result = this._patientStore.getPatientById(this.patientId);
+        Observable.forkJoin([caseResult, result])
+            .subscribe(
+            (results) => {
+                this.caseDetails = results[0];
+                if (this.caseDetails.length > 0) {
+                    let matchedCompany = null;
+                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
+                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
+                    })
+                    if (matchedCompany) {
+                        this.referredToMe = true;
+                    } else {
+                        this.referredToMe = false;
+                    }
+                } else {
+                    this.referredToMe = false;
+                }                
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
     }
 }

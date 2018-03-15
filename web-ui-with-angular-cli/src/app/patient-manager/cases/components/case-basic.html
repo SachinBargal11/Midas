@@ -184,7 +184,7 @@
             </div>
 
         </div>
-        <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <button *ngIf="caseDetail.caseStatusId === 1 && referredToMe == false" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
         </button>
         <a *ngIf="caseDetail.caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>

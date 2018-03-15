@@ -80,6 +80,7 @@ export class PatientBasicComponent implements OnInit {
                 (results) => {
                     this.caseDetail = results[0];
                     if (this.caseDetail.length > 0) {
+                        debugger;
                         let matchedCompany = null;
                         matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
                             return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
