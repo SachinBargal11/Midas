@@ -4933,5 +4933,84 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        #region SetUpdatePrefferedProcedureCodeMultiple
+        public Object SetUpdatePrefferedProcedureCodeMultiple(List<T> data)
+        {
+            try
+            {
+                //var gbObject = (GbObject)(object)entity;
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var gbdata = baseRepo.SetUpdatePrefferedProcedureCodeMultiple(data);
+                return gbdata;
+
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        #endregion
+
+
+        #region RemoveUpdatePrefferedProcedureCodeMultiple
+        public Object RemoveUpdatePrefferedProcedureCodeMultiple(List<T> data)
+        {
+            try
+            {
+                //var gbObject = (GbObject)(object)entity;
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var gbdata = baseRepo.RemoveUpdatePrefferedProcedureCodeMultiple(data);
+                return gbdata;
+
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        #endregion
+
     }
 }

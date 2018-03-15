@@ -291,6 +291,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                         PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
+
+                        PatientVisitUnscheduledDB.VisitStatusId = 1;
                     }
                     else
                     {

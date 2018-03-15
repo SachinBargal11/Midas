@@ -35,8 +35,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }
         public virtual Doctor Doctor { get; set; }
+        public virtual InsuranceMaster InsuranceMaster { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual VisitStatu VisitStatu { get; set; }
-        public virtual InsuranceMaster InsuranceMaster { get; set; }
     }
 }

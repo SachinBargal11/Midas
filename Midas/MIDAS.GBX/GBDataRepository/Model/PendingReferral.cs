@@ -29,6 +29,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> ForSpecialtyId { get; set; }
         public Nullable<int> ForRoomId { get; set; }
         public Nullable<int> ForRoomTestId { get; set; }
+        public string DoctorSignature { get; set; }
         public Nullable<bool> IsReferralCreated { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }

@@ -64,7 +64,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                 foreach (HttpContent ctnt in streamContent)
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
-                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString(), uploadObject.CreateUserId, uploadObject.UpdateUserId);
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {
@@ -170,7 +170,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                 foreach (HttpContent ctnt in streamContent)
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
-                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, companyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, companyId, ((ObjectContent)serviceProvider.Content).Value.ToString(), uploadObject.CreateUserId, uploadObject.UpdateUserId);
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {

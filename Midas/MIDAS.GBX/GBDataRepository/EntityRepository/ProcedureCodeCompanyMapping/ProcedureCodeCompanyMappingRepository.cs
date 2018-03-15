@@ -714,7 +714,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetAllProcedureCodesbyRoomTestCompanyIdforVisit(int CompanyId, int RoomTestId)
         {
             var companyProcedureCodeInfo = (from csd in _context.CompanyRoomTestDetails
-                                            where csd.CompanyID == CompanyId && csd.RoomTestID == RoomTestId && csd.ShowProcCode == true
+                                            where csd.CompanyID == CompanyId && csd.RoomTestID == RoomTestId
                                             select new
                                             {
                                                 id = csd.id,
@@ -724,11 +724,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (companyProcedureCodeInfo == null || companyProcedureCodeInfo.Count == 0)
             {
                 var procedureCodeInfos = (from pccm in _context.ProcedureCodeCompanyMappings
-                                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
-                                          join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
+                                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id                                          
                                           where pccm.CompanyID == CompanyId
-                                                && pc.RoomTestId == RoomTestId
-                                                && sm.ShowProcCode == true
+                                                && pc.RoomTestId == RoomTestId                                                
                                                 && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                 && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                           orderby pccm.IsPreffredCode descending
@@ -781,7 +779,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                          join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
                                          where pccm.CompanyID == CompanyId
                                                && pc.RoomTestId == RoomTestId
-                                               && sm.ShowProcCode == true
+                                               && (sm.ShowProcCode == true)
                                                && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                          orderby pccm.IsPreffredCode descending
@@ -859,6 +857,77 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
             }
 
+            var res = Convert<BO.ProcedureCodeCompanyMapping, ProcedureCodeCompanyMapping>(procedureCodeCompanyMappingDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region SetUpdatePrefferedProcedureCodeMultiple
+        public override object SetUpdatePrefferedProcedureCodeMultiple<T>(List<T> entities)
+        {
+            List<BO.ProcedureCodeCompanyMapping> procedureCodeCompanyMappingBO = (List<BO.ProcedureCodeCompanyMapping>)(object)entities;
+            ProcedureCodeCompanyMapping procedureCodeCompanyMappingDB = new ProcedureCodeCompanyMapping();
+            if (procedureCodeCompanyMappingBO != null)
+            {
+                foreach (var item in procedureCodeCompanyMappingBO)
+                {
+                   
+
+                    procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Where(p => p.ID == item.ID).FirstOrDefault();
+
+                   
+
+                    if (procedureCodeCompanyMappingDB != null)
+                    {
+                        procedureCodeCompanyMappingDB.IsPreffredCode = true;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+            }
+            else
+            {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+            }
+            var res = Convert<BO.ProcedureCodeCompanyMapping, ProcedureCodeCompanyMapping>(procedureCodeCompanyMappingDB);
+            return (object)res;
+        }
+        #endregion
+
+
+        #region RemoveUpdatePrefferedProcedureCodeMultiple
+        public override object RemoveUpdatePrefferedProcedureCodeMultiple<T>(List<T> entities)
+        {
+            List<BO.ProcedureCodeCompanyMapping> procedureCodeCompanyMappingBO = (List<BO.ProcedureCodeCompanyMapping>)(object)entities;
+            ProcedureCodeCompanyMapping procedureCodeCompanyMappingDB = new ProcedureCodeCompanyMapping();
+            if (procedureCodeCompanyMappingBO != null)
+            {
+                foreach (var item in procedureCodeCompanyMappingBO)
+                {
+
+
+                    procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Where(p => p.ID == item.ID).FirstOrDefault();
+
+
+
+                    if (procedureCodeCompanyMappingDB != null)
+                    {
+                        procedureCodeCompanyMappingDB.IsPreffredCode = false;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+            }
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+            }
             var res = Convert<BO.ProcedureCodeCompanyMapping, ProcedureCodeCompanyMapping>(procedureCodeCompanyMappingDB);
             return (object)res;
         }

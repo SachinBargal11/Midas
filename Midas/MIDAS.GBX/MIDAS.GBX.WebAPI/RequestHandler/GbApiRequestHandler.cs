@@ -2914,5 +2914,39 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage SetUpdatePrefferedProcedureCodeMultiple(HttpRequestMessage request, List<T> gbObject)
+        {
+            var objResult = dataAccessManager.SetUpdatePrefferedProcedureCodeMultiple(gbObject);
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage RemoveUpdatePrefferedProcedureCodeMultiple(HttpRequestMessage request, List<T> gbObject)
+        {
+            var objResult = dataAccessManager.RemoveUpdatePrefferedProcedureCodeMultiple(gbObject);
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

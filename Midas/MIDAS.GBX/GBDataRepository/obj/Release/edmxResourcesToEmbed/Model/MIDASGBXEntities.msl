@@ -474,7 +474,6 @@
     <EntitySetMapping Name="DiagnosisTypes">
       <EntityTypeMapping TypeName="MIDASModel.DiagnosisType">
         <MappingFragment StoreEntitySet="DiagnosisType">
-          <ScalarProperty Name="ICDTypeCodeID" ColumnName="ICDTypeCodeID" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DiagnosisTypeText" ColumnName="DiagnosisTypeText" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -1199,12 +1198,12 @@
     <EntitySetMapping Name="PatientVisitProcedureCodes">
       <EntityTypeMapping TypeName="MIDASModel.PatientVisitProcedureCode">
         <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
-          <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
-          <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
-          <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
           <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
+          <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
+          <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
+          <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -1216,8 +1215,8 @@
     <EntitySetMapping Name="PatientVisitUnscheduleds">
       <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
         <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
-          <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
           <ScalarProperty Name="CaseId" ColumnName="CaseId" />
           <ScalarProperty Name="PatientId" ColumnName="PatientId" />
           <ScalarProperty Name="EventStart" ColumnName="EventStart" />
@@ -1234,6 +1233,7 @@
           <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
           <ScalarProperty Name="OrignatorCompanyId" ColumnName="OrignatorCompanyId" />
           <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="VisitStatusId" ColumnName="VisitStatusId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1248,6 +1248,7 @@
           <ScalarProperty Name="ForSpecialtyId" ColumnName="ForSpecialtyId" />
           <ScalarProperty Name="ForRoomId" ColumnName="ForRoomId" />
           <ScalarProperty Name="ForRoomTestId" ColumnName="ForRoomTestId" />
+          <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
           <ScalarProperty Name="IsReferralCreated" ColumnName="IsReferralCreated" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />

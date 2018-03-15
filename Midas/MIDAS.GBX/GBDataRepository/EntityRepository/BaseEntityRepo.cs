@@ -1168,6 +1168,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SetUpdatePrefferedProcedureCodeMultiple<T>(List<T> entity)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public virtual Object RemoveUpdatePrefferedProcedureCodeMultiple<T>(List<T> entity)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

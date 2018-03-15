@@ -15,6 +15,7 @@ namespace MIDAS.GBX.DataRepository.Model
     public partial class PatientVisitUnscheduled
     {
         public int Id { get; set; }
+        public Nullable<int> CalendarEventId { get; set; }
         public int CaseId { get; set; }
         public int PatientId { get; set; }
         public Nullable<System.DateTime> EventStart { get; set; }
@@ -31,15 +32,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public int OrignatorCompanyId { get; set; }
         public string LocationName { get; set; }
-        public Nullable<int> CalendarEventId { get; set; }
         public Nullable<byte> VisitStatusId { get; set; }
     
+        public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Referral Referral { get; set; }
         public virtual RoomTest RoomTest { get; set; }
         public virtual Specialty Specialty { get; set; }
-        public virtual CalendarEvent CalendarEvent { get; set; }
     }
 }

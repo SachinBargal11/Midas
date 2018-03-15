@@ -19,7 +19,6 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.CompanyICDTypeCodes = new HashSet<CompanyICDTypeCode>();
             this.DiagnosisCodes = new HashSet<DiagnosisCode>();
-            this.DiagnosisTypes = new HashSet<DiagnosisType>();
         }
     
         public int Id { get; set; }
@@ -34,7 +33,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisType> DiagnosisTypes { get; set; }
     }
 }

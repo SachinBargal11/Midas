@@ -45,6 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             pendingReferralBO.ForRoomTestId = pendingReferral.ForRoomTestId;
             pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;
             pendingReferralBO.DismissedBy = pendingReferral.DismissedBy;
+            pendingReferralBO.DoctorSignature = pendingReferral.DoctorSignature;
 
             if (pendingReferral.PatientVisit != null)
             {
@@ -270,6 +271,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         PendingReferralList.ForRoomTestId = pendingReferral.ForRoomTestId;
                         PendingReferralList.IsReferralCreated = pendingReferral.IsReferralCreated;
                         PendingReferralList.DismissedBy = pendingReferral.DismissedBy;
+                        PendingReferralList.DoctorSignature = pendingReferral.DoctorSignature;
 
                         if (pendingReferral.Doctor != null)
                         {
@@ -460,6 +462,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     PendingReferralListBO.ForRoomTestId = pendingReferral.ForRoomTestId;
                     PendingReferralListBO.IsReferralCreated = pendingReferral.IsReferralCreated;
                     PendingReferralListBO.DismissedBy = pendingReferral.DismissedBy;
+                    PendingReferralListBO.DoctorSignature = pendingReferral.DoctorSignature;
 
                     if (pendingReferral.Doctor != null)
                     {
@@ -996,21 +999,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                     }
                                 }
 
-                                pendingReferralDB.PatientVisitId = item.PatientVisitId;
-                                pendingReferralDB.FromCompanyId = item.FromCompanyId;
-                                pendingReferralDB.FromLocationId = item.FromLocationId;
-                                pendingReferralDB.FromDoctorId = item.FromDoctorId;
-                                pendingReferralDB.ForSpecialtyId = item.ForSpecialtyId;
-                                pendingReferralDB.ForRoomId = item.ForRoomId;
-                                pendingReferralDB.ForRoomTestId = item.ForRoomTestId;
-                                pendingReferralDB.IsReferralCreated = item.IsReferralCreated;
-                                pendingReferralDB.DismissedBy = item.DismissedBy;
+                            pendingReferralDB.PatientVisitId = item.PatientVisitId;
+                            pendingReferralDB.FromCompanyId = item.FromCompanyId;
+                            pendingReferralDB.FromLocationId = item.FromLocationId;
+                            pendingReferralDB.FromDoctorId = item.FromDoctorId;
+                            pendingReferralDB.ForSpecialtyId = item.ForSpecialtyId;
+                            pendingReferralDB.ForRoomId = item.ForRoomId;
+                            pendingReferralDB.ForRoomTestId = item.ForRoomTestId;
+                            pendingReferralDB.IsReferralCreated = item.IsReferralCreated;
+                            pendingReferralDB.DismissedBy = item.DismissedBy;
+                            pendingReferralDB.DoctorSignature = item.DoctorSignature;
 
-                                if (add_pendingReferral == true)
-                                {
-                                    pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
-                                }
-                                _context.SaveChanges();
+                            if (add_pendingReferral == true)
+                            {
+                                pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
+                            }
+                            _context.SaveChanges();
+
 
                                 lstPendingReferralDB.Add(pendingReferralDB);
 
