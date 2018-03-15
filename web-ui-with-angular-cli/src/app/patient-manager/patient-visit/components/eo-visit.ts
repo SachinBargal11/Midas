@@ -313,6 +313,7 @@ export class EoVisitComponent implements OnInit {
             eventStartTime: [''],
             eventEndDate: ['', Validators.required],
             eventEndTime: [''],
+            doctorName: [''],
             // duration: ['', Validators.required],
         });
         // this.loadPrefferdAncillaries();
@@ -381,6 +382,7 @@ export class EoVisitComponent implements OnInit {
 
     saveEvent() {
         this.isSaveProgress = true;
+        this._progressBarService.show();
         let eoScheduleFormValues = this.eoScheduleForm.value;
         let result;
         let startDate = moment(this.eventStartAsDate).format('YYYY-MM-DD');
@@ -389,7 +391,7 @@ export class EoVisitComponent implements OnInit {
         let endDateTime = new Date(startDate + ' ' + eoScheduleFormValues.eventEndTime) ;
         let eo = new EoVisit({
             id: this.selectedVisit.id ? this.selectedVisit.id : 0,
-            doctorId: this.eoScheduleForm.value.doctorId,
+            doctorId: this.eoScheduleForm.value.doctorId? this.eoScheduleForm.value.doctorId: this.userId ,
             caseId: null,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
@@ -407,7 +409,7 @@ export class EoVisitComponent implements OnInit {
             })
         });
 
-        // this._progressBarService.show();
+      
         result = this._patientVisitsStore.addEoVisit(eo);
         result.subscribe(
             (response) => {
@@ -417,6 +419,8 @@ export class EoVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this.isSaveProgress = false;
                 this.closeDialog();
                 this.refreshEuoEvents();
             },
@@ -427,11 +431,13 @@ export class EoVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                // this._progressBarService.hide();
+                 this._progressBarService.hide();
+                 this.isSaveProgress = false;
             });
     }
 
