@@ -575,7 +575,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                             && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == deletetestitme.RoomTestId)))
                                                   .ToList<Doctor>();
-                                if (compnaydoctorspelist.Count == 0)
+
+                                var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+                                                        .Where(p => p.RoomTestID == deletetestitme.RoomTestId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                        && p.Location.CompanyID == compnayinfo.ID).ToList();
+
+                                if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
                                 {
                                     var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
                                                                    join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
@@ -628,7 +633,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                         && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == deletetestitme.RoomTestId)))
                                               .ToList<Doctor>();
-                            if (compnaydoctorspelist.Count == 0)
+
+
+                            var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+                                                          .Where(p => p.RoomTestID == deletetestitme.RoomTestId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                          && p.Location.CompanyID == compnayinfo.ID).ToList();
+
+                            if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
                             {
                                 var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
                                                                join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
@@ -1336,7 +1347,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                 && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == deletetestitme.RoomTestId)))
                                       .ToList<Doctor>();
-                    if (compnaydoctorspelist.Count == 0)
+
+                    var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+                                                         .Where(p => p.RoomTestID == deletetestitme.RoomTestId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                         && p.Location.CompanyID == CompanyId).ToList();
+
+                    if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
                     {
                         var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
                                                        join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
@@ -1384,6 +1400,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                 && (p.DoctorSpecialities.Any(p4 => p4.SpecialityID == deletetestitme.SpecialityID)))
                                       .ToList<Doctor>();
+
+
                     if (compnaydoctorspelist.Count == 0)
                     {
                         var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
@@ -1569,7 +1587,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                 && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == deletetestitme.RoomTestId)))
                                       .ToList<Doctor>();
-                    if (compnaydoctorspelist.Count == 0)
+
+                    var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+                                                        .Where(p => p.RoomTestID == deletetestitme.RoomTestId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                        && p.Location.CompanyID == CompanyId).ToList();
+
+                    if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
                     {
                         var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
                                                        join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
@@ -1745,6 +1768,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 newalldocspecDB.AddRange(test);
             }
 
+              List<Room> rommSpecilaties = new List<Room>();
+              rommSpecilaties = _context.Rooms.Include("RoomTest").Include("Location")
+              .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+              && p.Location.CompanyID == id).ToList<Room>();
+          
+           
+
             List<BO.RoomTest> newalldocspec = new List<BO.RoomTest>();
             foreach (var specilaitu in newalldocspecDB)
             {
@@ -1758,6 +1788,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     newalldocspec.Add(specobj);
                 }
             }
+
+            foreach (var spectest in rommSpecilaties)
+            {
+                BO.RoomTest specobj = new BO.RoomTest();
+                specobj.ColorCode = spectest.RoomTest.ColorCode;
+                specobj.ID = spectest.RoomTest.id;
+                specobj.ShowProcCode = spectest.RoomTest.ShowProcCode.HasValue ? spectest.RoomTest.ShowProcCode.Value : true;
+                specobj.name = spectest.RoomTest.Name;
+                if (!newalldocspec.Select(p => p.ID).Contains(spectest.RoomTest.id))
+                {
+                    newalldocspec.Add(specobj);
+                }
+
+            }
+
+
             return newalldocspec.Distinct().ToList().OrderBy(p => p.name);
         }
         #endregion

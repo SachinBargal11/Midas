@@ -1,6 +1,0 @@
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release\MIDAS.GBX.BusinessObjects.dll
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release\MIDAS.GBX.BusinessObjects.pdb
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release\Newtonsoft.Json.dll
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\bin\Release\Newtonsoft.Json.xml
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\obj\Release\MIDAS.GBX.BusinessObjects.dll
-F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\GBBusinessObjects\obj\Release\MIDAS.GBX.BusinessObjects.pdb

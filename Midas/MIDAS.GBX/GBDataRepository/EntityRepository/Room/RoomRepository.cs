@@ -115,6 +115,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             Room roomDB = new Room();
             RoomTest roomtestDB = new RoomTest();
+            List<ProcedureCode> lstProcedureCode = new List<ProcedureCode>();
+            List<ProcedureCodeCompanyMapping> lstProcedureCodeCompanyMapping = new List<ProcedureCodeCompanyMapping>();
+            int oldRoomTestSpecialityID = 0;
+            int oldrommTestCompnayID = 0;
+            Boolean? ISdelete = false;
 
             #region room
             roomDB.id = roomBO.ID;
@@ -148,6 +153,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
                     roomDB.Location = location;
+                    oldrommTestCompnayID = location.CompanyID;
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid location detail.", ErrorLevel = ErrorLevel.Error };
@@ -185,7 +191,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (roomDB.id > 0)
             {
-                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID  && o.id!= roomDB.id && (o.IsDeleted == false || o.IsDeleted == null)))
+                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID && o.id != roomDB.id && (o.IsDeleted == false || o.IsDeleted == null)))
                 {
                     return new BO.ErrorObject { ErrorMessage = "Room already exists for selected location and test.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
@@ -193,7 +199,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 //Find Room By ID
                 Room room = _context.Rooms.Where(p => p.id == roomDB.id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Room>();
-
+                Room roombeoredelete = _context.Rooms.Include("RoomTest").Include("Location").Where(p => p.id == roomDB.id).FirstOrDefault<Room>();
+                oldRoomTestSpecialityID = roombeoredelete.RoomTestID;
+                oldrommTestCompnayID = roombeoredelete.Location.CompanyID;
+                ISdelete = roomBO.IsDeleted.HasValue ? roomBO.IsDeleted : room.IsDeleted;
                 if (room != null)
                 {
                     #region Location
@@ -265,6 +274,184 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             _context.SaveChanges();
 
+            // get all procedure code by speciality
+            lstProcedureCode = _context.ProcedureCodes.Where(s => s.RoomTestId == roomBO.roomTest.ID).ToList<ProcedureCode>();
+
+            //check whether the procedure codes for this speciality and company is added
+            
+            var testProcedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                         join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                         where pccm.CompanyID == oldrommTestCompnayID
+                                               && pc.RoomTestId == roomBO.roomTest.ID
+                                               && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                               && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                         select new
+                                         {
+                                             id = pccm.ID,
+                                             procedureCodeId = pc.Id,
+                                             procedureCodeText = pc.ProcedureCodeText,
+                                             procedureCodeDesc = pc.ProcedureCodeDesc,
+                                             amount = pccm.Amount,
+                                             isPreffredCode = pccm.IsPreffredCode
+                                         }).ToList();
+
+            if (testProcedureCodeInfo.Count == 0)
+            {
+                foreach (var item1 in lstProcedureCode)
+                {
+                    ProcedureCodeCompanyMapping procedureCodeCompanyMappingDB = new ProcedureCodeCompanyMapping();
+                    procedureCodeCompanyMappingDB.ProcedureCodeID = item1.Id;
+                    procedureCodeCompanyMappingDB.CompanyID = oldrommTestCompnayID;
+                    procedureCodeCompanyMappingDB.Amount = item1.Amount;
+                    procedureCodeCompanyMappingDB.EffectiveFromDate = null;
+                    procedureCodeCompanyMappingDB.EffectiveToDate = null;
+                    procedureCodeCompanyMappingDB.IsPreffredCode = false;
+                    procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Add(procedureCodeCompanyMappingDB);
+                    _context.SaveChanges();
+                }
+            }
+            else
+            {
+                var testProcedureCodeInfo1 = (from pccm in _context.ProcedureCodeCompanyMappings
+                                              join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                              where pccm.CompanyID == oldrommTestCompnayID
+                                                    && pc.RoomTestId == roomBO.roomTest.ID
+                                                    && (pccm.IsDeleted.HasValue == false)
+                                                    && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                              select new
+                                              {
+                                                  id = pccm.ID,
+                                                  procedureCodeId = pc.Id,
+                                                  procedureCodeText = pc.ProcedureCodeText,
+                                                  procedureCodeDesc = pc.ProcedureCodeDesc,
+                                                  amount = pccm.Amount,
+                                                  isPreffredCode = pccm.IsPreffredCode
+                                              }).ToList();
+
+                if (testProcedureCodeInfo1.Count == 0)
+                {
+                    foreach (var item3 in testProcedureCodeInfo)
+                    {
+                        var procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Where(p => p.ID == item3.id).FirstOrDefault();
+
+                        if (procedureCodeCompanyMappingDB != null)
+                        {
+                            procedureCodeCompanyMappingDB.IsDeleted = false;
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            // Delete Old Compnay Procedure Codes if it is not mapped for any doctor to that compnay and rooms
+
+            if (oldRoomTestSpecialityID > 0 && roomBO.roomTest.ID != oldRoomTestSpecialityID)
+            {
+                var compnaydoctorspelist = _context.Doctors.Include("User").Include("DoctorRoomTestMappings").Include("DoctorRoomTestMappings.RoomTest")
+                                 .Where(p => (p.User.IsDeleted.HasValue == false || (p.User.IsDeleted.HasValue == true && p.User.IsDeleted.Value == false))
+                                           && p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                            .Any(p3 => p3.CompanyID == oldrommTestCompnayID)
+                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                           && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == oldRoomTestSpecialityID)))
+                                 .ToList<Doctor>();
+
+
+                var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+               .Where(p => p.RoomTestID == oldRoomTestSpecialityID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+               && p.Location.CompanyID == oldrommTestCompnayID).ToList();
+
+
+
+
+                if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
+                {
+                    var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
+                                                   join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                                   where pccm.CompanyID == oldrommTestCompnayID
+                                                         && pc.RoomTestId == oldRoomTestSpecialityID
+                                                         && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                                         && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                                   select new
+                                                   {
+                                                       id = pccm.ID,
+                                                       procedureCodeId = pc.Id,
+                                                       procedureCodeText = pc.ProcedureCodeText,
+                                                       procedureCodeDesc = pc.ProcedureCodeDesc,
+                                                       amount = pccm.Amount,
+                                                       isPreffredCode = pccm.IsPreffredCode
+                                                   }).ToList();
+
+                    if (procedureCodeInfodelete.Count > 0)
+                    {
+                        foreach (var item3 in procedureCodeInfodelete)
+                        {
+                            var procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Where(p => p.ID == item3.id).FirstOrDefault();
+
+                            if (procedureCodeCompanyMappingDB != null)
+                            {
+                                procedureCodeCompanyMappingDB.IsDeleted = true;
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+
+            }
+            else if(oldRoomTestSpecialityID > 0 && roomBO.roomTest.ID == oldRoomTestSpecialityID && ISdelete == true)
+            {
+                var compnaydoctorspelist = _context.Doctors.Include("User").Include("DoctorRoomTestMappings").Include("DoctorRoomTestMappings.RoomTest")
+                                .Where(p => (p.User.IsDeleted.HasValue == false || (p.User.IsDeleted.HasValue == true && p.User.IsDeleted.Value == false))
+                                          && p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                           .Any(p3 => p3.CompanyID == oldrommTestCompnayID)
+                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                          && (p.DoctorRoomTestMappings.Any(p4 => p4.RoomTestId == oldRoomTestSpecialityID)))
+                                .ToList<Doctor>();
+
+
+                var rommSpecilatiesContains = _context.Rooms.Include("RoomTest").Include("Location")
+               .Where(p => p.RoomTestID == oldRoomTestSpecialityID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+               && p.Location.CompanyID == oldrommTestCompnayID).ToList();
+
+
+
+
+                if (compnaydoctorspelist.Count == 0 && rommSpecilatiesContains.Count == 0)
+                {
+                    var procedureCodeInfodelete = (from pccm in _context.ProcedureCodeCompanyMappings
+                                                   join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                                   where pccm.CompanyID == oldrommTestCompnayID
+                                                         && pc.RoomTestId == oldRoomTestSpecialityID
+                                                         && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                                         && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                                   select new
+                                                   {
+                                                       id = pccm.ID,
+                                                       procedureCodeId = pc.Id,
+                                                       procedureCodeText = pc.ProcedureCodeText,
+                                                       procedureCodeDesc = pc.ProcedureCodeDesc,
+                                                       amount = pccm.Amount,
+                                                       isPreffredCode = pccm.IsPreffredCode
+                                                   }).ToList();
+
+                    if (procedureCodeInfodelete.Count > 0)
+                    {
+                        foreach (var item3 in procedureCodeInfodelete)
+                        {
+                            var procedureCodeCompanyMappingDB = _context.ProcedureCodeCompanyMappings.Where(p => p.ID == item3.id).FirstOrDefault();
+
+                            if (procedureCodeCompanyMappingDB != null)
+                            {
+                                procedureCodeCompanyMappingDB.IsDeleted = true;
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
             var res = Convert<BO.Room, Room>(roomDB);
             return (object)res;
         }
@@ -324,7 +511,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (roomBO.location.ID > 0)
                     {
-                        var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.LocationID == roomBO.location.ID && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
+                        var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.LocationID == roomBO.location.ID && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
                         if (acc_ == null || acc_.Count < 1)
                         {
                             return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -338,7 +525,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
+                var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
                 if (acc_ == null || acc_.Count < 1)
                 {
                     return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
