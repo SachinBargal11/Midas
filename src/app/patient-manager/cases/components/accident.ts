@@ -98,6 +98,10 @@ export class AccidentInfoComponent implements OnInit {
         private _patientStore: PatientsStore,
         private _casesStore: CasesStore,
     ) {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {                
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchReferal();
+        });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();

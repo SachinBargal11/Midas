@@ -33,7 +33,9 @@ export class DocumentManagerService {
                 mergedDocumentName: mergedDocumentName,
                 companyid: companyId,
                 caseid: caseId,
-                documentIds: documentIds
+                documentIds: documentIds,
+                CreateUserId: this._sessionStore.session.user.id,
+                UpdateUserId: this._sessionStore.session.user.id
               }
             return this._http.post(environment.SERVICE_BASE_URL + '/documentmanager/mergePDFs', requestData, {
                 headers: this._headers
