@@ -222,7 +222,6 @@ export class ProcedureComponent implements OnInit {
 }
 
   saveProcedures() {
-    debugger;
     if (this.selProcedureCodes.length != this.selectedProcedures.length) {
        this.selectedProcedures.forEach(currentProcedure => {
         let itemIndex = this.selProcedureCodes.findIndex(item => item.procedureCodeId == currentProcedure.procedureCodeId);
