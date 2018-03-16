@@ -60,19 +60,20 @@
   <p-column field="procedureCodeDesc" header="Description"  styleClass="inbound-column"></p-column>
   <p-column field="procedureAmount" header="Amount"  styleClass="inbound-column"></p-column>
   <!--<p-column field="procedureOldUnit"   header="Old Unit"  styleClass="inbound-column"></p-column>-->
- <p-column header="Unit" field="procedureUnitNew" [editable]="true"  styleClass="inbound-column">
+ 
+  <p-column header="Total charge per day">
+    <ng-template let-procedure1="rowData" pTemplate="body">
+      <span *ngIf="procedure1.undefined != undefined">{{procedure1.undefined * procedure1.procedureAmount | number : '1.2-2'}} | ({{procedure1.undefined}} units)</span>
+      <span *ngIf="procedure1.undefined == undefined">{{procedure1.procedureTotalAmount | number : '1.2-2'}} | ({{procedure1.procedureOldUnit}} units)</span>
+    </ng-template>
+  </p-column>
+  <p-column header="Edit Unit" field="procedureUnitNew" [editable]="true"  styleClass="inbound-column">
     <ng-template let-col let-procedure="rowData" pTemplate="body">
         {{procedure[col.procedureUnitNew]}}
     </ng-template>
     <ng-template let-col let-procedure="rowData" pTemplate="editor">
      <input type="number" pInputText  minlength="1" maxlength="10"  [(ngModel)]="procedure[col.procedureUnitNew]"  (change)="updateUnit(procedure[col.procedureUnitNew],procedure.procedureCodeId)" (keypress)="_keyPress($event)" appendTo="body"  />
      <!--<span #gname="ngModel" [pattern]="numberPattern" *ngIf="gname.errors?.pattern" class="color-red">Please Enter Valid Number.</span>-->
-    </ng-template>
-  </p-column>
-  <p-column header="Total charge per day">
-    <ng-template let-procedure1="rowData" pTemplate="body">
-      <span *ngIf="procedure1.undefined != undefined">{{procedure1.undefined * procedure1.procedureAmount | number : '1.2-2'}} | ({{procedure1.undefined}} units)</span>
-      <span *ngIf="procedure1.undefined == undefined">{{procedure1.procedureTotalAmount | number : '1.2-2'}} | ({{procedure1.procedureOldUnit}} units)</span>
     </ng-template>
   </p-column>
 </p-dataTable>
