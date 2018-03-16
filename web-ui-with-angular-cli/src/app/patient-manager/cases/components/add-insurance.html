@@ -449,7 +449,7 @@
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
                         <input type="text" formControlName="contactPerson" [class.error]="!insuranceformControls.contactPerson.valid" class="form-control"
-                            type="text" placeholder="" [ngModel]="insuranceContactPerson" />
+                            type="text" placeholder="" [ngModel]="insuranceContactPerson" [readonly]="insuranceisReadOnly" />
                         <div class='error-list' *ngIf="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.contactPerson.hasError('required')">Contact Person is required.</li>
@@ -463,7 +463,7 @@
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.email.touched && !insuranceformControls.email.valid">
                         <input type="email" formControlName="email" [class.error]="!insuranceformControls.email.valid" class="form-control" 
-                        type="text"   placeholder="" [ngModel]="insuranceAdjuster.insuranceContact.emailAddress"/>
+                        type="text"   placeholder="" [ngModel]="insuranceAdjuster.insuranceContact.emailAddress" [readonly]="insuranceisReadOnly"/>
                         <div class='error-list' *ngIf="insuranceformControls.email.touched && !insuranceformControls.email.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.email.hasError('required')">Email is required.</li>
@@ -478,7 +478,7 @@
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
                         <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid"
-                            placeholder="+1 999-999-9999" styleClass="form-control" [ngModel]="insuranceCellPhone"></p-inputMask>
+                            placeholder="+1 999-999-9999" styleClass="form-control" [ngModel]="insuranceCellPhone" [readonly]="insuranceisReadOnly"></p-inputMask>
                         <div class='error-list' *ngIf="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
