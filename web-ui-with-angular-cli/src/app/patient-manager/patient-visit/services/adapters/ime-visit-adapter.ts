@@ -10,8 +10,7 @@ import { LocationAdapter } from '../../../../medical-provider/users/services/ada
 export class ImeVisitAdapter {
     static parseResponse(data: any): ImeVisit {
 
-        let imeVisit = null;
-        debugger;
+        let imeVisit = null;        
         imeVisit = new ImeVisit({
             id: data.id,
             calendarEventId: data.calendarEventId,

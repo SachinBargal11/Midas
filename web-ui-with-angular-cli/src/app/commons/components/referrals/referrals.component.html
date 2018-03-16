@@ -35,14 +35,14 @@
 </p-dataTable>
 <br>
 <div class="row">
-     <div class="col-lg-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-       <button *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)" type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>
+     <div class="col-lg-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctorId != null">
+       <button *ngIf="(sessionStore.session.user.id == selectedVisit.doctorId)" type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>
      </div>
-     <div class="col-lg-4" *ngIf="!sessionStore.isOnlyDoctorRole()">
+     <!-- <div class="col-lg-4" *ngIf="!sessionStore.isOnlyDoctorRole()">
          <button type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>
-     </div>  
+     </div>   -->
      </div>
-   <label class="warningMsg">{{msg}}</label>
+   <label class="warningMsg">{{msg}} </label>
    <br>
 </div>
 <br>
@@ -112,8 +112,8 @@
             </form>
         </div>
         <br>
-        <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">  
-            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)" [disabled]="diableSave || sigs.first.signature == undefined"  class="btn btn-success sign-up" (click)="saveReferral()">Save
+        <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctorId != null">  
+            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctorId)" [disabled]="diableSave || sigs.first.signature == undefined"  class="btn btn-success sign-up" (click)="saveReferral()">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
         </div>

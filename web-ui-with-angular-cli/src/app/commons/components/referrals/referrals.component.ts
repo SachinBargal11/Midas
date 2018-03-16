@@ -516,8 +516,7 @@ export class ReferralsComponent implements OnInit {
   }
 
 
-  beResponsive() {
-    debugger;
+  beResponsive() {    
     this.size(this.signatureContainer.first, this.sigs.first);
   }
 
