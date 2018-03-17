@@ -1,0 +1,14 @@
+version: 0.0
+os: windows
+files:
+  - source: dist
+    destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
+hooks:
+   BeforeInstall:
+     - location: before-install.bat
+   AfterInstall:
+     - location: after-install.bat
+       runas: administrator
+
+
+

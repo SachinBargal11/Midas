@@ -1,0 +1,65 @@
+<section *ngIf="preferredUIViewId == 2">
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="user-settings" [(ngModel)]="currAccordion" (click)="setContent('user-settings')" name="accordion" id="user-settings"
+			 routerLink="user-settings" class="accordion-toggle" />
+			<label for="user-settings">General Settings</label>
+			<section *ngIf="currAccordion=='user-settings'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="notification-subscription" [(ngModel)]="currAccordion" (click)="setContent('notification-subscription')" name="accordion"
+			 id="notification-subscription" routerLink="notification-subscription" class="accordion-toggle" />
+			<label for="notification-subscription"> Notification subscription</label>
+			<section *ngIf="currAccordion=='notification-subscription'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="otp-settings" [(ngModel)]="currAccordion" (click)="setContent('otp-settings')" name="accordion"
+			 id="otp-settings" routerLink="otp-settings" class="accordion-toggle" />
+			<label for="otp-settings"> OTP Settings</label>
+			<section *ngIf="currAccordion=='otp-settings'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
+</section>
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
+	<div class="tabs-section-nav">
+		<div class="tbl">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="user-settings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">General Settings </span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="notification-subscription" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in"> Notification subscription </span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="otp-settings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in"> OTP Settings </span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+</section>

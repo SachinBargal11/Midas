@@ -1,0 +1,49 @@
+<section>
+    <div class="mobile-menu-left-overlay" (click)="hideLeftMobileMenu()"></div>
+    <nav class="side-menu side-menu-compact">
+        <ul class="side-menu-list">
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="account-setting">
+                    <i class="fa fa-cog"></i>
+                    <span class="lbl">Account Setting</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="specialities">
+                    <i class="fa fa-calculator"></i>
+                    <span class="lbl">Specialities</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="adjuster">
+                    <i class="fa fa-address-card"></i>
+                    <span class="lbl">Adjuster</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="attorney">
+                    <i class="fa fa-file-text"></i>
+                    <span class="lbl">Attorney</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="insurance-masters">
+                    <i class="fa fa-university"></i>
+                    <span class="lbl">Insurance</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']">
+                <a routerLink="medical-provider-master">
+                    <i class="fa fa-file-text"></i>
+                    <span class="lbl">Medical Provider</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['opened']" style="height: 10%;">
+<a routerLink="ancillary-master">
+    <i class="fa fa-ambulance"></i>
+    <span class="lbl">Ancillary</span>
+</a>
+</li>
+</ul>
+</nav>
+</section>

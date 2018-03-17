@@ -1,0 +1,32 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Documents">
+    </div>
+    <div class="col-lg-8" *ngIf="caseStatusId === 1">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete </span>
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    </div>
+</div>
+
+<p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" #dt>
+    <header> List</header>
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="document.originalResponse.documentName" header="Document Name" [filter]="true" styleClass="inbound-column">
+        <ng-template let-document="rowData" pTemplate="body">
+            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                <u>{{document.document.originalResponse.documentName}}</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <!-- <p-column field="document.documentType" header="Document Type" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.documentType }}
+        </ng-template>
+    </p-column> -->
+    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true"></p-column>
+</p-dataTable>

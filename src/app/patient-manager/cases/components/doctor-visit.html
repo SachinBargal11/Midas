@@ -1,0 +1,127 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="input-group" *ngIf="caseStatusId === 1">
+    <h3 class="with-border">{{patientName}} Visits
+        <!-- <a class="pull-right btn btn-danger btn-sm" (click)="deletePatientVisits()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a> -->
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="addVisitDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+        <span class="hidden-md-down">Add Visit</span>
+        </a>
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="unscheduledVisitDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+        <span class="hidden-md-down">Add Unscheduled Visit</span>
+        </a>
+    </h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
+    </div>
+    <div class="col-lg-4"> 
+        <p-checkbox (onChange)="loadVisits()" [(ngModel)]="viewall" 
+        binary="true" label="View All"></p-checkbox>
+    </div>
+</div>
+
+<p-dataTable [value]="allVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gbb" [responsive]="true" #dt>
+    <header>Patient Doctors Visits List</header>
+    <!--<p-column selectionMode="multiple" styleClass="inbound-column"></p-column>-->
+    <!--<p-column field="eventStart" header="Visit Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a (click)="showDialog(visit.id)">
+            {{visit.eventStart | dateTimeFormat}}
+        </a>
+        </ng-template>
+    </p-column>
+
+    <p-column field="doctor.user.displayName" header="Treating Doctor" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            {{visit.doctor.user.displayName}}
+        </ng-template>
+    </p-column>
+
+    <p-column field="specialty.displayName" header="Specialty" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            {{visit.specialty.displayName}}
+        </ng-template>
+    </p-column>
+
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>-->
+    <!--<p-column field="eventStart" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.isPatientVisitType" (click)="showDialog(visit)">
+            {{visit.eventStart | dateTimeFormat}}
+        </a>
+            <a *ngIf="visit.isUnscheduledVisitType" (click)="showDialog(visit)">
+            {{visit.eventStart.format('MMMM Do YYYY')}}
+        </a>
+        </ng-template>
+    </p-column>-->
+    <p-column field="eventStart" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.isPatientVisitType">
+            {{visit.eventStart}}
+        </a>
+            <a *ngIf="visit.isUnscheduledVisitType">
+            {{visit.eventStart}}
+        </a>
+        </ng-template>
+    </p-column>
+    <p-column field="locationName" header="Location" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="visitType" header="Visit Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="doctorName" header="Treating Doctor" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="specialityName" header="Specialty" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <!--<p-column field="" header="Billing Status" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+        </ng-template>
+    </p-column>-->
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <!--<a routerLink="{{visit.id}}/visit-note"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <a *ngIf="visit.visitTimeStatus == true" (click)="showDialog(visit)"><i class="glyphicon glyphicon-edit"></i></a>            
+            <!-- <a (click)="showDialog(visit)"><i class="glyphicon glyphicon-edit"></i></a> -->
+        </ng-template>
+    </p-column>
+</p-dataTable><br>
+<!--<button type="submit" class="btn btn-success sign-up btn-sm" (click)="bill()">Create Bill</button>-->
+
+
+<p-dialog *ngIf="caseId && patientId" [width]="1200" [height]="500" header="{{visitInfo}}" [(visible)]="addVisitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="addVisitDialogVisible && caseId && patientId">
+        <patient-visit (closeDialog)="closeAddVisitDialog($event)" [caseId]="caseId" [idPatient]="patientId" [routeFromCase]="true"></patient-visit>
+    </div>
+</p-dialog>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="selectedVisit && visitDialogVisible">
+        <app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="caseId && patientId" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+    [(visible)]="unscheduledVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisitDialogVisible && caseId && patientId">
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="caseId && patientId && id" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+    [(visible)]="unscheduledEditVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledEditVisitDialogVisible && caseId && patientId && id">
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId" [id]="id"></unscheduled-visit>
+    </div>
+</p-dialog>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="unscheduledDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisit && unscheduledDialogVisible">
+        <unscheduled-visit-detail [selectedVisit]="unscheduledVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></unscheduled-visit-detail>
+    </div>
+</p-dialog>

@@ -1,0 +1,147 @@
+<section class="tabs-section" *ngIf="preferredUIViewId == 2">
+	<h3 class="with-border">Details of {{patientName}}
+		<a title="Add Case" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Case</span>
+    </a>
+		<a title="Case List" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-list-alt" aria-hidden="true"></i>
+      <span class="hidden-md-down">Case List</span>
+    </a>
+	</h3>
+
+	<!-- <p-accordion [multiple]="true">
+		<p-accordionTab [routerLink]="viewall">
+			<p-header>
+				View All
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{basic:'basic-collapsible'}}]">
+			<p-header>
+				Basic
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="basic"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{demographics:'demographics-collapsible'}}]">
+			<p-header>
+				Demographics
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="demographics"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{documents:'documents-collapsible'}}]">
+			<p-header>
+				Documents
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="documents"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+	</p-accordion> -->
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent('viewall')" name="accordion" id="viewall"
+			 routerLink="viewall" class="accordion-toggle" />
+			<label for="viewall">View All</label>
+			<section *ngIf="currAccordion=='viewall'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
+			 class="accordion-toggle" />
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (click)="setContent('demographics')" name="accordion" id="demographics"
+			 routerLink="demographics" class="accordion-toggle" />
+			<label for="demographics">Demographics</label>
+			<section *ngIf="currAccordion=='demographics'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (click)="setContent('documents')" name="accordion" id="documents"
+			 routerLink="documents" class="accordion-toggle" />
+			<label for="documents">Documents</label>
+			<section *ngIf="currAccordion=='documents'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
+</section>
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
+	<h3 class="with-border">Details of {{patientName}}
+		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Case</span>
+    </a>
+		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Case List</span>
+    </a>
+	</h3>
+	<div class="tabs-section-nav">
+		<div class="tbl">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="viewall" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					View All
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Basic
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="demographics" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Demographics
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Documents
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+</section>
