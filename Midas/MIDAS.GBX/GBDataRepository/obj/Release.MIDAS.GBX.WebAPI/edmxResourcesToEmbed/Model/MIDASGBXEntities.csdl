@@ -1474,6 +1474,9 @@
     <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
     <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
     <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
+    <Property Name="DoctorSignatureType" Type="Int32" />
+    <Property Name="DoctorSignatureText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DoctorSignatureFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="PendingReferralProcedureCode">
     <Key>

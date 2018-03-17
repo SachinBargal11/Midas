@@ -63,6 +63,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getDoctorSignatureById/{doctorId}")]
+        public HttpResponseMessage GetDoctorSignatureById(int doctorId)
+        {
+            return requestHandler.GetDoctorSignatureById(Request, doctorId);
+        }
+
+        [HttpGet]
         [Route("dismissPendingReferral/{PendingReferralId}/{userId}")]
         public HttpResponseMessage DismissPendingReferral(int PendingReferralId,int userId)
         {

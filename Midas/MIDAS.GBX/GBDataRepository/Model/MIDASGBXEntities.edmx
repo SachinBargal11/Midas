@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -1191,7 +1191,10 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="ForSpecialtyId" Type="int" />
           <Property Name="ForRoomId" Type="int" />
           <Property Name="ForRoomTestId" Type="int" />
+          <Property Name="DoctorSignatureType" Type="int" />
           <Property Name="DoctorSignature" Type="nvarchar(max)" />
+          <Property Name="DoctorSignatureText" Type="nvarchar" MaxLength="100" />
+          <Property Name="DoctorSignatureFont" Type="nvarchar" MaxLength="100" />
           <Property Name="IsReferralCreated" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -5140,8 +5143,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -6619,6 +6621,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
           <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
+          <Property Name="DoctorSignatureType" Type="Int32" />
+          <Property Name="DoctorSignatureText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorSignatureFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PendingReferralProcedureCode">
           <Key>
@@ -10645,7 +10650,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
@@ -11930,6 +11935,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PendingReferrals">
             <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
               <MappingFragment StoreEntitySet="PendingReferral">
+                <ScalarProperty Name="DoctorSignatureFont" ColumnName="DoctorSignatureFont" />
+                <ScalarProperty Name="DoctorSignatureText" ColumnName="DoctorSignatureText" />
+                <ScalarProperty Name="DoctorSignatureType" ColumnName="DoctorSignatureType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />

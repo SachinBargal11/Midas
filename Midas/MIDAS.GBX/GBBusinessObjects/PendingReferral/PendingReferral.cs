@@ -34,6 +34,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("doctorSignature")]
         public string DoctorSignature { get; set; }
 
+        [JsonProperty("doctorSignatureType")]
+        public int? DoctorSignatureType { get; set; }
+
+        [JsonProperty("doctorSignatureText")]
+        public string DoctorSignatureText { get; set; }
+
+        [JsonProperty("doctorSignatureFont")]
+        public string DoctorSignatureFont { get; set; }
+
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
 
@@ -86,6 +95,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("doctorSignature")]
         public string DoctorSignature { get; set; }
+
+        [JsonProperty("doctorSignatureType")]
+        public int? DoctorSignatureType { get; set; }
+
+        [JsonProperty("doctorSignatureText")]
+        public string DoctorSignatureText { get; set; }
+
+        [JsonProperty("doctorSignatureFont")]
+        public string DoctorSignatureFont { get; set; }
 
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
@@ -155,6 +173,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("doctorSignature")]
         public string DoctorSignature { get; set; }
+
+        [JsonProperty("doctorSignatureType")]
+        public int? DoctorSignatureType { get; set; }
+
+        [JsonProperty("doctorSignatureText")]
+        public string DoctorSignatureText { get; set; }
+
+        [JsonProperty("doctorSignatureFont")]
+        public string DoctorSignatureFont { get; set; }
 
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
