@@ -91,6 +91,7 @@ export class ReferralsComponent implements OnInit {
   ngOnInit() {
     this.loadAllSpecialitiesAndTests();
     this.getPendingReferralByPatientVisitId();
+    this. getdocotrsignatureByDoctorId();
     this.iscomplete = false;
     // if (this.selectedVisit.specialtyId) {
     //   this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
@@ -123,6 +124,55 @@ export class ReferralsComponent implements OnInit {
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
         let selectedProcSpec: Procedure;
+      /*  this.selectedVisitReferral = visitReferrals[0];
+        if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
+        {
+        if(this.selectedVisitReferral.doctorSignature != null && this.selectedVisitReferral.doctorSignature != '' && this.selectedVisitReferral.doctorSignature != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignature = this.selectedVisitReferral.doctorSignature;
+          this.showtext = false;
+          this.showsignpad = true;
+        }
+        else if(this.selectedVisitReferral.doctorSignatureText != null && this.selectedVisitReferral.doctorSignatureText != '' && this.selectedVisitReferral.doctorSignatureText != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignatureText = this.selectedVisitReferral.doctorSignatureText;
+          this.showtext = true;
+          this.showsignpad = false;
+        }
+      }*/
+        _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
+          if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
+            selectedProcSpec = new Procedure({
+              specialityId: currentVisitReferral.forSpecialtyId,
+              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
+            });
+            this.proceduresList.push(selectedProcSpec);
+          } else {
+            _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
+              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+              this.proceduresList = _.union(this.proceduresList);
+            })
+          }
+        });
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
+
+
+  getdocotrsignatureByDoctorId() {
+    // this._progressBarService.show();
+    this._visitReferralStore.getDoctorSignatureByDocotId(this.sessionStore.session.user.id)
+      .subscribe(
+      (visitReferrals: VisitReferral[]) => {
         this.selectedVisitReferral = visitReferrals[0];
         if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
         {
@@ -143,20 +193,7 @@ export class ReferralsComponent implements OnInit {
           this.showsignpad = false;
         }
       }
-        _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
-          if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
-            selectedProcSpec = new Procedure({
-              specialityId: currentVisitReferral.forSpecialtyId,
-              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
-            });
-            this.proceduresList.push(selectedProcSpec);
-          } else {
-            _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
-              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
-              this.proceduresList = _.union(this.proceduresList);
-            })
-          }
-        });
+      
       },
       (error) => {
         // this._progressBarService.hide();
@@ -535,7 +572,7 @@ export class ReferralsComponent implements OnInit {
     this.save.emit(visitReferralDetails);
     //this.digitalForm.reset();
     this.clear();
-    this.getPendingReferralByPatientVisitId();
+    this. getdocotrsignatureByDoctorId();
     this.diableSave = true;
     this.signedText = '';
     // this.save.emit(this.proceduresList);
