@@ -11,7 +11,6 @@ export class ImeVisitAdapter {
     static parseResponse(data: any): ImeVisit {
 
         let imeVisit = null;
-        debugger;
         imeVisit = new ImeVisit({
             id: data.id,
             calendarEventId: data.calendarEventId,

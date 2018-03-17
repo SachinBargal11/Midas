@@ -323,7 +323,6 @@ export class CasesListComponent implements OnInit {
     }
 
     MatchReferal() {    
-        debugger;
         this._progressBarService.show();
         let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
         let result = this._patientStore.getPatientById(this.patientId);

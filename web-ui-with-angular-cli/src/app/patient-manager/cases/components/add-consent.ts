@@ -106,8 +106,7 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {    
-            debugger;        
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {           
             this.patientId = parseInt(routeParams.patientId, 10);
             this.MatchReferal();
         });

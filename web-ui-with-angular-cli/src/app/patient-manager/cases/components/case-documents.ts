@@ -88,8 +88,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _patientsStore: PatientsStore
 
     ) {
-        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {  
-            debugger;          
+        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {            
             this.patientId = parseInt(routeParams.patientId, 10);
             this.MatchReferal();            
         });
@@ -206,7 +205,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
             .subscribe(document => {
-                debugger;
                 this.documents = document;
                 let dateArray = _.map(this.documents, (currDocument: CaseDocument) => {
                     return currDocument.document.createDate.toDate();
@@ -300,7 +298,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     deletedocument(currentdocument : any) {
-        debugger;
         let result;        
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
@@ -359,7 +356,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this.isSaveProgress = true;
         this._documentManagerService.mergePdfDocuments(documentIds, this.currentCaseId, mergedDocumentName, companyId)
             .subscribe((response) => {
-                debugger;
                 let notification = new Notification({
                     'title': 'Documents merged successfully!',
                     'type': 'SUCCESS',
@@ -376,7 +372,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this.selectedDocumentList = [];
             },
             (error) => {
-                debugger;
                 let errString = 'Unable to merge documents';
                 if(error._body)
                 {

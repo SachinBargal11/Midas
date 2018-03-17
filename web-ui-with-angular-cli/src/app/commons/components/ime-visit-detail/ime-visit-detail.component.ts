@@ -91,7 +91,6 @@ export class ImeVisitDetailComponent implements OnInit {
             readingDoctor: ['']
         });
         this.imeVisitFormControls = this.imeVisitForm.controls;
-         debugger;
         this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
@@ -253,7 +252,6 @@ export class ImeVisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-            debugger;
         this.closePatientVisitDialog();
     }
 

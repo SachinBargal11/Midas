@@ -161,7 +161,6 @@ loadDiagnosisCodesByCompanyAndDiagnosisType(diagnosisTypeCompnayID: number) {
   let result2 = this._diagnosisCodeMasterStore.getDiagnosisCodesByCompanyAndDiagnosisType(this.sessionStore.session.currentCompany.id, diagnosisTypeCompnayID);
   result2.subscribe((diagnosisCodes: DiagnosisCode[]) => {
     this.diagCodes = diagnosisCodes;
-    debugger;
     let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisCodes, (currentProcedure: DiagnosisCode) => {
                    return currentProcedure.diagnosisCodeId;
            });

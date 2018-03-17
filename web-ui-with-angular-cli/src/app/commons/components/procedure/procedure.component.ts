@@ -54,7 +54,6 @@ export class ProcedureComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     if (this.selectedVisit.specialtyId) {
       this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     } else if (this.selectedVisit.roomId && this.selectedVisit.room) {
@@ -100,7 +99,6 @@ export class ProcedureComponent implements OnInit {
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
-        debugger;
         let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });

@@ -118,8 +118,7 @@ export class UnscheduledVisit extends UnscheduledVisitRecord implements IEventWr
         }
     }
 
-    get visitDisplayString(): string {    
-        debugger;   
+    get visitDisplayString(): string {     
         let visitInfo: string = ``;
         
             visitInfo = `${visitInfo}Location Name: ${this.locationName} - `;

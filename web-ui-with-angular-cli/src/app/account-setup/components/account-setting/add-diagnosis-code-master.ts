@@ -70,7 +70,6 @@ export class AddDiagnosisCodeComponent implements OnInit {
         this._progressBarService.show();
         let result = this._diagnosisStore.getAllDiagnosisCodes();
         result.subscribe((diagnosisCodes: DiagnosisCode[]) => {
-            debugger;
             this.diagnosisCodesArr = _.map(diagnosisCodes, (currDiagnosis: DiagnosisCode) => {
                 return {
                     label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
@@ -125,7 +124,6 @@ export class AddDiagnosisCodeComponent implements OnInit {
            
         }
         else {
-            debugger;
             this.isSaveProgress = false;
             let notification = new Notification({
                 'title': 'Select record to save',
