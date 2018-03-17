@@ -130,7 +130,6 @@ export class DocumentsComponent implements OnInit {
         this._progressBarService.show();
         this._patientStore.getDocumentsForPatientId(this.patientId)
             .subscribe(document => {
-                debugger;
                 this.documents = document;
             },
 
@@ -223,8 +222,7 @@ export class DocumentsComponent implements OnInit {
         }
     }
 
-    deleteDocument(currentdocument: any) {  
-        debugger;           
+    deleteDocument(currentdocument: any) {           
         //  this.confirmationService.confirm({
         //     message: 'Do you want to delete this record?',
         //     header: 'Delete Confirmation',

@@ -39,6 +39,7 @@ export class ReferralsComponent implements OnInit {
   tests: Tests[];
   selectedSpeciality: Speciality;
   selectedTestingFacility: Tests;
+  selectedVisitReferral : VisitReferral;
 
   selectedMode = 0;
   selectedDoctorId: number;
@@ -51,6 +52,13 @@ export class ReferralsComponent implements OnInit {
   iscomplete: boolean;
   digitalForm: FormGroup;
   diableSave:boolean = true;
+  showoldSignature = false;
+  oldSignatureType = 0;
+  oldDocotrSignature ;
+  oldDocotrSignatureText;
+  showtext:boolean = false;
+  showsignpad:boolean = true;
+  signedText:string;
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
@@ -59,6 +67,7 @@ export class ReferralsComponent implements OnInit {
 
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
+  @ViewChildren('signaturetextContainer') public signaturetextContainer: QueryList<ElementRef>;
 
   constructor(
     private _notificationsService: NotificationsService,
@@ -73,7 +82,8 @@ export class ReferralsComponent implements OnInit {
     private _patientVisitStore: PatientVisitsStore
   ) {
     this.digitalForm = this.fb.group({
-      signatureField: ['']
+      signatureField: [''],
+      signedText:['']
     });
     this.showSignature();
   }
@@ -81,6 +91,7 @@ export class ReferralsComponent implements OnInit {
   ngOnInit() {
     this.loadAllSpecialitiesAndTests();
     this.getPendingReferralByPatientVisitId();
+    this. getdocotrsignatureByDoctorId();
     this.iscomplete = false;
     // if (this.selectedVisit.specialtyId) {
     //   this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
@@ -113,6 +124,26 @@ export class ReferralsComponent implements OnInit {
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
         let selectedProcSpec: Procedure;
+      /*  this.selectedVisitReferral = visitReferrals[0];
+        if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
+        {
+        if(this.selectedVisitReferral.doctorSignature != null && this.selectedVisitReferral.doctorSignature != '' && this.selectedVisitReferral.doctorSignature != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignature = this.selectedVisitReferral.doctorSignature;
+          this.showtext = false;
+          this.showsignpad = true;
+        }
+        else if(this.selectedVisitReferral.doctorSignatureText != null && this.selectedVisitReferral.doctorSignatureText != '' && this.selectedVisitReferral.doctorSignatureText != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignatureText = this.selectedVisitReferral.doctorSignatureText;
+          this.showtext = true;
+          this.showsignpad = false;
+        }
+      }*/
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
           if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
             selectedProcSpec = new Procedure({
@@ -127,6 +158,42 @@ export class ReferralsComponent implements OnInit {
             })
           }
         });
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
+
+
+  getdocotrsignatureByDoctorId() {
+    // this._progressBarService.show();
+    this._visitReferralStore.getDoctorSignatureByDocotId(this.sessionStore.session.user.id)
+      .subscribe(
+      (visitReferrals: VisitReferral[]) => {
+        this.selectedVisitReferral = visitReferrals[0];
+        if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
+        {
+        if(this.selectedVisitReferral.doctorSignature != null && this.selectedVisitReferral.doctorSignature != '' && this.selectedVisitReferral.doctorSignature != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignature = this.selectedVisitReferral.doctorSignature;
+          this.showtext = false;
+          this.showsignpad = true;
+        }
+        else if(this.selectedVisitReferral.doctorSignatureText != null && this.selectedVisitReferral.doctorSignatureText != '' && this.selectedVisitReferral.doctorSignatureText != undefined )
+        {
+          this.showoldSignature = true;
+          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
+          this.oldDocotrSignatureText = this.selectedVisitReferral.doctorSignatureText;
+          this.showtext = true;
+          this.showsignpad = false;
+        }
+      }
+      
       },
       (error) => {
         // this._progressBarService.hide();
@@ -398,6 +465,20 @@ export class ReferralsComponent implements OnInit {
   saveReferral() {
     let procedureCodes = [];
     let visitReferralDetails: VisitReferral[] = [];
+    let docSign = '';
+    let docSigntype = 1;
+    let docSigntext = '';
+    if(this.showoldSignature)
+    {
+      docSign = this.oldDocotrSignature;
+      docSigntype = this.oldSignatureType;
+      docSigntext = this.oldDocotrSignatureText;
+    }
+    else{
+      docSign = this.sigs.first.signature;
+      docSigntype = this.showsignpad? 1 : 2;
+      docSigntext = this.signedText;
+    }
     let uniqSpeciality = _.uniq(this.proceduresList, (currentProc: Procedure) => {
       return currentProc.specialityId
     })
@@ -423,7 +504,10 @@ export class ReferralsComponent implements OnInit {
           forRoomTestId: null,
           isReferralCreated: false,
           pendingReferralProcedureCode: procedureCodes,
-          doctorSignature: this.sigs.first.signature
+          doctorSignature: docSign,
+          doctorSignatureType: docSigntype,
+          doctorSignatureText : docSigntext,
+          doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
@@ -455,7 +539,10 @@ export class ReferralsComponent implements OnInit {
           forRoomTestId: currentRoomTestId,
           isReferralCreated: false,
           pendingReferralProcedureCode: procedureCodes,
-          doctorSignature: this.sigs.first.signature
+          doctorSignature: docSign,
+          doctorSignatureType: docSigntype,
+          doctorSignatureText : docSigntext,
+          doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
@@ -473,16 +560,21 @@ export class ReferralsComponent implements OnInit {
         forRoomTestId: null,
         isReferralCreated: false,
         pendingReferralProcedureCode: procedureCodes,
-        doctorSignature: this.sigs.first.signature
+        doctorSignature: docSign,
+        doctorSignatureType: docSigntype,
+        doctorSignatureText : docSigntext,
+        doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
       });
       visitReferralDetails.push(visitReferral);
       procedureCodes = [];
     }
 
     this.save.emit(visitReferralDetails);
-    this.digitalForm.reset();
+    //this.digitalForm.reset();
     this.clear();
+    this. getdocotrsignatureByDoctorId();
     this.diableSave = true;
+    this.signedText = '';
     // this.save.emit(this.proceduresList);
   }
 
@@ -517,27 +609,34 @@ export class ReferralsComponent implements OnInit {
 
 
   beResponsive() {
-    debugger;
     this.size(this.signatureContainer.first, this.sigs.first);
   }
 
   size(container: ElementRef, sig: SignatureFieldComponent) {
-    var cWidth = 517;
-    if(container.nativeElement.offsetWidth  == 0)
+    var cWidth = 275;
+    if(container == undefined)
     {
-      cWidth = 517;
+      var cWidth = 275;
+    }
+    else if(container.nativeElement.offsetWidth  == 0)
+    {
+      cWidth = 275;
     }
     else{
-      cWidth = container.nativeElement.offsetWidth;
+      cWidth = 275;
     }
 
-    var cHeight = 300;
-    if(container.nativeElement.offsetHeight  == 0)
+    var cHeight = 200;
+    if(container == undefined)
     {
-      cHeight = 300;
+      cHeight = 200;
+    }
+    else if(container.nativeElement.offsetHeight  == 0)
+    {
+      cHeight = 200;
     }
     else{
-      cHeight = container.nativeElement.offsetHeight;
+      cHeight = 200
     }
     sig.signaturePad.set('canvasWidth', cWidth);
     sig.signaturePad.set('canvasHeight', cHeight);
@@ -552,9 +651,39 @@ export class ReferralsComponent implements OnInit {
   showSignature()
   {
     _.defer(() => {
-      debugger;
       this.beResponsive();
       this.setOptions();
     });
   }
+
+  signatureTypeChange(signType:string)
+  {
+     if(signType === 'sign')
+     {
+       this.showtext = false;
+       this.showsignpad = true;
+       this.showSignature();
+     }
+     else if(signType === 'signtext'){
+      this.showtext = true;
+      this.showsignpad = false;
+      this.signedText = ''
+      this.textFocus(this.signaturetextContainer.first)
+     }
+  }
+
+  textFocus(container: ElementRef) {
+   container.nativeElement.autofocus = true;
+  }
+
+  _keyPress(event: any) {
+    const pattern = /^[a-zA-Z.\s]*$/;
+    let inputChar = String.fromCharCode(event.charCode);
+  
+    if (!pattern.test(inputChar)) {
+      // invalid character, prevent input
+      event.preventDefault();
+    }
+  }
+
 }

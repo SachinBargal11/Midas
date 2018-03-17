@@ -233,7 +233,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 });
                 
-                debugger;
                 
                 let doctorsVisits = matchingDoctorVisits.reverse();
                 let unscheduledVisits = results[1];
@@ -252,7 +251,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     visitTimeStatus: boolean
                 }[] = [];
                 _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
-                    debugger;
                     mappedAllVisits.push({
                         id: currDoctorVisit.id,
                         eventStart: currDoctorVisit.eventStart == null ? currDoctorVisit.calendarEvent.eventStart.format('MMMM Do YYYY') : currDoctorVisit.eventStart.format('MMMM Do YYYY'),
@@ -325,8 +323,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
             this.visitDialogVisible = true;
         } else if (visit.isUnscheduledVisitType) {
             this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
-                .subscribe((visit: UnscheduledVisit) => {
-                    debugger;                    
+                .subscribe((visit: UnscheduledVisit) => {                 
                     this.unscheduledVisit = visit;
                     let isinpast = visit.eventStart.isBefore(moment());
                     if(isinpast)
@@ -348,7 +345,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
          if (visit.isUnscheduledVisitType) {
             this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
                 .subscribe((visit: UnscheduledVisit) => {
-                    debugger;
                     this.unscheduledVisit = visit;
                     this.id = visit.id;
                     this.unscheduledDialogVisible = false;

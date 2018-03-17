@@ -131,7 +131,6 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     }
 
     get visitDisplayString(): string {
-        debugger;
         let visitInfo: string = ``;
         if (this.locationId && this.location) {
             visitInfo = `${visitInfo}Location Name: ${this.location.name} - `;

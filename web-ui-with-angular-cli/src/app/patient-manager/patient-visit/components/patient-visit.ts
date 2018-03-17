@@ -853,7 +853,6 @@ export class PatientVisitComponent implements OnInit {
             this._visitReferralStore.getUnscheduledVisitByCompanyId()
             .subscribe(
             (visits: UnscheduledVisit[]) => {
-                debugger;
                 let events = this.getUnScheduledVisitOccurrences(visits);
                 this.events = _.union(this.events, events);                
             },
@@ -1608,7 +1607,6 @@ export class PatientVisitComponent implements OnInit {
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if(patientVisit.isUnscheduledVisitType)
         {            
-            debugger;
             this.selectedVisitType = '4';
             let result = this._patientVisitsStore.getUnscheduledVisitDetailById(patientVisit.id);
                 result.subscribe((visit: UnscheduledVisit) => {                                      
@@ -1704,7 +1702,6 @@ export class PatientVisitComponent implements OnInit {
          } else {
             this.visitInfo = this.selectedVisit.visitDisplayString;
         }
-        debugger;
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -1830,8 +1827,7 @@ export class PatientVisitComponent implements OnInit {
             updatedVisit = new UnscheduledVisit(_.extend(this.selectedVisit.toJS(), {
                 notes: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId                
-             }));
-                      debugger;  
+             })); 
             let unscheduled = new UnscheduledVisit({
                 id: updatedVisit.id,
                 patientId: updatedVisit.patientId,

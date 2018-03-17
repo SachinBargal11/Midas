@@ -28,7 +28,10 @@ const VisitReferralRecord = Record({
     updateByUserId: 0,
     createDate: null, // Moment
     updateDate: null, // Moment
-    doctorSignature: null
+    doctorSignature: null,
+    doctorSignatureType: 0,
+    doctorSignatureText: null,
+    doctorSignatureFont:null
 });
 
 export class VisitReferral extends VisitReferralRecord {
@@ -54,6 +57,9 @@ export class VisitReferral extends VisitReferralRecord {
     createDate: moment.Moment;
     updateDate: moment.Moment;
     doctorSignature: string;
+    doctorSignatureType:number;
+    doctorSignatureText:string;
+    doctorSignatureFont:string;
     constructor(props) {
         super(props);
     }

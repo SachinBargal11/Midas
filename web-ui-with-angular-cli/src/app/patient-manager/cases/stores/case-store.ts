@@ -289,7 +289,6 @@ export class CasesStore {
         Observable.forkJoin([caseResult, result])
             .subscribe(
             (results) => {
-                debugger;
                  let caseDetails = results[0];
                  if (caseDetails.length > 0) {
                      let matchedCompany = null;

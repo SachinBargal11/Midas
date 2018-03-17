@@ -786,7 +786,6 @@ export class PatientVisitService {
 
     // updateUnscheduledVisitDetail(requestData: UnscheduledVisit): Observable<UnscheduledVisit> {
     //     let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
-    //         debugger;
     //        // let requestData = unscheduledVisitDetail.toJS();
     //        let headers = new Headers();
     //         headers.append('Content-Type', 'application/json');          
