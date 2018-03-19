@@ -131,7 +131,7 @@
         </div>
         <br>       
         <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">  
-            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && !showoldSignature" [disabled]="diableSave || sigs.first.signature == undefined && signedText == undefined"  class="btn btn-success sign-up" (click)="saveReferral()">Save
+            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && !showoldSignature" [disabled]="diableSave || sigs.first.signature == undefined && (signedText == undefined || signedText == '' || signedText == null)"  class="btn btn-success sign-up" (click)="saveReferral()">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
             <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && showoldSignature" [disabled]="diableSave"  class="btn btn-success sign-up" (click)="saveReferral()">Save
