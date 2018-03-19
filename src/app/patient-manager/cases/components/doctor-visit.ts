@@ -209,16 +209,14 @@ export class PatientVisitListDoctorComponent implements OnInit {
         let patientVisits = this._patientVisitStore.getPatientVisitsByCaseId(this.caseId);
         let unscheduleVisits = this._patientVisitStore.getUnscheduledVisitsByCaseId(this.caseId);
         Observable.forkJoin([patientVisits, unscheduleVisits])
-            .subscribe((results: any[]) => {
-                let patientVisitDetails = results[0];                  
-                  console.log(patientVisitDetails);
+            .subscribe((results: any[]) => {                                
+                let patientVisitDetails = results[0];                                    
                 // let matchingVisits: PatientVisit[] = _.filter(patientVisitDetails, (currentVisit: PatientVisit) => {
                 //     return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-                // });
-                
+                // });                
                 // this.visits = matchingVisits.reverse();                       
                 let matchingVisits: PatientVisit[];
-                if(this.viewall)
+                if(!this.viewall)
                 {
                     matchingVisits = patientVisitDetails;
                 }
@@ -233,9 +231,23 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 });
                 
-                
                 let doctorsVisits = matchingDoctorVisits.reverse();
                 let unscheduledVisits = results[1];
+
+
+                let unschmatchingVisits: UnscheduledVisit[];
+                if(!this.viewall)
+                {
+                    unschmatchingVisits = unscheduledVisits;
+                }
+                else
+                {
+                    unschmatchingVisits = _.filter(unscheduledVisits, (currentVisit: UnscheduledVisit) => {
+                        return currentVisit.visitStatusLabel === 'Complete';
+                    });
+                }                
+                
+                let unscheduleddoctorsVisits = unschmatchingVisits.reverse();
 
                 let mappedAllVisits: {
                     id: number,
@@ -250,7 +262,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     medicalProviderName: string,
                     visitTimeStatus: boolean
                 }[] = [];
-                _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
+                _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {                    
                     mappedAllVisits.push({
                         id: currDoctorVisit.id,
                         eventStart: currDoctorVisit.eventStart == null ? currDoctorVisit.calendarEvent.eventStart.format('MMMM Do YYYY') : currDoctorVisit.eventStart.format('MMMM Do YYYY'),
@@ -264,8 +276,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
                         medicalProviderName: null,
                         visitTimeStatus: currDoctorVisit.visitTimeStatus
                     })
-                })
-                _.forEach(unscheduledVisits, (currDoctorVisit: UnscheduledVisit) => {
+                });
+                _.forEach(unscheduleddoctorsVisits, (currDoctorVisit: UnscheduledVisit) => {
                     if (currDoctorVisit.specialtyId != null) {
                         mappedAllVisits.push({
                             id: currDoctorVisit.id,
@@ -291,7 +303,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
 
     loadPatientVisitsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -323,7 +334,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
             this.visitDialogVisible = true;
         } else if (visit.isUnscheduledVisitType) {
             this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
-                .subscribe((visit: UnscheduledVisit) => {                 
+                .subscribe((visit: UnscheduledVisit) => {                                      
                     this.unscheduledVisit = visit;
                     let isinpast = visit.eventStart.isBefore(moment());
                     if(isinpast)
@@ -345,6 +356,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
          if (visit.isUnscheduledVisitType) {
             this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
                 .subscribe((visit: UnscheduledVisit) => {
+                    debugger;
                     this.unscheduledVisit = visit;
                     this.id = visit.id;
                     this.unscheduledDialogVisible = false;
