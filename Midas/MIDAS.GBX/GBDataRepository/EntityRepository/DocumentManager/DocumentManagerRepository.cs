@@ -137,19 +137,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return companyId;
         }
 
+        private string getUserName(int? userid)
+        {
+            string username = "";
+            if (userid != null)
+            {
+                var user = _context.Users.Where(q => q.CreateByUserID == userid).FirstOrDefault();
+                if (user != null)
+                {
+                    username = user.FirstName + ' ' + user.MiddleName + ' ' + user.LastName;
+                }
+            }
+            return username;
+        }
+
         #region Get
         public override object Get(int id, string type)
         {
             List<BO.Document> docInfo = new List<BO.Document>();
-            _context.MidasDocuments.Include("Users").Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
+            _context.MidasDocuments.Include("Company").Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
             {
                 id = id,
                 DocumentId = x.Id,
                 DocumentName = x.DocumentName,
                 DocumentType=x.DocumentType,
                 DocumentPath = x.DocumentPath + "/" + x.DocumentName,
-                CreateByUserID = x.CreateUserId.GetValueOrDefault()
-                
+                CreateByUserID = x.CreateUserId.GetValueOrDefault(),
+                CreatedCompanyname = x.Company!= null ? x.Company.Name : "",                
+                CreatedUserName = getUserName(x.CreateUserId)
             }));
 
             return (object)docInfo;

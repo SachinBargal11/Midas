@@ -46,6 +46,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;
             pendingReferralBO.DismissedBy = pendingReferral.DismissedBy;
             pendingReferralBO.DoctorSignature = pendingReferral.DoctorSignature;
+            pendingReferralBO.DoctorSignatureType = pendingReferral.DoctorSignatureType;
+            pendingReferralBO.DoctorSignatureText = pendingReferral.DoctorSignatureText;
+            pendingReferralBO.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
 
             if (pendingReferral.PatientVisit != null)
             {
@@ -272,6 +275,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         PendingReferralList.IsReferralCreated = pendingReferral.IsReferralCreated;
                         PendingReferralList.DismissedBy = pendingReferral.DismissedBy;
                         PendingReferralList.DoctorSignature = pendingReferral.DoctorSignature;
+                        PendingReferralList.DoctorSignatureType = pendingReferral.DoctorSignatureType;
+                        PendingReferralList.DoctorSignatureText = pendingReferral.DoctorSignatureText;
+                        PendingReferralList.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
 
                         if (pendingReferral.Doctor != null)
                         {
@@ -463,6 +469,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     PendingReferralListBO.IsReferralCreated = pendingReferral.IsReferralCreated;
                     PendingReferralListBO.DismissedBy = pendingReferral.DismissedBy;
                     PendingReferralListBO.DoctorSignature = pendingReferral.DoctorSignature;
+                    PendingReferralListBO.DoctorSignatureType = pendingReferral.DoctorSignatureType;
+                    PendingReferralListBO.DoctorSignatureText = pendingReferral.DoctorSignatureText;
+                    PendingReferralListBO.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
 
                     if (pendingReferral.Doctor != null)
                     {
@@ -802,6 +811,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
         }
 
+
+        public override object GetDoctorSignatureById(int doctorId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit")
+                                              .Include("PatientVisit.Case.Patient.User")
+                                              .Include("Doctor")
+                                              .Include("Doctor.User")
+                                       .Where(p => p.Doctor.Id == doctorId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<PendingReferral>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    if (item.DoctorSignatureType != 0 && item.DoctorSignatureType != null)
+                    {
+                        lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
+                        return lstPendingReferral;
+                    }
+                }
+                return lstPendingReferral;
+            }
+        }
+
         public override object DismissPendingReferral(int PendingReferralId, int userId)
         {
             PendingReferral pendingReferral = _context.PendingReferrals.Include("PatientVisit")
@@ -1009,8 +1047,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             pendingReferralDB.IsReferralCreated = item.IsReferralCreated;
                             pendingReferralDB.DismissedBy = item.DismissedBy;
                             pendingReferralDB.DoctorSignature = item.DoctorSignature;
+                            pendingReferralDB.DoctorSignatureType = item.DoctorSignatureType;
+                            pendingReferralDB.DoctorSignatureText = item.DoctorSignatureText;
+                            pendingReferralDB.DoctorSignatureFont = item.DoctorSignatureFont;
 
-                            if (add_pendingReferral == true)
+                                if (add_pendingReferral == true)
                             {
                                 pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
                             }

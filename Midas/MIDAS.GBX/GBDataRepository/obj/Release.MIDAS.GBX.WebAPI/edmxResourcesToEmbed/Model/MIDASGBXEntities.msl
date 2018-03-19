@@ -838,6 +838,7 @@
     <EntitySetMapping Name="MidasDocuments">
       <EntityTypeMapping TypeName="MIDASModel.MidasDocument">
         <MappingFragment StoreEntitySet="MidasDocuments">
+          <ScalarProperty Name="CreatedCompanyId" ColumnName="CreatedCompanyId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
           <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
@@ -1240,6 +1241,9 @@
     <EntitySetMapping Name="PendingReferrals">
       <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
         <MappingFragment StoreEntitySet="PendingReferral">
+          <ScalarProperty Name="DoctorSignatureFont" ColumnName="DoctorSignatureFont" />
+          <ScalarProperty Name="DoctorSignatureText" ColumnName="DoctorSignatureText" />
+          <ScalarProperty Name="DoctorSignatureType" ColumnName="DoctorSignatureType" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
           <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />

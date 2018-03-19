@@ -1579,6 +1579,20 @@ namespace MIDAS.GBX.WebAPI
         }
 
 
+        public HttpResponseMessage GetDoctorSignatureById(HttpRequestMessage request, int doctorId)
+        {
+            var objResult = dataAccessManager.GetDoctorSignatureById(doctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
         public HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GenerateReferralDocument(id);

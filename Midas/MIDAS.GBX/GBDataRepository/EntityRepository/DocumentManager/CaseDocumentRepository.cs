@@ -42,6 +42,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     DocumentPath = uploadpath,
                     CreateDate = DateTime.UtcNow,
                     CreateUserId = createUserId,
+                    CreatedCompanyId = companyId
                     
                 });
                 _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;

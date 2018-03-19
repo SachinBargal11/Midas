@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -812,6 +812,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="DocumentType" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -1191,7 +1192,10 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="ForSpecialtyId" Type="int" />
           <Property Name="ForRoomId" Type="int" />
           <Property Name="ForRoomTestId" Type="int" />
+          <Property Name="DoctorSignatureType" Type="int" />
           <Property Name="DoctorSignature" Type="nvarchar(max)" />
+          <Property Name="DoctorSignatureText" Type="nvarchar" MaxLength="100" />
+          <Property Name="DoctorSignatureFont" Type="nvarchar" MaxLength="100" />
           <Property Name="IsReferralCreated" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -2767,6 +2771,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MidasDocuments_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MidasDocuments">
+              <PropertyRef Name="CreatedCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4667,6 +4683,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="Location" EntitySet="Location" />
           </AssociationSet>
+          <AssociationSet Name="FK_MidasDocuments_Company" Association="Self.FK_MidasDocuments_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="Notification" EntitySet="Notification" />
@@ -5140,8 +5160,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5535,6 +5554,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
           <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_Company" FromRole="Company" ToRole="UserCompanyRole" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="Company" ToRole="UserPersonalSettings" />
+          <NavigationProperty Name="MidasDocuments" Relationship="MIDASModel.FK_MidasDocuments_Company" FromRole="Company" ToRole="MidasDocument" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -6152,6 +6172,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="PatientDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
           <NavigationProperty Name="VisitDocuments" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="VisitDocuments" />
+          <Property Name="CreatedCompanyId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="MIDASModel.FK_MidasDocuments_Company" FromRole="MidasDocument" ToRole="Company" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -6619,6 +6641,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
           <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
+          <Property Name="DoctorSignatureType" Type="Int32" />
+          <Property Name="DoctorSignatureText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorSignatureFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PendingReferralProcedureCode">
           <Key>
@@ -10645,7 +10670,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
@@ -10665,6 +10690,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="spDeletePatient" />
+          <AssociationSet Name="FK_MidasDocuments_Company" Association="MIDASModel.FK_MidasDocuments_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="MidasDocument" EntitySet="MidasDocuments" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -10685,6 +10714,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
+        <Association Name="FK_MidasDocuments_Company">
+          <End Type="MIDASModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="MIDASModel.MidasDocument" Role="MidasDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MidasDocument">
+              <PropertyRef Name="CreatedCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11528,6 +11569,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="MidasDocuments">
             <EntityTypeMapping TypeName="MIDASModel.MidasDocument">
               <MappingFragment StoreEntitySet="MidasDocuments">
+                <ScalarProperty Name="CreatedCompanyId" ColumnName="CreatedCompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
                 <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
@@ -11930,6 +11972,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PendingReferrals">
             <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
               <MappingFragment StoreEntitySet="PendingReferral">
+                <ScalarProperty Name="DoctorSignatureFont" ColumnName="DoctorSignatureFont" />
+                <ScalarProperty Name="DoctorSignatureText" ColumnName="DoctorSignatureText" />
+                <ScalarProperty Name="DoctorSignatureType" ColumnName="DoctorSignatureType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />

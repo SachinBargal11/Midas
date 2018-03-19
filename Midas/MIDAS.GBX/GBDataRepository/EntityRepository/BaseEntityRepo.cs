@@ -349,7 +349,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-      
+
+        public virtual Object GetDoctorSignatureById(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetByReferringCompanyId(int CompanyId)
         {
             throw new NotImplementedException();

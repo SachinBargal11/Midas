@@ -35,6 +35,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public string DocumentType { get; set; }
+        public Nullable<int> CreatedCompanyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
@@ -46,5 +47,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitDocument> VisitDocuments { get; set; }
+        public virtual Company Company { get; set; }
     }
 }
