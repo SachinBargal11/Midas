@@ -85,7 +85,7 @@ export class AddUserComponent implements OnInit {
         this._specialityStore.getSpecialities()
             .subscribe((specialties) => {
                 let specialities: Speciality[] = specialties;
-                this.selectedSpeciality = ['2'];
+              //  this.selectedSpeciality = [''];
                 this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
                     return {
                         label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
@@ -204,7 +204,7 @@ export class AddUserComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required],
+            speciality: [''],
             testSpeciality:[''],
             isCalendarPublic: ['']
         };
@@ -366,9 +366,12 @@ export class AddUserComponent implements OnInit {
         else {
             let doctorDetail;
             let selectedSpeciality = userFormValues.doctor.speciality;
+            if(selectedSpeciality != undefined)
+            {
             selectedSpeciality.forEach(element => {
                 doctorSpecialities.push({ 'id': parseInt(element) });
             });
+            }
             let selectedTestSpeciality = userFormValues.doctor.testSpeciality;
             if(selectedTestSpeciality != undefined)
             {
