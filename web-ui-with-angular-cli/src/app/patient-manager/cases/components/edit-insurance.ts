@@ -69,6 +69,7 @@ export class EditInsuranceComponent implements OnInit {
     insuranceMasterId: number;
     adjusterMasterId = '';
     insuranceContactPerson:string = '';
+    insuranceisReadOnly:boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -277,6 +278,30 @@ export class EditInsuranceComponent implements OnInit {
             this.loadInsuranceMasterAddress(currentInsurance);
         } else {
             this.insuranceMastersAdress = null
+            this.insuranceisReadOnly = false;
+            this.showAdjusterList = false;
+            this.insuranceContactPerson = this.insurance.contactPerson;
+            this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
+            this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
+            this.insuranceContact = new Contact({
+                cellPhone: this.insurance.insuranceContact.cellPhone,
+                emailAddress: this.insurance.insuranceContact.emailAddress,
+                faxNo:  this.insurance.insuranceContact.faxNo,
+                homePhone: this.insurance.insuranceContact.homePhone,
+                workPhone: this.insurance.insuranceContact.workPhone,
+                officeExtension: this.insurance.insuranceContact.officeExtension,
+                alternateEmail:  this.insurance.insuranceContact.alternateEmail,
+                preferredCommunication: this.insurance.insuranceContact.preferredCommunication ? this.insurance.insuranceContact.preferredCommunication :'',
+        
+            });
+            this.insuranceAddress = new Address({
+                address1: this.insurance.insuranceAddress.address1,
+                address2: this.insurance.insuranceAddress.address2,
+                city: this.insurance.insuranceAddress.city,
+                country: this.insurance.insuranceAddress.country,
+                state: this.insurance.insuranceAddress.state,
+                zipCode: this.insurance.insuranceAddress.zipCode
+            });
         }
     }
     onUpload(event) {
@@ -316,11 +341,11 @@ export class EditInsuranceComponent implements OnInit {
             {
                 this.showAdjusterList = false;
             }
-            else if(this.adjusterMasters.length == 1)
+          /*  else if(this.adjusterMasters.length == 1)
             {
                 this.showAdjusterList = false;
-            }
-            else if(this.adjusterMasters.length > 1)
+            }*/
+            else if(this.adjusterMasters.length > 0)
             {
                 this.showAdjusterList = true;
                 let defaultLabel: any[] = [{
@@ -347,9 +372,10 @@ export class EditInsuranceComponent implements OnInit {
             if(this.adjusterMasters.length == 0)
             {
                 this.showAdjusterList = false;
+                this.insuranceisReadOnly = false;
                 this.clearInsuranceAdjusterFields();
             }
-            else if(this.adjusterMasters.length == 1)
+         /*   else if(this.adjusterMasters.length == 1)
             {
                 if(this.insuranceMasterId == this.insurance.insuranceMasterId)
                 {
@@ -414,10 +440,11 @@ export class EditInsuranceComponent implements OnInit {
                 this.clearInsuranceAdjusterFields();
             }
         }   
-    }
-    else if(this.adjusterMasters.length > 1)
+    }*/
+    else if(this.adjusterMasters.length > 0)
     {
         this.showAdjusterList = true;
+        this.insuranceisReadOnly = false;
         let defaultLabel: any[] = [{
             label: '-Select Adjuster-',
             value: ''
@@ -474,6 +501,7 @@ export class EditInsuranceComponent implements OnInit {
              var adjusterAddressInfo = this.adjusterMaster.adjusterAddress;
              if((adjusterContactInfo != null && adjusterContactInfo != undefined) && (adjusterAddressInfo != null && adjusterAddressInfo != undefined) )
              {
+             this.insuranceisReadOnly = true;    
              this.insuranceCellPhone = this._phoneFormatPipe.transform(adjusterContactInfo.cellPhone);
              this.insuranceFaxNo = this._faxNoFormatPipe.transform(adjusterContactInfo.faxNo);
              this.insuranceContactPerson =  this.adjusterMaster.firstName + ' ' +  this.adjusterMaster.lastName;
@@ -500,10 +528,12 @@ export class EditInsuranceComponent implements OnInit {
         }
      else{
          this.clearInsuranceAdjusterFields();
+         this.insuranceisReadOnly = false;
      }
   });
  }
  else{
+    this.insuranceisReadOnly = false;
     this.insuranceContactPerson = this.insurance.contactPerson;
     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
     this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);

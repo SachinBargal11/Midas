@@ -65,6 +65,7 @@ export class AddInsuranceComponent implements OnInit {
     adjusterMasterId = '';
     caseDetails: Case[];    
     referredToMe: boolean = false;
+    insuranceisReadOnly : boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -197,8 +198,19 @@ export class AddInsuranceComponent implements OnInit {
 
     selectInsurance(event) {
         // this.selectedInsurance = 0;
-        let currentInsurance: number = parseInt(event.value);
-        this.loadInsuranceMasterAddress(currentInsurance);
+        if(event.value != "" && event.value != undefined)
+        {
+            let currentInsurance: number = parseInt(event.value);
+            this.loadInsuranceMasterAddress(currentInsurance);
+        }
+        else
+        {
+            this.insuranceisReadOnly = false;
+            this.clearInsuranceAdjusterFields();
+            this.adjusterMasterId='';
+            this.showAdjusterList = false;
+        }
+        
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
@@ -206,7 +218,6 @@ export class AddInsuranceComponent implements OnInit {
             this._insuranceStore.getInsuranceMasterById(currentInsurance)
                 .subscribe(
                 (insuranceMaster) => {
-                    debugger;
                     this.insuranceMaster = insuranceMaster;
                     this.insuranceMastersAdress = insuranceMaster.Address
                     this.loadInsuranceAdjusterInfo(this.insuranceMaster.id);
@@ -226,9 +237,10 @@ export class AddInsuranceComponent implements OnInit {
             if(this.adjusterMasters.length == 0)
             {
                 this.showAdjusterList = false;
+                this.insuranceisReadOnly = false;
                 this.clearInsuranceAdjusterFields();
             }
-            else if(this.adjusterMasters.length == 1)
+           /* else if(this.adjusterMasters.length == 1)
             {
                 this.showAdjusterList = false;
                 var adjusterContactInfo = this.adjusterMasters[0].adjusterContact;
@@ -265,8 +277,8 @@ export class AddInsuranceComponent implements OnInit {
             this.showAdjusterList = false;
             this.clearInsuranceAdjusterFields();
         }
-    }
-    else if(this.adjusterMasters.length > 1)
+    }*/
+    else if(this.adjusterMasters.length > 0)
     {
         this.clearInsuranceAdjusterFields();
         this.showAdjusterList = true;
@@ -291,16 +303,17 @@ export class AddInsuranceComponent implements OnInit {
  {
      if(event.value != '' && event.value != undefined)
      {
-         debugger;
+        
      this._adjusterMasterStore.fetchAdjusterById(event.value)
      .subscribe(
      (adjusterMaster) => {
-         debugger;
+         
          this.adjusterMaster = adjusterMaster;
              var adjusterContactInfo = this.adjusterMaster.adjusterContact;
              var adjusterAddressInfo = this.adjusterMaster.adjusterAddress;
              if((adjusterContactInfo != null && adjusterContactInfo != undefined) && (adjusterAddressInfo != null && adjusterAddressInfo != undefined) )
              {
+             this.insuranceisReadOnly = true;   
              this.insuranceCellPhone = this._phoneFormatPipe.transform(adjusterContactInfo.cellPhone);
              this.policyFaxNo = this._faxNoFormatPipe.transform(adjusterContactInfo.faxNo);
              this.insuranceContactPerson =  this.adjusterMaster.firstName + '' +  this.adjusterMaster.lastName;
@@ -329,11 +342,13 @@ export class AddInsuranceComponent implements OnInit {
         }
      else{
          this.clearInsuranceAdjusterFields();
+         this.insuranceisReadOnly = false;
      }
   });
  }
  else{
     this.clearInsuranceAdjusterFields();
+    this.insuranceisReadOnly = false;
  }
 }
 

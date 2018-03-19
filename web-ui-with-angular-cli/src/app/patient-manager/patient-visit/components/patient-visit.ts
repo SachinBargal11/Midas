@@ -1619,8 +1619,8 @@ export class PatientVisitComponent implements OnInit {
             this.selectedVisitType = '2';
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if(patientVisit.isUnscheduledVisitType)
-        {   
-            this.selectedVisitType = '4';
+        {
+           this.selectedVisitType = '4';
             let result = this._patientVisitsStore.getUnscheduledVisitDetailById(patientVisit.id);
                 result.subscribe((visit: UnscheduledVisit) => {                                      
                     this.unscheduledVisit = visit;
@@ -1682,6 +1682,8 @@ export class PatientVisitComponent implements OnInit {
          } else {
             this.visitInfo = this.selectedVisit.visitDisplayString;
         }        
+
+
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -1807,8 +1809,8 @@ export class PatientVisitComponent implements OnInit {
             updatedVisit = new UnscheduledVisit(_.extend(this.selectedVisit.toJS(), {
                 notes: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId                
-             }));
-                      
+             })); 
+
             let unscheduled = new UnscheduledVisit({
                 id: updatedVisit.id,
                 patientId: updatedVisit.patientId,

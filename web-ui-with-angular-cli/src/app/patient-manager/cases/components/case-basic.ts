@@ -74,7 +74,6 @@ export class CaseBasicComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            debugger;
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             this.MatchReferal();

@@ -43,7 +43,10 @@ export class visitReferralAdapter {
                 createDate: moment(data.createDate), // Moment
                 updateDate: moment(data.updateDate), // Moment
                 originalResponse: data,
-                doctorSignature : data.doctorSignature
+                doctorSignature : data.doctorSignature,
+                doctorSignatureType: data.doctorSignatureType ? data.doctorSignatureType : 1,
+                doctorSignatureText : data.doctorSignatureText,
+                doctorSignatureFont : data.doctorSignatureFont
             });
         }
         return visitReferral;

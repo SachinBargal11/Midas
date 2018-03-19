@@ -100,21 +100,43 @@
         <div class="card-block">
             <form [formGroup]="digitalForm">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="signature-box" >
-                            <div class="signature-field-wrapper sig-container" #signatureContainer>
+                    <div  class="col-md-6">
+                        <div [hidden]="!showsignpad" class="signature-box" >
+                            <div [hidden]="oldSignatureType == 2 || showoldSignature"  class="signature-field-wrapper sig-container" #signatureContainer>
                                 <signature-field formControlName="signatureField"></signature-field>
                             </div>
-                            <button class="btn-clear-signature btn btn-default" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
+                            <div [hidden]="oldSignatureType == 2 || !showoldSignature">
+                                <img [src]="oldDocotrSignature" />
+                            </div>
+                        </div>
+                        <div [hidden]="!showtext" class="signature-boxtext">
+                          <div  class="signaturetext-field-wrapper">
+                            <div [hidden]="oldSignatureType == 1 || showoldSignature" class="sigtext-container" >
+                            <input #signaturetextContainer type="text" formControlName="signedText" pInputText [(ngModel)]="signedText" class="sigtext-font"  [ngStyle]="{'font-size':'30px'}" (keypress)="_keyPress($event)" autofocus />
+                          </div>
+                          <div [hidden]="oldSignatureType == 1 || !showoldSignature" class="sigtext-container">
+                              <input  type="text" readonly formControlName="signedText" pInputText [(ngModel)]="oldDocotrSignatureText" class="sigtext-font"  [ngStyle]="{'font-size':'30px'}" />
+                          </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div *ngIf="!showoldSignature">
+                          <button *ngIf="showtext" class="btn btn-success" type="button" (click)="signatureTypeChange('sign')">Sign</button>
+                          <button *ngIf="showsignpad" class="btn btn-success" type="button" (click)="signatureTypeChange('signtext')">Text</button>
+                          <button *ngIf="showsignpad" class="btn btn-default" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <br>
-        <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctorId != null">  
-            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctorId)" [disabled]="diableSave || sigs.first.signature == undefined"  class="btn btn-success sign-up" (click)="saveReferral()">Save
+        <br>       
+        <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">  
+            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && !showoldSignature" [disabled]="diableSave || sigs.first.signature == undefined && signedText == undefined"  class="btn btn-success sign-up" (click)="saveReferral()">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+            <button  type="button" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && showoldSignature" [disabled]="diableSave"  class="btn btn-success sign-up" (click)="saveReferral()">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
         </div>
+      </div>
 </div>

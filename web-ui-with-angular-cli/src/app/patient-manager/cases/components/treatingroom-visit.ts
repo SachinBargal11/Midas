@@ -190,7 +190,6 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 // let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
                 //     return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 // });
-                debugger;
                 let matchingVisits: PatientVisit[];
                 if(this.viewall)
                 {
