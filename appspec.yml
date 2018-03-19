@@ -4,5 +4,5 @@ files:
   - source: dist
     destination: C:\inetpub\website\qa-greenyourbills.qwinix.io\
 BeforeInstall:
-     - location: Before-install.bat
+     - location: before-install.bat
        runas: administrator
