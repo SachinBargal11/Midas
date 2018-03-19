@@ -26,21 +26,25 @@
                         </select>
                     </div>
                 </div>
+                
             </div>
             <div *ngIf="!sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
                         <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0"></option>
-             <optgroup label="Select Doctor">
+                            <option value="0"> -- Select specialty -- </option>
+                    <optgroup label="Select Doctor">
                      <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
-             </optgroup>
-             <optgroup label="Select Room">
-                    <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
-             </optgroup>
-        </select>
+                     </optgroup>
+                    <optgroup label="Select Room">
+                     <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
+                    </optgroup>
+                        </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-3">
+                <button type="button" pButton icon="" label="Refresh Calendar" (click)="loadAllVisits()"></button>
             </div>
         </div>
     </div>
@@ -482,7 +486,7 @@
                 </form>
             </p-tabPanel>
 
-            <p-tabPanel header="Documents" *ngIf="selectedVisit.id && visitStatusIdC != 4">
+            <p-tabPanel header="Documents" *ngIf="selectedVisit.id && selectedVisit.visitStatusId == 2">
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
@@ -526,7 +530,7 @@
                         <ng-template let-document="rowData.document" pTemplate="body">            
                             <button type="button" *ngIf="document.createByUserID == sessionStore.session.user.id" pButton (click)="deleteDocument(document)"  icon="fa-trash-o"></button>                                
                         </ng-template>
-                </p-column>
+                    </p-column>
                 </p-dataTable>
 
                 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"

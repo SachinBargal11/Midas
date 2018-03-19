@@ -703,7 +703,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
-            this.loadAllVisitsByCompanyId();
+            this.loadAllVisits();
         } else {
             this.events = [];
             this.loadLocationVisits();
@@ -849,10 +849,10 @@ export class PatientVisitComponent implements OnInit {
         this.events = [];
         this._progressBarService.show();                  
         if(!this.sessionStore.isOnlyDoctorRole())
-        {
+        {            
             this._visitReferralStore.getUnscheduledVisitByCompanyId()
             .subscribe(
-            (visits: UnscheduledVisit[]) => {
+            (visits: UnscheduledVisit[]) => {                
                 let events = this.getUnScheduledVisitOccurrences(visits);
                 this.events = _.union(this.events, events);                
             },
@@ -917,14 +917,25 @@ export class PatientVisitComponent implements OnInit {
         this.selectedTestId = 0;
     }
 
-    loadVisits() {        
+    loadVisits() {                
         if (this.selectedOption == 1) {
             this.loadLocationDoctorSpeciatityVisits();
         } else if (this.selectedOption == 2) {
             this.loadLocationRoomVisits();
         } else {
             this.loadAllVisitsByCompanyId();
+            this.loadAllUnScheduledVisitByCompanyId();
+            this.loadEoVisits();
+            this.loadImeVisits();
         }
+    }
+
+    loadAllVisits() {             
+            this.clearselection();           
+            this.loadAllVisitsByCompanyId();
+            this.loadAllUnScheduledVisitByCompanyId();
+            this.loadEoVisits();
+            this.loadImeVisits();        
     }
 
     getVisitOccurrences(visits) {                
@@ -1268,9 +1279,7 @@ export class PatientVisitComponent implements OnInit {
     // }
     refreshEvents(event) {
         this.events = [];
-        this.loadAllVisitsByCompanyId();
-        this.loadEoVisits();
-        this.loadImeVisits();
+        this.loadAllVisits();
     }
     closeEventDialog() {
         this.eventDialogUnscheduleVisible = false;
@@ -1552,9 +1561,11 @@ export class PatientVisitComponent implements OnInit {
     private _getEoVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): EoVisit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
+        debugger;
         if (eventInstance.isInPast) {
             this.isVisitTypeDisabled = false;
             eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
+                visitStatusId: eoVisit.visitStatusId,
                 calendarEvent: scheduledEventForInstance,
                 doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
                     // user: new User(_.extend(eoVisit.doctor.user.toJS()))
@@ -1574,10 +1585,11 @@ export class PatientVisitComponent implements OnInit {
 
     private _getImeVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): ImeVisit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
-        let imeVisit: ImeVisit = <ImeVisit>(eventInstance.eventWrapper);
+        let imeVisit: ImeVisit = <ImeVisit>(eventInstance.eventWrapper);        
         if (eventInstance.isInPast) {
             imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
                 calendarEvent: scheduledEventForInstance,
+                visitStatusId: imeVisit.visitStatusId,
                 case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
                 patient: imeVisit.patient ? new Patient(_.extend(imeVisit.patient.toJS(), {
                     user: new User(_.extend(imeVisit.patient.user.toJS()))
@@ -1603,11 +1615,12 @@ export class PatientVisitComponent implements OnInit {
             this.selectedVisitType = '1';
             this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);            
         } else if (patientVisit.isImeVisitType) {
+            debugger;
             this.selectedVisitType = '2';
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if(patientVisit.isUnscheduledVisitType)
-        {            
-            this.selectedVisitType = '4';
+        {
+           this.selectedVisitType = '4';
             let result = this._patientVisitsStore.getUnscheduledVisitDetailById(patientVisit.id);
                 result.subscribe((visit: UnscheduledVisit) => {                                      
                     this.unscheduledVisit = visit;
@@ -1652,40 +1665,7 @@ export class PatientVisitComponent implements OnInit {
                         this.unscheduledDialogVisible = null;
                         this.unscheduledEditVisitDialogVisible = true;                       
                     }                    
-                });
-            // this.selectedVisit = this._getUnscheduledVisitToBeEditedForEventInstance(clickedEventInstance); 
-            // if(this.selectedVisit.specialtyId != null)
-            // {
-            //     this.selectedVisit.selectedMode = 1;
-            // }
-            // else
-            // {
-            //     this.selectedVisit.selectedMode = 1;
-            // }
-            
-            //this.eventStartAsDate = this.selectedVisit.eventStart;           
-            // this._patientVisitsStore.getUnscheduledVisitDetailById(patientVisit.id)
-            // .subscribe((visit: UnscheduledVisit) => {
-            //     this.unscheduledVisit = visit;
-            //     this.selectedVisit = visit;
-            //     this.unscheduledDialogVisible = true;
-
-            //     if (patientVisit.isInPast) {
-            //         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            //         this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            //         this.getDocuments();
-            //         //this.visitDialogVisible = true;
-            //         this.unscheduledDialogVisible = true;
-            //     } else {
-            //         if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
-            //             this.confirmEditingEventOccurance();
-            //         } else {
-            //             this.eventDialogVisible = true;
-            //         }
-            //     }
-            // });
-
-            // patientVisit.isInPast = true;
+                });            
         }else if (patientVisit.isEoVisitType) {
             this.selectedVisitType = '3';
             this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
@@ -1701,7 +1681,9 @@ export class PatientVisitComponent implements OnInit {
              this.visitInfo = this.selectedVisit.visitDisplayStringForDoctor;
          } else {
             this.visitInfo = this.selectedVisit.visitDisplayString;
-        }
+        }        
+
+
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -1828,6 +1810,7 @@ export class PatientVisitComponent implements OnInit {
                 notes: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId                
              })); 
+
             let unscheduled = new UnscheduledVisit({
                 id: updatedVisit.id,
                 patientId: updatedVisit.patientId,
@@ -1863,10 +1846,7 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.events = [];
-                this.loadAllVisitsByCompanyId();
-                //this.loadVisits();
-                this.loadImeVisits();
-                this.loadEoVisits();
+                this.loadAllVisits();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Event updated successfully');
             },
@@ -1907,7 +1887,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                //this.loadVisits();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
@@ -1947,7 +1927,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                //this.loadVisits();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
@@ -1980,7 +1960,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                //this.loadVisits();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Referral saved successfully');
             },
@@ -2017,7 +1997,7 @@ export class PatientVisitComponent implements OnInit {
                 this.eventDialogVisible = false;
                 // this.loadVisits();
                 this.events = [];
-                this.loadAllVisitsByCompanyId();
+                this.loadAllVisits();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
             },
@@ -2053,7 +2033,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 // this.loadVisits();
                 this.events = [];
-                this.loadAllVisitsByCompanyId();
+                this.loadAllVisits();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
