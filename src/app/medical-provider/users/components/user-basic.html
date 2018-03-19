@@ -170,23 +170,27 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4" *ngIf="specialitiesArr.length > 0">
-                        <label class="form-label"> Specialty <span class="color-red">*</span></label>
-                        <div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
+                    <div class="col-lg-8" *ngIf="specialitiesArr.length > 0">
+                        <label class="form-label"> Specialty / Test Specialty <span class="color-red">*</span></label>
+                        <div class="form-group">
+                        <!--<div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">-->
                             <p-multiSelect [options]="specialitiesArr" [(ngModel)]="selectedSpecialities" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
-                            <div class='error-list' *ngIf="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
+                            <!--<div class='error-list' *ngIf="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
                                 <ul>
                                     <li *ngIf="userformControls.doctor.controls.speciality.hasError('selectedValueValidator')">Specialty is required.</li>
                                 </ul>
-                            </div>
+                            </div>-->
+                        </div>
+                        <div class="form-group">
+                                <p-multiSelect [options]="testSpecialitiesArr" [(ngModel)]="selectedTestSpecialities" defaultLabel="Select Test Speciality" formControlName="testSpeciality"></p-multiSelect>
                         </div>
                     </div>
-                    <div class="col-lg-4" *ngIf="testSpecialitiesArr.length > 0">
+                   <!-- <div class="col-lg-4" *ngIf="testSpecialitiesArr.length > 0">
                             <label class="form-label">Test Specialty</label>
                             <div class="form-group">
                                 <p-multiSelect [options]="testSpecialitiesArr" [(ngModel)]="selectedTestSpecialities" defaultLabel="Select Test Speciality" formControlName="testSpeciality"></p-multiSelect>
                             </div>
-                        </div>
+                        </div>-->
                 </div>
             </div>
         </section>
@@ -410,7 +414,7 @@
                 </div>
             </div>
         </section>
-        <button [disabled]="!userform.valid || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Update
+        <button [disabled]="!userform.valid || ((selectedTestSpecialities == undefined || selectedTestSpecialities== '' || selectedTestSpecialities== null)   && (selectedSpecialities == undefined || selectedSpecialities == '' || selectedSpecialities == null)) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveUserProgress"></loader>
     </button>
         <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
