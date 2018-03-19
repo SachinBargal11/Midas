@@ -574,7 +574,7 @@ export class ReferralsComponent implements OnInit {
     this.clear();
     this. getdocotrsignatureByDoctorId();
     this.diableSave = true;
-    this.signedText = '';
+    this.signedText = undefined;
     // this.save.emit(this.proceduresList);
   }
 
@@ -662,12 +662,13 @@ export class ReferralsComponent implements OnInit {
      {
        this.showtext = false;
        this.showsignpad = true;
+       this.signedText = undefined;
        this.showSignature();
      }
      else if(signType === 'signtext'){
       this.showtext = true;
       this.showsignpad = false;
-      this.signedText = ''
+      this.signedText = undefined;
       this.textFocus(this.signaturetextContainer.first)
      }
   }
