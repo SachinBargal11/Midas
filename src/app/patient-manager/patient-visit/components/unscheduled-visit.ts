@@ -162,7 +162,6 @@ export class UnscheduledVisitComponent implements OnInit {
     ngOnInit() {
         this.eventStartAsDate = moment().toDate();
         if (this.idPatient && this.caseId) {
-            debugger;
             if(this.id == undefined || this.id == 0)
             {
                 let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
@@ -293,7 +292,6 @@ export class UnscheduledVisitComponent implements OnInit {
     }
 
     saveEvent() {
-        debugger;
         this.isSaveProgress = true;
         let unscheduledFormValues = this.unscheduledForm.value;
         let result;

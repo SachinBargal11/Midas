@@ -61,7 +61,6 @@ export class PatientNavComponent implements OnInit {
                         doctorRoleOnly = false;
                     }
                  }
-                 debugger;
             if (doctorRoleOnly) {
                 // this.loadPatientsByCompanyAndDoctor();
                 this.doctorFlag = true;
