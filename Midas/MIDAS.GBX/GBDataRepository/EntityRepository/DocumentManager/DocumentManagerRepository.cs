@@ -141,7 +141,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id, string type)
         {
             List<BO.Document> docInfo = new List<BO.Document>();
-            _context.MidasDocuments.Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
+            _context.MidasDocuments.Include("Users").Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
             {
                 id = id,
                 DocumentId = x.Id,
@@ -149,6 +149,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 DocumentType=x.DocumentType,
                 DocumentPath = x.DocumentPath + "/" + x.DocumentName,
                 CreateByUserID = x.CreateUserId.GetValueOrDefault()
+                
             }));
 
             return (object)docInfo;

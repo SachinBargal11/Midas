@@ -47,14 +47,14 @@ namespace MIDAS.GBX.BusinessObjects
         //public Dictionary<string, object> ExtensionProperties { get; set; }
         [JsonProperty("createByUserID")]
         public int CreateByUserID { get; set; }
-
         [JsonProperty("updateByUserID")]
         public int? UpdateByUserID { get; set; }
         [JsonProperty("createDate")]
         public DateTime CreateDate { get { return DateTime.Now; } }
-
         [JsonProperty("updateDate")]
         public DateTime? UpdateDate { get { return DateTime.Now; } }
+        [JsonProperty("createdCompanyId")]
+        public int? createdCompanyId { get; set; }
 
         public virtual List<BusinessValidation> Validate<T>(T entity)
         {
