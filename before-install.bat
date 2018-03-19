@@ -1,2 +1,2 @@
-:\inetpub\website\qa-gb-midasapi.qwinix.io
+cd C:\inetpub\website\qa-gb-midasapi.qwinix.io
 del * /S /Q
