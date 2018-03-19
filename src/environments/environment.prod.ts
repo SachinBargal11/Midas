@@ -1,3 +1,4 @@
+
 export const environment = {
   production: true,
   IDENTITY_SCOPE: "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
@@ -14,3 +15,4 @@ export const environment = {
   ATTORNEY_PORTAL_URI: 'http://gb-attorney.qwinix.io/',
   ANCILLARY_PORTAL_URI: 'http://gb-ancillary.qwinix.io/'
 };
+
