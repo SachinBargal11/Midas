@@ -261,7 +261,7 @@ export class UnscheduledVisitDetailComponent implements OnInit {
         }
     }
 
-    saveVisit() {
+    saveVisit() {        
         let unscheduledVisitDetailFormValues = this.unscheduledVisitDetailForm.value;
         let updatedVisit: UnscheduledVisit;
         updatedVisit = new UnscheduledVisit(_.extend(this.selectedVisit.toJS(), {
@@ -270,6 +270,12 @@ export class UnscheduledVisitDetailComponent implements OnInit {
             // doctorId: parseInt(unscheduledVisitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
+        if(updatedVisit.visitStatusId == 1)
+        {
+            this._notificationsService.error('Unable to update!', 'Please select the status');
+            this._progressBarService.hide();
+            return;
+        }
         let result = this._patientVisitStore.updateUnscheduledVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
@@ -306,18 +312,72 @@ export class UnscheduledVisitDetailComponent implements OnInit {
         return isCreatedByCompany;
     }
 
-    deleteDocument() {
-        if (this.selectedDocumentList.length > 0) {
+    // deleteDocument() {
+    //     if (this.selectedDocumentList.length > 0) {
+    //         // this.confirmationService.confirm({
+    //         //     message: 'Do you want to delete this record?',
+    //         //     header: 'Delete Confirmation',
+    //         //     icon: 'fa fa-trash',
+    //         //     accept: () => {
+
+    //         this.selectedDocumentList.forEach(currentCase => {
+    //             this._progressBarService.show();
+    //             this.isDeleteProgress = true;
+    //             this._patientVisitStore.deleteDocument(currentCase)
+    //                 .subscribe(
+    //                 (response) => {
+    //                     let notification = new Notification({
+    //                         'title': 'Record deleted successfully!',
+    //                         'type': 'SUCCESS',
+    //                         'createdAt': moment()
+
+    //                     });
+    //                     this.getDocuments();
+    //                     this._notificationsStore.addNotification(notification);
+    //                     this.selectedDocumentList = [];
+    //                 },
+    //                 (error) => {
+    //                     let errString = 'Unable to delete record';
+    //                     let notification = new Notification({
+    //                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+    //                         'type': 'ERROR',
+    //                         'createdAt': moment()
+    //                     });
+    //                     this.selectedDocumentList = [];
+    //                     this._progressBarService.hide();
+    //                     this.isDeleteProgress = false;
+    //                     this._notificationsStore.addNotification(notification);
+    //                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    //                 },
+    //                 () => {
+    //                     this._progressBarService.hide();
+    //                     this.isDeleteProgress = false;
+    //                 });
+    //         });
+    //         //     }
+    //         // });
+    //     } else {
+    //         let notification = new Notification({
+    //             'title': 'Select record to delete',
+    //             'type': 'ERROR',
+    //             'createdAt': moment()
+    //         });
+    //         this._notificationsStore.addNotification(notification);
+    //         this._notificationsService.error('Oh No!', 'Select record to delete');
+    //     }
+    // }
+
+
+    deleteDocument(currentdocument: any) {
+        
             // this.confirmationService.confirm({
             //     message: 'Do you want to delete this record?',
             //     header: 'Delete Confirmation',
             //     icon: 'fa fa-trash',
-            //     accept: () => {
-
-            this.selectedDocumentList.forEach(currentCase => {
+            //     accept: () => {           
                 this._progressBarService.show();
                 this.isDeleteProgress = true;
-                this._patientVisitStore.deleteDocument(currentCase)
+                this._patientVisitStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
                     .subscribe(
                     (response) => {
                         let notification = new Notification({
@@ -346,18 +406,8 @@ export class UnscheduledVisitDetailComponent implements OnInit {
                     () => {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
-                    });
-            });
+                    });            
             //     }
-            // });
-        } else {
-            let notification = new Notification({
-                'title': 'Select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
-        }
+            // });        
     }
 }
