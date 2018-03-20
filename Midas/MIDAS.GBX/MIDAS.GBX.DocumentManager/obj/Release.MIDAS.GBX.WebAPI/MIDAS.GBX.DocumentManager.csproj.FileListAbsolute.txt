@@ -146,3 +146,4 @@ F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.DocumentManager\bin
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.DocumentManager\bin\zh-Hant\System.Spatial.resources.dll
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.DocumentManager\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.DocumentManager.dll
 F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.DocumentManager\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.DocumentManager.pdb
+F:\Midas-develop\Midas-develop-api\Midas\MIDAS.GBX\MIDAS.GBX.DocumentManager\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.DocumentManager.csprojResolveAssemblyReference.cache
