@@ -18,8 +18,11 @@ export class DocumentAdapter {
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+            createdCompanyName: data.createdCompanyName,
+            createdUserName: data.createdUserName,
             originalResponse: data
         });
+        debugger;
 
         return document;
     }
