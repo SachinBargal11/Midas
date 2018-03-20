@@ -207,6 +207,7 @@ export class PatientVisitService {
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
+                        debugger;
                         return VisitDocumentAdapter.parseResponse(data);
                     });
                     resolve(document);

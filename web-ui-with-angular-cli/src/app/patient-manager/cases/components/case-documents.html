@@ -42,7 +42,9 @@
             {{ document.documentType }}                  
         </ng-template>
     </p-column>
-    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="document.formattedCreateDateOnly" header="Created Date" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="document.createdCompanyName" header="Created Company" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="document.createdUserName" header="Created User" [sortable]="true" [filter]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-document="rowData" pTemplate="body">            
             <button type="button" *ngIf="document.document.originalResponse.createByUserID == _sessionStore.session.user.id"  pButton (click)="deletedocument(document.document.originalResponse)"  icon="fa-trash-o"></button>
@@ -75,7 +77,6 @@
             </ng-template>
         </p-orderList>
         <br> -->
-
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-success">
@@ -107,7 +108,6 @@
             </div>
         </div>
         <br>
-
         <form [formGroup]="documentMergeForm" (ngSubmit)="mergeDocuments()">
             <section class="card">
                 <!-- <header class="card-header card-header-lg">
@@ -151,7 +151,6 @@
         </form>
     </div>
 </p-dialog>
-
 <p-dialog [minHeight]="400" [minWidth]="600" [width]="1200" [(visible)]="packetDocumentsDialogVisible" header="{{packetDocumetDialogHeader}}"
     appendTo="body" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="packetDocumentsDialogVisible">

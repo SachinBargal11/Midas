@@ -178,6 +178,7 @@ export class CaseService {
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
+                        debugger;
                         return CaseDocumentAdapter.parseResponse(data);
                     });
                     resolve(document);
