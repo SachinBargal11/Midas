@@ -171,7 +171,7 @@ export class UserBasicComponent implements OnInit {
             let result = this._usersStore.fetchUserByIdAndCompnayID(this.userId,this._sessionStore.session.currentCompany.id);
             result.subscribe(
                 (userDetail: User) => {
-                    this.selectedSpecialities = ['2'];
+                    //this.selectedSpecialities = ['2'];
                     //this.selectedTestSpecialities =[''];
                     this.user = userDetail;
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
@@ -283,10 +283,10 @@ export class UserBasicComponent implements OnInit {
                     });
                 },
                 (error)=>{
-                    this.doctor = new Doctor({ speciality: '2'});
+                   // this.doctor = new Doctor({ speciality: '2'});
                },
                ()=>{
-                   this.doctor = new Doctor({ speciality: '2'});
+                  // this.doctor = new Doctor({ speciality: '2'});
                 });
                // this.doctor = new Doctor({ speciality: '2' });
             }
@@ -312,7 +312,7 @@ export class UserBasicComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required],
+            speciality: [''],
             testSpeciality:[''],
             isCalendarPublic: ['']
         };
