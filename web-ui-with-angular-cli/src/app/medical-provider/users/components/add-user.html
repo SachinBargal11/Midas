@@ -463,7 +463,7 @@
                    </div>
              </div>
           </section>-->
-    <button [disabled]="!userform.valid || ((selectedTestSpeciality == undefined || selectedTestSpeciality== '' || selectedTestSpeciality== null )  && (selectedSpeciality == undefined || selectedSpeciality == '' || selectedSpeciality == null)) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
+    <button [disabled]="!userform.valid || (selectedTestSpeciality.length == 0  &&  selectedSpeciality.length  == 0 ) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveUserProgress"></loader>
     </button>
     <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
