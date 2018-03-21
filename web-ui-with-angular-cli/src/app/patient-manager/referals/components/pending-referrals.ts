@@ -352,7 +352,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     setVisit(slotDetail: AvailableSingleSlot) {
-
+        debugger;
         let pendingReferral: PendingReferral = null;
         if (this.selectedOption === 1) {
             pendingReferral = this._populateReferralForMedicalProviderDoctor();
@@ -373,6 +373,7 @@ export class PendingReferralsComponent implements OnInit {
 
         Promise.all([visitResult, referralSaveResult])
             .then((results) => {
+                debugger;
                 let patientVisit: PatientVisit = results[0];
                 let referral: PendingReferral = results[1];
                 return this._pendingReferralService.associateReferralWithVisit(patientVisit, referral).toPromise();

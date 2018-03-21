@@ -23,7 +23,6 @@ export class DocumentAdapter {
             originalResponse: data
         });
         debugger;
-
         return document;
     }
 }
