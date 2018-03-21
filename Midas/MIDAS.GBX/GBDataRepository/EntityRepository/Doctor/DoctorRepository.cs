@@ -298,6 +298,70 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (doctorDB.Id != 0)
+                {
+                    var newspecialitylist = doctorBO.DoctorSpecialities.Select(c => c.ID).ToList();
+                    var olddoctorspeciality = _context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID).Select(c => c.SpecialityID).ToList();
+                    foreach (var oldspc in olddoctorspeciality)
+                    {
+                        if (!newspecialitylist.Contains(oldspc))
+                        {
+                            // Deleting the Doctor Appointments
+                            DateTime currentDate = DateTime.Now.Date;
+                            var acc = _context.PatientVisits.Include("CalendarEvent").Where(p => p.DoctorId == doctorDB.Id && p.SpecialtyId ==  oldspc && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
+                            foreach (PatientVisit pv in acc)
+                            {
+                                if (pv != null)
+                                {
+                                    pv.CalendarEvent.IsDeleted = true;
+                                    pv.CalendarEvent.UpdateByUserID = 0;
+                                    pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                                }
+
+                                pv.IsDeleted = true;
+                                pv.UpdateByUserID = 0;
+                                pv.UpdateDate = DateTime.UtcNow;
+
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+
+                    var newroomtestlist = doctorBO.DoctorRoomTestMappings.Select(c => c.ID).ToList();
+                    var oldroomtestspeciality = _context.DoctorRoomTestMappings.Where(c => c.DoctorId == doctorBO.user.ID).Select(c => c.RoomTestId).ToList();
+                    foreach (var oldspc in oldroomtestspeciality)
+                    {
+                        if (!newroomtestlist.Contains(oldspc))
+                        {
+                            var acc_ = _context.Rooms.Include("RoomTest")
+                            .Where(p => p.RoomTestID == oldspc && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                            && p.RoomTest.DoctorRoomTestMappings.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                            .Any(p3 => p3.DoctorId == doctorBO.user.ID)).ToList();
+                            // Deleting the Doctor Appointments
+                            foreach (var rooms in acc_)
+                            {
+                                DateTime currentDate = DateTime.Now.Date;
+                                var acc = _context.PatientVisits.Include("CalendarEvent").Where(p => p.DoctorId == doctorDB.Id && p.RoomId == rooms.id && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
+                                foreach (PatientVisit pv in acc)
+                                {
+                                    if (pv != null)
+                                    {
+                                        pv.CalendarEvent.IsDeleted = true;
+                                        pv.CalendarEvent.UpdateByUserID = 0;
+                                        pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                                    }
+
+                                    pv.IsDeleted = true;
+                                    pv.UpdateByUserID = 0;
+                                    pv.UpdateDate = DateTime.UtcNow;
+
+                                    _context.SaveChanges();
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (doctorBO.DoctorSpecialities.Count > 0)
                 {
                     var olddoctorspecialities = _context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID).ToList<DoctorSpeciality>();
@@ -1263,6 +1327,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
 
+            var EUO = _context.EOVisits.Include("CalendarEvent")                                         
+                                         .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .ToList();
+
+            if (EUO != null)
+            {
+                if (EUO.Count > 0)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future EUO visits already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+
             if (userCompany != null)
             {
                 #region Commented Code
@@ -1486,6 +1563,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             DateTime currentDate = DateTime.Now.Date;
             var acc = _context.PatientVisits.Include("CalendarEvent").Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
             foreach (PatientVisit pv in acc)
+            {
+                if (pv != null)
+                {
+                    pv.CalendarEvent.IsDeleted = true;
+                    pv.CalendarEvent.UpdateByUserID = 0;
+                    pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                }
+
+                pv.IsDeleted = true;
+                pv.UpdateByUserID = 0;
+                pv.UpdateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+            }
+
+            // Deleting the EUO Visit            
+            var EUOacc = _context.EOVisits.Include("CalendarEvent").Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<EOVisit>();
+            foreach (EOVisit pv in EUOacc)
             {
                 if (pv != null)
                 {
