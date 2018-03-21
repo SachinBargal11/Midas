@@ -186,5 +186,22 @@ export class VisitReferralService {
         });
         return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
+
+    getDoctorSignatureByDocotId(doctorId: Number): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getDoctorSignatureById/' + doctorId , {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
+                    resolve(visitReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
 }
 
