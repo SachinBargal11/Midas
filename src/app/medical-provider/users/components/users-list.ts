@@ -102,7 +102,7 @@ export class UsersListComponent implements OnInit {
                 //this.selectedUsers.forEach(currentUser => {
                     this.isDeleteProgress = true;
                     this._progressBarService.show();
-                    let result;
+                    let result;                    
                     if (currentUser.userRole != 'Doctor') {
                         if(currentUser.userRole.match("Doctor"))
                         {

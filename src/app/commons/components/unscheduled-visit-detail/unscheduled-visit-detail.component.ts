@@ -284,6 +284,7 @@ export class UnscheduledVisitDetailComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
+                this.selectedVisit.visitStatusId = updatedVisit.visitStatusId;
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Event updated successfully');
                 // this.uploadComplete.emit(documents);
