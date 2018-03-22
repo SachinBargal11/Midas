@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 export class CaseDocumentAdapter {
     static parseResponse(data: any): CaseDocument {
-
+        debugger;
         let caseDocument = null;
 
         caseDocument = new CaseDocument({

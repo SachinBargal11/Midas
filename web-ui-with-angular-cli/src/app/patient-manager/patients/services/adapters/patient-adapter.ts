@@ -57,6 +57,7 @@ export class PatientAdapter {
                 languagePreferenceOther: data.languagePreferenceOther
             });
         }
+        
         return patient;
     }
 }

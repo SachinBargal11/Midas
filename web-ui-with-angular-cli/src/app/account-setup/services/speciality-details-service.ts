@@ -40,6 +40,24 @@ export class SpecialityDetailsService {
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
+    getSpecialityDetailbyCompanySpecialtyId(specialtyId: Number): Observable<SpecialityDetail> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/getBySpecialtyAndCompanyId/' + specialtyId + '/'+ companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((specialityDetailData: any) => {
+                    let parsedData: SpecialityDetail = null;
+                    parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedData);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
+    }
+
     getSpecialityDetails(requestData): Observable<SpecialityDetail> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             return this._http.post(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/getall', requestData, {
