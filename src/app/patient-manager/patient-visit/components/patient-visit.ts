@@ -58,6 +58,9 @@ import { UserSetting } from '../../../commons/models/user-setting';
 import { ProcedureCodeMasterStore } from '../../../account-setup/stores/procedure-code-master-store';
 import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
+import { SpecialityDetailsStore } from '../../../account-setup/stores/speciality-details-store';
+import { SpecialityDetail } from '../../../account-setup/models/speciality-details';
+import { TestSpecialityDetail } from '../../../account-setup/models/test-speciality-details';
 
 @Component({
     selector: 'patient-visit',
@@ -141,6 +144,7 @@ export class PatientVisitComponent implements OnInit {
     isAddNewPatient: boolean = false;
     isGoingOutOffice: boolean = false;
     isProcedureCode: boolean = false;
+    ShowProcedureCode: boolean = false;
     ShowAllProcedureCode: boolean = false;
     ShowAllProcedureCodeTest: boolean = false;
     procedures: Procedure[];
@@ -251,8 +255,8 @@ export class PatientVisitComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _userSettingStore: UserSettingStore,
         private _procedureCodeMasterStore: ProcedureCodeMasterStore,
-        private _specialityStore: SpecialityStore
-
+        private _specialityStore: SpecialityStore,
+        private _specialityDetailStore: SpecialityDetailsStore        
     ) {
 
         // getUserSettingsForCompany() {
@@ -670,6 +674,52 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
+    checkMandatoryProcCodeforSpeciality(specialityId: number)
+    {        
+        this.ShowProcedureCode = false;
+        this._progressBarService.show();
+        let result = this._specialityDetailStore.fetchSpecialityDetailByCompanySpecialtyId(specialityId);
+        result.subscribe(
+            (speciality: SpecialityDetail) => {                
+                if (speciality.mandatoryProcCode == false) {
+                    this.ShowProcedureCode = false;
+                }
+                else
+                {
+                    this.ShowProcedureCode = true;
+                }
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    checkMandatoryProcCodeforTestSpeciality(RoomTestId: number)
+    {   
+        this.ShowProcedureCode = true;
+        this._progressBarService.show();
+        let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyIdNew(RoomTestId);
+        result.subscribe(
+            (speciality: TestSpecialityDetail) => {                
+                if (speciality.showProcCode == false) {
+                    this.ShowProcedureCode = false;
+                }
+                else
+                {
+                    this.ShowProcedureCode = true;
+                }
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
     fetchSelectedSpeciality(specialityId: number) {
         this._progressBarService.show();
         let result = this._specialityService.getSpeciality(specialityId);
@@ -884,16 +934,19 @@ export class PatientVisitComponent implements OnInit {
             this.loadLocationDoctorSpeciatityVisits();
             this.fetchDoctorSchedule();
             this.fetchSelectedSpeciality(this.selectedSpecialityId);
+            this.checkMandatoryProcCodeforSpeciality(this.selectedSpecialityId);
             this.loadProceduresForSpeciality(this.selectedSpecialityId);
             this.selectedTestId = 0;
             this.selectedProcedures = null;
             this.ShowAllProcedureCode = false;
+            this.isProcedureCode = true;
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedRoomId = parseInt(event.target.value);
             this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
             this.loadLocationRoomVisits();
             this.fetchRoomSchedule();
+            this.checkMandatoryProcCodeforTestSpeciality(this.selectedTestId);
             this.loadProceduresForRoomTest(this.selectedTestId);
             this.isProcedureCode = true;
             this.selectedSpeciality = null;
@@ -1767,9 +1820,12 @@ export class PatientVisitComponent implements OnInit {
                 {
                     if(patientVisitFormValues.readingDoctor == null || patientVisitFormValues.readingDoctor == 0)
                     {
-                        this._notificationsService.error('Unable to update!', 'Please select reading doctor');
-                        this._progressBarService.hide();
-                        return;
+                        if(!this.sessionStore.isOnlyDoctorRole())
+                        {
+                            this._notificationsService.error('Unable to update!', 'Please select reading doctor');
+                            this._progressBarService.hide();
+                            return;
+                        }
                     }
                 }
             }

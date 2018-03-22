@@ -68,6 +68,18 @@ export class SpecialityDetailsStore {
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
+    fetchSpecialityDetailByCompanySpecialtyId(specialtyId: Number): Observable<SpecialityDetail> {
+        let promise = new Promise((resolve, reject) => {            
+                this._specialityDetailsService.getSpecialityDetailbyCompanySpecialtyId(specialtyId)
+                    .subscribe((speciality: SpecialityDetail) => {
+                        resolve(speciality);
+                    }, error => {
+                        reject(error);
+                    });            
+        });
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
+    }
+
     addSpecialityDetail(specialityDetail: SpecialityDetail): Observable<SpecialityDetail> {
         let promise = new Promise((resolve, reject) => {
             this._specialityDetailsService.addSpecialityDetail(specialityDetail).subscribe((specialityDetail: SpecialityDetail) => {
