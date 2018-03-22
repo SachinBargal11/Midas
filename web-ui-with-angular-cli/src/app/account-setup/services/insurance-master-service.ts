@@ -59,10 +59,11 @@ export class InsuranceMasterService {
 
     addInsuranceMaster(insuranceMaster: InsuranceMaster): Observable<InsuranceMaster> {
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
+            debugger;
             let requestData: any = insuranceMaster.toJS();
             requestData.contactInfo = requestData.Contact;
-            requestData.addressInfo = requestData.Address;
-            requestData = _.omit(requestData, 'Contact', 'Address');
+            requestData.insuranceAddressInfo = requestData.InsuranceAddress;
+            requestData = _.omit(requestData, 'Contact', 'InsuranceAddress');
             return this._http.post(environment.SERVICE_BASE_URL + '/InsuranceMaster/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -82,8 +83,8 @@ export class InsuranceMasterService {
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
             let requestData: any = insuranceMaster.toJS();
             requestData.contactInfo = requestData.Contact;
-            requestData.addressInfo = requestData.Address;
-            requestData = _.omit(requestData, 'Contact', 'Address');
+            requestData.insuranceAddressInfo = requestData.InsuranceAddress;
+            requestData = _.omit(requestData, 'Contact', 'InsuranceAddress');
             return this._http.post(environment.SERVICE_BASE_URL + '/InsuranceMaster/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })

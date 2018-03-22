@@ -11,7 +11,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                     <div class="form-group" [class.error]="addInsuranceMasterFormControls.companyCode.touched && !addInsuranceMasterFormControls.companyCode.valid">
-                        <input formControlName="companyCode" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterFormControls.companyCode.valid">
+                        <input formControlName="companyCode" maxlength="10" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterFormControls.companyCode.valid">
                         <div class='error-list' *ngIf="addInsuranceMasterFormControls.companyCode.touched && !addInsuranceMasterFormControls.companyCode.valid">
                             <ul>
                                 <li *ngIf="addInsuranceMasterFormControls.companyCode.hasError('required')">Company Code is required.</li>
@@ -298,9 +298,40 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div>
+             <button  type="button" class="btn btn-success sign-up" (click)="AddNewAddressToList()">Add address to list</button>
+             <!--<button  type="button" class="pull-right btn btn-danger sign-up" *ngIf="insuranceAddressnewList.length > 0" (click)="DeleteAddress()">Delete Address</button>-->
+            </div>
+        <br>
+        <br>
+        <div *ngIf="insuranceAddressnewList.length > 0">
+        <p-dataTable [value]="insuranceAddressnewList" [(selection)]="insuranceAddressDeleteList" [rows]="5" [paginator]="true"  [responsive]="true" #dt2>
+                <header>Insurance Address</header>
+                <!-- <p-column selectionMode="multiple"></p-column>-->
+                <p-column field="address1" header="Address1" ></p-column>
+                <p-column field="address2" header="Address2"></p-column>
+                <p-column field="state" header="State" ></p-column>
+                <p-column field="city" header="City"></p-column>
+                <p-column field="zipCode" header="ZipCode"></p-column>
+                <p-column field="country" header="Country"></p-column>
+                <p-column field="isDefault" header="Default">
+                 <ng-template let-col let-addr="rowData" pTemplate="body">
+                 <button type="button" *ngIf="addr.isDefault == false" class="ui-button-danger" pButton (click)="updateDefault(addr,'add')"  icon="fa-star-o"></button>
+                 <button type="button" *ngIf="addr.isDefault == true" class="ui-button-success" pButton (click)="updateDefault(addr,'rem')"  icon="fa-star-o"></button>
+                </ng-template>
+                </p-column>
+                <p-column styleClass="actions-cell" header="Actions">
+                <ng-template let-addrs="rowData" pTemplate="body">
+                <button type="button"  pButton (click)="DeleteAddressindividual(addrs)"  icon="fa-trash-o"></button>
+                </ng-template>
+                </p-column>
+       </p-dataTable>
+       </div>
+    </div>
+    <br>
+    
     </section>
-    <button [disabled]="!addInsuranceMasterForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
+    <button [disabled]="isAddressAdd  || !addInsuranceMasterForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
         <loader [visible]="isSaveProgress"></loader>
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
