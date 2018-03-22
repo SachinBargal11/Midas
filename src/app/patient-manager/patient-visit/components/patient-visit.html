@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
+                    <select [(ngModel)]="selectedLocationIdFilter" class="select2-arrow form-control" (change)="selectLocationforFilter()">
             <option value="0"> -- Select Location -- </option>
             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
@@ -13,31 +13,30 @@
             <div *ngIf="sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <select [(ngModel)]="selectedModeFilter" class="select2-arrow form-control" (change)="selectOptionForFilter($event)">
                             <!-- <option value="0"> -- Select specialty -- </option>
                             <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>                                        -->
                             <option value="0"> -- Select specialty -- </option>
                             <optgroup label="Select Doctor">
-                                <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>
+                                <option data-type="1" [attr.data-specialityIdFilter]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>
                             </optgroup>                            
                             <optgroup label="Select Room">
-                                <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
+                                <option data-type="2" [attr.data-testIdFilter]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
                             </optgroup>
                         </select>
                     </div>
-                </div>
-                
+                </div>                
             </div>
             <div *ngIf="!sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <select [(ngModel)]="selectedModeFilter" class="select2-arrow form-control" (change)="selectOptionForFilter($event)">
                             <option value="0"> -- Select specialty -- </option>
                     <optgroup label="Select Doctor">
-                     <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
+                     <option data-type="1" [attr.data-specialityIdFilter]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
                      </optgroup>
                     <optgroup label="Select Room">
-                     <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
+                     <option data-type="2" [attr.data-testIdFilter]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
                     </optgroup>
                         </select>
                     </div>
@@ -98,7 +97,7 @@
             <div class="col-md-2"><label class="form-label">Location<span class="color-red">*</span></label></div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
+                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation(2)">
             <option value="0"> -- Select Location -- </option>
             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
@@ -108,7 +107,7 @@
             <div *ngIf="sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event,2)">
                             <option value="0"> -- Select specialty -- </option>
                             <optgroup label="Select Doctor">
                                 <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>
@@ -124,7 +123,7 @@
                 <div class="col-md-2"><label class="form-label">Specialty<span class="color-red">*</span></label></div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event,2)">
                         <option value="0"></option>
                         <optgroup label="Select Doctor">
                         <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id" [selected]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id === selectedDoctorId ? true : null">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
@@ -349,13 +348,13 @@
                 </div>
                 <div class="row">
                     <div *ngIf="selectedOption == 1 &&  !isGoingOutOffice && selectedSpeciality && ShowProcedureCode" class="col-md-6">
-                        <p-checkbox  formControlName="isProcedureCode" [(ngModel)]="isProcedureCode"
-                            binary="true" label="Show Preffered Procedure Codes"></p-checkbox>                                                    
+                        <!--<p-checkbox formControlName="isProcedureCode" (onChange)="loadAllProceduresForRoomTest(selectedTestId)" [(ngModel)]="isProcedureCode"
+                            binary="true" label="Show Preffered Procedure Codes"></p-checkbox>-->                                                    
                         <p-checkbox  (onChange)="loadAllProceduresForSpeciality(selectedSpecialityId)" formControlName="ShowAllProcedureCode" [(ngModel)]="ShowAllProcedureCode"
                             binary="true" label="Show All Procedure Codes"></p-checkbox>
                     </div>                    
                     <div *ngIf="selectedOption == 2 && !isGoingOutOffice && ShowProcedureCode" class="col-md-6">
-                        <p-checkbox formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Show Preffered Procedure Codes"></p-checkbox>
+                        <!--<p-checkbox formControlName="isProcedureCode"(onChange)="loadAllProceduresForRoomTest(selectedTestId)" [(ngModel)]="isProcedureCode" binary="true" label="Show Preffered Procedure Codes"></p-checkbox>-->
                         <p-checkbox (onChange)="loadAllProceduresForRoomTest(selectedTestId)" formControlName="ShowAllProcedureCodeTest" [(ngModel)]="ShowAllProcedureCodeTest"
                         binary="true" label="Show All Procedure Codes"></p-checkbox>                        
                     </div>
@@ -366,6 +365,12 @@
                         <div class="col-lg-4 input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+                        </div>
+                        
+                    </div>
+                    <div class=" ui-widget-header row">
+                    <div class="col-lg-12">
+                            <div class="pull-right">{{procedurecodeheading}}</div>
                         </div>
                     </div>
                     <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">

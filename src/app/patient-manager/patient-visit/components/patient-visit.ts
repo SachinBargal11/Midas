@@ -94,12 +94,19 @@ export class PatientVisitComponent implements OnInit {
     selectedEoVisit: EoVisit;
     selectedCalEvent: ScheduledEventInstance;
     selectedLocationId: number = 0;
+    selectedLocationIdFilter: number = 0;    
     selectedDoctorId: number = 0;
+    selectedDoctorIdFilter: number = 0;
     selectedRoomId: number = 0;
+    selectedRoomIdFilter: number = 0;
     selectedOption: number = 0;
+    selectedOptionFilter: number = 0;
     selectedTestId: number = 0;
+    selectedTestIdFilter: number = 0;
     selectedMode: number = 0;
+    selectedModeFilter: number = 0;
     selectedSpecialityId: number = 0;
+    selectedSpecialityIdFilter: number = 0;
     showAllProcedureCodes: boolean = false;
     outOfOfficeVisits: any;
     setpreffredMsg :string;
@@ -182,6 +189,7 @@ export class PatientVisitComponent implements OnInit {
     unscheduledDialogVisible = false;
     id:number=0;
     patientId: number;
+    procedurecodeheading: string = "Displaying preferred procedure codes"
 
     unscheduledEditVisitDialogVisible = false;
     unscheduledVisitDialogVisible = false;
@@ -547,6 +555,7 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.show();        
         if(this.ShowAllProcedureCode == true)
         {
+            this.procedurecodeheading = "Displaying all procedure codes"
             let result = this._procedureStore.getAllProceduresBySpecialityIdForVisit(specialityId);
             result.subscribe(
                 (procedures: Procedure[]) => {
@@ -576,8 +585,10 @@ export class PatientVisitComponent implements OnInit {
         } 
         else
         {
+            this.isProcedureCode = true;
             this._progressBarService.hide();
             this.loadProceduresForSpeciality(specialityId);
+            this.procedurecodeheading = "Displaying preferred procedure codes"
         }               
     }
 
@@ -617,6 +628,7 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.show();
         if(this.ShowAllProcedureCodeTest == true)
         {        
+            this.procedurecodeheading = "Displaying all the procedure codes"
         let result = this._procedureStore.getAllProceduresByRoomTestIdForVisit(roomTestId);
         result.subscribe(
             (procedures: Procedure[]) => {
@@ -646,6 +658,7 @@ export class PatientVisitComponent implements OnInit {
              } 
         else
         {
+            this.procedurecodeheading = "Displaying preferred procedure codes"
             this._progressBarService.hide();
             this.loadProceduresForRoomTest(roomTestId);
         }       
@@ -755,8 +768,8 @@ export class PatientVisitComponent implements OnInit {
             this.events = [];
             this.loadAllVisits();
         } else {
-            this.events = [];
-            this.loadLocationVisits();
+            // this.events = [];
+            // this.loadLocationVisits(this.selectedLocationId);
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
                     let mappedDoctorLocationSchedules: {
@@ -798,6 +811,61 @@ export class PatientVisitComponent implements OnInit {
             }
         }
 
+
+        selectLocationforFilter() {
+            if (this.selectedLocationIdFilter == 0) {
+                this.selectedModeFilter = 0;
+                this.selectedOptionFilter = 0;
+                this.selectedDoctorIdFilter = 0;
+                this.selectedRoomIdFilter = 0;
+                this.selectedSpecialityIdFilter = 0;
+                this.selectedTestIdFilter = 0;
+                this.events = [];
+                this.loadAllVisits();
+            } else {
+                this.events = [];
+                this.loadLocationVisits(this.selectedLocationIdFilter);
+                this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationIdFilter)
+                    .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
+                        let mappedDoctorLocationSchedules: {
+                            doctorLocationSchedule: DoctorLocationSchedule,
+                            speciality: DoctorSpeciality
+                        }[] = [];
+                        _.forEach(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
+                            _.forEach(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
+                                mappedDoctorLocationSchedules.push({
+                                    doctorLocationSchedule: currentDoctorLocationSchedule,
+                                    speciality: currentSpeciality
+                                });
+                            });
+                        });
+                        this.doctorLocationSchedules = mappedDoctorLocationSchedules;
+                    }, error => {
+                        this.doctorLocationSchedules = [];
+                    });
+                    
+                    if(!this.sessionStore.isOnlyDoctorRole())
+                    {
+                        this._roomsStore.getRooms(this.selectedLocationIdFilter)
+                        .subscribe((rooms: Room[]) => {
+                            this.rooms = rooms;
+                        }, error => {
+                            this.rooms = [];
+                        });
+                    }
+                    else
+                    {
+                        let patientVisitFormValues = this.patientVisitForm.value;                       
+                        this._roomsStore.getRoomsByLocationDoctorId(this.selectedLocationIdFilter, this.doctorId)
+                        .subscribe((rooms: Room[]) => {
+                            this.rooms = rooms;
+                        }, error => {
+                            this.rooms = [];
+                        });
+                    }            
+                }
+            }
+    
     fetchRoomSchedule() {
         let fetchRoom = this._roomsStore.getRoomById(this.selectedRoomId);
         fetchRoom.subscribe((results) => {
@@ -922,16 +990,37 @@ export class PatientVisitComponent implements OnInit {
         }             
     }
 
+    selectOptionForFilter(event) {
+        this.selectedDoctorIdFilter = 0;
+        this.selectedRoomIdFilter = 0;
+        this.selectedOptionFilter = 0;        
+        this.events = [];
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedOptionFilter = 1;
+            this.selectedDoctorIdFilter = parseInt(event.target.value);
+            this.selectedSpecialityIdFilter = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityIdFilter'));
+            this.loadLocationDoctorSpeciatityVisits(this.selectedLocationIdFilter, this.selectedDoctorIdFilter, this.selectedSpecialityIdFilter);                                                               
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedOptionFilter = 2;
+            this.selectedRoomIdFilter = parseInt(event.target.value);
+            this.selectedTestIdFilter = parseInt(event.target.selectedOptions[0].getAttribute('data-testIdFilter'));
+            this.loadLocationRoomVisits(this.selectedLocationIdFilter, this.selectedRoomIdFilter);                            
+        } else {
+            this.selectedMode = 0;
+            this.selectLocationforFilter();            
+        }
+    }
+
     selectOption(event) {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
-        this.selectedOption = 0;
-        this.events = [];
+        this.selectedOption = 0;        
+        //this.events = [];
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedDoctorId = parseInt(event.target.value);
             this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
-            this.loadLocationDoctorSpeciatityVisits();
+          //  this.loadLocationDoctorSpeciatityVisits(this.selectedLocationId, this.selectedDoctorId, this.selectedSpecialityId);                                       
             this.fetchDoctorSchedule();
             this.fetchSelectedSpeciality(this.selectedSpecialityId);
             this.checkMandatoryProcCodeforSpeciality(this.selectedSpecialityId);
@@ -940,11 +1029,12 @@ export class PatientVisitComponent implements OnInit {
             this.selectedProcedures = null;
             this.ShowAllProcedureCode = false;
             this.isProcedureCode = true;
+            this.procedurecodeheading = "Displaying preferred procedure codes";
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedRoomId = parseInt(event.target.value);
             this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
-            this.loadLocationRoomVisits();
+            //this.loadLocationRoomVisits(this.selectedLocationId, this.selectedRoomId);
             this.fetchRoomSchedule();
             this.checkMandatoryProcCodeforTestSpeciality(this.selectedTestId);
             this.loadProceduresForRoomTest(this.selectedTestId);
@@ -952,6 +1042,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpeciality = null;
             this.selectedProcedures = null;
             this.ShowAllProcedureCodeTest = false;
+            this.procedurecodeheading = "Displaying preferred procedure codes";
         } else {
             this.selectedMode = 0;
             this.selectLocation();            
@@ -961,20 +1052,28 @@ export class PatientVisitComponent implements OnInit {
     clearselection()
     {
         this.selectedLocationId = 0;
+        this.selectedLocationIdFilter = 0;
         this.idPatient = 0;
         this.selectedMode = 0;
+        this.selectedModeFilter = 0;
         this.selectedOption = 0;
+        this.selectedOptionFilter = 0;
         this.selectedDoctorId = 0;
+        this.selectedDoctorIdFilter = 0;
         this.selectedRoomId = 0;
+        this.selectedRoomIdFilter = 0;
         this.selectedSpecialityId = 0;
+        this.selectedSpecialityIdFilter = 0;
         this.selectedTestId = 0;
+        this.selectedTestIdFilter = 0;
+        this.ShowProcedureCode = false;        
     }
 
     loadVisits() {                
         if (this.selectedOption == 1) {
-            this.loadLocationDoctorSpeciatityVisits();
+            this.loadLocationDoctorSpeciatityVisits(this.selectedLocationId, this.selectedDoctorId, this.selectedSpecialityId);                                       
         } else if (this.selectedOption == 2) {
-            this.loadLocationRoomVisits();
+            this.loadLocationRoomVisits(this.selectedLocationId, this.selectedRoomId);
         } else {
             this.loadAllVisitsByCompanyId();
             this.loadAllUnScheduledVisitByCompanyId();
@@ -1156,9 +1255,9 @@ export class PatientVisitComponent implements OnInit {
         return occurrences;
     }    
 
-    loadLocationDoctorSpeciatityVisits() {
+    loadLocationDoctorSpeciatityVisits(locationid, doctorid, specialtyid ) {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationDoctorAndSpecialityId(this.selectedLocationId, this.selectedDoctorId, this.selectedSpecialityId)
+        this._patientVisitsStore.getPatientVisitsByLocationDoctorAndSpecialityId(locationid, doctorid, specialtyid)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -1178,11 +1277,11 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
-    loadLocationRoomVisits() {
+    loadLocationRoomVisits(locationid, roomid) {
         this._progressBarService.show();
         if(this.sessionStore.isOnlyDoctorRole())
         {
-            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndRoomId(this.selectedLocationId, this.sessionStore.session.user.id, this.selectedRoomId)
+            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndRoomId(locationid, this.sessionStore.session.user.id, roomid)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -1203,7 +1302,7 @@ export class PatientVisitComponent implements OnInit {
         }
         else
         {
-        this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId)
+        this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(locationid, roomid)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -1222,13 +1321,13 @@ export class PatientVisitComponent implements OnInit {
                 this._progressBarService.hide();
             });
         }
-    }
+    }   
 
-    loadLocationVisits() {
+    loadLocationVisits(locationid) {
         this._progressBarService.show();
         if(this.sessionStore.isOnlyDoctorRole())
         {
-            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndCompanyId(this.selectedLocationId, this.sessionStore.session.user.id)
+            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndCompanyId(locationid, this.sessionStore.session.user.id)
             .subscribe(
             (visits: PatientVisit[]) => {
                 let events = this.getVisitOccurrences(visits);
@@ -1250,7 +1349,7 @@ export class PatientVisitComponent implements OnInit {
         }
         else
         {
-            this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
+            this._patientVisitsStore.getPatientVisitsByLocationId(locationid)
             .subscribe(
             (visits: PatientVisit[]) => {
                 let events = this.getVisitOccurrences(visits);
@@ -1369,10 +1468,11 @@ export class PatientVisitComponent implements OnInit {
             canScheduleAppointement = true;
             // this._notificationsService.alert('Oh No!', 'Please select location!');
         } else {
-            if (!this.selectedOption) {
-                canScheduleAppointement = false;
-                this._notificationsService.alert('Oh No!', 'Please select specialty Or Medical Test!');
-            } else if (this.selectedOption == 1) {
+            // if (!this.selectedOption) {
+            //     canScheduleAppointement = false;
+            //     this._notificationsService.alert('Oh No!', 'Please select specialty Or Medical Test!');
+            // }
+            if (this.selectedOption == 1) {
                 if (!this.selectedDoctorId) {
                     canScheduleAppointement = false;
                     this._notificationsService.alert('Oh No!', 'Please select doctor!');
@@ -1411,6 +1511,7 @@ export class PatientVisitComponent implements OnInit {
 
     handleDayClick(event) {
         this.procedures = [];
+        this.clearselection();
         this.selectedVisitType = '1';
         this.selectedEventDate = event.date.clone().local();
         this.selectedProcedures = null;
@@ -1418,20 +1519,20 @@ export class PatientVisitComponent implements OnInit {
         this.eventDialogUnscheduleVisible = false;
         this.addNewPatientForm.reset();
         this.patientScheduleForm.reset();
-        this.selectedVisit = null;
-        if (this.selectedOption == 1) {
-            if(this.selectedSpeciality != null)
-            {
-                if (this.selectedSpeciality.mandatoryProcCode) {
-                    this.isProcedureCode = true;
-                } else {
-                    this.isProcedureCode = false;
-                }
-            }
-        } else if (this.selectedOption == 2) {
-            this.isProcedureCode = true;
-        }
-        this.procedures = this.procedures;
+        this.selectedVisit = null;        
+        // if (this.selectedOption == 1) {
+        //     if(this.selectedSpeciality != null)
+        //     {
+        //         if (this.selectedSpeciality.mandatoryProcCode) {
+        //             this.isProcedureCode = true;
+        //         } else {
+        //             this.isProcedureCode = false;
+        //         }
+        //     }
+        // } else if (this.selectedOption == 2) {
+        //     this.isProcedureCode = true;
+        // }
+        // this.procedures = this.procedures;
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
