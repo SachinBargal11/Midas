@@ -8,6 +8,7 @@ import * as _ from 'underscore';
 import { Procedure } from '../../commons/models/procedure';
 import { ProcedureCodeMasterService } from '../services/procedure-code-master-service';
 import { SessionStore } from '../../commons/stores/session-store';
+import { TestSpecialityDetail } from '../models/test-speciality-details';
 
 
 @Injectable()
@@ -51,6 +52,18 @@ export class ProcedureCodeMasterStore {
             });
         });
         return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    getByRoomTestAndCompanyIdNew(roomTestId: number): Observable<TestSpecialityDetail> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.getRoomTestbyCompanyandRoomTestId(roomTestId).subscribe((procedures: TestSpecialityDetail) => {
+                this._procedure.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<TestSpecialityDetail>>Observable.fromPromise(promise);
     }
 
     updateProcedureAmount(selProcedure: Procedure[]): Observable<Procedure[]> {

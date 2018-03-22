@@ -196,8 +196,7 @@
         <p-column field="document.createdUserName" header="Created User" [sortable]="true" [filter]="true"></p-column>
           <!--<ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}
-          </ng-template>-->
-        </p-column>
+          </ng-template>-->        
         <p-column styleClass="actions-cell" header="Actions">
             <ng-template let-document="rowData" pTemplate="body">            
                 <button type="button" *ngIf="document.document.originalResponse.createByUserID == sessionStore.session.user.id"  pButton (click)="deleteDocument(document.document.originalResponse)"  icon="fa-trash-o"></button>

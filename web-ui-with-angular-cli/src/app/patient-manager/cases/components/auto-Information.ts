@@ -66,7 +66,7 @@ export class AutoInformationInfoComponent implements OnInit {
         private _autoInformationStore: AutoInformationStore,
         private _patientStore: PatientsStore,
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {            
             this.patientId = parseInt(routeParams.patientId, 10);
             this.MatchReferal();
         });
