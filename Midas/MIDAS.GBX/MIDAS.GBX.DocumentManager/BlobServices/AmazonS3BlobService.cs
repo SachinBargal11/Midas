@@ -232,7 +232,8 @@ namespace MIDAS.GBX.DocumentManager
                                 using (var ms = new MemoryStream())
                                 {
                                     responseStream.CopyTo(ms);
-                                    reader = new PdfReader(ms.ToArray());
+                                    writer = PdfWriter.GetInstance(sourceDocument, ms);
+                                    //reader = new PdfReader(ms.ToArray());
                                     copy.AddDocument(reader);
                                     reader.Close();
                                 }
@@ -270,7 +271,7 @@ namespace MIDAS.GBX.DocumentManager
             List<string> lstfiles = pdfFiles as List<string>;
             if (lstfiles == null || lstfiles.Count == 0)
             {
-                return "Please select only PDF files to packet";
+                return "Please select files to packet";
             }
             using (s3Client = new AmazonS3Client(_awsAccessKey, _awsSecretKey, s3Config))
             {

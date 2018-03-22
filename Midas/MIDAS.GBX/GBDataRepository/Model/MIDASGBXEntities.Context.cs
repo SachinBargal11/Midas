@@ -71,6 +71,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
         public virtual DbSet<ICDTypeCode> ICDTypeCodes { get; set; }
         public virtual DbSet<IMEVisit> IMEVisits { get; set; }
+        public virtual DbSet<InsuranceAddressInfo> InsuranceAddressInfoes { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceMasterType> InsuranceMasterTypes { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }

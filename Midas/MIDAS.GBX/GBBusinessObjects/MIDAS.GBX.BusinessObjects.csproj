@@ -119,6 +119,7 @@
     <Compile Include="Doctor\DoctorRoomTestMapping.cs" />
     <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
     <Compile Include="IMEVisit\IMEVisit.cs" />
+    <Compile Include="InsuranceAddress\InsuranceAddressInfo.cs" />
     <Compile Include="InsuranceMaster\InsuranceMasterType.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />
     <Compile Include="MesssagingService\Subscription.cs" />

@@ -1184,6 +1184,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual T ConvertInsuranceAddress<T, U>(U entity)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -15,17 +15,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyName")]
         public string CompanyName { get; set; }
 
-        [JsonProperty("addressInfoId")]
-        public int? AddressInfoId { get; set; }
-
         [JsonProperty("contactInfoId")]
         public int? ContactInfoId { get; set; }
 
         [JsonProperty("insuranceMasterTypeId")]
         public int? InsuranceMasterTypeId { get; set; }
 
-        [JsonProperty("addressInfo")]
-        public AddressInfo AddressInfo { get; set; }
+        [JsonProperty("insuranceAddressInfo")]
+        public List<InsuranceAddressInfo> InsuranceAddressInfo { get; set; }
 
         [JsonProperty("contactInfo")]
         public ContactInfo ContactInfo { get; set; }
@@ -58,17 +55,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyName")]
         public string CompanyName { get; set; }
 
-        [JsonProperty("addressInfoId")]
-        public int? AddressInfoId { get; set; }
-
         [JsonProperty("contactInfoId")]
         public int? ContactInfoId { get; set; }
 
         [JsonProperty("insuranceMasterTypeId")]
         public int? InsuranceMasterTypeId { get; set; }
 
-        [JsonProperty("mAddressInfo")]
-        public mAddressInfo mAddressInfo { get; set; }
+        [JsonProperty("mInsuranceAddressInfo")]
+        public List<InsuranceAddressInfo> mInsuranceAddressInfo { get; set; }
 
         [JsonProperty("mContactInfo")]
         public mContactInfo mContactInfo { get; set; }

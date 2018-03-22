@@ -655,6 +655,27 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="DoctorName" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VisitCreatedByCompanyId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="InsuranceAddressInfo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="InsuranceMasterId" Type="int" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address1" Type="nvarchar" MaxLength="200" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="200" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="ZipCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDefault" Type="bit" />
+    <Property Name="IsDeleted" Type="bit" />
+    <Property Name="CreateByUserID" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="UpdateByUserID" Type="int" />
+    <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+    <Property Name="StateCode" Type="nvarchar" MaxLength="2" />
+  </EntityType>
   <EntityType Name="InsuranceMaster">
     <Key>
       <PropertyRef Name="Id" />
@@ -662,7 +683,6 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CompanyCode" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="CompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="AddressInfoId" Type="int" />
     <Property Name="ContactInfoId" Type="int" />
     <Property Name="InsuranceMasterTypeId" Type="int" />
     <Property Name="IsDeleted" Type="bit" />
@@ -807,6 +827,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="UpdateUserId" Type="int" />
     <Property Name="IsDeleted" Type="bit" />
     <Property Name="DocumentType" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedCompanyId" Type="int" />
   </EntityType>
   <EntityType Name="Notification">
     <Key>
@@ -2648,18 +2669,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_InsuranceMaster_AddressInfo_AddressInfoId">
-    <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
-    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
+  <Association Name="FK_InsuranceAddressInfo_InsuranceMaster_Id">
+    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+    <End Role="InsuranceAddressInfo" Type="Self.InsuranceAddressInfo" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="AddressInfo">
-        <PropertyRef Name="id" />
+      <Principal Role="InsuranceMaster">
+        <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="InsuranceMaster">
-        <PropertyRef Name="AddressInfoId" />
+      <Dependent Role="InsuranceAddressInfo">
+        <PropertyRef Name="InsuranceMasterId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_InsuranceAddressInfo_State_StateCode" />-->
   <Association Name="FK_InsuranceMaster_AddressInfo_ContactInfoId">
     <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
     <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
@@ -4253,6 +4277,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <EntitySet Name="GeneralSettings" EntityType="Self.GeneralSettings" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICDTypeCode" EntityType="Self.ICDTypeCode" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IMEVisit" EntityType="Self.IMEVisit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InsuranceAddressInfo" EntityType="Self.InsuranceAddressInfo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InsuranceMaster" EntityType="Self.InsuranceMaster" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InsuranceMasterType" EntityType="Self.InsuranceMasterType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InsuranceType" EntityType="Self.InsuranceType" Schema="dbo" store:Type="Tables" />
@@ -4625,9 +4650,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
       <End Role="VisitStatus" EntitySet="VisitStatus" />
       <End Role="IMEVisit" EntitySet="IMEVisit" />
     </AssociationSet>
-    <AssociationSet Name="FK_InsuranceMaster_AddressInfo_AddressInfoId" Association="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId">
-      <End Role="AddressInfo" EntitySet="AddressInfo" />
+    <AssociationSet Name="FK_InsuranceAddressInfo_InsuranceMaster_Id" Association="Self.FK_InsuranceAddressInfo_InsuranceMaster_Id">
       <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+      <End Role="InsuranceAddressInfo" EntitySet="InsuranceAddressInfo" />
     </AssociationSet>
     <AssociationSet Name="FK_InsuranceMaster_AddressInfo_ContactInfoId" Association="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId">
       <End Role="ContactInfo" EntitySet="ContactInfo" />

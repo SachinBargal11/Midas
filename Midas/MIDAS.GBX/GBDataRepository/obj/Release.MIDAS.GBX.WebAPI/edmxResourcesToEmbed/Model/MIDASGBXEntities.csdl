@@ -52,7 +52,6 @@
     <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId" FromRole="AddressInfo" ToRole="AdjusterMaster" />
     <NavigationProperty Name="Companies" Relationship="Self.FK_Company_AddressInfo" FromRole="AddressInfo" ToRole="Company" />
-    <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId" FromRole="AddressInfo" ToRole="InsuranceMaster" />
     <NavigationProperty Name="Locations" Relationship="Self.FK_Location_AddressInfo" FromRole="AddressInfo" ToRole="Location" />
     <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
     <NavigationProperty Name="PatientAccidentInfoes1" Relationship="Self.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
@@ -826,6 +825,28 @@
     <NavigationProperty Name="Patient" Relationship="Self.FK_IMEVisit_Patient_PatientId" FromRole="IMEVisit" ToRole="Patient" />
     <NavigationProperty Name="VisitStatu" Relationship="Self.FK_IMEVisit_VisitStatus_VisitStatusId" FromRole="IMEVisit" ToRole="VisitStatus" />
   </EntityType>
+  <EntityType Name="InsuranceAddressInfo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="InsuranceMasterId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDefault" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="UpdateByUserID" Type="Int32" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+    <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_InsuranceAddressInfo_InsuranceMaster_Id" FromRole="InsuranceAddressInfo" ToRole="InsuranceMaster" />
+  </EntityType>
   <EntityType Name="InsuranceMaster">
     <Key>
       <PropertyRef Name="Id" />
@@ -833,7 +854,6 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CompanyCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="AddressInfoId" Type="Int32" />
     <Property Name="ContactInfoId" Type="Int32" />
     <Property Name="InsuranceMasterTypeId" Type="Int32" />
     <Property Name="IsDeleted" Type="Boolean" />
@@ -846,11 +866,11 @@
     <Property Name="PriorityBilling" Type="Int32" />
     <Property Name="Only1500Form" Type="Int32" />
     <Property Name="PaperAuthorization" Type="Int32" />
-    <NavigationProperty Name="AddressInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId" FromRole="InsuranceMaster" ToRole="AddressInfo" />
     <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
     <NavigationProperty Name="Company" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="InsuranceMaster" ToRole="Company" />
     <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
     <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
+    <NavigationProperty Name="InsuranceAddressInfoes" Relationship="Self.FK_InsuranceAddressInfo_InsuranceMaster_Id" FromRole="InsuranceMaster" ToRole="InsuranceAddressInfo" />
     <NavigationProperty Name="InsuranceMasterType" Relationship="Self.FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId" FromRole="InsuranceMaster" ToRole="InsuranceMasterType" />
     <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
   </EntityType>
@@ -1002,6 +1022,7 @@
     <Property Name="UpdateUserId" Type="Int32" />
     <Property Name="IsDeleted" Type="Boolean" />
     <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedCompanyId" Type="Int32" />
     <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
     <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
     <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="PatientDocuments" />
@@ -1456,7 +1477,10 @@
     <Property Name="ForSpecialtyId" Type="Int32" />
     <Property Name="ForRoomId" Type="Int32" />
     <Property Name="ForRoomTestId" Type="Int32" />
+    <Property Name="DoctorSignatureType" Type="Int32" />
     <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DoctorSignatureText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DoctorSignatureFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="IsReferralCreated" Type="Boolean" />
     <Property Name="IsDeleted" Type="Boolean" />
     <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
@@ -1474,9 +1498,6 @@
     <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
     <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
     <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
-    <Property Name="DoctorSignatureType" Type="Int32" />
-    <Property Name="DoctorSignatureText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="DoctorSignatureFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="PendingReferralProcedureCode">
     <Key>
@@ -2201,18 +2222,6 @@
       </Principal>
       <Dependent Role="Company">
         <PropertyRef Name="AddressId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_InsuranceMaster_AddressInfo_AddressInfoId">
-    <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
-    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AddressInfo">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="InsuranceMaster">
-        <PropertyRef Name="AddressInfoId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3740,6 +3749,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_InsuranceAddressInfo_InsuranceMaster_Id">
+    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+    <End Role="InsuranceAddressInfo" Type="Self.InsuranceAddressInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceMaster">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="InsuranceAddressInfo">
+        <PropertyRef Name="InsuranceMasterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId">
     <End Role="InsuranceMasterType" Type="Self.InsuranceMasterType" Multiplicity="0..1" />
     <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
@@ -4625,6 +4646,7 @@
     <EntitySet Name="GeneralSettings" EntityType="Self.GeneralSetting" />
     <EntitySet Name="ICDTypeCodes" EntityType="Self.ICDTypeCode" />
     <EntitySet Name="IMEVisits" EntityType="Self.IMEVisit" />
+    <EntitySet Name="InsuranceAddressInfoes" EntityType="Self.InsuranceAddressInfo" />
     <EntitySet Name="InsuranceMasters" EntityType="Self.InsuranceMaster" />
     <EntitySet Name="InsuranceMasterTypes" EntityType="Self.InsuranceMasterType" />
     <EntitySet Name="InsuranceTypes" EntityType="Self.InsuranceType" />
@@ -4709,10 +4731,6 @@
     <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
       <End Role="AddressInfo" EntitySet="AddressInfoes" />
       <End Role="Company" EntitySet="Companies" />
-    </AssociationSet>
-    <AssociationSet Name="FK_InsuranceMaster_AddressInfo_AddressInfoId" Association="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId">
-      <End Role="AddressInfo" EntitySet="AddressInfoes" />
-      <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
     </AssociationSet>
     <AssociationSet Name="FK_Location_AddressInfo" Association="Self.FK_Location_AddressInfo">
       <End Role="AddressInfo" EntitySet="AddressInfoes" />
@@ -5221,6 +5239,10 @@
     <AssociationSet Name="FK_IMEVisit_VisitStatus_VisitStatusId" Association="Self.FK_IMEVisit_VisitStatus_VisitStatusId">
       <End Role="VisitStatus" EntitySet="VisitStatus" />
       <End Role="IMEVisit" EntitySet="IMEVisits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InsuranceAddressInfo_InsuranceMaster_Id" Association="Self.FK_InsuranceAddressInfo_InsuranceMaster_Id">
+      <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+      <End Role="InsuranceAddressInfo" EntitySet="InsuranceAddressInfoes" />
     </AssociationSet>
     <AssociationSet Name="FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId" Association="Self.FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId">
       <End Role="InsuranceMasterType" EntitySet="InsuranceMasterTypes" />

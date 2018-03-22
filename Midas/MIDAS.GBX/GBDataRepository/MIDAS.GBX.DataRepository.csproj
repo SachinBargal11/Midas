@@ -402,6 +402,9 @@
     <Compile Include="Model\IMEVisit.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\InsuranceAddressInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\InsuranceMaster.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -441,8 +444,8 @@
       <DependentUpon>MIDASGBXEntities.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Designer.cs">

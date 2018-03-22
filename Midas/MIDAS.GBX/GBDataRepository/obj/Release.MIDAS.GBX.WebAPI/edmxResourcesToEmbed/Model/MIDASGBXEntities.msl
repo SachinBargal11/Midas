@@ -688,13 +688,34 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="InsuranceAddressInfoes">
+      <EntityTypeMapping TypeName="MIDASModel.InsuranceAddressInfo">
+        <MappingFragment StoreEntitySet="InsuranceAddressInfo">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="InsuranceMasters">
       <EntityTypeMapping TypeName="MIDASModel.InsuranceMaster">
         <MappingFragment StoreEntitySet="InsuranceMaster">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
           <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-          <ScalarProperty Name="AddressInfoId" ColumnName="AddressInfoId" />
           <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
           <ScalarProperty Name="InsuranceMasterTypeId" ColumnName="InsuranceMasterTypeId" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -849,6 +870,7 @@
           <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+          <ScalarProperty Name="CreatedCompanyId" ColumnName="CreatedCompanyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1240,9 +1262,6 @@
     <EntitySetMapping Name="PendingReferrals">
       <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
         <MappingFragment StoreEntitySet="PendingReferral">
-          <ScalarProperty Name="DoctorSignatureFont" ColumnName="DoctorSignatureFont" />
-          <ScalarProperty Name="DoctorSignatureText" ColumnName="DoctorSignatureText" />
-          <ScalarProperty Name="DoctorSignatureType" ColumnName="DoctorSignatureType" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
           <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />
@@ -1251,7 +1270,10 @@
           <ScalarProperty Name="ForSpecialtyId" ColumnName="ForSpecialtyId" />
           <ScalarProperty Name="ForRoomId" ColumnName="ForRoomId" />
           <ScalarProperty Name="ForRoomTestId" ColumnName="ForRoomTestId" />
+          <ScalarProperty Name="DoctorSignatureType" ColumnName="DoctorSignatureType" />
           <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
+          <ScalarProperty Name="DoctorSignatureText" ColumnName="DoctorSignatureText" />
+          <ScalarProperty Name="DoctorSignatureFont" ColumnName="DoctorSignatureFont" />
           <ScalarProperty Name="IsReferralCreated" ColumnName="IsReferralCreated" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />

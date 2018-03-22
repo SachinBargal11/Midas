@@ -19,13 +19,13 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.AdjusterMasters = new HashSet<AdjusterMaster>();
             this.EOVisits = new HashSet<EOVisit>();
+            this.InsuranceAddressInfoes = new HashSet<InsuranceAddressInfo>();
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
         }
     
         public int Id { get; set; }
         public string CompanyCode { get; set; }
         public string CompanyName { get; set; }
-        public Nullable<int> AddressInfoId { get; set; }
         public Nullable<int> ContactInfoId { get; set; }
         public Nullable<int> InsuranceMasterTypeId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -39,13 +39,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> Only1500Form { get; set; }
         public Nullable<int> PaperAuthorization { get; set; }
     
-        public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EOVisit> EOVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InsuranceAddressInfo> InsuranceAddressInfoes { get; set; }
         public virtual InsuranceMasterType InsuranceMasterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }

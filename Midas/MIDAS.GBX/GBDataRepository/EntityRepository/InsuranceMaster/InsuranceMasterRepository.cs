@@ -13,7 +13,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     class InsuranceMasterRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<InsuranceMaster> _dbSet;
-       
+
         #region Constructor
         public InsuranceMasterRepository(MIDASGBXEntities context)
             : base(context)
@@ -40,7 +40,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boInsuranceMaster.ID = eachInsuranceMaster.Id;
                 boInsuranceMaster.CompanyCode = eachInsuranceMaster.CompanyCode;
                 boInsuranceMaster.CompanyName = eachInsuranceMaster.CompanyName;
-                boInsuranceMaster.AddressInfoId = eachInsuranceMaster.AddressInfoId;
                 boInsuranceMaster.ContactInfoId = eachInsuranceMaster.ContactInfoId;
                 boInsuranceMaster.InsuranceMasterTypeId = eachInsuranceMaster.InsuranceMasterTypeId;
                 boInsuranceMaster.ZeusID = eachInsuranceMaster.ZeusID;
@@ -49,25 +48,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boInsuranceMaster.PaperAuthorization = eachInsuranceMaster.PaperAuthorization;
                 boInsuranceMaster.CreatedByCompanyId = eachInsuranceMaster.CreatedByCompanyId;
 
-                //if (eachInsuranceMaster.IsDeleted.HasValue)
-                //    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
+                if (eachInsuranceMaster.IsDeleted.HasValue)
+                    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
 
-                if (eachInsuranceMaster.AddressInfo != null)
+                if (eachInsuranceMaster.InsuranceAddressInfoes != null)
                 {
-                    BO.AddressInfo boAddress = new BO.AddressInfo();
-                    boAddress.Name = eachInsuranceMaster.AddressInfo.Name;
-                    boAddress.Address1 = eachInsuranceMaster.AddressInfo.Address1;
-                    boAddress.Address2 = eachInsuranceMaster.AddressInfo.Address2;
-                    boAddress.City = eachInsuranceMaster.AddressInfo.City;
-                    boAddress.State = eachInsuranceMaster.AddressInfo.State;
-                    boAddress.ZipCode = eachInsuranceMaster.AddressInfo.ZipCode;
-                    boAddress.Country = eachInsuranceMaster.AddressInfo.Country;
-                    //[STATECODE-CHANGE]
-                    //boAddress.StateCode = eachInsuranceMaster.AddressInfo.StateCode;
-                    //[STATECODE-CHANGE]
-                    boAddress.CreateByUserID = eachInsuranceMaster.AddressInfo.CreateByUserID;
-                    boAddress.ID = eachInsuranceMaster.AddressInfo.id;
-                    boInsuranceMaster.AddressInfo = boAddress;
+                    //foreach (var item in eachInsuranceMaster.InsuranceAddressInfoes)
+                    //{
+                    //    BO.InsuranceAddressInfo boAddress = new BO.InsuranceAddressInfo();
+                    //    boAddress.InsuranceMasterId = item.InsuranceMasterId;
+                    //    boAddress.Name = item.Name;
+                    //    boAddress.Address1 = item.Address1;
+                    //    boAddress.Address2 = item.Address2;
+                    //    boAddress.City = item.City;
+                    //    boAddress.State = item.State;
+                    //    boAddress.ZipCode = item.ZipCode;
+                    //    boAddress.Country = item.Country;
+                    //    //[STATECODE-CHANGE]
+                    //    //boAddress.StateCode = item.StateCode;
+                    //    //[STATECODE-CHANGE]
+                    //    boAddress.CreateByUserID = item.CreateByUserID;
+                    //    boAddress.IsDefault = item.IsDefault;
+                    //    boAddress.ID = item.id;
+                    //    boInsuranceMaster.InsuranceAddressInfo.Add(boAddress);
+                    //}
+
+                    if (eachInsuranceMaster.InsuranceAddressInfoes != null)
+                    {
+                        List<BO.InsuranceAddressInfo> InsuranceAddressInfoBOList = new List<BO.InsuranceAddressInfo>();
+                        foreach (var item in eachInsuranceMaster.InsuranceAddressInfoes)
+                        {
+                            InsuranceAddressInfoBOList.Add(ConvertInsuranceAddress<BO.InsuranceAddressInfo, InsuranceAddressInfo>(item));
+                        }
+
+                        boInsuranceMaster.InsuranceAddressInfo = InsuranceAddressInfoBOList;
+                    }
                 }
 
                 if (eachInsuranceMaster.ContactInfo != null)
@@ -93,7 +108,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boInsuranceMasterType.InsuranceMasterTypeText = eachInsuranceMaster.InsuranceMasterType.InsuranceMasterTypeText;
                     boInsuranceMasterType.CreateByUserID = eachInsuranceMaster.InsuranceMasterType.CreateByUserID;
                     boInsuranceMasterType.ID = eachInsuranceMaster.InsuranceMasterType.Id;
-                  
+
                     boInsuranceMaster.InsuranceMasterType = boInsuranceMasterType;
                 }
 
@@ -121,7 +136,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boInsuranceMaster.ID = insuranceMaster.Id;
             boInsuranceMaster.CompanyCode = insuranceMaster.CompanyCode;
             boInsuranceMaster.CompanyName = insuranceMaster.CompanyName;
-            boInsuranceMaster.AddressInfoId = insuranceMaster.AddressInfoId;
             boInsuranceMaster.ContactInfoId = insuranceMaster.ContactInfoId;
             boInsuranceMaster.InsuranceMasterTypeId = insuranceMaster.InsuranceMasterTypeId;
             boInsuranceMaster.ZeusID = insuranceMaster.ZeusID;
@@ -130,23 +144,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boInsuranceMaster.PaperAuthorization = insuranceMaster.PaperAuthorization;
             boInsuranceMaster.CreatedByCompanyId = insuranceMaster.CreatedByCompanyId;
 
-            //if (insuranceMaster.IsDeleted.HasValue)
-            //    boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
+            if (insuranceMaster.IsDeleted.HasValue)
+                boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
 
-            if (insuranceMaster.AddressInfo != null)
+            if (insuranceMaster.InsuranceAddressInfoes != null)
             {
-                BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = insuranceMaster.AddressInfo.Name;
-                boAddress.Address1 = insuranceMaster.AddressInfo.Address1;
-                boAddress.Address2 = insuranceMaster.AddressInfo.Address2;
-                boAddress.City = insuranceMaster.AddressInfo.City;
-                boAddress.State = insuranceMaster.AddressInfo.State;
-                boAddress.ZipCode = insuranceMaster.AddressInfo.ZipCode;
-                boAddress.Country = insuranceMaster.AddressInfo.Country;
-                boAddress.CreateByUserID = insuranceMaster.AddressInfo.CreateByUserID;
-                boAddress.ID = insuranceMaster.AddressInfo.id;
-                boAddress.IsDeleted = insuranceMaster.AddressInfo.IsDeleted;
-                boInsuranceMaster.AddressInfo = boAddress;
+                List<BO.InsuranceAddressInfo> InsuranceAddressInfoBOList = new List<BO.InsuranceAddressInfo>();
+                foreach (var item in insuranceMaster.InsuranceAddressInfoes)
+                {
+                    InsuranceAddressInfoBOList.Add(ConvertInsuranceAddress<BO.InsuranceAddressInfo, InsuranceAddressInfo>(item));
+                }
+
+                boInsuranceMaster.InsuranceAddressInfo = InsuranceAddressInfoBOList;
             }
 
             if (insuranceMaster.ContactInfo != null)
@@ -163,7 +172,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.PreferredCommunication = insuranceMaster.ContactInfo.PreferredCommunication;
                 boContactInfo.CreateByUserID = insuranceMaster.ContactInfo.CreateByUserID;
                 boContactInfo.ID = insuranceMaster.ContactInfo.id;
-                boContactInfo.IsDeleted = insuranceMaster.ContactInfo.IsDeleted;               
+                boContactInfo.IsDeleted = insuranceMaster.ContactInfo.IsDeleted;
                 boInsuranceMaster.ContactInfo = boContactInfo;
             }
 
@@ -174,6 +183,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)boInsuranceMaster;
         }
         #endregion
+
+        public override T ConvertInsuranceAddress<T, U>(U entity)
+        {
+            InsuranceAddressInfo insuranceAddressInfo = entity as InsuranceAddressInfo;
+
+            if (insuranceAddressInfo == null)
+                return default(T);
+
+            BO.InsuranceAddressInfo insuranceAddressInfoBO = new BO.InsuranceAddressInfo();
+            insuranceAddressInfoBO.ID = insuranceAddressInfo.id;
+            insuranceAddressInfoBO.InsuranceMasterId = insuranceAddressInfo.InsuranceMasterId;
+            insuranceAddressInfoBO.Name = insuranceAddressInfo.Name;
+            insuranceAddressInfoBO.Address1 = insuranceAddressInfo.Address1;
+            insuranceAddressInfoBO.Address2 = insuranceAddressInfo.Address2;
+            insuranceAddressInfoBO.City = insuranceAddressInfo.City;
+            insuranceAddressInfoBO.State = insuranceAddressInfo.State;
+            insuranceAddressInfoBO.ZipCode = insuranceAddressInfo.ZipCode;
+            insuranceAddressInfoBO.Country = insuranceAddressInfo.Country;
+            //[STATECODE-CHANGE]
+            //boAddress.StateCode = item.StateCode;
+            //[STATECODE-CHANGE]
+            insuranceAddressInfoBO.CreateByUserID = insuranceAddressInfo.CreateByUserID;
+            if (insuranceAddressInfo.IsDeleted.HasValue)
+                insuranceAddressInfoBO.IsDeleted = insuranceAddressInfo.IsDeleted.Value;
+            if (insuranceAddressInfo.IsDefault.HasValue)
+                insuranceAddressInfoBO.IsDefault = insuranceAddressInfo.IsDefault.Value;
+            return (T)(object)insuranceAddressInfoBO;
+        }
 
 
         #region Validate Entities
@@ -188,9 +225,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get All Insurance Master
         public override Object Get()
         {
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
-                                               .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<InsuranceMaster>();
+            var acc = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
+                                               .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                               {
+                                                   InsuranceMasters = p,
+                                                   ContactInfo = p.ContactInfo,
+                                                   InsuranceMasterType = p.InsuranceMasterType,
+                                                   InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                   PatientInsuranceInfoes = p.PatientInsuranceInfoes
+                                               }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>();
+
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -206,9 +250,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Id
         public override Object Get(int id)
         {
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
-                                               .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .FirstOrDefault();
+            var acc = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
+                                               .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                               {
+                                                   InsuranceMasters = p,
+                                                   ContactInfo = p.ContactInfo,
+                                                   InsuranceMasterType = p.InsuranceMasterType,
+                                                   InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                   PatientInsuranceInfoes = p.PatientInsuranceInfoes
+
+                                               }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>().FirstOrDefault();
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -224,19 +275,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Master And By CompanyId
         public override Object GetMasterAndByCompanyId(int CompanyId)
         {
-            var acccompnay = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
+            var acccompnay = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
                                                .Where(p => (p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId.Value == CompanyId)
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .OrderBy(s=> s.CompanyName).ToList< InsuranceMaster>();
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                                    {
+                                                        InsuranceMasters = p,
+                                                        ContactInfo = p.ContactInfo,
+                                                        InsuranceMasterType = p.InsuranceMasterType,
+                                                        InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                        PatientInsuranceInfoes = p.PatientInsuranceInfoes
 
-            var accMaster = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
+                                                    }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>().OrderBy(s => s.CompanyName).ToList<InsuranceMaster>();
+
+            var accMaster = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
                                               .Where(p => (p.CreatedByCompanyId.HasValue == false)
-                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                              .OrderBy(s => s.CompanyName).ToList<InsuranceMaster>();
+                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                                   {
+                                                       InsuranceMasters = p,
+                                                       ContactInfo = p.ContactInfo,
+                                                       InsuranceMasterType = p.InsuranceMasterType,
+                                                       InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                       PatientInsuranceInfoes = p.PatientInsuranceInfoes
+
+                                                   }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>().OrderBy(s => s.CompanyName).ToList<InsuranceMaster>();
 
             var acc = acccompnay.Concat(accMaster)
                  .GroupBy(x => x.CompanyName)
-                 .Select(g => g.OrderBy(x => x.CreateByUserID !=null && x.CreateByUserID !=0).First())
+                 .Select(g => g.OrderBy(x => x.CreateByUserID != null && x.CreateByUserID != 0).First())
                  .ToList();
 
 
@@ -246,8 +311,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                
-                List<BO.InsuranceMaster> acc_ = Convert<List<BO.InsuranceMaster>, List<InsuranceMaster>>(acc).OrderBy(p=>p.CompanyName).ToList();
+
+                List<BO.InsuranceMaster> acc_ = Convert<List<BO.InsuranceMaster>, List<InsuranceMaster>>(acc).OrderBy(p => p.CompanyName).ToList();
                 return (object)acc_;
             }
         }
@@ -257,11 +322,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetInsuranceDetails(int id, int CompanyId)
         {
 
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
-                                               .Where(p => p.Id == id 
+            var acc = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
+                                               .Where(p => p.Id == id
                                                     && (p.CreatedByCompanyId.HasValue == false || (p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId.Value == CompanyId))
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .FirstOrDefault<InsuranceMaster>();
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                                    {
+                                                        InsuranceMasters = p,
+                                                        ContactInfo = p.ContactInfo,
+                                                        InsuranceMasterType = p.InsuranceMasterType,
+                                                        InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                        PatientInsuranceInfoes = p.PatientInsuranceInfoes
+
+                                                    }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>().FirstOrDefault<InsuranceMaster>();
 
             if (acc == null)
             {
@@ -279,19 +351,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Delete(int id, int CompanyId)
         {
 
-            InsuranceMaster insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
+            InsuranceMaster insuranceMasterDB = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
                                                                          .Where(p => p.Id == id && p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId == CompanyId
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                         .FirstOrDefault<InsuranceMaster>();           
+                                                                         .FirstOrDefault<InsuranceMaster>();
             if (insuranceMasterDB == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this InsuranceMaster.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-           
-            insuranceMasterDB.AddressInfo.IsDeleted = true;
+
+            //insuranceMasterDB.AddressInfo.IsDeleted = true;
             insuranceMasterDB.ContactInfo.IsDeleted = true;
             insuranceMasterDB.IsDeleted = true;
-           
+
             _context.Entry(insuranceMasterDB).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
 
@@ -304,7 +376,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.InsuranceMaster insuranceMasterBO = (BO.InsuranceMaster)(object)entity;
-            BO.AddressInfo addressBO = insuranceMasterBO.AddressInfo;
+            List<BO.InsuranceAddressInfo> insuranceaddressBO = insuranceMasterBO.InsuranceAddressInfo;
             BO.ContactInfo contactinfoBO = insuranceMasterBO.ContactInfo;
             BO.InsuranceMasterType insuranceMasterTypeBO = insuranceMasterBO.InsuranceMasterType;
             if (insuranceMasterBO.CreatedByCompanyId.HasValue == true)
@@ -314,26 +386,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
-                    isinsuranceMasterDBMain = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.Id == insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
+                    isinsuranceMasterDBMain = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.Id == insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
 
                     bool IsEditMode = false;
                     IsEditMode = (insuranceMasterBO != null && insuranceMasterBO.ID > 0 && isinsuranceMasterDBMain.CreatedByCompanyId > 0) ? true : false;
                     bool IsNameAlredayExits = false;
                     bool IsCodeAlredayExists = false;
-                    if(IsEditMode)
+                    if (IsEditMode)
                     {
-                        var hasEditName = (_context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyName == insuranceMasterBO.CompanyName  && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && p.Id != insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
-                        IsNameAlredayExits = (hasEditName != null)? true : false;
+                        var hasEditName = (_context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyName == insuranceMasterBO.CompanyName && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && p.Id != insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
+                        IsNameAlredayExits = (hasEditName != null) ? true : false;
 
-                        var hasEditcode = (_context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyCode == insuranceMasterBO.CompanyCode && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && p.Id != insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
+                        var hasEditcode = (_context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyCode == insuranceMasterBO.CompanyCode && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && p.Id != insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
                         IsCodeAlredayExists = (hasEditcode != null) ? true : false;
                     }
                     else
                     {
-                        var hasEditName = (_context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyName == insuranceMasterBO.CompanyName && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
+                        var hasEditName = (_context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyName == insuranceMasterBO.CompanyName && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
                         IsNameAlredayExits = (hasEditName != null) ? true : false;
 
-                        var hasEditcode = (_context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyCode == insuranceMasterBO.CompanyCode && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
+                        var hasEditcode = (_context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.CompanyCode == insuranceMasterBO.CompanyCode && p.CreatedByCompanyId == insuranceMasterBO.CreatedByCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>());
                         IsCodeAlredayExists = (hasEditcode != null) ? true : false;
                     }
 
@@ -342,7 +414,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Already Same Insurance Code and Name Exists.", ErrorLevel = ErrorLevel.Error };
                     }
-                    else if(IsNameAlredayExits)
+                    else if (IsNameAlredayExits)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Already Same Insurance Name Exists.", ErrorLevel = ErrorLevel.Error };
@@ -353,63 +425,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Already Same Insurance Code Exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    AddressInfo addressDB = new AddressInfo();
                     ContactInfo contactinfoDB = new ContactInfo();
 
-
-                    #region Address
-                    if (addressBO != null)
-                    {
-                        bool Add_addressDB = false;
-                        if (isinsuranceMasterDBMain !=null && isinsuranceMasterDBMain.CreatedByCompanyId > 0)
-                        {
-                            addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        }
-                        else
-                        {
-                            addressDB = null;
-                            addressBO.ID = 0;
-                        }
-                        
-
-                        if (addressDB == null && addressBO.ID <= 0)
-                        {
-                            addressDB = new AddressInfo();
-                            Add_addressDB = true;
-                        }
-                        else if (addressDB == null && addressBO.ID > 0)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                        }
-
-                        addressDB.Name = IsEditMode == true && addressBO.Name == null ? addressDB.Name : addressBO.Name;
-                        addressDB.Address1 = IsEditMode == true && addressBO.Address1 == null ? addressDB.Address1 : addressBO.Address1;
-                        addressDB.Address2 = IsEditMode == true && addressBO.Address2 == null ? addressDB.Address2 : addressBO.Address2;
-                        addressDB.City = IsEditMode == true && addressBO.City == null ? addressDB.City : addressBO.City;
-                        addressDB.State = IsEditMode == true && addressBO.State == null ? addressDB.State : addressBO.State;
-                        addressDB.ZipCode = IsEditMode == true && addressBO.ZipCode == null ? addressDB.ZipCode : addressBO.ZipCode;
-                        addressDB.Country = IsEditMode == true && addressBO.Country == null ? addressDB.Country : addressBO.Country;
-                        //[STATECODE-CHANGE]
-                        //addressDB.StateCode = IsEditMode == true && addressBO.StateCode == null ? addressDB.StateCode : addressBO.StateCode;
-                        //[STATECODE-CHANGE]
-
-                        if (Add_addressDB == true)
-                        {
-                            addressDB = _context.AddressInfoes.Add(addressDB);
-                        }
-                        _context.SaveChanges();
-                    }
-                    else
-                    {
-                        if (IsEditMode == false)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid address details.", ErrorLevel = ErrorLevel.Error };
-                        }
-                        addressDB = null;
-                    }
-                    #endregion
 
                     #region Contact Info
                     if (contactinfoBO != null)
@@ -424,7 +441,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             contactinfoDB = null;
                             contactinfoBO.ID = 0;
                         }
-                           
+
 
                         if (contactinfoDB == null && contactinfoBO.ID <= 0)
                         {
@@ -501,7 +518,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         insuranceMasterDB.PaperAuthorization = insuranceMasterBO.PaperAuthorization;
                         insuranceMasterDB.CreatedByCompanyId = insuranceMasterBO.CreatedByCompanyId;
 
-                        insuranceMasterDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : insuranceMasterDB.AddressInfoId;
+                        //insuranceMasterDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : insuranceMasterDB.AddressInfoId;
                         insuranceMasterDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : insuranceMasterDB.ContactInfoId;
 
                         if (Add_insuranceMasterDB == true)
@@ -523,9 +540,100 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     _context.SaveChanges();
                     #endregion
 
+                    InsuranceAddressInfo insuranceAddressDB = new InsuranceAddressInfo();
+                    #region Address
+                    if (insuranceAddressDB != null)
+                    {
+                        var insuranceID = insuranceMasterDB.Id == 0 ? insuranceAddressDB.InsuranceMasterId : insuranceMasterDB.Id;
+                        var oldaddresslist = _context.InsuranceAddressInfoes.Where(p => (p.InsuranceMasterId == insuranceID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<InsuranceAddressInfo>();
+                        if (oldaddresslist.Count > 0)
+                        {
+                            HashSet<int> removeIDs = new HashSet<int>(insuranceaddressBO.Select(s => s.ID));
+                            var oldaddresslistResult = oldaddresslist.Where(m => !removeIDs.Contains(m.id));
+                            foreach (var itemdelete in oldaddresslistResult)
+                            {
+                                if (itemdelete.id != 0)
+                                {
+                                    InsuranceAddressInfo insuranceAddressInfoD = _context.InsuranceAddressInfoes.Where(p => p.id == itemdelete.id).FirstOrDefault<InsuranceAddressInfo>();
+                                    if (insuranceAddressInfoD != null)
+                                    {
+                                        insuranceAddressInfoD.IsDeleted = true;
+                                        _context.SaveChanges();
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (var item in insuranceaddressBO)
+                        {
+                            bool Add_insuranceAddressDB = false;
+                            if (isinsuranceMasterDBMain != null && isinsuranceMasterDBMain.CreatedByCompanyId > 0)
+                            {
+                                insuranceAddressDB = _context.InsuranceAddressInfoes.Where(p => p.id == item.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                            }
+                            else
+                            {
+                                insuranceAddressDB = null;
+                                item.ID = 0;
+                            }
+
+
+                            if (insuranceAddressDB == null && item.ID <= 0)
+                            {
+                                insuranceAddressDB = new InsuranceAddressInfo();
+                                Add_insuranceAddressDB = true;
+                            }
+                            else if (insuranceAddressDB == null && item.ID > 0)
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                            }
+
+                            insuranceAddressDB.InsuranceMasterId = IsEditMode == true && insuranceMasterDB.Id == 0 ? insuranceAddressDB.InsuranceMasterId : insuranceMasterDB.Id;
+                            insuranceAddressDB.Name = IsEditMode == true && item.Name == null ? insuranceAddressDB.Name : item.Name;
+                            insuranceAddressDB.Address1 = IsEditMode == true && item.Address1 == null ? insuranceAddressDB.Address1 : item.Address1;
+                            insuranceAddressDB.Address2 = IsEditMode == true && item.Address2 == null ? insuranceAddressDB.Address2 : item.Address2;
+                            insuranceAddressDB.City = IsEditMode == true && item.City == null ? insuranceAddressDB.City : item.City;
+                            insuranceAddressDB.State = IsEditMode == true && item.State == null ? insuranceAddressDB.State : item.State;
+                            insuranceAddressDB.ZipCode = IsEditMode == true && item.ZipCode == null ? insuranceAddressDB.ZipCode : item.ZipCode;
+                            insuranceAddressDB.Country = IsEditMode == true && item.Country == null ? insuranceAddressDB.Country : item.Country;
+                            insuranceAddressDB.IsDefault = IsEditMode == true && item.IsDefault == null ? insuranceAddressDB.IsDefault : item.IsDefault;
+                            //[STATECODE-CHANGE]
+                            //addressDB.StateCode = IsEditMode == true && addressBO.StateCode == null ? addressDB.StateCode : addressBO.StateCode;
+                            //[STATECODE-CHANGE]
+
+                            if (Add_insuranceAddressDB == true)
+                            {
+                                insuranceAddressDB = _context.InsuranceAddressInfoes.Add(insuranceAddressDB);
+                            }
+                            _context.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid address details.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        insuranceAddressDB = null;
+                    }
+                    #endregion
+
                     dbContextTransaction.Commit();
 
-                    insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType").Where(p => p.Id == insuranceMasterDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
+                    insuranceMasterDB = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
+                                                   .Where(p => p.Id == insuranceMasterDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                                   {
+                                                       InsuranceMasters = p,
+                                                       ContactInfo = p.ContactInfo,
+                                                       InsuranceMasterType = p.InsuranceMasterType,
+                                                       InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                       PatientInsuranceInfoes = p.PatientInsuranceInfoes
+
+                                                   }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>().FirstOrDefault<InsuranceMaster>();
+
+                    //insuranceMasterDB = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType").Where(p => p.Id == insuranceMasterDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
                 }
 
                 var res = ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(insuranceMasterDB);
@@ -534,7 +642,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Cannot add or update Master Insurance data.", ErrorLevel = ErrorLevel.Error };
-            }            
+            }
         }
         #endregion
 
@@ -545,10 +653,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .Select(p => p.CompanyId);
 
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Include("insuranceMasterType")
+            var acc = _context.InsuranceMasters.Include("insuranceAddressInfoes").Include("contactInfo").Include("insuranceMasterType")
                                                .Where(p => (p.CreatedByCompanyId.HasValue == false || (p.CreatedByCompanyId.HasValue == true && CompanyId.Contains(p.CreatedByCompanyId.Value)))
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<InsuranceMaster>();
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => new
+                                                    {
+                                                        InsuranceMasters = p,
+                                                        ContactInfo = p.ContactInfo,
+                                                        InsuranceMasterType = p.InsuranceMasterType,
+                                                        InsuranceAddressInfoes = p.InsuranceAddressInfoes.Where(y => (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))),
+                                                        PatientInsuranceInfoes = p.PatientInsuranceInfoes
+                                                    }).ToList().Select(p => p.InsuranceMasters).ToList<InsuranceMaster>();
+
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
