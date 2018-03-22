@@ -9,6 +9,8 @@ import { environment } from '../../../environments/environment';
 import { SessionStore } from '../../commons/stores/session-store';
 import { Procedure } from '../../commons/models/procedure';
 import { ProcedureAdapter } from '../../commons/services/adapters/procedure-adapter';
+import { TestSpecialityDetail } from '../models/test-speciality-details';
+import { TestSpecialityDetailAdapter } from './adapters/test-speciality-detail-adapter';
 
 @Injectable()
 export class ProcedureCodeMasterService {
@@ -59,6 +61,24 @@ export class ProcedureCodeMasterService {
                 });
         });
         return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    getRoomTestbyCompanyandRoomTestId(roomTestId: number): Observable<TestSpecialityDetail> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<TestSpecialityDetail> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyRoomTestDetails/getByRoomTestAndCompanyId/' + roomTestId + '/'+ companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((specialityDetailData: any) => {
+                    let parsedData: TestSpecialityDetail = null;
+                    parsedData = TestSpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedData);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<TestSpecialityDetail>>Observable.fromPromise(promise);
     }
 
     updateProcedureAmount(requestData: Procedure[]): Observable<Procedure[]> {

@@ -216,7 +216,7 @@
                          <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.address1.touched && !editInsuranceMasterFormControls.address1.valid">
-                            <input formControlName="address1" [ngModel]="insuranceMaster.Address.address1" type="text" class="form-control" placeholder=""
+                            <input formControlName="address1"  type="text" class="form-control" placeholder=""
                                 [class.error]="!editInsuranceMasterFormControls.address1.valid">
                             <div class='error-list' *ngIf="editInsuranceMasterFormControls.address1.touched && !editInsuranceMasterFormControls.address1.valid">
                                 <ul>
@@ -229,7 +229,7 @@
                         <label class="form-label"> Address2
                             </label>
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.address2.touched && !editInsuranceMasterFormControls.address2.valid">
-                            <input formControlName="address2" [ngModel]="insuranceMaster.Address.address2" type="text" class="form-control" placeholder=""
+                            <input formControlName="address2"  type="text" class="form-control" placeholder=""
                                 [class.error]="!editInsuranceMasterFormControls.address2.valid">
                             <div class='error-list' *ngIf="editInsuranceMasterFormControls.address2.touched && !editInsuranceMasterFormControls.address2.valid">
                                 <ul>
@@ -254,7 +254,7 @@
                         </div>
                     </div>-->
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.state.touched && !editInsuranceMasterFormControls.state.valid">
-                            <p-dropdown [options]="states" formControlName="state" [ngModel]="insuranceMaster.Address.state" [style]="{'width':'100%'}"
+                            <p-dropdown [options]="states" formControlName="state"  [style]="{'width':'100%'}"
                                 filter="filter"></p-dropdown>
                             <div class='error-list' *ngIf="editInsuranceMasterFormControls.state.touched && !editInsuranceMasterFormControls.state.valid">
                                 <span class="color-red">State is required.</span>
@@ -268,7 +268,7 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid">
-                            <input formControlName="city" [ngModel]="insuranceMaster.Address.city" type="text" class="form-control" [class.error]="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid"
+                            <input formControlName="city"  type="text" class="form-control" [class.error]="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid"
                                 placeholder="" />
                             <div class='error-list' *ngIf="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid">
                                 <ul>
@@ -282,7 +282,7 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.zipCode.touched && !editInsuranceMasterFormControls.zipCode.valid">
-                            <input formControlName="zipCode" [ngModel]="insuranceMaster.Address.zipCode" type="text" class="form-control" placeholder=""
+                            <input formControlName="zipCode"  type="text" class="form-control" placeholder=""
                                 [class.error]="!editInsuranceMasterFormControls.zipCode.valid">
                             <div class='error-list' *ngIf="editInsuranceMasterFormControls.zipCode.touched && !editInsuranceMasterFormControls.zipCode.valid">
                                 <ul>
@@ -297,9 +297,9 @@
                             </label>
                         <div class="form-group" [class.error]="editInsuranceMasterFormControls.country.touched && !editInsuranceMasterFormControls.country.valid">
                             <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.country.valid">-->
-                            <select formControlName="country" [ngModel]="insuranceMaster.Address.country" type="text" class="form-control" placeholder=""
+                            <select formControlName="country"  type="text" class="form-control" placeholder=""
                                 [class.error]="editInsuranceMasterFormControls.country.touched && !editInsuranceMasterFormControls.country.valid">
-                                        <option value="0">-Select -</option>
+                                        <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="US">United States</option>
                                     </select>
@@ -311,9 +311,39 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                        <button  type="button" class="btn btn-success sign-up" (click)="AddNewAddressToList()">Add address to list</button>
+                        <!--<button  type="button" class="pull-right btn btn-danger sign-up" *ngIf="insuranceAddressnewList != null && insuranceAddressnewList.length > 0" (click)="DeleteAddress()">Delete Address</button>-->
+                </div>
+                   <br>
+                   <br>
+                   <div *ngIf="insuranceAddressnewList != null && insuranceAddressnewList.length > 0">
+                   <p-dataTable [value]="insuranceAddressnewList" [(selection)]="insuranceAddressDeleteList" [rows]="5" [paginator]="true"  [responsive]="true" #dt2>
+                           <header>Insurance Address</header>
+                          <!-- <p-column selectionMode="multiple"></p-column>-->
+                           <p-column field="address1" header="Address1" ></p-column>
+                           <p-column field="address2" header="Address2"></p-column>
+                           <p-column field="state" header="State" ></p-column>
+                           <p-column field="city" header="City"></p-column>
+                           <p-column field="zipCode" header="ZipCode"></p-column>
+                           <p-column field="country" header="Country"></p-column>
+                           <p-column field="isDefault" header="Default">
+                                <ng-template let-col let-addr="rowData" pTemplate="body">
+                                <button type="button" *ngIf="addr.isDefault == false" class="ui-button-danger" pButton (click)="updateDefault(addr,'add')"  icon="fa-star-o"></button>
+                                <button type="button" *ngIf="addr.isDefault == true" class="ui-button-success" pButton (click)="updateDefault(addr,'rem')"  icon="fa-star-o"></button>
+                               </ng-template>
+                            </p-column>
+                            <p-column styleClass="actions-cell" header="Actions">
+                                    <ng-template let-addrs="rowData" pTemplate="body">
+                                    <button type="button"  pButton (click)="DeleteAddressindividual(addrs)"  icon="fa-trash-o"></button>
+                                    </ng-template>
+                            </p-column>
+                  </p-dataTable>
+                  </div>
             </div>
+            <br>
         </section>
-        <button [disabled]="!editInsuranceMasterForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <button [disabled]="isAddressAdd || !editInsuranceMasterForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
     </button>
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>

@@ -627,6 +627,15 @@
                 Insurance Address
             </header>
             <div class="card-block">
+                    <div class="row" *ngIf="showinsuranceAddressList">
+                            <div class="col-lg-4">
+                                    <label class="form-label">Select insurance address</label>
+                                    <div class="form-group">
+                                            <p-dropdown [options]="insuranceMastersAddressDisplay" formControlName="insuranceMasterAddressId"  (onChange)="insuranceAddressChange($event)" [ngModel]="insuranceMasterAddressId" [style]="{'width':'100%'}"
+                                            filter="filter"></p-dropdown>
+                                    </div>
+                            </div>
+                    </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Address1
@@ -1091,6 +1100,15 @@
             Insurance Address
         </header>
         <div class="card-block">
+                <div class="row" *ngIf="showinsuranceAddressList">
+                        <div class="col-lg-4">
+                                <label class="form-label">Select insurance address</label>
+                                <div class="form-group">
+                                        <p-dropdown [options]="insuranceMastersAddressDisplay" formControlName="insuranceMasterAddressId"  (onChange)="insuranceAddressChange($event)" [ngModel]="insuranceMasterAddressId" [style]="{'width':'100%'}"
+                                        filter="filter"></p-dropdown>
+                                </div>
+                        </div>
+                </div>
             <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Address1

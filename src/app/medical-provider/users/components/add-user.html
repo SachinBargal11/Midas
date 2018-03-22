@@ -199,8 +199,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
-                    <label class="form-label"> Specialty / Test Specialty <span class="color-red">*</span></label>
+                <div class="col-lg-4">
+                    <label class="form-label"> Specialty <span class="color-red">*</span></label>
                     <!--<div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">-->
                 <div class="form-group">
                         <p-multiSelect [options]="specialitiesArr" [(ngModel)]="selectedSpeciality" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
@@ -210,16 +210,14 @@
                             </ul>
                         </div>-->
                     </div>
-                    <div class="form-group">
-                            <p-multiSelect [options]="testSpecialitiesArr" [(ngModel)]="selectedTestSpeciality" defaultLabel="Select Test Speciality" formControlName="testSpeciality" [panelStyle]="{minWidth:'15em'}"></p-multiSelect>
-                    </div>
+                    
                 </div>
-               <!-- <div class="col-lg-4">
-                        <label class="form-label">Test Specialty <span class="color-red">*</span></label>
+                <div class="col-lg-4">
+                        <label class="form-label">Test Specialty <span class="color-red">*</span></label>                        
                         <div class="form-group">
-                            <p-multiSelect [options]="testSpecialitiesArr" [(ngModel)]="selectedTestSpeciality" defaultLabel="Select Test Speciality" formControlName="testSpeciality" [panelStyle]="{minWidth:'15em'}"></p-multiSelect>
+                                <p-multiSelect [options]="testSpecialitiesArr" [(ngModel)]="selectedTestSpeciality" defaultLabel="Select Test Speciality" formControlName="testSpeciality" [panelStyle]="{minWidth:'15em'}"></p-multiSelect>
                         </div>
-                    </div>-->
+                    </div>
                 <!--<div class="col-lg-4 m-t-lg">
                     <div class="form-group" [class.error]="!userformControls.doctor.controls.isCalendarPublic.valid">
                         <p-checkbox name="isCalendarPublic" label="Publish Schedule" formControlName="isCalendarPublic" [(ngModel)]="isCalendarPublic" binary="true"></p-checkbox>
@@ -463,7 +461,7 @@
                    </div>
              </div>
           </section>-->
-     <button [disabled]="!userform.valid || (selectedTestSpeciality.length == 0   && selectedSpeciality.length == 0) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
+     <button [disabled]="!userform.valid || (selectedTestSpeciality === undefined || selectedTestSpeciality.length == 0) && (selectedSpeciality === undefined || selectedSpeciality.length == 0) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveUserProgress"></loader>
     </button>
     <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
