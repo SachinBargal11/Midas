@@ -35,6 +35,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.InsuranceMasters = new HashSet<InsuranceMaster>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
+            this.MidasDocuments = new HashSet<MidasDocument>();
             this.Notifications = new HashSet<Notification>();
             this.OTPCompanyMappings = new HashSet<OTPCompanyMapping>();
             this.OTPCompanyMappings1 = new HashSet<OTPCompanyMapping>();
@@ -115,6 +116,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Invitation> Invitations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Location> Locations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MidasDocument> MidasDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

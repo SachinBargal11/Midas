@@ -299,8 +299,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
                                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
                                          join sm in _context.CompanySpecialtyDetails on pc.SpecialityId equals sm.SpecialtyId
-                                         where pccm.CompanyID == CompanyId
-                                               && pc.SpecialityId == SpecialtyId
+                                         where sm.CompanyID == CompanyId && pccm.CompanyID == CompanyId
+                                               && pc.SpecialityId == SpecialtyId && sm.SpecialtyId == SpecialtyId
                                                && sm.MandatoryProcCode == true
                                                && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
@@ -321,8 +321,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     var procedureCodeInfom = (from pccm in _context.ProcedureCodeCompanyMappings
                                               join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
                                               join sm in _context.CompanySpecialtyDetails on pc.SpecialityId equals sm.SpecialtyId
-                                              where pccm.CompanyID == CompanyId
-                                                    && pc.SpecialityId == SpecialtyId
+                                              where sm.CompanyID == CompanyId && pccm.CompanyID == CompanyId
+                                               && pc.SpecialityId == SpecialtyId && sm.SpecialtyId == SpecialtyId
                                                     && sm.MandatoryProcCode == true
                                                     && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                     && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
@@ -621,8 +621,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
                                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
                                          join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
-                                         where pccm.CompanyID == CompanyId
-                                               && pc.RoomTestId == RoomTestId
+                                         where pccm.CompanyID == CompanyId && sm.CompanyID == CompanyId
+                                               && pc.RoomTestId == RoomTestId && sm.RoomTestID == RoomTestId
                                                && sm.ShowProcCode == true
                                                && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
@@ -643,8 +643,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     var procedureCodeInfom = (from pccm in _context.ProcedureCodeCompanyMappings
                                               join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
                                               join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
-                                              where pccm.CompanyID == CompanyId
-                                                    && pc.RoomTestId == RoomTestId
+                                              where pccm.CompanyID == CompanyId && sm.CompanyID == CompanyId
+                                               && pc.RoomTestId == RoomTestId && sm.RoomTestID == RoomTestId
                                                     && sm.ShowProcCode == true
                                                     && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                     && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))

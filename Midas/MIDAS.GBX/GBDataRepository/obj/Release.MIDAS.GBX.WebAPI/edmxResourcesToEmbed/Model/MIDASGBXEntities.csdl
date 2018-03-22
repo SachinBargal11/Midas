@@ -369,6 +369,7 @@
     <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="Company" ToRole="InsuranceMaster" />
     <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
     <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
+    <NavigationProperty Name="MidasDocuments" Relationship="Self.FK_MidasDocuments_Company" FromRole="Company" ToRole="MidasDocuments" />
     <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
     <NavigationProperty Name="OTPCompanyMappings" Relationship="Self.FK_OTPCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="OTPCompanyMapping" />
     <NavigationProperty Name="OTPCompanyMappings1" Relationship="Self.FK_OTPCompanyMapping_Company_UsedByCompanyId" FromRole="Company" ToRole="OTPCompanyMapping" />
@@ -1025,6 +1026,7 @@
     <Property Name="CreatedCompanyId" Type="Int32" />
     <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
     <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
+    <NavigationProperty Name="Company" Relationship="Self.FK_MidasDocuments_Company" FromRole="MidasDocuments" ToRole="Company" />
     <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="PatientDocuments" />
     <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
     <NavigationProperty Name="VisitDocuments" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="VisitDocuments" />
@@ -3077,6 +3079,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_MidasDocuments_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="MidasDocuments" Type="Self.MidasDocument" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="MidasDocuments">
+        <PropertyRef Name="CreatedCompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Notification_Company_CompanyId">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -5015,6 +5029,10 @@
     <AssociationSet Name="FK_Location_Company" Association="Self.FK_Location_Company">
       <End Role="Company" EntitySet="Companies" />
       <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MidasDocuments_Company" Association="Self.FK_MidasDocuments_Company">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="MidasDocuments" EntitySet="MidasDocuments" />
     </AssociationSet>
     <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
       <End Role="Company" EntitySet="Companies" />

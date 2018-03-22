@@ -2792,6 +2792,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_MidasDocuments_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="MidasDocuments">
+        <PropertyRef Name="CreatedCompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Notification_Company_CompanyId">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -4689,6 +4701,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
     <AssociationSet Name="FK_Location_Schedule" Association="Self.FK_Location_Schedule">
       <End Role="Schedule" EntitySet="Schedule" />
       <End Role="Location" EntitySet="Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MidasDocuments_Company" Association="Self.FK_MidasDocuments_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="MidasDocuments" EntitySet="MidasDocuments" />
     </AssociationSet>
     <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
       <End Role="Company" EntitySet="Company" />

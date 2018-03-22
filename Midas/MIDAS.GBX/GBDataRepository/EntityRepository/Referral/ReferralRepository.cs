@@ -1638,7 +1638,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             ObjectId = id,
                             DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
                             DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "/app_data/uploads/case_" + acc.Case.Id,
-                            CreateDate = DateTime.UtcNow
+                            CreateDate = DateTime.UtcNow,
+                            CreateUserId = acc.CreateByUserID
                         });
                         _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
@@ -1648,17 +1649,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             MidasDocumentId = midasdoc.Id,
                             ReferralId = id,
                             DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
-                            CreateDate = DateTime.UtcNow
+                            CreateDate = DateTime.UtcNow,
+                            CreateUserId = acc.CreateByUserID
                         });
                         _context.Entry(referralDoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
                         dbContextTransaction.Commit();
                     }
-                    catch (Exception)
+                    catch (Exception er)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { ErrorMessage = "Unable to upload/save.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { ErrorMessage = er.Message, errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
                 }
             }

@@ -8,11 +8,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_PublishTargetUrl>F:\Midas-develop\Midas-develop-publishedapi</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="after-install.bat">
+      <publishTime>03/19/2018 15:00:26</publishTime>
+    </File>
     <File Include="ApplicationInsights.config">
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="appspec.yml">
-      <publishTime>03/13/2018 13:43:01</publishTime>
+      <publishTime>03/19/2018 10:48:52</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>11/01/2017 05:18:14</publishTime>
@@ -78,7 +81,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="before-install.bat">
-      <publishTime>03/13/2018 13:43:01</publishTime>
+      <publishTime>03/19/2018 10:48:54</publishTime>
     </File>
     <File Include="bin/antlr.runtime.dll">
       <publishTime>05/02/2017 16:51:36</publishTime>
@@ -288,19 +291,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/23/2017 15:48:04</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.BusinessObjects.dll">
-      <publishTime>03/17/2018 16:02:38</publishTime>
+      <publishTime>03/22/2018 16:13:56</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.Common.dll">
       <publishTime>11/24/2017 19:01:25</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>03/17/2018 16:02:54</publishTime>
+      <publishTime>03/22/2018 16:14:06</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
-      <publishTime>03/17/2018 16:03:16</publishTime>
+      <publishTime>03/22/2018 16:14:28</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.WebAPI.dll">
-      <publishTime>03/17/2018 16:03:29</publishTime>
+      <publishTime>03/22/2018 16:14:49</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>06/13/2016 23:06:14</publishTime>
@@ -525,7 +528,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/15/2018 17:30:06</publishTime>
+      <publishTime>03/22/2018 16:14:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

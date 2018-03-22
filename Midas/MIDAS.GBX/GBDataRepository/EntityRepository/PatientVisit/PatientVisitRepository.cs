@@ -1795,7 +1795,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.PatientVisit> lstpatientvisit = new List<BO.PatientVisit>();
                 foreach (PatientVisit item in acc)
                 {
-                    lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));                    
+                    if (item.EventStart == null)
+                    {
+                        int s = _context.PatientVisits.Where(p => p.CalendarEventId == item.CalendarEventId).Count();
+                        if (s <= 1)
+                        {
+                            lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                        }
+                    }
+                    else
+                    {
+                        lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                    } 
                 }
                 return lstpatientvisit;
             }
