@@ -237,7 +237,7 @@ export class EditInsuranceMasterComponent implements OnInit {
             country: addInsuranceMasterFormValues.country ? addInsuranceMasterFormValues.country : '',
             state: addInsuranceMasterFormValues.state,
             zipCode: addInsuranceMasterFormValues.zipCode,
-            isDefault: false,
+            isDefault: this.insuranceAddressnewList.length > 0 ? false : true,
             createByUserId: this._sessionStore.session.account.user.id,
             recordId: this.recordId
         });

@@ -177,7 +177,6 @@ export class EditInsuranceComponent implements OnInit {
                         ? this.insurance.insuranceEndDate.toDate()
                         : null;
                     this.balanceInsuredAmount = this.insurance.balanceInsuredAmount;
-                    debugger;
                     this.insuranceMastersAdress = this.insurance.insuranceAddress;
                 },
                 (error) => {
@@ -365,6 +364,11 @@ export class EditInsuranceComponent implements OnInit {
                     this.insuranceMastersAddressList = insuranceMaster.InsuranceAddress;
                     this.showinsuranceAddressList = true;
                     this.loadInsuranceMasterAddressList();
+                }
+                else
+                {
+                    this.insuranceMastersAdress = this.insurance.insuranceAddress;
+                    this.showinsuranceAddressList = false;
                 }
                 this.loadInsuranceAdjusterInfo(this.insuranceMaster.id);
             });

@@ -241,6 +241,12 @@ export class AddInsuranceComponent implements OnInit {
                         this.showinsuranceAddressList = true;
                         this.loadInsuranceMasterAddressList();
                     }
+                    else
+                    {
+                       
+                        this.insuranceMastersAdress = null;
+                        this.showinsuranceAddressList = false;
+                    }
                    
                     this.loadInsuranceAdjusterInfo(this.insuranceMaster.id);
                 });
@@ -466,12 +472,12 @@ export class AddInsuranceComponent implements OnInit {
                 preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
-                address1: this.insuranceMastersAdress.address1,
-                address2: this.insuranceMastersAdress.address2,
-                city: this.insuranceMastersAdress.city,
-                country: this.insuranceMastersAdress.country,
-                state: this.insuranceMastersAdress.state,
-                zipCode: this.insuranceMastersAdress.zipCode
+                address1: this.insuranceMastersAdress ? this.insuranceMastersAdress.address1 : '',
+                address2: this.insuranceMastersAdress ? this.insuranceMastersAdress.address2 : '',
+                city: this.insuranceMastersAdress ? this.insuranceMastersAdress.city : '',
+                country: this.insuranceMastersAdress ? this.insuranceMastersAdress.country : '',
+                state: this.insuranceMastersAdress  ? this.insuranceMastersAdress.state : '',
+                zipCode: this.insuranceMastersAdress ? this.insuranceMastersAdress.zipCode : ''
             })
         });
         this._progressBarService.show();
