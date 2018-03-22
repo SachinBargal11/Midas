@@ -348,20 +348,20 @@
                     <div class="col-md-4"><label class="form-label"></label></div>
                 </div>
                 <div class="row">
-                    <div *ngIf="selectedOption == 1 &&  !isGoingOutOffice && selectedSpeciality" class="col-md-4">
+                    <div *ngIf="selectedOption == 1 &&  !isGoingOutOffice && selectedSpeciality && ShowProcedureCode" class="col-md-6">
                         <p-checkbox  formControlName="isProcedureCode" [(ngModel)]="isProcedureCode"
-                            binary="true" label="Add Procedure codes"></p-checkbox>                                                    
+                            binary="true" label="Show Preffered Procedure Codes"></p-checkbox>                                                    
                         <p-checkbox  (onChange)="loadAllProceduresForSpeciality(selectedSpecialityId)" formControlName="ShowAllProcedureCode" [(ngModel)]="ShowAllProcedureCode"
                             binary="true" label="Show All Procedure Codes"></p-checkbox>
                     </div>                    
-                    <div *ngIf="selectedOption == 2 && !isGoingOutOffice" class="col-md-4">
-                        <p-checkbox formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Add Procedure codes"></p-checkbox>
+                    <div *ngIf="selectedOption == 2 && !isGoingOutOffice && ShowProcedureCode" class="col-md-6">
+                        <p-checkbox formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Show Preffered Procedure Codes"></p-checkbox>
                         <p-checkbox (onChange)="loadAllProceduresForRoomTest(selectedTestId)" formControlName="ShowAllProcedureCodeTest" [(ngModel)]="ShowAllProcedureCodeTest"
                         binary="true" label="Show All Procedure Codes"></p-checkbox>                        
                     </div>
                 </div>
                 <br>
-                <div *ngIf="!isGoingOutOffice && isProcedureCode">
+                <div *ngIf="!isGoingOutOffice && isProcedureCode && ShowProcedureCode">
                     <div class="ui-widget-header row">
                         <div class="col-lg-4 input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
