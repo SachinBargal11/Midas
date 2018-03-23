@@ -191,7 +191,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 //     return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 // });
                 let matchingVisits: PatientVisit[];
-                if(this.viewall)
+                if(!this.viewall)
                 {
                     matchingVisits = patientVisitDetails;
                 }
