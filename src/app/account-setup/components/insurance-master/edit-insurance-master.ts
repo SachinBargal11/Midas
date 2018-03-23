@@ -226,7 +226,7 @@ export class EditInsuranceMasterComponent implements OnInit {
     AddNewAddressToList()
     {
         let addInsuranceMasterFormValues = this.editInsuranceMasterForm.value;
-        if(addInsuranceMasterFormValues.address1 != '' &&  addInsuranceMasterFormValues.address1 != undefined)
+        if(addInsuranceMasterFormValues.address1.trim() != '' &&  addInsuranceMasterFormValues.address1.trim() != undefined)
         {
         this.recordId = this.recordId + 1;
         this.insuranceAddressnew  = new InsuranceAddress({
