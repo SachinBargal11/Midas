@@ -162,5 +162,35 @@ export class PendingReferralStore {
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
 
+     //inhouse Start
+     getInhouseReferralsByCompanyId(): Observable<InboundOutboundList[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getInhouseReferralsByCompanyId(companyId).subscribe((referrals: InboundOutboundList[]) => {
+                this._inboundOutboundList.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
+    getInhouseReferralsByDoctorId(): Observable<InboundOutboundList[]> {
+        let doctorId: number = this._sessionStore.session.user.id;
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getInhouseReferralsByDoctorId(doctorId, companyId).subscribe((referrals: InboundOutboundList[]) => {
+                this._inboundOutboundList.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
+    //inhouse end
+
 }
 
