@@ -183,4 +183,31 @@ export class DoctorsStore {
         }
     }
 
+
+    getDoctorsByCompanyIdAndSpeciality(specialtyId: number): Observable<Doctor[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getDoctorsByCompanyIdAndSpeciality(companyId, specialtyId).subscribe((doctors: Doctor[]) => {
+                this._doctors.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+
+    getDoctorsByCompanyIdAndTestSpeciality(roomTestId: number): Observable<Doctor[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getDoctorsByCompanyIdAndTestSpeciality(companyId, roomTestId).subscribe((doctors: Doctor[]) => {
+                this._doctors.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+
 }

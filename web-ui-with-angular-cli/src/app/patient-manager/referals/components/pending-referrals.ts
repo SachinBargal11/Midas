@@ -24,6 +24,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Room } from '../../../medical-provider/rooms/models/room';
+import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { UserSettingStore } from '../../../commons/stores/user-setting-store';
 import { UserSetting } from '../../../commons/models/user-setting';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
@@ -31,6 +32,7 @@ import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-sto
 import { PendingReferral } from '../models/pending-referral';
 import { Procedure } from '../../../commons/models/procedure';
 import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
+import { DoctorsStore } from '../../../medical-provider/users/stores/doctors-store';
 
 @Component({
     selector: 'pending-referrals',
@@ -78,6 +80,13 @@ export class PendingReferralsComponent implements OnInit {
     unscheduledDialogVisible = false;
     unscheduledVisitId: number;
     unscheduledVisit: UnscheduledVisit;
+    compnayDoctorList : Doctor[] = [];
+    compnayRoomList : Room[] = [];
+    compnayRoomListDisplay : Room[] = [];
+
+    showDoctorList = false;
+    showRoomList = false;
+
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -90,7 +99,9 @@ export class PendingReferralsComponent implements OnInit {
         private _availableSlotsStore: AvailableSlotsStore,
         private _userSettingStore: UserSettingStore,
         public locationsStore: LocationsStore,
-        private _patientVisitsStore: PatientVisitsStore
+        private _patientVisitsStore: PatientVisitsStore,
+        private _doctorsStore : DoctorsStore,
+        private _roomsStore : RoomsStore
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadPendingReferralsForCompany(this.companyId);
@@ -122,6 +133,18 @@ export class PendingReferralsComponent implements OnInit {
         this.specialityId = pendingReferralListRow.forSpecialtyId ? pendingReferralListRow.forSpecialtyId : 0;
         this.roomTestId = pendingReferralListRow.forRoomTestId ? pendingReferralListRow.forRoomTestId : 0;
         this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId)
+        if(this.specialityId != 0)
+        {
+            this.showDoctorList = true;
+            this.showRoomList = false;
+            this.loadDoctorsByCompanyIdAndSpeciality(this.specialityId);
+        }
+        else if(this.roomTestId != 0)
+        {
+            this.showDoctorList = false;
+            this.showRoomList = true;
+            this.loadRoomsByTestSpeciality(this.roomTestId);
+        }
 
     }
 
@@ -171,6 +194,77 @@ export class PendingReferralsComponent implements OnInit {
             });
     }
 
+    loadDoctorsByCompanyIdAndSpeciality(specialityId: number) {
+        this._doctorsStore.getDoctorsByCompanyIdAndSpeciality(specialityId)
+            .subscribe(compnayDoctors => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Doctor-',
+                    value: ''
+                }]
+                let doctorMaster = _.map(compnayDoctors, (currentDoctorMaster: Doctor) => {
+                    return {
+                        label: `${currentDoctorMaster.user.displayName}`,
+                        value: currentDoctorMaster.id
+                    };
+                })
+                this.compnayDoctorList = _.union(defaultLabel, doctorMaster);
+            },
+            (error) => {
+                this.compnayDoctorList = [];
+            },
+            () => {
+               
+            });
+    }
+
+    loadDoctorsByCompanyIdAndTestSpeciality(roomTestId: number) {
+        this._doctorsStore.getDoctorsByCompanyIdAndTestSpeciality(roomTestId)
+        .subscribe(compnayDoctors => {
+            let defaultLabel: any[] = [{
+                label: '-Select Doctor-',
+                value: ''
+            }]
+            let doctorMaster = _.map(compnayDoctors, (currentDoctorMaster: Doctor) => {
+                return {
+                    label: `${currentDoctorMaster.user.displayName}`,
+                    value: currentDoctorMaster.id
+                };
+            })
+            this.compnayDoctorList = _.union(defaultLabel, doctorMaster);
+        },
+            (error) => {
+                this.compnayDoctorList = [];
+            },
+            () => {
+               
+            });
+    }
+
+    loadRoomsByTestSpeciality(roomTestId: number) {
+        this._roomsStore.getRoomsByTestInAllApp(roomTestId)
+        .subscribe(compnayRooms => {
+            this.compnayRoomList = compnayRooms;
+            let defaultLabel: any[] = [{
+                label: '-Select Room-',
+                value: ''
+            }]
+            let roomMaster = _.map(compnayRooms, (currentRoomMaster: Room) => {
+                return {
+                    label: `${currentRoomMaster.name}`,
+                    value: currentRoomMaster.id
+                };
+            })
+            this.compnayRoomListDisplay = _.union(defaultLabel, roomMaster);
+        },
+            (error) => {
+                this.compnayRoomList = [];
+                this.compnayRoomListDisplay=[];
+            },
+            () => {
+               
+            });
+    }
+
     selectOption(event) {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
@@ -215,6 +309,56 @@ export class PendingReferralsComponent implements OnInit {
                 (error) => { });
         }
     }
+
+
+
+    selectOptionInternalDoctor(event) {
+     if(event.value != '' && event.value != undefined)
+     {
+            this.selectedDoctorId = 0;
+            this.selectedRoomId = 0;
+            this.selectedOption = 1;
+            this.selectedDoctorId = event.value;
+            this.selectedMedicalProviderId = this.sessionStore.session.currentCompany.id;
+            this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
+            if (this.selectedMedicalProviderId && this.selectedOption === 1) {
+                this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId, this.selectedDoctorId)
+                .subscribe((locations: LocationDetails[]) => {
+                    this.locations = locations;
+                },
+                (error) => { 
+
+                });
+            }
+      }
+      else
+      {
+        this.selectedDoctorId = 0;
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+      }
+    }
+
+    selectOptionInternalRoom(event) {
+        if(event.value != '' && event.value != undefined)
+        {
+            this.selectedOption = 2;
+            this.selectedRoomId = event.value;
+            this.compnayRoomList.forEach(currentRoom => {
+                if (currentRoom.id == this.selectedRoomId) {
+                    this.selectedLocationId = currentRoom.location.location.id;
+                }
+            });
+            this.selectedMedicalProviderId = this.sessionStore.session.currentCompany.id;
+         }
+         else
+         {
+           this.selectedDoctorId = 0;
+           this.selectedRoomId = 0;
+           this.selectedOption = 0;
+         }
+       }
+
     checkUserSettings(selectedMedicalProviderId, selectedDoctorId) {
         this._userSettingStore.getUserSettingByUserId(this.selectedDoctorId, this.selectedMedicalProviderId)
             .subscribe((userSetting) => {
@@ -385,6 +529,17 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.availableSlotsDialogVisible = false;
+                this.medicalProviderDoctor = [];
+                this.medicalProviderRoom = [];
+                this.medicalProvider = [];
+                this.selectedReferrals = null;
+                this.selectedMode = 0;
+                this.selectedOption = 0;
+                this.compnayDoctorList = [];
+                this.compnayRoomList = [];
+                this.compnayRoomListDisplay = [];
+                this.showDoctorList = false;
+                this.showRoomList = false;
                 this.loadPendingReferralsForCompany(this.companyId);
                 this.isAvailableSlotsSavingInProgress = false;
             }).catch((error) => {
@@ -464,8 +619,13 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
                 this.medicalProvider = [];
-                this.selectedReferrals === null;
+                this.selectedReferrals = null;
                 this.selectedMode = 0;
+                this.compnayDoctorList = [];
+                this.compnayRoomList = [];
+                this.compnayRoomListDisplay = [];
+                this.showDoctorList = false;
+                this.showRoomList = false;
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
@@ -546,8 +706,13 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
                 this.medicalProvider = [];
-                this.selectedReferrals === null;
+                this.selectedReferrals = null;
                 this.selectedMode = 0;
+                this.compnayDoctorList = [];
+                this.compnayRoomList = [];
+                this.compnayRoomListDisplay = [];
+                this.showDoctorList = false;
+                this.showRoomList = false;
             },
             (error) => {
                 let errString = 'Unable to save referral.';
@@ -612,8 +777,13 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
                 this.medicalProvider = [];
-                this.selectedReferrals === null;
+                this.selectedReferrals = null;
                 this.selectedMode = 0;
+                this.compnayDoctorList = [];
+                this.compnayRoomList = [];
+                this.compnayRoomListDisplay = [];
+                this.showDoctorList = false;
+                this.showRoomList = false;
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
