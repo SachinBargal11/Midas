@@ -968,7 +968,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
 
-                                               .Where(p => p.FromCompanyId == companyId
+                                               .Where(p => p.FromCompanyId == companyId && p.ToCompanyId != companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
 
@@ -1018,7 +1018,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("ReferralDocuments")
                                                 .Include("ReferralDocuments.MidasDocument")
 
-                                               .Where(p => p.ToCompanyId == companyId
+                                               .Where(p => p.ToCompanyId == companyId && p.FromCompanyId != companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .OrderByDescending(p => p.Id).ToList<Referral>();
+
+            List<BO.ReferralList> boReferral = new List<BO.ReferralList>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.ReferralList, Referral>(EachReferral));
+                }
+
+            }
+
+            return boReferral;
+        }
+        #endregion
+
+        #region Get Referral By To Company Id
+        public override object GetInhouseReferralByCompanyId(int companyId)
+        {
+            var referralDB = _context.Referrals.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient")
+                                                .Include("Case.Patient.User")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User1")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+                                                .Include("ReferralDocuments")
+                                                .Include("ReferralDocuments.MidasDocument")
+
+                                               .Where(p => p.ToCompanyId == companyId && p.FromCompanyId == companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
 
@@ -1268,7 +1318,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
 
-                                               .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
+                                               .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId && p.ToCompanyId != companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
 
@@ -1319,7 +1369,58 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
 
-                                               .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
+                                               .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId && p.FromCompanyId != companyId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .OrderByDescending(p => p.Id).ToList<Referral>();
+
+            List<BO.ReferralList> boReferral = new List<BO.ReferralList>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.ReferralList, Referral>(EachReferral));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+
+        #region Get inhouse Referral By  Doctor And Company Id
+        public override object GetInhouseReferralByDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            var referralDB = _context.Referrals.Include("Company")
+                                               .Include("Company1")
+                                               .Include("Location")
+                                               .Include("Location1")
+                                               .Include("Doctor")
+                                               .Include("Doctor.User")
+                                               .Include("Doctor1")
+                                               .Include("Doctor1.User")
+                                               .Include("Case")
+                                               .Include("Case.CaseCompanyMappings")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.Patient")
+                                               .Include("Case.Patient.User")
+                                               .Include("Room")
+                                               .Include("Room1")
+                                               .Include("RoomTest")
+                                               .Include("Specialty")
+                                               .Include("User1")
+                                               .Include("ReferralProcedureCodes")
+                                               .Include("ReferralProcedureCodes.ProcedureCode")
+                                               .Include("ReferralDocuments")
+                                               .Include("ReferralDocuments.MidasDocument")
+
+                                               .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId && p.FromCompanyId == companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
 

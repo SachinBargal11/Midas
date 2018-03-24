@@ -1189,6 +1189,27 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetDoctorsByCompanyIdAndSpeciality(int companyId , int specialtyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetDoctorsByCompanyIdAndTestSpeciality(int companyId, int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetInhouseReferralByCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public virtual Object GetInhouseReferralByDoctorAndCompanyId(int doctorId,int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -209,5 +209,9 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetPatientVisitUnscheduledByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage SetUpdatePrefferedProcedureCodeMultiple(HttpRequestMessage request, List<T> gbObject);
         HttpResponseMessage RemoveUpdatePrefferedProcedureCodeMultiple(HttpRequestMessage request, List<T> gbObject);
+        HttpResponseMessage GetDoctorsByCompanyIdAndSpeciality(HttpRequestMessage request, int companyId, int specialtyId);
+        HttpResponseMessage GetDoctorsByCompanyIdAndTestSpeciality(HttpRequestMessage request, int companyId, int roomTestId);
+        HttpResponseMessage GetInhouseReferralByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetInhouseReferralByDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId);
     }
 }

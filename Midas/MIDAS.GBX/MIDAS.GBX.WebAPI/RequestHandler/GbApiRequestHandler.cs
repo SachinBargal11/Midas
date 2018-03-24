@@ -2962,5 +2962,59 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+
+        public HttpResponseMessage GetDoctorsByCompanyIdAndSpeciality(HttpRequestMessage request, int companyId,int specialtyId)
+        {
+            var objResult = dataAccessManager.GetDoctorsByCompanyIdAndSpeciality(companyId, specialtyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetDoctorsByCompanyIdAndTestSpeciality(HttpRequestMessage request, int companyId, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetDoctorsByCompanyIdAndTestSpeciality(companyId, roomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage GetInhouseReferralByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetInhouseReferralByCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetInhouseReferralByDoctorAndCompanyId(HttpRequestMessage request,int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetInhouseReferralByDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

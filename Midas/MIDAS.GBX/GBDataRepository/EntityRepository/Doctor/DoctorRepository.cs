@@ -999,6 +999,89 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Get By Company ID and Speciality
+        public override object GetDoctorsByCompanyIdAndSpeciality(int companyId, int specialtyId)
+        {
+            var doctorDB = _context.Doctors.Include("User")
+                                           .Include("User.AddressInfo")
+                                           .Include("User.ContactInfo")
+                                           .Include("DoctorSpecialities")
+                                           .Include("DoctorSpecialities.Specialty")
+                                           .Include("DoctorRoomTestMappings")
+                                           .Include("DoctorRoomTestMappings.RoomTest")
+                                           .Include("User.UserCompanyRoles")
+                                           .Where(p => (p.User.IsDeleted.HasValue == false || (p.User.IsDeleted.HasValue == true && p.User.IsDeleted.Value == false))
+                                                     && p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                                                            .Any(p3 => p3.CompanyID == companyId)
+                                                     && p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList<Doctor>();
+
+
+
+
+            BO.Doctor doctorBO = new BO.Doctor();
+            List<BO.Doctor> boDoctor = new List<BO.Doctor>();
+            if (doctorDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachDoctor in doctorDB)
+                {
+                    boDoctor.Add(Convert<BO.Doctor, Doctor>(EachDoctor));
+                }
+
+            }
+
+            return (object)boDoctor;
+        }
+        #endregion
+
+        #region Get By Company ID and TestSpeciality
+        public override object GetDoctorsByCompanyIdAndTestSpeciality(int companyId, int roomTestId)
+        {
+            var doctorDB = _context.Doctors.Include("User")
+                                           .Include("User.AddressInfo")
+                                           .Include("User.ContactInfo")
+                                           .Include("DoctorSpecialities")
+                                           .Include("DoctorSpecialities.Specialty")
+                                           .Include("DoctorRoomTestMappings")
+                                           .Include("DoctorRoomTestMappings.RoomTest")
+                                           .Include("User.UserCompanyRoles")
+                                           .Where(p => (p.User.IsDeleted.HasValue == false || (p.User.IsDeleted.HasValue == true && p.User.IsDeleted.Value == false))
+                                                     && p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                                                            .Any(p3 => p3.CompanyID == companyId)
+                                                     && p.DoctorRoomTestMappings.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.RoomTestId == roomTestId)
+                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList<Doctor>();
+
+
+
+
+            BO.Doctor doctorBO = new BO.Doctor();
+            List<BO.Doctor> boDoctor = new List<BO.Doctor>();
+            if (doctorDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachDoctor in doctorDB)
+                {
+                    boDoctor.Add(Convert<BO.Doctor, Doctor>(EachDoctor));
+                }
+
+            }
+
+            return (object)boDoctor;
+        }
+        #endregion
+
         #region GetByLocationAndSpecialty
         public override object GetByLocationAndSpecialty(int locationId, int specialtyId)
         {

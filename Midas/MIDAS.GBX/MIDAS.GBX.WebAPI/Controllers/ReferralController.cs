@@ -153,6 +153,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GenerateReferralDocument(Request, id);
         }
 
+        [HttpGet]
+        [Route("getInhouseReferralByCompanyId/{companyId}")]
+        public HttpResponseMessage GetInhouseReferralByCompanyId(int companyId)
+        {
+            return requestHandler.GetInhouseReferralByCompanyId(Request, companyId);
+        }
+
+        [HttpGet]
+        [Route("getInhouseReferralByDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetInhouseReferralByDoctorAndCompanyId(int doctorId,int companyId)
+        {
+            return requestHandler.GetInhouseReferralByDoctorAndCompanyId(Request, doctorId, companyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

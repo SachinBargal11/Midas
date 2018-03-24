@@ -233,5 +233,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetPatientVisitUnscheduledByCompanyId(int CompanyId);
         Object SetUpdatePrefferedProcedureCodeMultiple(List<T> gbObject);
         Object RemoveUpdatePrefferedProcedureCodeMultiple(List<T> gbObject);
+        Object GetDoctorsByCompanyIdAndSpeciality(int companyId,int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetDoctorsByCompanyIdAndTestSpeciality(int companyId, int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetInhouseReferralByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetInhouseReferralByDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

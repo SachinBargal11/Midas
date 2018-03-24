@@ -164,6 +164,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerMapDoctor.GetDoctorByIDAndCompnayID(Request, User.CurrentUserId, User.CompanyID);
         }
 
+
+        [HttpGet]
+        [Route("getDoctorsByCompanyIdAndSpeciality/{companyId}/{specialtyId}")]
+        public HttpResponseMessage GetDoctorsByCompanyIdAndSpeciality(int companyId,int specialtyId)
+        {
+            return requestHandler.GetDoctorsByCompanyIdAndSpeciality(Request, companyId, specialtyId);
+        }
+
+        [HttpGet]
+        [Route("getDoctorsByCompanyIdAndTestSpeciality/{companyId}/{roomTestId}")]
+        public HttpResponseMessage GetDoctorsByCompanyIdAndTestSpeciality(int companyId, int roomTestId)
+        {
+            return requestHandler.GetDoctorsByCompanyIdAndTestSpeciality(Request, companyId, roomTestId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
