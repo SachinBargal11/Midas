@@ -273,5 +273,41 @@ export class DoctorsService {
 
     }
 
+    getDoctorsByCompanyIdAndSpeciality(companyId: number, specialtyId: number): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getDoctorsByCompanyIdAndSpeciality/' + companyId +'/'+ specialtyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+
+    getDoctorsByCompanyIdAndTestSpeciality(companyId: number, roomTestId: number): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getDoctorsByCompanyIdAndTestSpeciality/' + companyId +'/'+ roomTestId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+
 }
 

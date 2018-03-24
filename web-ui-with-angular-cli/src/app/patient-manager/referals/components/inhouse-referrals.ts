@@ -11,8 +11,6 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
-import { Speciality } from '../../../account-setup/models/speciality';
-import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
 import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
@@ -21,32 +19,29 @@ import { InboundOutboundList } from '../models/inbound-outbound-referral';
 import { PendingReferralStore } from '../stores/pending-referrals-stores';
 import { ConsentStore } from '../../cases/stores/consent-store';
 import { Document } from '../../../commons/models/document';
-
 @Component({
-    selector: 'outbound-referrals',
-    templateUrl: './outbound-referrals.html'
+    selector: 'inhouse-referrals',
+    templateUrl: './inhouse-referrals.html',
+    styleUrls: ['./inhouse-referrals.scss']
 })
 
-export class OutboundReferralsComponent implements OnInit {
+export class InhouseReferralsComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    consentRecived: string = '';
-    consentNotRecived: string = '';
+    consentRecived: boolean = false;
+    consentNotRecived: boolean = false;
     searchMode: number = 1;
     referrals: InboundOutboundList[];
     referredUsers: InboundOutboundList[];
     referredMedicalOffices: InboundOutboundList[];
     referredRooms: InboundOutboundList[];
-    referralsOutsideMidas: InboundOutboundList[];
-    selectedReferrals: InboundOutboundList[] = [];
-    referredDoctors: Doctor[];
-    refferedRooms: Room[];
     filters: SelectItem[];
     doctorRoleOnly = null;
+    display: boolean = false;
+    addConsentDialogVisible: boolean = false;
+    currentCaseId: number;
     selectedCaseId: number;
     companyId: number;
     url;
-    addConsentDialogVisible: boolean = false;
-    currentCaseId: number;
     signedDocumentUploadUrl: string;
     signedDocumentPostRequestData: any;
     isElectronicSignatureOn: boolean = false;
@@ -59,10 +54,11 @@ export class OutboundReferralsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _pendingReferralStore: PendingReferralStore,
         private _consentStore: ConsentStore,
+
     ) {
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
-
+         this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
@@ -108,20 +104,13 @@ export class OutboundReferralsComponent implements OnInit {
                     }
                  }
         }
-        }
+    }
         this.loadReferralsCheckingDoctor();
     }
 
     ngOnInit() {
         this.checkSessions();
     }
-
-    testData: any[] = [
-        {
-            displayName: "AB69852", caseId: "50", toCompanyname: "citimall", toLocationname: "",
-            forSpecialty: "AC"
-        }];
-
     loadReferralsCheckingDoctor() {
         if (this.doctorRoleOnly) {
             this.loadReferralsForDoctor();
@@ -129,10 +118,23 @@ export class OutboundReferralsComponent implements OnInit {
             this.loadReferrals();
         }
     }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._pendingReferralStore.getInhouseReferralsByDoctorId()
+            .subscribe((referrals: InboundOutboundList[]) => {
+                this.referrals = referrals;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
     loadReferrals() {
         this._progressBarService.show();
-        this._pendingReferralStore.getReferralsByReferringCompanyId()
+        this._pendingReferralStore.getInhouseReferralsByCompanyId()
             .subscribe((referrals: InboundOutboundList[]) => {
                 this.referredMedicalOffices = referrals;
             },
@@ -143,24 +145,14 @@ export class OutboundReferralsComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-    loadReferralsForDoctor() {
-        this._progressBarService.show();
-        this._pendingReferralStore.getReferralsByReferringUserId()
-            .subscribe((referrals: InboundOutboundList[]) => {
-                this.referredMedicalOffices = referrals;
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
+    // downloadConsent(caseDocuments: CaseDocument[]) {
+    //     caseDocuments.forEach(caseDocument => {
+    //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+    //     });
+    // }
 
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
@@ -191,34 +183,40 @@ export class OutboundReferralsComponent implements OnInit {
             this._progressBarService.hide();
         });
     }
+
     consentAvailable(referral: InboundOutboundList) {
+        this.consentNotRecived = false;
+        this.consentRecived = false;
+        let consentAvailable = null;
         if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
+            _.forEach(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
+                if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
+                    this.consentRecived = true
+                } else this.consentRecived = false;
             });
-            if (consentAvailable) {
-                this.consentRecived = 'Yes';
-            } else {
-                this.consentNotRecived = 'No';
-            }
+            // referral.case.companyCaseConsentApproval.forEach(currentConsent => {
+            //     if(currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
+            //          this.consentRecived = true;
+            //          return;
+            //     } else {
+            //         this.consentNotRecived = true;
+            //         return;                    
+            //     }               
+            // });
+            // if (consentAvailable) {
+            //     this.consentRecived = true;
+            //     return;
+            // } else {
+            //     this.consentNotRecived = true;
+            //     return;
+            // }
         } else {
-            this.consentNotRecived = 'No';
+            this.consentNotRecived = true;
+            return;
         }
     }
-    getCurrentDoctorSpeciality(currentReferral): string {
-        let specialityString: string = null;
-        let speciality: any = [];
-        _.forEach(currentReferral.doctorSpecialities, (currentDoctorSpeciality: DoctorSpeciality) => {
-            speciality.push(currentDoctorSpeciality.speciality.specialityCode);
-        });
-        if (speciality.length > 0) {
-            specialityString = speciality.join(', ');
-        }
-        return specialityString;
-    }
+
     showDialog(currentCaseId) {
-     
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
         this.signedDocumentPostRequestData = {
@@ -236,7 +234,7 @@ export class OutboundReferralsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, case and consent data already exists');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             }
             else {
                 let notification = new Notification({
@@ -245,10 +243,11 @@ export class OutboundReferralsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible = false;
+                this.checkSessions();
             }
-            this.addConsentDialogVisible = false;
-            this.checkSessions();
+
         });
     }
 
@@ -273,10 +272,10 @@ export class OutboundReferralsComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-
+            this.addConsentDialogVisible = false;
+            this.checkSessions();
         }
-        this.addConsentDialogVisible = false;
-        this.checkSessions();
+
     }
 
     signedDocumentUploadError(error: Error) {
@@ -290,30 +289,30 @@ export class OutboundReferralsComponent implements OnInit {
         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
 
-    // downloadTemplate() {    
-    //     this._progressBarService.show();
-    //     this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
-    //         .subscribe(
-    //         (response) => {
-    //             // this.document = document
-    //             //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-    //         },
-    //         (error) => {
-    //             let errString = 'Unable to download';
-    //             let notification = new Notification({
-    //                 'messages': 'Unable to download',
-    //                 'type': 'ERROR',
-    //                 'createdAt': moment()
-    //             });
-    //             //this._notificationsStore.addNotification(notification);
-    //             this._progressBarService.hide();
-    //             this._notificationsService.error('Oh No!', 'Unable to download');
+    downloadTemplate(caseId) {       
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
 
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    //     this._progressBarService.hide();
-    // }
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 
 }
