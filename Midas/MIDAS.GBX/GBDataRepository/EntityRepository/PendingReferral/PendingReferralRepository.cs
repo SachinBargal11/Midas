@@ -49,6 +49,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             pendingReferralBO.DoctorSignatureType = pendingReferral.DoctorSignatureType;
             pendingReferralBO.DoctorSignatureText = pendingReferral.DoctorSignatureText;
             pendingReferralBO.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
+            pendingReferralBO.NoOfVisits = pendingReferral.NoOfVisits;
 
             if (pendingReferral.PatientVisit != null)
             {
@@ -278,6 +279,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         PendingReferralList.DoctorSignatureType = pendingReferral.DoctorSignatureType;
                         PendingReferralList.DoctorSignatureText = pendingReferral.DoctorSignatureText;
                         PendingReferralList.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
+                        PendingReferralList.NoOfVisits = pendingReferral.NoOfVisits;
 
                         if (pendingReferral.Doctor != null)
                         {
@@ -472,6 +474,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     PendingReferralListBO.DoctorSignatureType = pendingReferral.DoctorSignatureType;
                     PendingReferralListBO.DoctorSignatureText = pendingReferral.DoctorSignatureText;
                     PendingReferralListBO.DoctorSignatureFont = pendingReferral.DoctorSignatureFont;
+                    PendingReferralListBO.NoOfVisits = pendingReferral.NoOfVisits;
 
                     if (pendingReferral.Doctor != null)
                     {
@@ -1050,12 +1053,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             pendingReferralDB.DoctorSignatureType = item.DoctorSignatureType;
                             pendingReferralDB.DoctorSignatureText = item.DoctorSignatureText;
                             pendingReferralDB.DoctorSignatureFont = item.DoctorSignatureFont;
+                            pendingReferralDB.NoOfVisits = item.NoOfVisits;
 
                                 if (add_pendingReferral == true)
-                            {
-                                pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
-                            }
-                            _context.SaveChanges();
+                                {
+                                    pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
+                                }
+                                _context.SaveChanges();
 
 
                                 lstPendingReferralDB.Add(pendingReferralDB);
@@ -1065,6 +1069,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                 if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
                                 {
                                     //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                                    ExisitingPendingReferral.Add(pendingReferralDB.Id);
                                 }
                                 else
                                 {

@@ -49,6 +49,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
 
+        [JsonProperty("noOfVisits")]
+        public int? NoOfVisits { get; set; }
+
         [JsonProperty("patientVisit")]
         public PatientVisit PatientVisit { get; set; }
 
@@ -110,6 +113,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
+
+        [JsonProperty("noOfVisits")]
+        public int? NoOfVisits { get; set; }
 
         //[JsonProperty("doctor")]
         //public Doctor Doctor { get; set; }      
@@ -188,7 +194,10 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
-    
+
+        [JsonProperty("noOfVisits")]
+        public int? NoOfVisits { get; set; }
+
         [JsonProperty("doctorFirstName")]
         public string DoctorFirstName { get; set; }
 

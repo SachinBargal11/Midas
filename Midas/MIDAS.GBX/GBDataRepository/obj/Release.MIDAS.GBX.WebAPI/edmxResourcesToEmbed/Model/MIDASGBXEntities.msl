@@ -1281,6 +1281,7 @@
           <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
           <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
           <ScalarProperty Name="DismissedBy" ColumnName="DismissedBy" />
+          <ScalarProperty Name="NoOfVisits" ColumnName="NoOfVisits" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

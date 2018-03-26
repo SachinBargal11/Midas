@@ -1490,6 +1490,7 @@
     <Property Name="UpdateByUserID" Type="Int32" />
     <Property Name="UpdateDate" Type="DateTime" Precision="7" />
     <Property Name="DismissedBy" Type="Int32" />
+    <Property Name="NoOfVisits" Type="Int32" />
     <NavigationProperty Name="Company" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="PendingReferral" ToRole="Company" />
     <NavigationProperty Name="Doctor" Relationship="Self.FK_PendingReferral_Doctor_FromDoctorId" FromRole="PendingReferral" ToRole="Doctor" />
     <NavigationProperty Name="Location" Relationship="Self.FK_PendingReferral_Location_FromLocationId" FromRole="PendingReferral" ToRole="Location" />

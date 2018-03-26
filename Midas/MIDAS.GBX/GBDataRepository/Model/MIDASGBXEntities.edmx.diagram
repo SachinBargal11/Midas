@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="43a3a84c9be14a1cb092a81131c8d185" Name="Diagram1">
+      <Diagram DiagramId="eddb65ef03874b8ca21c55cccb538887" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASModel.AccidentTreatment" Width="1.5" PointX="11.25" PointY="123.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.AccidentWitness" Width="1.5" PointX="11.25" PointY="136.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.AddressInfo" Width="1.5" PointX="0.75" PointY="128.875" IsExpanded="true" />
@@ -80,7 +80,7 @@
         <EntityTypeShape EntityType="MIDASModel.PatientVisitDiagnosisCode" Width="1.5" PointX="30.75" PointY="145.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.PatientVisitProcedureCode" Width="1.5" PointX="30.75" PointY="141" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.PatientVisitUnscheduled" Width="1.5" PointX="38.25" PointY="138.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASModel.PendingReferral" Width="1.5" PointX="30.75" PointY="150.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASModel.PendingReferral" Width="1.5" PointX="30.75" PointY="150.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.PendingReferralProcedureCode" Width="1.5" PointX="33" PointY="154.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.PlaintiffVehicle" Width="1.5" PointX="27.75" PointY="145.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASModel.PolicyOwner" Width="1.5" PointX="17.25" PointY="145.5" IsExpanded="true" />

@@ -1218,6 +1218,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="UpdateByUserID" Type="int" />
     <Property Name="UpdateDate" Type="datetime2" Precision="7" />
     <Property Name="DismissedBy" Type="int" />
+    <Property Name="NoOfVisits" Type="int" />
   </EntityType>
   <EntityType Name="PendingReferralProcedureCodes">
     <Key>
