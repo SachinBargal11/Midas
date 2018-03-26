@@ -140,7 +140,7 @@ export class PatientVisitListImeComponent implements OnInit {
                 let imeVisitDetails = results[0];
              
                 let matchingVisits: ImeVisit[];
-                if(this.viewall)
+                if(!this.viewall)
                 {
                     matchingVisits = imeVisitDetails;
                 }

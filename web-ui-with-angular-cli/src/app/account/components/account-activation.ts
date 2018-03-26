@@ -60,6 +60,7 @@ export class AccountActivationComponent implements OnInit {
                         let resultForUpdate = this._authenticationService.fetchByCompanyId(this.company.id);
                         resultForUpdate.subscribe(
                             (companyMaster: Signup) => {
+                                debugger;
                                 this.companyMaster = companyMaster.originalResponse;
                                 console.log(this.companyMaster.Signup);
                                 if (this.companyMaster.Signup.company.companyStatusTypeId == 3) {
