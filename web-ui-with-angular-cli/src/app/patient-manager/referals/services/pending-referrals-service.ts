@@ -272,6 +272,28 @@ export class PendingReferralService {
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
 
+
+    getPreferredCompanyByCompanyId(companyId: Number): Observable<PrefferedMedicalProvider[]> {
+        let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/GetPreferredMedicalProviderbyCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())            
+                .subscribe((data: any) => {
+                    let prefferedMedicalProvider: PrefferedMedicalProvider[] = [];
+                    if (_.isArray(data)) {
+                        prefferedMedicalProvider = (<Object[]>data).map((data: any) => {
+                            return PrefferedMedicalProviderAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(prefferedMedicalProvider);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PrefferedMedicalProvider[]>>Observable.fromPromise(promise);
+    }
+
     //inhouse end
 
 }

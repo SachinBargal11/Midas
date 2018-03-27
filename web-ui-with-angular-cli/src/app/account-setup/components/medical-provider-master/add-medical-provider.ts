@@ -51,6 +51,7 @@ export class AddMedicalProviderComponent implements OnInit {
     lastName: string ='';
     email: string = '';
     phoneNo: string= '';
+    companyName: string='';
 
     constructor(
         private fb: FormBuilder,
@@ -161,7 +162,9 @@ export class AddMedicalProviderComponent implements OnInit {
         this.validateOtpResponse = null;
         this.closeDialogBox.emit();
     }
+
     saveMedicalProvider() {
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
         let result;
@@ -192,27 +195,28 @@ export class AddMedicalProviderComponent implements OnInit {
                     createByUserID: this._sessionStore.session.account.user.id
                 }
             }
-        };
-        this._progressBarService.show();
+        };        
         result = this._medicalProviderMasterStore.addMedicalProvider(provider);
         result.subscribe(
-            (response) => {
-                debugger;
+            (response) => {                
                 let notification = new Notification({
                     'title': 'Medical provider has been registered successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                
                 this._notificationsService.success('Welcome!', 'Medical provider has been registered successfully!.');
-                if (!this.inputCancel) {
-                    setTimeout(() => {
-                        this._router.navigate(['../'], { relativeTo: this._route });
-                    }, 3000);
-                }
-                else {
+                // if (!this.inputCancel) {
+                //     setTimeout(() => {
+                //         this._router.navigate(['../'], { relativeTo: this._route });
+                //     }, 3000);
+                // }
+                // else {
+                    this.clearform();
                     this.closeDialog();
-                }
+                    
+                //}
             },
             (error) => {
                 let errString = 'Unable to register user.';
@@ -220,8 +224,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 //     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                 //     'type': 'ERROR',
                 //     'createdAt': moment()
-                // });
-                this.isSaveProgress = false;
+                // });                
                 //this._notificationsStore.addNotification(notification);
 
                 this._notificationsService.error('Oh No!', errString);
@@ -289,6 +292,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 });
                 // this.loadAllProviders();
                 //this.loadMedicalProviders();
+                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog()
             },
@@ -375,6 +379,16 @@ export class AddMedicalProviderComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+    clearform()
+    {   
+        this.companyName = ''; 
+        this.firstName = '';
+        this.lastName = '';
+        this.email = '';
+        this.phoneNo = '';
+        this.providerform.value.reset();
     }
 }
 

@@ -190,6 +190,18 @@ export class PendingReferralStore {
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
 
+    getPreferredCompanyByCompanyId(companyId: number): Observable<PrefferedMedicalProvider[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getPreferredCompanyByCompanyId(companyId)
+                .subscribe((prefferedMedicalProvider: PrefferedMedicalProvider[]) => {
+                    resolve(prefferedMedicalProvider);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<PrefferedMedicalProvider[]>>Observable.fromPromise(promise);
+    }
+
     //inhouse end
 
 }
