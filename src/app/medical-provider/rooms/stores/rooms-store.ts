@@ -44,6 +44,7 @@ export class RoomsStore {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+
     getRoomsByLocationDoctorId(locationId: number, DoctorId: number): Observable<Room[]> {
         let promise = new Promise((resolve, reject) => {
             this._roomsService.getRoomsByLocationDoctorId(locationId, DoctorId).subscribe((rooms: Room[]) => {
@@ -55,6 +56,7 @@ export class RoomsStore {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+
     getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
         let promise = new Promise((resolve, reject) => {
             this._roomsService.getRoomsByTestInAllApp(testId).subscribe((rooms: Room[]) => {
@@ -66,6 +68,7 @@ export class RoomsStore {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+
     getTests(): Observable<Tests[]> {
         let promise = new Promise((resolve, reject) => {
             this._roomsService.getTests().subscribe((tests: Tests[]) => {
@@ -190,6 +193,7 @@ export class RoomsStore {
         });
         return <Observable<Room>>Observable.from(promise);
     }
+
     deleteRoom(room: Room) {
         let rooms = this._rooms.getValue();
         let index = rooms.findIndex((currentRoom: Room) => currentRoom.id === room.id);
@@ -203,6 +207,20 @@ export class RoomsStore {
             });
         });
         return <Observable<Room>>Observable.from(promise);
+    }
+
+
+    getByRoomInAllAppCompany(testId: number): Observable<Room[]> {
+        let promise = new Promise((resolve, reject) => {
+            let companyId: number = this._sessionStore.session.currentCompany.id;
+            this._roomsService.getByRoomInAllAppCompany(testId,companyId).subscribe((rooms: Room[]) => {
+                this._rooms.next(List(rooms));
+                resolve(rooms);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
     }
 
     resetStore() {

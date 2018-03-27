@@ -97,7 +97,7 @@
             <div class="col-md-2"><label class="form-label">Location<span class="color-red">*</span></label></div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation(2)">
+                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
             <option value="0"> -- Select Location -- </option>
             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
@@ -107,7 +107,7 @@
             <div *ngIf="sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event,2)">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                             <option value="0"> -- Select specialty -- </option>
                             <optgroup label="Select Doctor">
                                 <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>
@@ -123,7 +123,7 @@
                 <div class="col-md-2"><label class="form-label">Specialty<span class="color-red">*</span></label></div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event,2)">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
                         <optgroup label="Select Doctor">
                         <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id" [selected]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id === selectedDoctorId ? true : null">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
@@ -368,7 +368,7 @@
                         </div>
                         
                     </div>
-                    <div class=" ui-widget-header row">
+                    <div class="ui-widget-header row">
                     <div class="col-lg-12">
                             <div class="pull-right">{{procedurecodeheading}}</div>
                         </div>

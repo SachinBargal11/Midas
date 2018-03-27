@@ -58,7 +58,7 @@
                     <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
                         {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
              </optgroup>
-              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Activation Pending">
                      <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
                          {{currentPreferredMedicalProvider.name}}</option>
              </optgroup>
@@ -66,14 +66,14 @@
         <div *ngIf="showDoctorList && compnayDoctorList.length > 0">
         <label class="form-label">Internal Doctor</label>
         <div class="form-group">
-                <p-dropdown [options]="compnayDoctorList"  (onChange)="selectOptionInternalDoctor($event)"  [style]="{'width':'100%'}"
+                <p-dropdown [options]="compnayDoctorList" [(ngModel)]="compnayDoctorId"  (onChange)="selectOptionInternalDoctor($event)"  [style]="{'width':'100%'}"
                 filter="filter"></p-dropdown>
         </div>
        </div>
        <div *ngIf="showRoomList && compnayRoomListDisplay.length > 0">
             <label class="form-label">Internal Room</label>
             <div class="form-group">
-                    <p-dropdown [options]="compnayRoomListDisplay"  (onChange)="selectOptionInternalRoom($event)"  [style]="{'width':'100%'}"
+                    <p-dropdown [options]="compnayRoomListDisplay" [(ngModel)]="compnayRoomId"  (onChange)="selectOptionInternalRoom($event)"  [style]="{'width':'100%'}"
                     filter="filter"></p-dropdown>
             </div>
            </div>

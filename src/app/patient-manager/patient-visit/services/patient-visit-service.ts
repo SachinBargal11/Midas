@@ -947,7 +947,6 @@ export class PatientVisitService {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    debugger
                     let eoVisits = (<Object[]>data).map((data: any) => {
                         return EoVisitAdapter.parseResponse(data);
                     });

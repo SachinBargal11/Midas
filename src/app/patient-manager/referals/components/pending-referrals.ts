@@ -83,6 +83,8 @@ export class PendingReferralsComponent implements OnInit {
     compnayDoctorList : Doctor[] = [];
     compnayRoomList : Room[] = [];
     compnayRoomListDisplay : Room[] = [];
+    compnayDoctorId = '';
+    compnayRoomId = '';
 
     showDoctorList = false;
     showRoomList = false;
@@ -181,7 +183,7 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this.medicalProviderDoctor = mappedMedicalProviderDoctor;
                 this.medicalProviderRoom = mappedMedicalProviderRoom;
-                this.medicalProvider = matchingMedicalProvider;
+                //this.medicalProvider = matchingMedicalProvider;
 
             },
             (error) => {
@@ -192,6 +194,22 @@ export class PendingReferralsComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
+        this._pendingReferralStore.getPreferredCompanyByCompanyId(companyId)       
+        .subscribe(preferredMedical => {
+            debugger;
+                let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {            
+                    return currentPreferredMedical.companyStatusType == 1 || currentPreferredMedical.companyStatusType == 2;
+                });
+
+                this.medicalProvider = matchingMedicalProvider;
+            },
+            (error) => {                
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        
     }
 
     loadDoctorsByCompanyIdAndSpeciality(specialityId: number) {
@@ -241,7 +259,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     loadRoomsByTestSpeciality(roomTestId: number) {
-        this._roomsStore.getRoomsByTestInAllApp(roomTestId)
+        this._roomsStore.getByRoomInAllAppCompany(roomTestId)
         .subscribe(compnayRooms => {
             this.compnayRoomList = compnayRooms;
             let defaultLabel: any[] = [{
@@ -270,6 +288,8 @@ export class PendingReferralsComponent implements OnInit {
         this.selectedRoomId = 0;
         this.selectedOption = 0;
         this.selectedMedicalProviderId = 0;
+        this.compnayRoomId = '';
+        this.compnayDoctorId = '';
 
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
@@ -315,6 +335,7 @@ export class PendingReferralsComponent implements OnInit {
     selectOptionInternalDoctor(event) {
      if(event.value != '' && event.value != undefined)
      {
+            this.selectedMode = 0;
             this.selectedDoctorId = 0;
             this.selectedRoomId = 0;
             this.selectedOption = 1;
@@ -342,6 +363,7 @@ export class PendingReferralsComponent implements OnInit {
     selectOptionInternalRoom(event) {
         if(event.value != '' && event.value != undefined)
         {
+            this.selectedMode = 0;
             this.selectedOption = 2;
             this.selectedRoomId = event.value;
             this.compnayRoomList.forEach(currentRoom => {
@@ -540,6 +562,8 @@ export class PendingReferralsComponent implements OnInit {
                 this.compnayRoomListDisplay = [];
                 this.showDoctorList = false;
                 this.showRoomList = false;
+                this.compnayRoomId = '';
+                this.compnayDoctorId = '';
                 this.loadPendingReferralsForCompany(this.companyId);
                 this.isAvailableSlotsSavingInProgress = false;
             }).catch((error) => {
@@ -621,6 +645,8 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProvider = [];
                 this.selectedReferrals = null;
                 this.selectedMode = 0;
+                this.compnayRoomId = '';
+                this.compnayDoctorId = '';
                 this.compnayDoctorList = [];
                 this.compnayRoomList = [];
                 this.compnayRoomListDisplay = [];
@@ -708,6 +734,8 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProvider = [];
                 this.selectedReferrals = null;
                 this.selectedMode = 0;
+                this.compnayRoomId = '';
+                this.compnayDoctorId = '';
                 this.compnayDoctorList = [];
                 this.compnayRoomList = [];
                 this.compnayRoomListDisplay = [];
@@ -777,8 +805,8 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
                 this.medicalProvider = [];
-                this.selectedReferrals = null;
-                this.selectedMode = 0;
+                this.compnayRoomId = '';
+                this.compnayDoctorId = '';
                 this.compnayDoctorList = [];
                 this.compnayRoomList = [];
                 this.compnayRoomListDisplay = [];

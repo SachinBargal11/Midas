@@ -21,6 +21,10 @@ import { VisitReferralProcedureCode } from '../../../patient-manager/patient-vis
 import { VisitReferralStore } from '../../../patient-manager/patient-visit/stores/visit-referral-store';
 import { PatientVisitsStore } from '../../../patient-manager/patient-visit/stores/patient-visit-store';
 import { SignatureFieldComponent } from '../../../commons/components/signature-field/signature-field.component';
+import { SpecialityDetailsStore } from '../../../account-setup/stores/speciality-details-store';
+import { ProcedureCodeMasterStore } from '../../../account-setup/stores/procedure-code-master-store';
+import { TestSpecialityDetail } from '../../../account-setup/models/test-speciality-details';
+import { SpecialityDetail } from '../../../account-setup/models/speciality-details';
 
 @Component({
   selector: 'app-referrals',
@@ -33,6 +37,7 @@ export class ReferralsComponent implements OnInit {
   procedureForm: FormGroup;
   procedures: Procedure[];
   selectedProcedures: Procedure[] = [];
+  selectedProceduresWithVisit: Procedure[] = [];
   proceduresList: Procedure[] = [];
   selectedProceduresToDelete: Procedure[];
   specialities: Speciality[];
@@ -51,6 +56,7 @@ export class ReferralsComponent implements OnInit {
   selectedEvent;
   iscomplete: boolean;
   digitalForm: FormGroup;
+  visitForm: FormGroup;
   diableSave:boolean = true;
   showoldSignature = false;
   oldSignatureType = 0;
@@ -59,6 +65,9 @@ export class ReferralsComponent implements OnInit {
   showtext:boolean = false;
   showsignpad:boolean = true;
   signedText:string;
+  showNoOfVisit = false;
+  selectedNoOfVisit = 0;
+  ShowProcedureCode = false;
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
@@ -79,19 +88,25 @@ export class ReferralsComponent implements OnInit {
     private _roomsStore: RoomsStore,
     private _visitReferralStore: VisitReferralStore,
     private _specialityService: SpecialityService,
-    private _patientVisitStore: PatientVisitsStore
+    private _patientVisitStore: PatientVisitsStore,
+    private _procedureCodeMasterStore: ProcedureCodeMasterStore,
+    private _specialityDetailStore: SpecialityDetailsStore     
   ) {
     this.digitalForm = this.fb.group({
       signatureField: [''],
       signedText:['']
     });
     this.showSignature();
+
+    this.visitForm = this.fb.group({
+      selectedNoOfVisit:['']
+    })
   }
 
   ngOnInit() {
     this.loadAllSpecialitiesAndTests();
     this.getPendingReferralByPatientVisitId();
-    this. getdocotrsignatureByDoctorId();
+    this.getdocotrsignatureByDoctorId();
     this.iscomplete = false;
     // if (this.selectedVisit.specialtyId) {
     //   this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
@@ -123,37 +138,60 @@ export class ReferralsComponent implements OnInit {
     this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
+        debugger;
         let selectedProcSpec: Procedure;
-      /*  this.selectedVisitReferral = visitReferrals[0];
-        if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
-        {
-        if(this.selectedVisitReferral.doctorSignature != null && this.selectedVisitReferral.doctorSignature != '' && this.selectedVisitReferral.doctorSignature != undefined )
-        {
-          this.showoldSignature = true;
-          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
-          this.oldDocotrSignature = this.selectedVisitReferral.doctorSignature;
-          this.showtext = false;
-          this.showsignpad = true;
-        }
-        else if(this.selectedVisitReferral.doctorSignatureText != null && this.selectedVisitReferral.doctorSignatureText != '' && this.selectedVisitReferral.doctorSignatureText != undefined )
-        {
-          this.showoldSignature = true;
-          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
-          this.oldDocotrSignatureText = this.selectedVisitReferral.doctorSignatureText;
-          this.showtext = true;
-          this.showsignpad = false;
-        }
-      }*/
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
           if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
+            if((currentVisitReferral.forSpecialtyId != 0 && currentVisitReferral.forSpecialtyId != null) && currentVisitReferral.speciality != null )
+            {
             selectedProcSpec = new Procedure({
               specialityId: currentVisitReferral.forSpecialtyId,
-              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
+              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS())),
+              noOfVisits: currentVisitReferral.noOfVisits
             });
             this.proceduresList.push(selectedProcSpec);
+          }
+          if((currentVisitReferral.forRoomTestId != 0 && currentVisitReferral.forRoomTestId != null) && currentVisitReferral.roomTest != null )
+          {
+            selectedProcSpec = new Procedure({
+              roomTestId: currentVisitReferral.forRoomTestId,
+              roomTest: new Tests(_.extend(currentVisitReferral.roomTest.toJS())),
+              noOfVisits: currentVisitReferral.noOfVisits
+            });
+            this.proceduresList.push(selectedProcSpec);
+          }
+
+            
           } else {
             _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
-              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+              let oldVisitProcedure = new Procedure({
+                id: currentVisitReferralProcedureCode.procedureCode.id,
+                procedureCodeId: currentVisitReferralProcedureCode.procedureCode.procedureCodeId,
+                specialityId: currentVisitReferralProcedureCode.procedureCode.specialityId,
+                roomId: currentVisitReferralProcedureCode.procedureCode.roomId,
+                roomTestId: currentVisitReferralProcedureCode.procedureCode.roomTestId,
+                companyId: currentVisitReferralProcedureCode.procedureCode.companyId,
+                procedureCodeText: currentVisitReferralProcedureCode.procedureCode.procedureCodeText,
+                procedureCodeDesc: currentVisitReferralProcedureCode.procedureCode.procedureCodeDesc,
+                amount: currentVisitReferralProcedureCode.procedureCode.amount,
+                procedureAmount: currentVisitReferralProcedureCode.procedureCode.procedureAmount,
+                procedureUnit: currentVisitReferralProcedureCode.procedureCode.procedureUnit,
+                procedureOldUnit: currentVisitReferralProcedureCode.procedureCode.procedureOldUnit,
+                procedureTotalAmount: currentVisitReferralProcedureCode.procedureCode.procedureTotalAmount,
+                company: currentVisitReferralProcedureCode.procedureCode.company,
+                room: currentVisitReferralProcedureCode.procedureCode.room,
+                roomTest: currentVisitReferralProcedureCode.procedureCode.roomTest,
+                speciality: currentVisitReferralProcedureCode.procedureCode.speciality,
+                isDeleted: currentVisitReferralProcedureCode.procedureCode.isDeleted,
+                createByUserId: currentVisitReferralProcedureCode.procedureCode.createByUserId,
+                updateByUserId: currentVisitReferralProcedureCode.procedureCode.updateByUserId,
+                createDate: currentVisitReferralProcedureCode.procedureCode.createDate,
+                updateDate: currentVisitReferralProcedureCode.procedureCode.updateDate,
+                originalResponse: currentVisitReferralProcedureCode.procedureCode.originalResponse,
+                isPreffredCode:currentVisitReferralProcedureCode.procedureCode.isPreffredCode,
+                noOfVisits:currentVisitReferral.noOfVisits
+              })
+              this.proceduresList.push(oldVisitProcedure);
               this.proceduresList = _.union(this.proceduresList);
             })
           }
@@ -297,19 +335,40 @@ export class ReferralsComponent implements OnInit {
       this.loadProceduresForSpeciality(this.selectedSpecialityId);
       this.fetchSelectedSpeciality(this.selectedSpecialityId);
       this.CheckReferralPtVisitStatusForUpdatebySpecialty(this.selectedSpecialityId, 0, false);
-      // this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
+      this.checkMandatoryProcCodeforSpeciality(this.selectedSpecialityId);
+      this.showNoOfVisit = true;
+      this.selectedNoOfVisit = 0;
+      this.checkAlreadySpecialityExists(this.selectedSpecialityId);
     } else if (event.target.selectedOptions[0].getAttribute('data-type') === '2') {
       this.selectedOption = 2;
       this.selectedTestId = parseInt(event.target.value, 10);
       this.loadProceduresForRoomTest(this.selectedTestId);
       this.fetchSelectedTestingFacility(this.selectedTestId);
       this.CheckReferralPtVisitStatusForUpdatebyRoomTest(this.selectedTestId, 0, false);
-      // this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
+      this.checkMandatoryProcCodeforTestSpeciality(this.selectedTestId);
+      this.showNoOfVisit = false;
+      this.selectedNoOfVisit = 0;
     } else {
       this.selectedMode = 0;
       this.procedures = null;
+      this.showNoOfVisit = false;
+      this.selectedNoOfVisit = 0;
     }
     this.msg = '';
+  }
+
+
+  checkAlreadySpecialityExists(selectedSpecialityId : number)
+  {
+    let itemIndex = this.proceduresList.findIndex(item => item.specialityId === selectedSpecialityId);
+    if(itemIndex !== -1)
+    {
+      this.selectedNoOfVisit = this.proceduresList[itemIndex].noOfVisits;
+    }
+    else
+    {
+      this.selectedNoOfVisit = 0;
+    }
   }
 
   
@@ -359,11 +418,89 @@ export class ReferralsComponent implements OnInit {
   }
 
   addToList() {
-    let flag: Procedure = null;
+    this.msg = '';
+    if((this.selectedNoOfVisit === 0 || this.selectedNoOfVisit === undefined || this.selectedNoOfVisit === null) &&  this.selectedOption === 1)
+    {
+      this.msg = 'Please enter no of visits';
+    }
+    else
+    {
+      let flag: Procedure = null;
     if (this.selectedProcedures) {
       this.diableSave = false;
       if (this.selectedProcedures.length > 0) {
+        _.forEach(this.proceduresList, (currentListProc: Procedure) => {
+           if(currentListProc.specialityId === this.selectedSpecialityId && this.selectedSpecialityId > 0)
+           {
+            let newVisitProcedure = new Procedure({
+              id: currentListProc.id,
+              procedureCodeId: currentListProc.procedureCodeId,
+              specialityId: currentListProc.specialityId,
+              roomId: currentListProc.roomId,
+              roomTestId: currentListProc.roomTestId,
+              companyId: currentListProc.companyId,
+              procedureCodeText: currentListProc.procedureCodeText,
+              procedureCodeDesc: currentListProc.procedureCodeDesc,
+              amount: currentListProc.amount,
+              procedureAmount: currentListProc.procedureAmount,
+              procedureUnit: currentListProc.procedureUnit,
+              procedureOldUnit: currentListProc.procedureOldUnit,
+              procedureTotalAmount: currentListProc.procedureTotalAmount,
+              company: currentListProc.company,
+              room: currentListProc.room,
+              roomTest: currentListProc.roomTest,
+              speciality: currentListProc.speciality,
+              isDeleted: currentListProc.isDeleted,
+              createByUserId: currentListProc.createByUserId,
+              updateByUserId: currentListProc.updateByUserId,
+              createDate: currentListProc.createDate,
+              updateDate: currentListProc.updateDate,
+              originalResponse: currentListProc.originalResponse,
+              isPreffredCode:currentListProc.isPreffredCode,
+              noOfVisits:this.selectedNoOfVisit
+            })
+            let itemIndex = this.proceduresList.findIndex(item => item.id === currentListProc.id);
+            if(itemIndex !== -1)
+            {
+               this.proceduresList[itemIndex] = newVisitProcedure;
+            }
+           }
+            this.proceduresList = _.union(this.proceduresList);
+        });
         _.forEach(this.selectedProcedures, (currentProcedure: Procedure) => {
+            let newVisitProcedure = new Procedure({
+              id: currentProcedure.id,
+              procedureCodeId: currentProcedure.procedureCodeId,
+              specialityId: currentProcedure.specialityId,
+              roomId: currentProcedure.roomId,
+              roomTestId: currentProcedure.roomTestId,
+              companyId: currentProcedure.companyId,
+              procedureCodeText: currentProcedure.procedureCodeText,
+              procedureCodeDesc: currentProcedure.procedureCodeDesc,
+              amount: currentProcedure.amount,
+              procedureAmount: currentProcedure.procedureAmount,
+              procedureUnit: currentProcedure.procedureUnit,
+              procedureOldUnit: currentProcedure.procedureOldUnit,
+              procedureTotalAmount: currentProcedure.procedureTotalAmount,
+              company: currentProcedure.company,
+              room: currentProcedure.room,
+              roomTest: currentProcedure.roomTest,
+              speciality: currentProcedure.speciality,
+              isDeleted: currentProcedure.isDeleted,
+              createByUserId: currentProcedure.createByUserId,
+              updateByUserId: currentProcedure.updateByUserId,
+              createDate: currentProcedure.createDate,
+              updateDate: currentProcedure.updateDate,
+              originalResponse: currentProcedure.originalResponse,
+              isPreffredCode:currentProcedure.isPreffredCode,
+              noOfVisits:this.selectedNoOfVisit
+            })
+
+            this.selectedProceduresWithVisit.push(newVisitProcedure);
+        });
+         if(this.selectedProceduresWithVisit.length>0)
+         {
+        _.forEach(this.selectedProceduresWithVisit, (currentProcedure: Procedure) => {
           if (this.proceduresList.length > 0) {
             _.forEach(this.proceduresList, (currentListProc: Procedure) => {
               let sId = currentListProc.speciality ? currentListProc.speciality.id : currentListProc.specialityId;
@@ -372,7 +509,7 @@ export class ReferralsComponent implements OnInit {
                   this.proceduresList = _.reject(this.proceduresList, (currentProc: Procedure) => {
                     return currentProc.id === currentListProc.id;
                   });
-                  this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                  this.proceduresList = _.union(this.selectedProceduresWithVisit, this.proceduresList);
                   let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
                     return currentProcedure.id;
                   });
@@ -380,7 +517,7 @@ export class ReferralsComponent implements OnInit {
                     return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
                   });
                 } else {
-                  this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                  this.proceduresList = _.union(this.selectedProceduresWithVisit, this.proceduresList);
                   let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
                     return currentProcedure.id;
                   });
@@ -389,7 +526,7 @@ export class ReferralsComponent implements OnInit {
                   });
                 }
               } else {
-                this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                this.proceduresList = _.union(this.selectedProceduresWithVisit, this.proceduresList);
                 let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
                   return currentProcedure.id;
                 });
@@ -399,7 +536,7 @@ export class ReferralsComponent implements OnInit {
               }
             });
           } else {
-            this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+            this.proceduresList = _.union(this.selectedProceduresWithVisit, this.proceduresList);
             let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
               return currentProcedure.id;
             });
@@ -408,21 +545,27 @@ export class ReferralsComponent implements OnInit {
             });
           }
         });
-      } else {
+      }
+     } else {
         let selectedProcSpec: Procedure;
         if (this.proceduresList.length > 0) {
-          // _.forEach(this.proceduresList, (currentListProc: Procedure) => {
-          //   if (this.selectedSpeciality.id !== currentListProc.specialityId) {
           if (this.selectedOption === 1) {
             flag = _.find(this.proceduresList, (currentProcOfList: Procedure) => {
               return currentProcOfList.specialityId === this.selectedSpeciality.id;
-            })
+            });
+          }
+          else if(this.selectedOption === 2){
+            flag = _.find(this.proceduresList, (currentProcOfList: Procedure) => {
+              return currentProcOfList.roomTestId === this.selectedTestingFacility.id;
+            });
           }
         }
-        if (!flag && this.selectedOption === 1 && !this.selectedSpeciality.mandatoryProcCode) {
-          selectedProcSpec = new Procedure({
+
+        if (!flag && this.selectedOption === 1 && !this.ShowProcedureCode) {
+            selectedProcSpec = new Procedure({
             specialityId: this.selectedSpeciality.id,
-            speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
+            speciality: new Speciality(_.extend(this.selectedSpeciality.toJS())),
+            noOfVisits: this.selectedNoOfVisit
           });
           this.proceduresList.push(selectedProcSpec);
           this.proceduresList = _.union(this.proceduresList);
@@ -432,13 +575,40 @@ export class ReferralsComponent implements OnInit {
           this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
             return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
           });
-        } else if (this.selectedOption === 0) {
+        }
+        else if(!flag && this.selectedOption === 2 && !this.ShowProcedureCode)
+        {
+            selectedProcSpec = new Procedure({
+            roomTestId: this.selectedTestingFacility.id,
+            roomTest: new Tests(_.extend(this.selectedTestingFacility.toJS())),
+            noOfVisits: this.selectedNoOfVisit
+          });
+          this.proceduresList.push(selectedProcSpec);
+          this.proceduresList = _.union(this.proceduresList);
+          let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+            return currentProcedure.id;
+          });
+          this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+            return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+          });
+        }
+         else if (this.selectedOption === 0) 
+        {
           this.msg = 'Please, Select Specialty.';
-        } else if (this.selectedOption === 2 || this.selectedSpeciality.mandatoryProcCode) {
+        } 
+        else if (this.selectedOption === 1 && this.ShowProcedureCode) 
+        {
           this.msg = 'Please, Select Procedure Codes.';
-        } else if (this.selectedSpeciality == null) {
+        } 
+        else if (this.selectedOption === 2 && this.ShowProcedureCode) 
+        {
+          this.msg = 'Please, Select Procedure Codes.';
+        } 
+        else if (this.selectedSpeciality == null && this.selectedTestingFacility == null) 
+        {
           this.msg = 'Please, Select Specialty.';
-        } else {
+        } 
+        else {
           this.msg = 'Already in the list';
         }
         //   }
@@ -447,7 +617,10 @@ export class ReferralsComponent implements OnInit {
     }
     this.proceduresList;
     this.selectedProcedures = [];
+    this.selectedProceduresWithVisit = [];
+    this.selectedNoOfVisit = 0;
   }
+}
 
   
 
@@ -463,6 +636,7 @@ export class ReferralsComponent implements OnInit {
   }
 
   saveReferral() {
+    debugger;
     let procedureCodes = [];
     let visitReferralDetails: VisitReferral[] = [];
     let docSign = '';
@@ -485,13 +659,17 @@ export class ReferralsComponent implements OnInit {
     let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
       return currentProc.specialityId !== 0 ? currentProc.specialityId : null;
     })
+
+    let currentNoOfVisit = 0;
     _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
         if (currentProcedureCode.specialityId !== null && currentProcedureCode.specialityId === currentSpecialityId) {
           if (currentProcedureCode.id !== 0) {
             procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
           }
+          currentNoOfVisit = currentProcedureCode.noOfVisits;
         }
+       
       });
       if (currentSpecialityId !== null) {
         let visitReferral = new VisitReferral({
@@ -507,7 +685,8 @@ export class ReferralsComponent implements OnInit {
           doctorSignature: docSign,
           doctorSignatureType: docSigntype,
           doctorSignatureText : docSigntext,
-          doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
+          doctorSignatureFont : docSigntext? 'Brush Script MT' : '',
+          noOfVisits:currentNoOfVisit
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
@@ -520,12 +699,15 @@ export class ReferralsComponent implements OnInit {
     let uniqRoomTestIds = _.map(uniqRoomTest, (currentProc: Procedure) => {
       return currentProc.roomTestId !== 0 ? currentProc.roomTestId : null;
     })
+
+      let currentNoOfVisitTest = 0;
     _.forEach(uniqRoomTestIds, (currentRoomTestId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
         if (currentProcedureCode.roomTestId !== null && currentProcedureCode.roomTestId === currentRoomTestId) {
           if (currentProcedureCode.id !== 0) {
             procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
           }
+          currentNoOfVisitTest = currentProcedureCode.noOfVisits;
         }
       });
       if (currentRoomTestId !== null) {
@@ -542,7 +724,8 @@ export class ReferralsComponent implements OnInit {
           doctorSignature: docSign,
           doctorSignatureType: docSigntype,
           doctorSignatureText : docSigntext,
-          doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
+          doctorSignatureFont : docSigntext? 'Brush Script MT' : '',
+          noOfVisits: currentNoOfVisitTest
         });
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
@@ -563,7 +746,8 @@ export class ReferralsComponent implements OnInit {
         doctorSignature: docSign,
         doctorSignatureType: docSigntype,
         doctorSignatureText : docSigntext,
-        doctorSignatureFont : docSigntext? 'Brush Script MT' : ''
+        doctorSignatureFont : docSigntext? 'Brush Script MT' : '',
+        noOfVisits : 0
       });
       visitReferralDetails.push(visitReferral);
       procedureCodes = [];
@@ -685,6 +869,71 @@ export class ReferralsComponent implements OnInit {
       // invalid character, prevent input
       event.preventDefault();
     }
+  }
+
+  _keyPressNumber(event: any) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+  
+    if (!pattern.test(inputChar)) {
+      // invalid character, prevent input
+      event.preventDefault();
+    }
+  }
+
+  updateNoOfVisits(event)
+  {
+    debugger;
+     this.selectedNoOfVisit = event.target.value;
+  }
+
+
+  checkMandatoryProcCodeforSpeciality(specialityId: number)
+  {        
+      this.ShowProcedureCode = false;
+      this._progressBarService.show();
+      let result = this._specialityDetailStore.fetchSpecialityDetailByCompanySpecialtyId(specialityId);
+      result.subscribe(
+          (speciality: SpecialityDetail) => {                
+              if (speciality.mandatoryProcCode == false) {
+                  this.ShowProcedureCode = false;
+              }
+              else
+              {
+                  this.ShowProcedureCode = true;
+              }
+          },
+          (error) => {
+              this._progressBarService.hide();
+          },
+          () => {
+              this._progressBarService.hide();
+          });
+  }
+
+
+  checkMandatoryProcCodeforTestSpeciality(RoomTestId: number)
+  {   
+      this.ShowProcedureCode = true;
+      this._progressBarService.show();
+      let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyIdNew(RoomTestId);
+      result.subscribe(
+          (speciality: TestSpecialityDetail) => { 
+            debugger;               
+              if (speciality.showProcCode == false) {
+                  this.ShowProcedureCode = false;
+              }
+              else
+              {
+                  this.ShowProcedureCode = true;
+              }
+          },
+          (error) => {
+              this._progressBarService.hide();
+          },
+          () => {
+              this._progressBarService.hide();
+          });
   }
 
 }
