@@ -51,7 +51,7 @@ export class PendingReferralService {
         let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId + '/' + specialityId + '/' + roomTestId, {
                 headers: this._headers
-            }).map(res => res.json())
+            }).map(res => res.json())            
                 .subscribe((data: any) => {
                     let prefferedMedicalProvider: PrefferedMedicalProvider[] = [];
                     if (_.isArray(data)) {
