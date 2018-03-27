@@ -158,7 +158,7 @@ export class AddMedicalProviderComponent implements OnInit {
 
     closeDialog() {                
         this.addMedicalProviderByToken.reset();
-        this.providerform.value.reset();
+        //this.providerform.value.reset();
         this.validateOtpResponse = null;
         this.closeDialogBox.emit();
     }
@@ -382,13 +382,13 @@ export class AddMedicalProviderComponent implements OnInit {
     }
 
     clearform()
-    {   
-        this.companyName = ''; 
+    {          
         this.firstName = '';
         this.lastName = '';
         this.email = '';
         this.phoneNo = '';
-        this.providerform.value.reset();
+        this.providerform.value.companyName = '';
+        this.companyName = ''; 
     }
 }
 
