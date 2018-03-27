@@ -138,37 +138,60 @@ export class ReferralsComponent implements OnInit {
     this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
+        debugger;
         let selectedProcSpec: Procedure;
-      /*  this.selectedVisitReferral = visitReferrals[0];
-        if(this.selectedVisitReferral != undefined && this.selectedVisitReferral != null)
-        {
-        if(this.selectedVisitReferral.doctorSignature != null && this.selectedVisitReferral.doctorSignature != '' && this.selectedVisitReferral.doctorSignature != undefined )
-        {
-          this.showoldSignature = true;
-          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
-          this.oldDocotrSignature = this.selectedVisitReferral.doctorSignature;
-          this.showtext = false;
-          this.showsignpad = true;
-        }
-        else if(this.selectedVisitReferral.doctorSignatureText != null && this.selectedVisitReferral.doctorSignatureText != '' && this.selectedVisitReferral.doctorSignatureText != undefined )
-        {
-          this.showoldSignature = true;
-          this.oldSignatureType = this.selectedVisitReferral.doctorSignatureType;
-          this.oldDocotrSignatureText = this.selectedVisitReferral.doctorSignatureText;
-          this.showtext = true;
-          this.showsignpad = false;
-        }
-      }*/
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
           if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
+            if((currentVisitReferral.forSpecialtyId != 0 && currentVisitReferral.forSpecialtyId != null) && currentVisitReferral.speciality != null )
+            {
             selectedProcSpec = new Procedure({
               specialityId: currentVisitReferral.forSpecialtyId,
-              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
+              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS())),
+              noOfVisits: currentVisitReferral.noOfVisits
             });
             this.proceduresList.push(selectedProcSpec);
+          }
+          if((currentVisitReferral.forRoomTestId != 0 && currentVisitReferral.forRoomTestId != null) && currentVisitReferral.roomTest != null )
+          {
+            selectedProcSpec = new Procedure({
+              roomTestId: currentVisitReferral.forRoomTestId,
+              roomTest: new Tests(_.extend(currentVisitReferral.roomTest.toJS())),
+              noOfVisits: currentVisitReferral.noOfVisits
+            });
+            this.proceduresList.push(selectedProcSpec);
+          }
+
+            
           } else {
             _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
-              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+              let oldVisitProcedure = new Procedure({
+                id: currentVisitReferralProcedureCode.procedureCode.id,
+                procedureCodeId: currentVisitReferralProcedureCode.procedureCode.procedureCodeId,
+                specialityId: currentVisitReferralProcedureCode.procedureCode.specialityId,
+                roomId: currentVisitReferralProcedureCode.procedureCode.roomId,
+                roomTestId: currentVisitReferralProcedureCode.procedureCode.roomTestId,
+                companyId: currentVisitReferralProcedureCode.procedureCode.companyId,
+                procedureCodeText: currentVisitReferralProcedureCode.procedureCode.procedureCodeText,
+                procedureCodeDesc: currentVisitReferralProcedureCode.procedureCode.procedureCodeDesc,
+                amount: currentVisitReferralProcedureCode.procedureCode.amount,
+                procedureAmount: currentVisitReferralProcedureCode.procedureCode.procedureAmount,
+                procedureUnit: currentVisitReferralProcedureCode.procedureCode.procedureUnit,
+                procedureOldUnit: currentVisitReferralProcedureCode.procedureCode.procedureOldUnit,
+                procedureTotalAmount: currentVisitReferralProcedureCode.procedureCode.procedureTotalAmount,
+                company: currentVisitReferralProcedureCode.procedureCode.company,
+                room: currentVisitReferralProcedureCode.procedureCode.room,
+                roomTest: currentVisitReferralProcedureCode.procedureCode.roomTest,
+                speciality: currentVisitReferralProcedureCode.procedureCode.speciality,
+                isDeleted: currentVisitReferralProcedureCode.procedureCode.isDeleted,
+                createByUserId: currentVisitReferralProcedureCode.procedureCode.createByUserId,
+                updateByUserId: currentVisitReferralProcedureCode.procedureCode.updateByUserId,
+                createDate: currentVisitReferralProcedureCode.procedureCode.createDate,
+                updateDate: currentVisitReferralProcedureCode.procedureCode.updateDate,
+                originalResponse: currentVisitReferralProcedureCode.procedureCode.originalResponse,
+                isPreffredCode:currentVisitReferralProcedureCode.procedureCode.isPreffredCode,
+                noOfVisits:currentVisitReferral.noOfVisits
+              })
+              this.proceduresList.push(oldVisitProcedure);
               this.proceduresList = _.union(this.proceduresList);
             })
           }
@@ -315,6 +338,7 @@ export class ReferralsComponent implements OnInit {
       this.checkMandatoryProcCodeforSpeciality(this.selectedSpecialityId);
       this.showNoOfVisit = true;
       this.selectedNoOfVisit = 0;
+      this.checkAlreadySpecialityExists(this.selectedSpecialityId);
     } else if (event.target.selectedOptions[0].getAttribute('data-type') === '2') {
       this.selectedOption = 2;
       this.selectedTestId = parseInt(event.target.value, 10);
@@ -331,6 +355,20 @@ export class ReferralsComponent implements OnInit {
       this.selectedNoOfVisit = 0;
     }
     this.msg = '';
+  }
+
+
+  checkAlreadySpecialityExists(selectedSpecialityId : number)
+  {
+    let itemIndex = this.proceduresList.findIndex(item => item.specialityId === selectedSpecialityId);
+    if(itemIndex !== -1)
+    {
+      this.selectedNoOfVisit = this.proceduresList[itemIndex].noOfVisits;
+    }
+    else
+    {
+      this.selectedNoOfVisit = 0;
+    }
   }
 
   
@@ -391,6 +429,44 @@ export class ReferralsComponent implements OnInit {
     if (this.selectedProcedures) {
       this.diableSave = false;
       if (this.selectedProcedures.length > 0) {
+        _.forEach(this.proceduresList, (currentListProc: Procedure) => {
+           if(currentListProc.specialityId === this.selectedSpecialityId && this.selectedSpecialityId > 0)
+           {
+            let newVisitProcedure = new Procedure({
+              id: currentListProc.id,
+              procedureCodeId: currentListProc.procedureCodeId,
+              specialityId: currentListProc.specialityId,
+              roomId: currentListProc.roomId,
+              roomTestId: currentListProc.roomTestId,
+              companyId: currentListProc.companyId,
+              procedureCodeText: currentListProc.procedureCodeText,
+              procedureCodeDesc: currentListProc.procedureCodeDesc,
+              amount: currentListProc.amount,
+              procedureAmount: currentListProc.procedureAmount,
+              procedureUnit: currentListProc.procedureUnit,
+              procedureOldUnit: currentListProc.procedureOldUnit,
+              procedureTotalAmount: currentListProc.procedureTotalAmount,
+              company: currentListProc.company,
+              room: currentListProc.room,
+              roomTest: currentListProc.roomTest,
+              speciality: currentListProc.speciality,
+              isDeleted: currentListProc.isDeleted,
+              createByUserId: currentListProc.createByUserId,
+              updateByUserId: currentListProc.updateByUserId,
+              createDate: currentListProc.createDate,
+              updateDate: currentListProc.updateDate,
+              originalResponse: currentListProc.originalResponse,
+              isPreffredCode:currentListProc.isPreffredCode,
+              noOfVisits:this.selectedNoOfVisit
+            })
+            let itemIndex = this.proceduresList.findIndex(item => item.id === currentListProc.id);
+            if(itemIndex !== -1)
+            {
+               this.proceduresList[itemIndex] = newVisitProcedure;
+            }
+           }
+            this.proceduresList = _.union(this.proceduresList);
+        });
         _.forEach(this.selectedProcedures, (currentProcedure: Procedure) => {
             let newVisitProcedure = new Procedure({
               id: currentProcedure.id,
