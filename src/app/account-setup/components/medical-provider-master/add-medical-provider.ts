@@ -51,6 +51,7 @@ export class AddMedicalProviderComponent implements OnInit {
     lastName: string ='';
     email: string = '';
     phoneNo: string= '';
+    companyName: string='';
 
     constructor(
         private fb: FormBuilder,
