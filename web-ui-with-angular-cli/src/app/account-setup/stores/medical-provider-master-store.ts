@@ -8,6 +8,7 @@ import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../commons/stores/session-store';
 import { Account } from '../../account/models/account';
+import { Signup } from '../../account-setup/models/signup';
 
 @Injectable()
 export class MedicalProviderMasterStore {
@@ -164,5 +165,27 @@ export class MedicalProviderMasterStore {
                 });
         });
         return <Observable<MedicalProviderMaster>>Observable.from(promise);
+    }
+
+    fetchMedicalProviderByCompanyName(companyName: string): Observable<MedicalProviderMaster> {
+        let promise = new Promise((resolve, reject) => {            
+           this._medicalProviderMasterService.getMedicalProviderByCompanyName(companyName).subscribe((provider: MedicalProviderMaster) => {
+               resolve(provider);
+            }, error => {
+                reject(error);
+            });            
+        });
+        return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
+    }
+
+    getByCompanyByName(companyName: string): Observable<any> {
+        let promise = new Promise((resolve, reject) => {            
+           this._medicalProviderMasterService.getByCompanyByName(companyName).subscribe((provider: any) => {
+               resolve(provider);
+            }, error => {
+                reject(error);
+            });            
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 }

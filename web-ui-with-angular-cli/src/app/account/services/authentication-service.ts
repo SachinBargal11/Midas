@@ -10,7 +10,9 @@ import { UserAdapter } from '../../medical-provider/users/services/adapters/user
 import * as _ from 'underscore';
 import { Account } from '../models/account';
 import { Signup } from '../../account-setup/models/signup';
+import { Company } from '../../account/models/company';
 import { SignupAdapter } from '../../account-setup/services/adapters/signup-adapter';
+import { CompanyAdapter } from './adapters/company-adapter';
 
 @Injectable()
 export class AuthenticationService {
@@ -312,6 +314,7 @@ export class AuthenticationService {
         });
         return <Observable<Signup>>Observable.fromPromise(promise);
     }
+
 
     getJson(url, token) {
         // let promise: Promise<any> = new Promise((resolve, reject) => {

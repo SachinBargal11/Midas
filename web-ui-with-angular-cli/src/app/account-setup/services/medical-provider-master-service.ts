@@ -10,7 +10,8 @@ import { MedicalProviderMaster } from '../models/medical-provider-master';
 import { MedicalProviderMasterAdapter } from './adapters/medical-provider-master-adapter';
 import { Account } from '../../account/models/account';
 import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
-
+import { Signup } from '../../account-setup/models/signup';
+import { SignupAdapter } from '../../account-setup/services/adapters/signup-adapter';
 
 @Injectable()
 export class MedicalProviderMasterService {
@@ -89,8 +90,10 @@ export class MedicalProviderMasterService {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
+                    debugger;
                     resolve(data);
                 }, (error) => {
+                    debugger;
                     reject(error);
                 });
         });
@@ -192,4 +195,37 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
+    getMedicalProviderByCompanyName(companyName: string): Observable<MedicalProviderMaster> {
+        let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
+            // return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/GetByPrefMedProviderCompanyName/' + companyName, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let provider = null;
+                    provider = MedicalProviderMasterAdapter.parseResponse(data);
+                    resolve(provider);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
+    }
+
+    
+    getByCompanyByName(companyName: string): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Company/getbyCompanyName/' + companyName, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    //let provider = null;
+                    // provider = SignupAdapter.parseResponse(data);
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }
