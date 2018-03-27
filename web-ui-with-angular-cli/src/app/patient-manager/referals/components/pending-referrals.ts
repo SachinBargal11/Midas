@@ -183,7 +183,7 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this.medicalProviderDoctor = mappedMedicalProviderDoctor;
                 this.medicalProviderRoom = mappedMedicalProviderRoom;
-                this.medicalProvider = matchingMedicalProvider;
+                //this.medicalProvider = matchingMedicalProvider;
 
             },
             (error) => {
@@ -194,6 +194,22 @@ export class PendingReferralsComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
+        this._pendingReferralStore.getPreferredCompanyByCompanyId(companyId)       
+        .subscribe(preferredMedical => {
+            debugger;
+                let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {            
+                    return currentPreferredMedical.companyStatusType == 1 || currentPreferredMedical.companyStatusType == 2;
+                });
+
+                this.medicalProvider = matchingMedicalProvider;
+            },
+            (error) => {                
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        
     }
 
     loadDoctorsByCompanyIdAndSpeciality(specialityId: number) {
