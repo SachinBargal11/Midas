@@ -58,7 +58,7 @@
                     <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
                         {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
              </optgroup>
-              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Activation Pending">
                      <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
                          {{currentPreferredMedicalProvider.name}}</option>
              </optgroup>
