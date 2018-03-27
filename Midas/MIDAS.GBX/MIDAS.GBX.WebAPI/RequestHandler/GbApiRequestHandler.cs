@@ -3016,5 +3016,25 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+
+        public HttpResponseMessage GetByRoomInAllAppCompany(HttpRequestMessage request, int roomTestId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByRoomInAllAppCompany(roomTestId, companyId);
+
+            try
+            {
+                // var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

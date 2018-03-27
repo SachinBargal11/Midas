@@ -1210,6 +1210,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+
+        public virtual Object GetByRoomInAllAppCompany(int roomTestId, int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

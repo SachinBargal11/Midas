@@ -585,7 +585,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
            
             var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Location.Company").Where(p => p.RoomTest.id == roomTestId
-                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && 
+                                               (p.Location.IsDeleted.HasValue == false || (p.Location.IsDeleted.HasValue == true && p.Location.IsDeleted.Value == false)))
+                                               .ToList();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this room Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Room> doctorBO = new List<BO.Room>();
+
+            foreach (Room item in acc_)
+            {
+                doctorBO.Add(Convert<BO.Room, Room>(item));
+            }
+            return (object)doctorBO;
+        }
+        #endregion
+
+
+        #region GetByRoomCompany
+        public override object GetByRoomInAllAppCompany(int roomTestId, int companyId)
+        {
+
+            var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Location.Company").Where(p => p.RoomTest.id == roomTestId
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) &&
+                                               (p.Location.IsDeleted.HasValue == false || (p.Location.IsDeleted.HasValue == true && p.Location.IsDeleted.Value == false)) && p.Location.CompanyID == companyId)
                                                .ToList();
             if (acc_ == null)
             {

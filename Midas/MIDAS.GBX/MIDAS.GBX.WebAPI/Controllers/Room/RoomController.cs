@@ -102,6 +102,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByRoomInAllApp(Request, roomId);
         }
 
+
+        [HttpGet]
+        [Route("getByRoomInAllAppCompany/{roomId}/{companyId}")]
+        public HttpResponseMessage GetByRoomInAllAppCompany(int roomId,int companyId)
+        {
+            return requestHandler.GetByRoomInAllAppCompany(Request, roomId, companyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
