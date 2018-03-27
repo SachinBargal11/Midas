@@ -2962,7 +2962,6 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-
         public HttpResponseMessage GetDoctorsByCompanyIdAndSpeciality(HttpRequestMessage request, int companyId,int specialtyId)
         {
             var objResult = dataAccessManager.GetDoctorsByCompanyIdAndSpeciality(companyId, specialtyId);
@@ -2988,7 +2987,6 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-
 
         public HttpResponseMessage GetInhouseReferralByCompanyId(HttpRequestMessage request, int companyId)
         {
@@ -3016,7 +3014,6 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-
         public HttpResponseMessage GetByRoomInAllAppCompany(HttpRequestMessage request, int roomTestId, int companyId)
         {
             var objResult = dataAccessManager.GetByRoomInAllAppCompany(roomTestId, companyId);
@@ -3036,5 +3033,43 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByPrefMedProviderCompanyName(HttpRequestMessage request, string CompanyName)
+        {
+            var objResult = dataAccessManager.GetByPrefMedProviderCompanyName(CompanyName);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetbyCompanyName(HttpRequestMessage request, string CompanyName)
+        {
+            var objResult = dataAccessManager.GetbyCompanyName(CompanyName);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }        
+
+        public HttpResponseMessage GetPreferredMedicalProviderbyCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetPreferredMedicalProviderbyCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

@@ -554,9 +554,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
 
-                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + companyBO.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>"+ companyBO.Name;
                         string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
-                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + companyBO.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>" + companyBO.Name;
 
                         string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
                         string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";

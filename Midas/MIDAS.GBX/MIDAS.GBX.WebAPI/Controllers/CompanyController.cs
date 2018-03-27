@@ -31,6 +31,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getbyCompanyName/{companyName}")]
+        public HttpResponseMessage GetbyCompanyName(string companyName)
+        {
+            return requestHandler.GetbyCompanyName(Request, companyName);
+        }
+
+        [HttpGet]
         [Route("getAll")]
         public HttpResponseMessage Get()
         {
