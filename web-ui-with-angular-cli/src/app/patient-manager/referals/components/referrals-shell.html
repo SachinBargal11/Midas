@@ -40,6 +40,16 @@
 				</p>
 			</section>
 		</div>
+		<div class="accordion">
+				<input type="radio" value="inhouse-referrals" [(ngModel)]="currAccordion" (click)="setContent('inhouse-referrals')" name="accordion" id="inhouse-referrals"
+				 routerLink="inhouse-referrals" class="accordion-toggle" />
+				<label for="inhouse-referrals">Inhouse Referrals</label>
+				<section *ngIf="currAccordion=='inhouse-referrals'">
+					<p>
+						<router-outlet></router-outlet>
+					</p>
+				</section>
+			</div>
 	</section>
 </section>
 
@@ -74,6 +84,13 @@
 					Non Midas Providers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						</span>
 					</a>
+				</li>
+				<li class="nav-item">
+						<a class="nav-link" routerLink="inhouse-referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+							<span class="nav-link-in">
+						Inhouse &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</a>
 				</li>
 			</ul>
 		</div>

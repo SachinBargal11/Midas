@@ -83,6 +83,7 @@ export class RoomsService {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+
     getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/room/getByRoomInAllApp/' + testId, {
@@ -102,6 +103,7 @@ export class RoomsService {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+
     getTests(): Observable<Tests[]> {
         let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
             return this._http.post(environment.SERVICE_BASE_URL + '/RoomTest/GetAll', JSON.stringify({}), {
@@ -223,6 +225,7 @@ export class RoomsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
     deleteRoom(roomDetail: Room): Observable<Room> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
@@ -241,6 +244,26 @@ export class RoomsService {
                 });
         });
         return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    getByRoomInAllAppCompany(testId: number,compnayId: number): Observable<Room[]> {
+        let promise: Promise<Room[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/room/getByRoomInAllAppCompany/' + testId +'/'+ compnayId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((roomsData: any) => {
+                    let rooms: any[] = [];
+                    if (_.isArray(roomsData)) {
+                        rooms = (<Object[]>roomsData).map((roomsData: any) => {
+                            return RoomsAdapter.parseResponse(roomsData);
+                        });
+                    }
+                    resolve(rooms);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
     }
     // deleteRoom(room: Room): Observable<Room> {
     //     let promise = new Promise((resolve, reject) => {

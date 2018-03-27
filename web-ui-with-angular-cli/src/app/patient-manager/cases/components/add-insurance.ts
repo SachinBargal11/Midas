@@ -12,6 +12,7 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
+import {InsuranceAddress} from '../../../commons/models/insurance-address';
 import { Insurance } from '../../patients/models/insurance';
 import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
@@ -66,6 +67,10 @@ export class AddInsuranceComponent implements OnInit {
     caseDetails: Case[];    
     referredToMe: boolean = false;
     insuranceisReadOnly : boolean = false;
+    insuranceMastersAddressList : InsuranceAddress[];
+    insuranceMastersAddressDisplay : InsuranceAddress[];
+    insuranceMasterAddressId: number = 0;
+    showinsuranceAddressList = false;
 
     constructor(
         private fb: FormBuilder,
@@ -145,7 +150,8 @@ export class AddInsuranceComponent implements OnInit {
             alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
             preferredCommunication: [''],
-            adjusterMasterId:['']
+            adjusterMasterId:[''],
+            insuranceMasterAddressId:['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
@@ -219,12 +225,71 @@ export class AddInsuranceComponent implements OnInit {
                 .subscribe(
                 (insuranceMaster) => {
                     this.insuranceMaster = insuranceMaster;
-                    this.insuranceMastersAdress = insuranceMaster.Address
+                    if(insuranceMaster.InsuranceAddress.length > 0 && insuranceMaster.InsuranceAddress.length == 1)
+                    {
+                        this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[0];
+                        this.showinsuranceAddressList = false;
+                    }
+                    else if (insuranceMaster.InsuranceAddress.length > 1)
+                    {
+                        let itemIndex = insuranceMaster.InsuranceAddress.findIndex(item => item.isDefault == true);
+                        if(itemIndex !== -1)
+                        {
+                            this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[itemIndex];
+                        }
+                        this.insuranceMastersAddressList = insuranceMaster.InsuranceAddress;
+                        this.showinsuranceAddressList = true;
+                        this.loadInsuranceMasterAddressList();
+                    }
+                    else
+                    {
+                       
+                        this.insuranceMastersAdress = null;
+                        this.showinsuranceAddressList = false;
+                    }
+                   
                     this.loadInsuranceAdjusterInfo(this.insuranceMaster.id);
                 });
         } else {
             this.insuranceMaster = null;
             this.insuranceMastersAdress = null;
+            this.insuranceMastersAddressList = [];
+        }
+    }
+
+    loadInsuranceMasterAddressList()
+    {
+        let defaultLabel: any[] = [{
+            label: '-Select Insurance Address-',
+            value: ''
+        }]
+        let insuranceMasterAddress = _.map(this.insuranceMastersAddressList, (currentInsuranceMaster: InsuranceAddress) => {
+            return {
+                label: `${currentInsuranceMaster.address1 + (currentInsuranceMaster.isDefault  ? ' | Default' : '')}`,
+                value: currentInsuranceMaster.id
+            };
+        })
+        this.insuranceMastersAddressDisplay = _.union(defaultLabel, insuranceMasterAddress);
+    }
+
+    insuranceAddressChange(event)
+    {
+        if(event.value != '' && event.value != undefined)
+        {
+            let itemIndex = this.insuranceMastersAddressList.findIndex(item => item.id == event.value);
+            if(itemIndex !== -1)
+            {
+                this.insuranceMastersAdress = this.insuranceMastersAddressList[itemIndex];
+            }
+        }
+        else
+        {
+            let itemIndex = this.insuranceMastersAddressList.findIndex(item => item.isDefault == true);
+            if(itemIndex !== -1)
+            {
+                this.insuranceMastersAdress = this.insuranceMastersAddressList[itemIndex];
+            }
+            
         }
     }
 
@@ -407,12 +472,12 @@ export class AddInsuranceComponent implements OnInit {
                 preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
-                address1: insuranceformValues.address,
-                address2: insuranceformValues.address2,
-                city: insuranceformValues.city,
-                country: insuranceformValues.country,
-                state: insuranceformValues.state,
-                zipCode: insuranceformValues.zipCode
+                address1: this.insuranceMastersAdress ? this.insuranceMastersAdress.address1 : '',
+                address2: this.insuranceMastersAdress ? this.insuranceMastersAdress.address2 : '',
+                city: this.insuranceMastersAdress ? this.insuranceMastersAdress.city : '',
+                country: this.insuranceMastersAdress ? this.insuranceMastersAdress.country : '',
+                state: this.insuranceMastersAdress  ? this.insuranceMastersAdress.state : '',
+                zipCode: this.insuranceMastersAdress ? this.insuranceMastersAdress.zipCode : ''
             })
         });
         this._progressBarService.show();
@@ -588,5 +653,10 @@ export class AddInsuranceComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });    
+    }
+
+    AddinsuranceAddress()
+    {
+        
     }
 }

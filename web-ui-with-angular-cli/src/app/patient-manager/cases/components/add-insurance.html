@@ -354,21 +354,8 @@
             <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Insurance Company
-                                <span class="color-red">*</span>
-                            </label>
-                    <!--<div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                        <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" class="form-control" placeholder=""
-                            [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                            <option value="">-Select Insurance Company-</option>
-                            <option *ngFor="let insurance of insuranceMasters" value="{{insurance.id}}">{{insurance.companyCode}} - {{insurance.companyName}}</option>
-                            <option value="1">Insurance Master 1</option>
-                            </select>
-                        <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.insuranceMasterId.hasError('required')">Insurance Master is required.</li>
-                            </ul>
-                        </div>
-                    </div>-->
+                    <span class="color-red">*</span>
+                    </label>
                     <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
                         <p-dropdown [options]="insuranceMasters" formControlName="insuranceMasterId" (onChange)="selectInsurance($event)" [style]="{'width':'100%'}"
                             filter="filter"></p-dropdown>
@@ -377,7 +364,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <label class="form-label">Insurance Type
                                 <span class="color-red">*</span>
@@ -593,6 +579,15 @@
             Insurance Address
         </header>
         <div class="card-block">
+            <div class="row" *ngIf="showinsuranceAddressList">
+                    <div class="col-lg-4">
+                            <label class="form-label">Select insurance address</label>
+                            <div class="form-group">
+                                    <p-dropdown [options]="insuranceMastersAddressDisplay" formControlName="insuranceMasterAddressId"  (onChange)="insuranceAddressChange($event)" [ngModel]="insuranceMasterAddressId" [style]="{'width':'100%'}"
+                                    filter="filter"></p-dropdown>
+                            </div>
+                    </div>
+            </div>
             <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Address1

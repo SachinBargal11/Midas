@@ -106,7 +106,6 @@ export class PendingReferralService {
 
     //Outbound Start
     getReferralsByReferringCompanyId(companyId: Number): Observable<InboundOutboundList[]> {
-
         let promise: Promise<InboundOutboundList[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Referral/getReferralByFromCompanyId/' + companyId, {
                 headers: this._headers
@@ -233,5 +232,46 @@ export class PendingReferralService {
         });
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
+
+     //inhouse
+
+     getInhouseReferralsByCompanyId(comapanyId: Number): Observable<InboundOutboundList[]> {
+        let promise: Promise<InboundOutboundList[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Referral/getInhouseReferralByCompanyId/' + comapanyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return InboundOutboundReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
+    getInhouseReferralsByDoctorId(doctorId: Number, companyId: Number): Observable<InboundOutboundList[]> {
+        let promise: Promise<InboundOutboundList[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Referral/getInhouseReferralByDoctorAndCompanyId/' + doctorId + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return InboundOutboundReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
+    //inhouse end
 
 }

@@ -411,9 +411,9 @@
                 </div>
             </div>
         </section>
-        <button [disabled]="!userform.valid || ((selectedTestSpecialities == undefined || selectedTestSpecialities== '' || selectedTestSpecialities== null)   && (selectedSpecialities == undefined || selectedSpecialities == '' || selectedSpecialities == null)) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Update
+        <button [disabled]="!userform.valid || (selectedTestSpecialities.length == 0   && selectedSpecialities.length == 0) || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveUserProgress"></loader>
-    </button>
+        </button>
         <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

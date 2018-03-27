@@ -31,7 +31,8 @@ const VisitReferralRecord = Record({
     doctorSignature: null,
     doctorSignatureType: 0,
     doctorSignatureText: null,
-    doctorSignatureFont:null
+    doctorSignatureFont:null,
+    noOfVisits:0,
 });
 
 export class VisitReferral extends VisitReferralRecord {
@@ -60,6 +61,7 @@ export class VisitReferral extends VisitReferralRecord {
     doctorSignatureType:number;
     doctorSignatureText:string;
     doctorSignatureFont:string;
+    noOfVisits:number;
     constructor(props) {
         super(props);
     }

@@ -46,7 +46,8 @@ export class visitReferralAdapter {
                 doctorSignature : data.doctorSignature,
                 doctorSignatureType: data.doctorSignatureType ? data.doctorSignatureType : 1,
                 doctorSignatureText : data.doctorSignatureText,
-                doctorSignatureFont : data.doctorSignatureFont
+                doctorSignatureFont : data.doctorSignatureFont,
+                noOfVisits : data.noOfVisits
             });
         }
         return visitReferral;
