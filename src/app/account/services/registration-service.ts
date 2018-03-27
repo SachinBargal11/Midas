@@ -26,8 +26,7 @@ export class RegistrationService {
             requestData.company.companyStatusTypeId = 1;
             requestData.user = _.omit(requestData.user, 'contact');
             requestData = _.omit(requestData, 'companies', 'subscriptionPlan', 'accountStatus', 'accessToken', 'tokenExpiresAt', 'tokenResponse', 'type', 'originalResponse');
-            // requestData = _.omit(requestData, 'accountStatus');
-            console.log(requestData);
+            // requestData = _.omit(requestData, 'accountStatus');            
             return this._http.post(environment.SERVICE_BASE_URL + '/Company/Signup', JSON.stringify(requestData), {
                 headers: headers
             }).map(res => res.json()).subscribe((data) => {
@@ -38,4 +37,5 @@ export class RegistrationService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+    
 }

@@ -34,6 +34,15 @@
   <p-column field="procedureCodeDesc"></p-column>  
 </p-dataTable>
 <br>
+<div class="row" *ngIf="showNoOfVisit">
+<form [formGroup]="visitForm">
+<div class="col-lg-4">
+    <label class="form-label"> No Of Visits<span class="color-red">*</span></label>
+    <input type="text" pInputText formControlName="selectedNoOfVisit" [(ngModel)]="selectedNoOfVisit"  minlength="1" maxlength="10" (change)="updateNoOfVisits($event)" (keypress)="_keyPressNumber($event)" />
+</div>
+</form>
+</div>
+<br>
 <div class="row">
      <div class="col-lg-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctorId != null">
        <button *ngIf="(sessionStore.session.user.id == selectedVisit.doctorId)" type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>
@@ -83,10 +92,14 @@
           </div>
         </div>
       </div>
+      <div *ngIf="procedure.roomTest != null">
+          {{procedure.roomTest.name}}
+        </div>
     </ng-template>
   </p-column>
   <p-column field="procedureCodeText" header="Procedure Code"></p-column>*ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor.user != null">  
   <p-column field="procedureCodeDesc" header="Description"></p-column>
+  <p-column field="noOfVisits" header="No Of Visits"></p-column>
   <p-column styleClass="actions-cell" header="Actions" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
       <ng-template let-procedure="rowData" pTemplate="body">            
           <button  type="button" pButton (click)="deleteProcedureCode(procedure)"  icon="fa-trash-o"></button>                                

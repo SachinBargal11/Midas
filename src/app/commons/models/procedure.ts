@@ -29,7 +29,8 @@ const ProcedureRecord = Record({
     createDate: null, // Moment
     updateDate: null, // Moment
     originalResponse: null,
-    isPreffredCode:false
+    isPreffredCode:false,
+    noOfVisits:0
 });
 
 export class Procedure extends ProcedureRecord {
@@ -58,6 +59,7 @@ export class Procedure extends ProcedureRecord {
     updateDate: moment.Moment;
     originalResponse: any;
     isPreffredCode:boolean;
+    noOfVisits:number;
 
     constructor(props) {
         super(props);
