@@ -238,5 +238,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetInhouseReferralByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetInhouseReferralByDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomInAllAppCompany(int roomTestId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByPrefMedProviderCompanyName(string CompanyName);
+        Object GetbyCompanyName(string CompanyName);
+        Object GetPreferredMedicalProviderbyCompanyId(int CompanyId);
     }
 }

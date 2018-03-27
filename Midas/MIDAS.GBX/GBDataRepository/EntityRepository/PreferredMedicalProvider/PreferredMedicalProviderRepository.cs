@@ -19,11 +19,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     internal class PreferredMedicalProviderRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<PreferredMedicalProvider> _dbSet;
-       
+        private DbSet<Invitation> _dbInvitation;
+
         #region Constructor
         public PreferredMedicalProviderRepository(MIDASGBXEntities context) : base(context)
         {
-            _dbSet = context.Set<PreferredMedicalProvider>();           
+            _dbSet = context.Set<PreferredMedicalProvider>();
+            _dbInvitation = context.Set<Invitation>();
         }
         #endregion
 
@@ -48,8 +50,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (preferredMedicalProvider.Company != null)
             {
                 BO.Company Company = new BO.Company();
-               
-                if (preferredMedicalProvider.Company.IsDeleted.HasValue == false 
+
+                if (preferredMedicalProvider.Company.IsDeleted.HasValue == false
                     || (preferredMedicalProvider.Company.IsDeleted.HasValue == true && preferredMedicalProvider.Company.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
@@ -66,7 +68,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company Company = new BO.Company();
 
-                if (preferredMedicalProvider.Company1.IsDeleted.HasValue == false 
+                if (preferredMedicalProvider.Company1.IsDeleted.HasValue == false
                     || (preferredMedicalProvider.Company1.IsDeleted.HasValue == true && preferredMedicalProvider.Company1.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
@@ -93,7 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.PreferredMedicalCompany PreferredMedicalCompanyBO = new BO.PreferredMedicalCompany();
 
             PreferredMedicalCompanyBO.ID = company.id;
-            PreferredMedicalCompanyBO.Name = company.Name;            
+            PreferredMedicalCompanyBO.Name = company.Name;
             PreferredMedicalCompanyBO.CompanyStatusType = company.CompanyStatusTypeID;
             PreferredMedicalCompanyBO.IsDeleted = company.IsDeleted;
             PreferredMedicalCompanyBO.CreateByUserID = company.CreateByUserID;
@@ -155,9 +157,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         UserPersonalSettingBO.User = null;
                                         boUser.UserPersonalSettings.Add(UserPersonalSettingBO);
                                     }
-                                }                                    
+                                }
                             }
-                               
+
                             doctorBO.user = boUser;
                         }
                     }
@@ -194,12 +196,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 boLocation.ContactInfo = null;
                                 boLocation.Schedule = null;
                             }
-                            
+
                             roomBO.location = boLocation;
                         }
                     }
                 }
-                
+
 
                 if (room.IsDeleted.HasValue)
                     roomBO.IsDeleted = room.IsDeleted.Value;
@@ -274,11 +276,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PreferredMedicalProviderSignUpBO.Signup.company = boCompany;
                     }
                 }
-            }            
+            }
 
             if (preferredMedicalProvider.Company1.ContactInfo != null)
             {
-                
+
                 BO.ContactInfo boContactInfo = new BO.ContactInfo();
                 boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
                 boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
@@ -332,9 +334,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-           
+
             BO.PreferredMedicalProviderSignUp medicalProviderBO = (BO.PreferredMedicalProviderSignUp)(object)entity;
-           
+
             var result = medicalProviderBO.Validate(medicalProviderBO);
             return result;
         }
@@ -343,7 +345,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Save Data
         public override object Save<T>(T entity)
         {
-
+            BO.ErrorObject errObj = new BO.ErrorObject();
             BO.PreferredMedicalProviderSignUp preferredMedicalProviderBO = (BO.PreferredMedicalProviderSignUp)(object)entity;
             PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
 
@@ -390,21 +392,379 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                //if (string.IsNullOrEmpty(prefMedProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //if (string.IsNullOrEmpty(prefMedProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && o.CompanyStatusTypeID == 3 && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 //{
                 //    dbContextTransaction.Rollback();
                 //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 //}
 
-                if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && o.CompanyStatusTypeID == 3 && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
-                else if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //else if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
+                var user_ = _context.Users.Include("UserCompanies").Include("UserCompanies.Company").Include("UserCompanyRoles").Include("AddressInfo").Include("ContactInfo").Where(p => p.UserName == prefMedProviderBO.user.UserName).FirstOrDefault(); ;
+                if (user_ != null)
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    BO.User accs_ = new BO.User();
+                    using (UserRepository userRepo = new UserRepository(_context))
+                    {
+                        accs_ = userRepo.Convert<BO.User, User>(user_);
+                    }
+                    List<BO.Role> RoleBO = new List<BO.Role>();
+                    var rolesnew = _context.UserCompanyRoles.Where(p => p.UserID == user_.id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in rolesnew)
+                    {
+                        RoleBO.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    var companyobjnew = user_.UserCompanies.ToList().Select(o => o.Company).FirstOrDefault<Company>();
+                    BO.Company _bocompanyobjnew = new BO.Company();
+                    using (CompanyRepository userRepo = new CompanyRepository(_context))
+                    {
+                        _bocompanyobjnew = userRepo.Convert<BO.Company, Company>(companyobjnew);
+                    }
+
+                    BO.AddUser updUserBOnew = new BO.AddUser();
+                    updUserBOnew.user = accs_;
+                    updUserBOnew.user.UserName = user_.UserName;
+                    updUserBOnew.user.FirstName = user_.FirstName;
+                    updUserBOnew.user.LastName = user_.LastName;
+                    updUserBOnew.user.MiddleName = user_.MiddleName;
+                    updUserBOnew.user.Gender = (BO.GBEnums.Gender)user_.Gender;
+                    updUserBOnew.user.UserType = (BO.GBEnums.UserType)user_.UserType;
+                    updUserBOnew.user.ImageLink = user_.ImageLink;
+                    updUserBOnew.user.C2FactAuthEmailEnabled = (bool)user_.C2FactAuthEmailEnabled;
+                    updUserBOnew.user.C2FactAuthEmailEnabled = (bool)user_.C2FactAuthSMSEnabled.GetValueOrDefault();
+                    updUserBOnew.user.ID = user_.id;
+                    updUserBOnew.user.Roles = RoleBO;
+                    updUserBOnew.company = _bocompanyobjnew;
+                    updUserBOnew.role = accs_.Roles.ToArray();
+                    // if (doctorBO.DoctorSpecialities.Count > 0) updUserBO.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                    if (user_.AddressInfo != null && user_.AddressInfo.id > 0) updUserBOnew.address = accs_.AddressInfo;
+                    if (user_.ContactInfo != null && user_.ContactInfo.id > 0) updUserBOnew.contactInfo = accs_.ContactInfo;
+                    using (UserRepository userRepo = new UserRepository(_context))
+                    {
+                        //object obj = userRepo.Save<BO.AddUser>(updUserBO);
+                        //if (obj.GetType() == errObj.GetType())
+                        //{
+                        //    errObj = (BO.ErrorObject)obj;
+                        //    dbContextTransaction.Rollback();
+                        //    return new BO.ErrorObject { ErrorMessage = errObj.ErrorMessage, errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        //}
+
+                        Company company = _context.Companies.Where(p => p.id == companyBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                     .FirstOrDefault<Company>();
+
+                        var _prefmplist1 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == _bocompanyobjnew.ID && o.CompanyId == companyBO.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
+                        if (_prefmplist1.Count() == 0)
+                        {
+                            prefMedProvider.PrefMedProviderId = _bocompanyobjnew.ID;
+                            prefMedProvider.CompanyId = companyBO.ID;
+                            prefMedProvider.IsCreated = true;
+                            prefMedProvider.IsDeleted = false;
+                            prefMedProvider.CreateByUserID = preferredMedicalProviderBO.CreateByUserID;
+                            prefMedProvider.UpdateByUserID = preferredMedicalProviderBO.UpdateByUserID;
+                            prefMedProvider.CreateDate = DateTime.UtcNow;
+
+                            _context.PreferredMedicalProviders.Add(prefMedProvider);
+                            _context.SaveChanges();
+                        }
+
+                        var _prefmplist2 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == companyBO.ID && o.CompanyId == _bocompanyobjnew.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
+                        if (_prefmplist2.Count() == 0)
+                        {
+                            prefMedProvider.PrefMedProviderId = companyBO.ID;
+                            prefMedProvider.CompanyId = _bocompanyobjnew.ID;
+                            prefMedProvider.IsCreated = true;
+                            prefMedProvider.IsDeleted = false;
+                            prefMedProvider.CreateByUserID = preferredMedicalProviderBO.CreateByUserID;
+                            prefMedProvider.UpdateByUserID = preferredMedicalProviderBO.UpdateByUserID;
+                            prefMedProvider.CreateDate = DateTime.UtcNow;
+
+                            _context.PreferredMedicalProviders.Add(prefMedProvider);
+                            _context.SaveChanges();
+
+                        }
+
+                        #region Insert Invitation
+                        Invitation invitationDB1 = new Invitation();
+                        if (company != null)
+                        {
+                            invitationDB1.Company = company;
+                        }
+                        invitationDB1.User = user_;
+                        invitationDB1.UniqueID = Guid.NewGuid();
+                        invitationDB1.CreateDate = DateTime.UtcNow;
+                        invitationDB1.CreateByUserID = accs_.CreateByUserID;
+                        _dbInvitation.Add(invitationDB1);
+                        _context.SaveChanges();
+                        #endregion
+
+                        BO.User accss_ = userRepo.Convert<BO.User, User>(user_);
+
+                        #region Notification and messaging code for staff
+                        if (accss_.UserType == BO.GBEnums.UserType.Staff)
+                        {
+                            //try
+                            //{
+                            //    #region Send Email
+                            //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "</a>";
+                            //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                            //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                            //    objEmail.SendMail();
+                            //    #endregion
+                            //}
+                            //catch (Exception ex) { }
+
+                            //if (isEditMode == false)
+                            //{
+                            //    #region notification for Add User
+                            //    try
+                            //    {
+
+                            //        IdentityHelper identityHelper = new IdentityHelper();
+
+                            //        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "</a>";
+
+                            //        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                            //        string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                            //        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                            //        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
+                            //        string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";
+                            //        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + userBO.UserName + "";
+
+
+
+                            //        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                            //                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                            //                                  .FirstOrDefault();
+                            //        int CurrentCompanyId = companyBO.ID;
+
+                            //        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                            //                              .Where(p => p.UserName == acc_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                            //                                  .ToList<User>();
+
+
+                            //        #region  admin mail object                 
+                            //        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                            //        emAdmin.ApplicationName = "Midas";
+                            //        emAdmin.ToEmail = identityHelper.Email;
+                            //        emAdmin.EMailSubject = "MIDAS Notification";
+                            //        emAdmin.EMailBody = MailMessageForAdmin;
+                            //        #endregion
+
+                            //        #region admin sms object
+                            //        BO.SMS smsAdmin = new BO.SMS();
+                            //        if (AdminUser != null)
+                            //        {
+                            //            smsAdmin.ApplicationName = "Midas";
+                            //            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            //            smsAdmin.Message = SmsMessageForAdmin;
+                            //        }
+                            //        #endregion
+
+
+                            //        NotificationHelper nh = new NotificationHelper();
+                            //        MessagingHelper mh = new MessagingHelper();
+
+
+                            //        #region admin and staff 
+                            //        if (AdminUser.UserType == 4)
+                            //        {
+                            //            nh.PushNotification(AdminUser.UserName, companyBO.ID, NotificationForAdmin, "New Patient Registration");
+                            //            mh.SendEmailAndSms(AdminUser.UserName, companyBO.ID, emAdmin, smsAdmin);
+                            //            foreach (var item in lstStaff)
+                            //            {
+                            //                #region  staff mail object                 
+                            //                BO.EmailMessage emStaff = new BO.EmailMessage();
+                            //                emStaff.ApplicationName = "Midas";
+                            //                emStaff.ToEmail = item.UserName;
+                            //                emStaff.EMailSubject = "MIDAS Notification";
+                            //                emStaff.EMailBody = MailMessageForStaff;
+                            //                #endregion
+
+                            //                #region staff sms object
+                            //                BO.SMS smsStaff = new BO.SMS();
+                            //                smsStaff.ApplicationName = "Midas";
+                            //                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                            //                smsStaff.Message = SmsMessageForStaff;
+                            //                #endregion
+
+                            //                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                            //                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            //            }
+
+                            //        }
+                            //        else
+                            //        {
+                            //            foreach (var item in lstStaff)
+                            //            {
+                            //                #region  staff mail object                 
+                            //                BO.EmailMessage emStaff = new BO.EmailMessage();
+                            //                emStaff.ApplicationName = "Midas";
+                            //                emStaff.ToEmail = item.UserName;
+                            //                emStaff.EMailSubject = "MIDAS Notification";
+                            //                emStaff.EMailBody = MailMessageForStaff;
+                            //                #endregion
+
+                            //                #region staff sms object
+                            //                BO.SMS smsStaff = new BO.SMS();
+                            //                smsStaff.ApplicationName = "Midas";
+                            //                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                            //                smsStaff.Message = SmsMessageForStaff;
+                            //                #endregion
+
+                            //                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                            //                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            //            }
+                            //        }
+
+                            //        #endregion
+                            //    }
+                            //    catch (Exception ex)
+                            //    {
+
+                            //    }
+                            //    #endregion
+
+                            //}
+                            //else
+                            //{
+                            #region notification for Edit User
+                            try
+                            {
+
+                                IdentityHelper identityHelper = new IdentityHelper();
+
+                                string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "</a>";
+
+                                string MailMessageForStaff = "Dear " + accss_.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + company.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>"+ company.Name;
+                                string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                                string SmsMessageForStaff = "Dear " + accss_.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + company.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>" + company.Name;
+
+                                string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + accss_.UserName + "";
+                                string NotificationForAdmin = "New Staff " + accss_.UserName + " has been registered.";
+                                string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + accss_.UserName + "";
+
+
+
+                                User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                                      .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .FirstOrDefault();
+                                int CurrentCompanyId = companyBO.ID;
+
+                                List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                                      .Where(p => p.UserName == accss_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .ToList<User>();
+
+
+                                #region  admin mail object                 
+                                BO.EmailMessage emAdmin = new BO.EmailMessage();
+                                emAdmin.ApplicationName = "Midas";
+                                emAdmin.ToEmail = identityHelper.Email;
+                                emAdmin.EMailSubject = "MIDAS Notification";
+                                emAdmin.EMailBody = MailMessageForAdmin;
+                                #endregion
+
+                                #region admin sms object
+                                BO.SMS smsAdmin = new BO.SMS();
+                                if (AdminUser != null)
+                                {
+                                    smsAdmin.ApplicationName = "Midas";
+                                    smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                                    smsAdmin.Message = SmsMessageForAdmin;
+                                }
+                                #endregion
+
+
+                                NotificationHelper nh = new NotificationHelper();
+                                MessagingHelper mh = new MessagingHelper();
+
+
+                                #region admin and staff 
+                                if (AdminUser.UserType == 4)
+                                {
+                                    nh.PushNotification(AdminUser.UserName, accss_.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                                    mh.SendEmailAndSms(AdminUser.UserName, accss_.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emAdmin, smsAdmin);
+                                    //foreach (var item in lstStaff)
+                                    //{
+                                    #region  staff mail object                 
+                                    BO.EmailMessage emStaff = new BO.EmailMessage();
+                                    emStaff.ApplicationName = "Midas";
+                                    emStaff.ToEmail = accss_.UserName;
+                                    emStaff.EMailSubject = "MIDAS Notification";
+                                    emStaff.EMailBody = MailMessageForStaff;
+                                    #endregion
+
+                                    #region staff sms object
+                                    BO.SMS smsStaff = new BO.SMS();
+                                    smsStaff.ApplicationName = "Midas";
+                                    smsStaff.ToNumber = accss_.ContactInfo.CellPhone;
+                                    smsStaff.Message = SmsMessageForStaff;
+                                    #endregion
+
+                                    nh.PushNotification(accss_.UserName, accss_.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForStaff, "New Patient Registration");
+                                    mh.SendEmailAndSms(accss_.UserName, accss_.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                                    //}
+
+                                }
+                                else
+                                {
+                                    //foreach (var item in lstStaff)
+                                    //{
+                                    #region  staff mail object                 
+                                    BO.EmailMessage emStaff = new BO.EmailMessage();
+                                    emStaff.ApplicationName = "Midas";
+                                    emStaff.ToEmail = accss_.UserName;
+                                    emStaff.EMailSubject = "MIDAS Notification";
+                                    emStaff.EMailBody = MailMessageForStaff;
+                                    #endregion
+
+                                    #region staff sms object
+                                    BO.SMS smsStaff = new BO.SMS();
+                                    smsStaff.ApplicationName = "Midas";
+                                    smsStaff.ToNumber = accss_.ContactInfo.CellPhone;
+                                    smsStaff.Message = SmsMessageForStaff;
+                                    #endregion
+
+                                    nh.PushNotification(accss_.UserName, CurrentCompanyId, NotificationForStaff, "New Patient Registration");
+                                    mh.SendEmailAndSms(accss_.UserName, CurrentCompanyId, emStaff, smsStaff);
+                                    //}
+                                }
+
+                                #endregion
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                            #endregion
+                            //}
+                        }
+                        #endregion
+                        dbContextTransaction.Commit();
+                        var results = _context.PreferredMedicalProviders.Include("Company").Include("Company1")
+                                                          .Where(p => p.PrefMedProviderId == _bocompanyobjnew.ID && p.CompanyId == companyBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .FirstOrDefault();
+
+                        BO.PreferredMedicalProvider ac_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(results);
+
+                        var ress = (BO.GbObject)(object)ac_;
+                        return (object)ress; ;
+                    }
+                    //_context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
                 }
 
                 BO.Company prefMedProviderCompanyBO = prefMedProviderBO.company;
@@ -446,7 +806,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.Companies.Add(prefMedProvider_CompanyDB);
                 _context.SaveChanges();
 
-                
+
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
@@ -459,134 +819,263 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.CreateByUserID = userBO.CreateByUserID;
                 userDB.CreateDate = DateTime.UtcNow;
 
-                _context.Users.Add(userDB);
-                _context.SaveChanges();
-              
-                UserCompanyDB.UserID = userDB.id;
-                UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
-                UserCompanyDB.IsDeleted = false;
-                UserCompanyDB.UserStatusID = 1;
-                UserCompanyDB.CreateByUserID = 0;
-                UserCompanyDB.CreateDate = DateTime.UtcNow;
-                UserCompanyDB.IsAccepted = true;
+                //_context.Users.Add(userDB);
+                //_context.SaveChanges();
 
-                _context.UserCompanies.Add(UserCompanyDB);
-                _context.SaveChanges();
+                //UserCompanyDB.UserID = userDB.id;
+                //UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
+                //UserCompanyDB.IsDeleted = false;
+                //UserCompanyDB.UserStatusID = 1;
+                //UserCompanyDB.CreateByUserID = 0;
+                //UserCompanyDB.CreateDate = DateTime.UtcNow;
+                //UserCompanyDB.IsAccepted = true;
 
-               
-                UserCompanyRole UserCompanyRoleDB = new UserCompanyRole();
-                UserCompanyRoleDB.UserID = userDB.id;
-                UserCompanyRoleDB.RoleID = (int)roleBO.RoleType;
-                UserCompanyRoleDB.IsDeleted = false;
-                UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
-                UserCompanyRoleDB.CreateByUserID = 0;
-                _context.UserCompanyRoles.Add(UserCompanyRoleDB);
-                _context.SaveChanges();
+                //_context.UserCompanies.Add(UserCompanyDB);
+                //_context.SaveChanges();
+
+                BO.User accsnew_ = new BO.User();
+                using (UserRepository userRepo = new UserRepository(_context))
+                {
+                    accsnew_ = userRepo.Convert<BO.User, User>(userDB);
+                }
+                List<BO.Role> RoleBOs = new List<BO.Role>();
+                //var roles = _context.UserCompanyRoles.Where(p => p.UserID == user_.id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                //foreach (var item in roles)
+                //{
+                //    RoleBOs.Add(new BO.Role()
+                //    {
+                //        ID = item.RoleID,
+                //        Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                //        RoleType = (BO.GBEnums.RoleType)item.RoleID
+                //    });
+                //}
                 
-                prefMedProvider.PrefMedProviderId = prefMedProvider_CompanyDB.id;
-                prefMedProvider.CompanyId = companyBO.ID;
-                prefMedProvider.IsCreated = true;
-                prefMedProvider.IsDeleted = false;
-                prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
-                prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.UpdateByUserID;
-                prefMedProvider.CreateDate = DateTime.UtcNow;
+                BO.Company _bocompanyobj = new BO.Company();
+                using (CompanyRepository userRepo = new CompanyRepository(_context))
+                {
+                    _bocompanyobj = userRepo.Convert<BO.Company, Company>(prefMedProvider_CompanyDB);
+                }
 
-                _context.PreferredMedicalProviders.Add(prefMedProvider);
-                _context.SaveChanges();
+                //UserCompanyRole UserCompanyRoleDB = new UserCompanyRole();
+                //UserCompanyRoleDB.UserID = userDB.id;
+                //UserCompanyRoleDB.RoleID = (int)roleBO.RoleType;
+                //UserCompanyRoleDB.IsDeleted = false;
+                //UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
+                //UserCompanyRoleDB.CreateByUserID = 0;
+                //_context.UserCompanyRoles.Add(UserCompanyRoleDB);
+               // _context.SaveChanges();
+
+
+                RoleBOs.Add(new BO.Role()
+                {
+                    ID = (int)roleBO.RoleType,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), roleBO.RoleType),
+                    RoleType = (BO.GBEnums.RoleType)roleBO.RoleType
+                });
+
+
+                BO.AddUser updUserBO = new BO.AddUser();
+                updUserBO.user = accsnew_;
+                updUserBO.user.UserName = userBO.UserName;
+                updUserBO.user.FirstName = userBO.FirstName;
+                updUserBO.user.LastName = userBO.LastName;
+                updUserBO.user.MiddleName = userBO.MiddleName;              
+                updUserBO.user.UserType = (BO.GBEnums.UserType)2;
+                //updUserBO.user.ImageLink = user_.ImageLink;
+                updUserBO.user.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                updUserBO.user.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));                
+                //updUserBO.user.ID = user_.id;
+                updUserBO.user.Roles = RoleBOs;
+                updUserBO.company = _bocompanyobj;
+                updUserBO.role = accsnew_.Roles.ToArray();
+                // if (doctorBO.DoctorSpecialities.Count > 0) updUserBO.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                 updUserBO.address = accsnew_.AddressInfo;
+                 updUserBO.contactInfo = accsnew_.ContactInfo;
+                using (UserRepository userRepo = new UserRepository(_context))
+                {
+                    object obj = userRepo.Save<BO.AddUser>(updUserBO);
+                    if (obj.GetType() == errObj.GetType())
+                    {
+                        errObj = (BO.ErrorObject)obj;
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = errObj.ErrorMessage, errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        userBO = (BO.User)obj;
+                    }
+                }
+
+
+                //UserCompanyRole UserCompanyRoleDB = new UserCompanyRole();
+                //UserCompanyRoleDB.UserID = userDB.id;
+                //UserCompanyRoleDB.RoleID = (int)roleBO.RoleType;
+                //UserCompanyRoleDB.IsDeleted = false;
+                //UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
+                //UserCompanyRoleDB.CreateByUserID = 0;
+                //_context.UserCompanyRoles.Add(UserCompanyRoleDB);
+                //_context.SaveChanges();
+
+                var _prefmplist3 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == prefMedProvider_CompanyDB.id  && o.CompanyId == companyBO.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
+                if (_prefmplist3.Count() == 0)
+                {
+                    prefMedProvider.PrefMedProviderId = prefMedProvider_CompanyDB.id;
+                    prefMedProvider.CompanyId = companyBO.ID;
+                    prefMedProvider.IsCreated = true;
+                    prefMedProvider.IsDeleted = false;
+                    prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                    prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.UpdateByUserID;
+                    prefMedProvider.CreateDate = DateTime.UtcNow;
+
+                    _context.PreferredMedicalProviders.Add(prefMedProvider);
+                    _context.SaveChanges();
+                }
+
+                var _prefmplist4 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == companyBO.ID && o.CompanyId == prefMedProvider_CompanyDB.id && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
+                if (_prefmplist4.Count() == 0)
+                {
+                    prefMedProvider.PrefMedProviderId = companyBO.ID;
+                    prefMedProvider.CompanyId = prefMedProvider_CompanyDB.id;
+                    prefMedProvider.IsCreated = true;
+                    prefMedProvider.IsDeleted = false;
+                    prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                    prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.UpdateByUserID;
+                    prefMedProvider.CreateDate = DateTime.UtcNow;
+
+                    _context.PreferredMedicalProviders.Add(prefMedProvider);
+                    _context.SaveChanges();
+                }
+
+                List<UserCompany> oldUserCompniesListNew = new List<UserCompany>();
+                oldUserCompniesListNew = _context.UserCompanies.Where(y => y.UserID == userBO.ID && y.CompanyID != _bocompanyobj.ID).ToList<UserCompany>();
+                if (companyBO.CompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+                {
+                    PreferredMedicalProvider prefMedProviderNew = new PreferredMedicalProvider();
+                    foreach (var itemMed in oldUserCompniesListNew)
+                    {
+                        if (!_context.PreferredMedicalProviders.Any(y => y.PrefMedProviderId == itemMed.CompanyID && y.CompanyId == _bocompanyobj.ID && (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))))
+                        {
+                            // Map Old Companies to new compnay preffred list
+                            prefMedProvider.PrefMedProviderId = itemMed.CompanyID;
+                            prefMedProvider.CompanyId = _bocompanyobj.ID;
+                            prefMedProvider.IsCreated = true;
+                            prefMedProvider.IsDeleted = false;
+                            prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                            prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                            prefMedProvider.CreateDate = DateTime.UtcNow;
+                            _context.PreferredMedicalProviders.Add(prefMedProvider);
+                            _context.SaveChanges();
+                        }
+
+                        if (!_context.PreferredMedicalProviders.Any(y => y.PrefMedProviderId == _bocompanyobj.ID && y.CompanyId == itemMed.CompanyID && (y.IsDeleted.HasValue == false || (y.IsDeleted.HasValue == true && y.IsDeleted.Value == false))))
+                        {
+                            // Map New Company to old compnaies preffred list
+                            prefMedProvider.PrefMedProviderId = _bocompanyobj.ID;
+                            prefMedProvider.CompanyId = itemMed.CompanyID;
+                            prefMedProvider.IsCreated = true;
+                            prefMedProvider.IsDeleted = false;
+                            prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                            prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                            prefMedProvider.CreateDate = DateTime.UtcNow;
+                            _context.PreferredMedicalProviders.Add(prefMedProvider);
+                            _context.SaveChanges();
+                        }
+                    }
+                }
 
                 dbContextTransaction.Commit();
             }
 
-            #region Insert Invitation
-            Invitation invitationDB = new Invitation();
-            invitationDB.User = userDB;
+            //#region Insert Invitation
+            //Invitation invitationDB = new Invitation();
+            //invitationDB.User = userDB;
 
-            invitationDB_UniqueID = Guid.NewGuid();
-            invitationDB.UniqueID = invitationDB_UniqueID;
-            invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
-            invitationDB.CreateDate = DateTime.UtcNow;
-            invitationDB.CreateByUserID = userDB.id;
-            _context.Invitations.Add(invitationDB);
-            _context.SaveChanges();
-            #endregion
+            //invitationDB_UniqueID = Guid.NewGuid();
+            //invitationDB.UniqueID = invitationDB_UniqueID;
+            //invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+            //invitationDB.CreateDate = DateTime.UtcNow;
+            //invitationDB.CreateByUserID = userDB.id;
+            //_context.Invitations.Add(invitationDB);
+            //_context.SaveChanges();
+            //#endregion
 
             try
             {
-                #region Send Email
+                //#region Send Email
 
-                var CurrentUser = _context.Users.Where(p => p.id == prefMedProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
-                var CurrentCompanyId= _context.UserCompanies.Where(p => p.UserID == CurrentUser.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2=>p2.CompanyID).FirstOrDefault();
-                var CurrentCompany = _context.Companies.Where(p => p.id == CurrentCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                //var CurrentUser = _context.Users.Where(p => p.id == prefMedProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+                //var CurrentCompanyId = _context.UserCompanies.Where(p => p.UserID == CurrentUser.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyID).FirstOrDefault();
+                //var CurrentCompany = _context.Companies.Where(p => p.id == CurrentCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                if (CurrentUser != null)
-                {
-                    if (CurrentUser.UserType == 3)
-                    {
-                        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
-                        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        if (medicalprovider_user != null )
-                        {
-                            var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
-                            if (PreferredMedicalAddByAttorney == null )
-                            {
-                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                            }
-                            else
-                            {
-                                #region Send mail to medical provider
-                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                                string msg1 = PreferredMedicalAddByAttorney.EmailBody;
-                                string subject1 = PreferredMedicalAddByAttorney.EmailSubject;
+                //if (CurrentUser != null)
+                //{
+                //    if (CurrentUser.UserType == 3)
+                //    {
+                //        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                //        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                //        if (medicalprovider_user != null)
+                //        {
+                //            var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
+                //            if (PreferredMedicalAddByAttorney == null)
+                //            {
+                //                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //            }
+                //            else
+                //            {
+                //                #region Send mail to medical provider
+                //                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                //                string msg1 = PreferredMedicalAddByAttorney.EmailBody;
+                //                string subject1 = PreferredMedicalAddByAttorney.EmailSubject;
 
-                                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+                //                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
 
-                                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
-                                objEmail1.SendMail();
-                                #endregion
+                //                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                //                objEmail1.SendMail();
+                //                #endregion
 
-                                //#region Send mail to patient
-                                //string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
-                                //string msg2 = patientCaseTemplate.EmailBody;
-                                //string subject2 = patientCaseTemplate.EmailSubject;
+                //                //#region Send mail to patient
+                //                //string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                //                //string msg2 = patientCaseTemplate.EmailBody;
+                //                //string subject2 = patientCaseTemplate.EmailSubject;
 
-                                //string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+                //                //string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
 
-                                //BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
-                                //objEmail2.SendMail();
-                            }
+                //                //BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
+                //                //objEmail2.SendMail();
+                //            }
 
-                        }
-                    }
-                    else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
-                    {
-                        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
-                        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                //        }
+                //    }
+                //    else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                //    {
+                //        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                //        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                        if (medicalprovider_user != null)
-                        {
-                            var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByProvider".ToUpper()).FirstOrDefault();
-                           
-                            if (PreferredMedicalAddByProvider == null)
-                            {
-                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                            }
-                            else
-                            {
-                                #region Send mail to medical provider
-                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                                string msg1 = PreferredMedicalAddByProvider.EmailBody;
-                                string subject1 = PreferredMedicalAddByProvider.EmailSubject;
+                //        if (medicalprovider_user != null)
+                //        {
+                //            var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByProvider".ToUpper()).FirstOrDefault();
 
-                                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+                //            if (PreferredMedicalAddByProvider == null)
+                //            {
+                //                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //            }
+                //            else
+                //            {
+                //                #region Send mail to medical provider
+                //                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                //                string msg1 = PreferredMedicalAddByProvider.EmailBody;
+                //                string subject1 = PreferredMedicalAddByProvider.EmailSubject;
 
-                                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
-                                objEmail1.SendMail();
-                                #endregion
-                            }
-                        }
-                    }
-                }
-                #endregion
+                //                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                //                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                //                objEmail1.SendMail();
+                //                #endregion
+                //            }
+                //        }
+                //    }
+                //}
+                //#endregion
             }
             catch (Exception ex) { }
 
@@ -826,7 +1315,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By GetPreferredCompanyDoctorsAndRoomByCompanyId
         public override object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
-            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId 
+            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                     .Select(p => p.Company1)
                                                                     .ToList();
@@ -838,40 +1327,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 //if (eachMedicalProvider.RegistrationComplete == true)
                 //{
-                    var locations = _context.Locations.Where(p => p.CompanyID == eachMedicalProvider.ID
+                var locations = _context.Locations.Where(p => p.CompanyID == eachMedicalProvider.ID
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.id);
+
+                var doctorsWithSpeciality = _context.DoctorSpecialities.Where(p => p.SpecialityID == SpecialityId
+                                                            && (p.IsDeleted == false))
+                                                  .Select(p => p.DoctorID);
+
+                var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && doctorsWithSpeciality.Contains(p.DoctorID) == true
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                      .Select(p => p.id);
+                                                              .Select(p => p.Doctor).Distinct()
+                                                              .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                              .Select(p => p).Include("User").Include("User.UserPersonalSettings")
+                                                              .ToList();
 
-                    var doctorsWithSpeciality = _context.DoctorSpecialities.Where(p => p.SpecialityID == SpecialityId
-                                                                && (p.IsDeleted == false))
-                                                      .Select(p => p.DoctorID);
+                List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
+                doctors.ForEach(p => doctorsBO.Add(ConvertDoctorAndRoom<BO.Doctor, Doctor>(p)));
 
-                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && doctorsWithSpeciality.Contains(p.DoctorID) == true
-                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                  .Select(p => p.Doctor).Distinct()
-                                                                  .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                  .Select(p => p).Include("User").Include("User.UserPersonalSettings")
-                                                                  .ToList();
+                eachMedicalProvider.Doctors = doctorsBO;
 
-                    List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
-                    doctors.ForEach(p => doctorsBO.Add(ConvertDoctorAndRoom<BO.Doctor, Doctor>(p)));
+                var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true && p.RoomTestID == RoomTestId
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                          .ToList();
 
-                    eachMedicalProvider.Doctors = doctorsBO;
+                List<BO.Room> roomsBO = new List<BO.Room>();
+                rooms.ForEach(p => roomsBO.Add(ConvertDoctorAndRoom<BO.Room, Room>(p)));
 
-                    var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true && p.RoomTestID == RoomTestId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                              .ToList();
-
-                    List<BO.Room> roomsBO = new List<BO.Room>();
-                    rooms.ForEach(p => roomsBO.Add(ConvertDoctorAndRoom<BO.Room, Room>(p)));
-
-                    eachMedicalProvider.Rooms = roomsBO;
+                eachMedicalProvider.Rooms = roomsBO;
                 //}                
             }
 
             return PreferredMedicalCompanyBO;
         }
         #endregion
+
+        #region Get By GetPreferredMedicalProviderbyCompanyId
+        public override object GetPreferredMedicalProviderbyCompanyId(int CompanyId)
+        {
+            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .Select(p => p.Company1)
+                                                                    .ToList();
+
+            List<BO.PreferredMedicalCompany> PreferredMedicalCompanyBO = new List<BO.PreferredMedicalCompany>();
+            medicalProvider.ForEach(p => PreferredMedicalCompanyBO.Add(ConvertPreferredMedicalCompany<BO.PreferredMedicalCompany, Company>(p)));           
+
+            return PreferredMedicalCompanyBO;
+        }
+        #endregion Get By GetPreferredMedicalProvider
 
         #region Get By PrefMedProvider Id
         public override object GetByPrefMedProviderId(int Id)
@@ -897,6 +1401,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By PrefMedProvider Company Name
+        public override object GetByPrefMedProviderCompanyName(string CompanyName)
+        {
+            var medicalProvider = _context.PreferredMedicalProviders.Include("Company1.UserCompanies.User")
+                                                                     .Where(p => p.Company1.Name == CompanyName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .FirstOrDefault();
+            BO.PreferredMedicalProviderSignUp boProviderSignUp = new BO.PreferredMedicalProviderSignUp();
+            var acc = _context.Companies.Where(o => o.Name == CompanyName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).FirstOrDefault();
+            if (acc != null)
+            {
+                boProviderSignUp.CompanyId = acc.id;
+                boProviderSignUp.PrefMedProviderId = acc.CompanyStatusTypeID;
+                return boProviderSignUp;
+            }
+
+            boProviderSignUp.CompanyId = 0;
+            return boProviderSignUp;
+            //return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            //if (medicalProvider == null)
+            //{
+            //    return new BO.ErrorObject { ErrorMessage = "No record found for this preferred Medcial Provider Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //}
+            //else
+            //{
+            //    boProviderSignUp = ConvertPreferredMedicalProviderSignUp<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(medicalProvider);
+            //}
+
+
+        }
+        #endregion
+
         #region Associate Medical Provider With Company
         public override object AssociateMedicalProviderWithCompany(int PrefMedProviderId, int CompanyId)
         {
@@ -918,7 +1454,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "PrefMedProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
-            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && p.CompanyId == CompanyId 
+            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && p.CompanyId == CompanyId
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault();
 
@@ -965,13 +1501,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                             .Select(p => p.PrefMedProviderId);
 
             var companies = _context.Companies.Where(p => AssignedMedicalProvider.Contains(p.id) == false
-                                               && p.CompanyType == 1 
+                                               && p.CompanyType == 1
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                              .OrderBy(x=> x.Name)
+                                              .OrderBy(x => x.Name)
                                               .ToList();
 
-            
-                            
+
+
             List<BO.Company> lstCompany = new List<BO.Company>();
 
             if (companies == null)
@@ -990,7 +1526,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-           
+
             PreferredMedicalProvider preferredMedicalProviderDB = _context.PreferredMedicalProviders.Include("Company")
                                                                                                     .Include("Company1").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PreferredMedicalProvider>();
 

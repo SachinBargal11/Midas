@@ -82,6 +82,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId, SpecialityId, RoomTestId);
         }
 
+        [HttpGet]
+        [Route("GetPreferredMedicalProviderbyCompanyId/{CompanyId}")]
+        public HttpResponseMessage GetPreferredMedicalProviderbyCompanyId(int CompanyId)
+        {
+            return requestHandler.GetPreferredMedicalProviderbyCompanyId(Request, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

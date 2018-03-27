@@ -1126,6 +1126,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Company By Name
+        public override Object GetbyCompanyName(string Name)
+        {
+            //var compny = _context.Companies.Include("")
+
+            var company = _context.Companies.Include("ContactInfo")
+                          .Include("UserCompanies.User").Where(p => p.Name == Name && p.UserCompanies.Any(q => q.CompanyID == p.id)
+                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                          .FirstOrDefault();
+
+            BO.UpdateCompany boUpdateCompany = new BO.UpdateCompany();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                boUpdateCompany = ConvertUpdateCompanySignUp<BO.UpdateCompany, Company>(company);
+            }
+
+            return boUpdateCompany;
+        }
+        #endregion
+
         #region Get All Companies
         public override Object Get()
         {

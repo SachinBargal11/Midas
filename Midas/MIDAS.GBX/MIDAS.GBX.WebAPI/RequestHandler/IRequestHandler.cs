@@ -214,5 +214,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetInhouseReferralByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetInhouseReferralByDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId);
         HttpResponseMessage GetByRoomInAllAppCompany(HttpRequestMessage request, int roomTestId, int companyId);
+        HttpResponseMessage GetByPrefMedProviderCompanyName(HttpRequestMessage request, string CompanyName);
+        HttpResponseMessage GetbyCompanyName(HttpRequestMessage request, string CompanyName);
+        HttpResponseMessage GetPreferredMedicalProviderbyCompanyId(HttpRequestMessage request, int CompanyId);
     }
 }

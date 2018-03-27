@@ -532,25 +532,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 pv.UpdateDate = DateTime.UtcNow;
 
                 _context.SaveChanges();
-
             }
-            // Deleting the EUO Visit            
-            var EUOacc = _context.EOVisits.Include("CalendarEvent").Where(p => p.DoctorId == doctorlocationscheduleDB.DoctorID && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<EOVisit>();
-            foreach (EOVisit pv in EUOacc)
-            {
-                if (pv != null)
-                {
-                    pv.CalendarEvent.IsDeleted = true;
-                    pv.CalendarEvent.UpdateByUserID = 0;
-                    pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
-                }
 
-                pv.IsDeleted = true;
-                pv.UpdateByUserID = 0;
-                pv.UpdateDate = DateTime.UtcNow;
-
-                _context.SaveChanges();
-            }
             doctorlocationscheduleDB.IsDeleted = true;
 
             _context.Entry(doctorlocationscheduleDB).State = System.Data.Entity.EntityState.Modified;

@@ -1216,6 +1216,21 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByPrefMedProviderCompanyName(string CompanyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetbyCompanyName(string CompanyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPreferredMedicalProviderbyCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
