@@ -640,34 +640,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (procedureCodeInfo == null || procedureCodeInfo.Count == 0)
                 {
-                    var procedureCodeInfom = (from pccm in _context.ProcedureCodeCompanyMappings
-                                              join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
-                                              join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
-                                              where pccm.CompanyID == CompanyId && sm.CompanyID == CompanyId
-                                               && pc.RoomTestId == RoomTestId && sm.RoomTestID == RoomTestId
-                                                    && sm.ShowProcCode == true
-                                                    && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
-                                                    && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
-                                              orderby pccm.IsPreffredCode descending
-                                              select new
-                                              {
-                                                  id = pccm.ID,
-                                                  procedureCodeId = pc.Id,
-                                                  procedureCodeText = pc.ProcedureCodeText,
-                                                  procedureCodeDesc = pc.ProcedureCodeDesc,
-                                                  amount = pccm.Amount,
-                                                  isPreffredCode = pccm.IsPreffredCode
-                                              }).ToList().Distinct().ToList();
+                    return procedureCodeInfo;
+                    //var procedureCodeInfom = (from pccm in _context.ProcedureCodeCompanyMappings
+                    //                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                    //                          join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
+                    //                          where pccm.CompanyID == CompanyId && sm.CompanyID == CompanyId
+                    //                           && pc.RoomTestId == RoomTestId && sm.RoomTestID == RoomTestId
+                    //                                && sm.ShowProcCode == true
+                    //                                && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                    //                                && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                    //                          orderby pccm.IsPreffredCode descending
+                    //                          select new
+                    //                          {
+                    //                              id = pccm.ID,
+                    //                              procedureCodeId = pc.Id,
+                    //                              procedureCodeText = pc.ProcedureCodeText,
+                    //                              procedureCodeDesc = pc.ProcedureCodeDesc,
+                    //                              amount = pccm.Amount,
+                    //                              isPreffredCode = pccm.IsPreffredCode
+                    //                          }).ToList().Distinct().ToList();
 
-                    if (procedureCodeInfom == null || procedureCodeInfom.Count == 0)
-                    {
-                        //return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                        return procedureCodeInfom;
-                    }
-                    else
-                    {
-                        return procedureCodeInfom;
-                    }
+                    //if (procedureCodeInfom == null || procedureCodeInfom.Count == 0)
+                    //{
+                    //    //return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    //    return procedureCodeInfom;
+                    //}
+                    //else
+                    //{
+                    //    return procedureCodeInfom;
+                    //}
                 }
                 else
                 {
