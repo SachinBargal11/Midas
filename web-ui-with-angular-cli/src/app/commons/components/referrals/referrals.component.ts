@@ -885,7 +885,7 @@ export class ReferralsComponent implements OnInit {
   {
      if(event.target.value.trim() == '' || event.target.value.trim() == '0' ||  event.target.value.trim() == '00' || event.target.value.trim() == '000')
      {
-       
+      this.selectedNoOfVisit = 0;
      }
      else
      {
