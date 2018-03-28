@@ -214,7 +214,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 CalendarEventDB.Name = "Unscheduled Visit";
                 CalendarEventDB.EventStart = PatientVisitUnscheduledBO.EventStart.Value;
                 CalendarEventDB.EventEnd = PatientVisitUnscheduledBO.EventStart.Value;
-                CalendarEventDB.TimeZone = "-330";
+                CalendarEventDB.TimeZone = PatientVisitUnscheduledBO.TimeZone;
                 CalendarEventDB.Description = PatientVisitUnscheduledBO.Notes;
                 CalendarEventDB.RecurrenceId = null;
                 CalendarEventDB.RecurrenceRule = "";
@@ -467,7 +467,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         CalendarEventDB.Name = "Unscheduled Visit";
                         CalendarEventDB.EventStart = PatientVisitUnscheduledBO.EventStart.Value;
                         CalendarEventDB.EventEnd = PatientVisitUnscheduledBO.EventStart.Value;
-                        CalendarEventDB.TimeZone = "-330";
+                        CalendarEventDB.TimeZone = PatientVisitUnscheduledBO.TimeZone;
                         CalendarEventDB.Description = PatientVisitUnscheduledBO.Notes;
                         CalendarEventDB.RecurrenceId = null;
                         CalendarEventDB.RecurrenceRule = "";
@@ -542,6 +542,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
+                            PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
 
                             if (Add_patientVisitUnscheduledDB == true)
                             {
