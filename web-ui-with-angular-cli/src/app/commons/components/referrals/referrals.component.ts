@@ -883,8 +883,15 @@ export class ReferralsComponent implements OnInit {
 
   updateNoOfVisits(event)
   {
-    debugger;
-     this.selectedNoOfVisit = event.target.value;
+     if(event.target.value.trim() == '' || event.target.value.trim() == '0' ||  event.target.value.trim() == '00' || event.target.value.trim() == '000')
+     {
+       
+     }
+     else
+     {
+       this.selectedNoOfVisit = event.target.value;
+     }
+     
   }
 
 
