@@ -38,7 +38,7 @@
 <form [formGroup]="visitForm">
 <div class="col-lg-4">
     <label class="form-label"> No Of Visits<span class="color-red">*</span></label>
-    <input type="text" pInputText formControlName="selectedNoOfVisit" [(ngModel)]="selectedNoOfVisit"  minlength="1" maxlength="10" (change)="updateNoOfVisits($event)" (keypress)="_keyPressNumber($event)" />
+    <input type="text" pInputText formControlName="selectedNoOfVisit" [(ngModel)]="selectedNoOfVisit"  minlength="1" maxlength="3" (change)="updateNoOfVisits($event)" (keypress)="_keyPressNumber($event)" />
 </div>
 </form>
 </div>
