@@ -14,7 +14,8 @@ const LocationRecord = Record({
     updateDate: null,
     handicapRamp: 0,
     stairsToOffice: 0,
-    publicTransportNearOffice: 0
+    publicTransportNearOffice: 0,
+    companyId: 0
 });
 
 export class Location extends LocationRecord {
@@ -30,6 +31,7 @@ export class Location extends LocationRecord {
     handicapRamp: boolean;
     stairsToOffice: boolean;
     publicTransportNearOffice: boolean;
+    companyId:number;
 
     constructor(props) {
         super(props);
