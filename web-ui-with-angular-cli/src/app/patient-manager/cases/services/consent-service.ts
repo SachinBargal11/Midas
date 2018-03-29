@@ -278,6 +278,7 @@ export class ConsentService {
                 })
                 .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
                 (error) => {
+                    debugger;
                     reject(error);
                     console.log("Error downloading the file.")
 
