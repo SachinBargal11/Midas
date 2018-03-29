@@ -182,4 +182,17 @@ export class ConsentStore {
     //     });
     //     return <Observable<Consent[]>>Observable.fromPromise(promise);
     // }
+
+
+    downloadRefferalFormByRefferalIdDocumetId(referralId: Number, midasDocumentId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._consentFormService.downloadRefferalFormByRefferalIdDocumetId(referralId, midasDocumentId).subscribe((consent: Consent[]) => {
+                this._consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
 }
