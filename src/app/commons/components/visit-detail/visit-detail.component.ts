@@ -138,7 +138,8 @@ export class VisitDetailComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+    ngOnInit() {        
+        debugger;
         this.readingDoctor = this.selectedVisit.doctorId != null ? this.selectedVisit.doctorId : 0;
         this.getReadingDoctorsByCompanyId();
         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -262,12 +263,12 @@ export class VisitDetailComponent implements OnInit {
         }
     }
 
-    saveVisit() {
+    saveVisit() {        
         let visitDetailFormValues = this.visitDetailForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: visitDetailFormValues.notes,
-            visitStatusId: this.routeFrom == 2 ? this.selectedVisit.visitStatusId : parseInt(visitDetailFormValues.visitStatusId),
+            visitStatusId:  parseInt(visitDetailFormValues.visitStatusId),
             doctorId: this.selectedVisit.specialtyId ? this.selectedVisit.doctorId : parseInt(visitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
