@@ -35,6 +35,7 @@ const UnscheduledVisitRecord = Record({
     orignatorCompanyId: 0,
     visitStatusId:0,
     visitUpdateStatus: true,
+    timezone: '',
     // visitStatusId: VisitStatus.SCHEDULED,
      calendarEvent: null,
     // isDeleted: false,
@@ -71,6 +72,7 @@ export class UnscheduledVisit extends UnscheduledVisitRecord implements IEventWr
     visitStatusId: number;
     // visitStatusId: VisitStatus;
      calendarEvent: ScheduledEvent;
+     timezone: string;
     // isDeleted: boolean;
     // createByUserId: number;
     // updateByUserId: number;

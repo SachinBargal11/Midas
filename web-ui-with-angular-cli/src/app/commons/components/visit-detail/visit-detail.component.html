@@ -16,8 +16,12 @@
         <div class="row">
           <div class="col-md-1"><label class="form-label">Visit Time</label></div>
           <div class="col-md-5">
-            <div class="form-group">
+            <div class="form-group" *ngIf="selectedVisit.eventStart != null">
               <label> {{selectedVisit.eventStart | dateTimeFormat}} to {{selectedVisit.eventEnd | dateTimeFormat}}
+                                    </label>
+            </div>
+            <div class="form-group" *ngIf="selectedVisit.eventStart == null">
+              <label> {{selectedVisit.calendarEvent.eventStart | dateTimeFormat}} to {{selectedVisit.calendarEvent.eventEnd | dateTimeFormat}}
                                     </label>
             </div>
           </div>
@@ -88,8 +92,12 @@
           <div class="col-md-1"><label class="form-label">Status</label></div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>{{selectedVisit.visitStatusLabel}}                                    
-              </label>
+              <!-- <label>{{selectedVisit.visitStatusLabel}}                                    
+              </label> -->
+              <select  formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
+                <option value="2">Complete</option>
+                <option value="4">No Show</option>
+             </select>
             </div>
           </div>
         </div>
@@ -127,7 +135,7 @@
           {{selectedVisit.doctorID}}
           <div class="col-md-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
-            <button *ngIf="caseStatusId === 1  && (sessionStore.session.user.id == selectedVisit.doctor.user.id)" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+            <button *ngIf="caseStatusId === 1 && selectedVisit.visitUpdateStatus && (sessionStore.session.user.id == selectedVisit.doctor.user.id)" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>            
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
@@ -135,7 +143,7 @@
           </div>
           <div class="col-md-4" *ngIf="!sessionStore.isOnlyDoctorRole()">
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
-            <button *ngIf="caseStatusId === 1" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+            <button *ngIf="caseStatusId === 1  && selectedVisit.visitUpdateStatus && selectedVisit.location.companyId == sessionStore.session.currentCompany.id" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
@@ -145,7 +153,7 @@
       </form>
     </p-tabPanel>
 
-    <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
+    <p-tabPanel header="Documents" *ngIf="selectedVisit.id && selectedVisit.visitStatusId == 2">
       <p-confirmDialog width="425"></p-confirmDialog>
       <div class="input-group" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
         <h3 class="with-border">Uploaded Documents
@@ -153,7 +161,7 @@
           <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
           <loader [visible]="isDeleteProgress"></loader>
           </a>-->
-          <a class="pull-right btn-inline btn btn-primary btn-sm" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)" (click)="showDialog()">
+          <a class="pull-right btn-inline btn btn-primary btn-sm"  *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
           </a>
         </h3>
@@ -164,7 +172,7 @@
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
             <loader [visible]="isDeleteProgress"></loader>
             </a> -->
-            <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+            <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
               <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
             </a>
           </h3>
@@ -210,15 +218,15 @@
       </p-dialog>
     </p-tabPanel>
 
-    <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
+    <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.visitStatusId == 2">
       <app-referrals [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveReferral($event)"></app-referrals>
     </p-tabPanel>
 
-    <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+    <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.visitStatusId == 2">
       <app-dignosis [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
     </p-tabPanel>
 
-    <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+    <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.visitStatusId == 2">
       <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
     </p-tabPanel>
 
