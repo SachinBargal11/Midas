@@ -8,7 +8,7 @@
           <span class="input-group-addon"><i class="fa fa-search"></i></span>
           <input #gb1 type="text" class="form-control" style="float:left" placeholder="Search ">
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
          <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredDiagnosisCodes()">
           <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Diagnosis Code Groups</span>
          </a>
@@ -48,7 +48,7 @@
             <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
            </select>
          </div>
-         <div class="col-lg-4">
+         <div class="col-lg-4" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
           <a class="pull-right btn btn-info btn-sm" (click)="showCAllDiagnosisCodes()">
           <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View All Diagnosis Code</span>
           </a>
@@ -84,13 +84,13 @@
       <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
     <div class="col-lg-6" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDiagnosis()" *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id)">
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDiagnosis()" *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
         <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Diagnosis </span>
         <loader [visible]="isDeleteProgress"></loader>
       </a>
     </div>
     <div class="col-lg-6" *ngIf="!sessionStore.isOnlyDoctorRole()">        
-        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDiagnosis()">
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDiagnosis()" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
           <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Diagnosis </span>          
         </a>
       </div>
@@ -105,12 +105,12 @@
   <br>
 
   <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-    <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()" *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id)">Save
+    <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()" *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>
   </div>
   <div *ngIf="!sessionStore.isOnlyDoctorRole()">
-    <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()">Save 
+    <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">Save 
         <loader [visible]="isSaveProgress"></loader>     
     </button>
   </div>
