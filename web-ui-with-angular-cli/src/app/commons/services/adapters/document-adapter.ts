@@ -21,8 +21,7 @@ export class DocumentAdapter {
             createdCompanyName: data.createdCompanyName,
             createdUserName: data.createdUserName,
             originalResponse: data
-        });
-        debugger;
+        });        
         return document;
     }
 }

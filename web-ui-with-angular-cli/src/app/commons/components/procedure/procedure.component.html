@@ -7,12 +7,12 @@
       <span class="input-group-addon"><i class="fa fa-search"></i></span>
       <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
-    <div *ngIf="showPreProcedureCode">
+    <div *ngIf="showPreProcedureCode && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
       <a class="pull-right btn btn-info btn-sm" (click)="showCAllProcuderCodes()">
       <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View All Procedure codes </span>
     </a>
   </div>
-  <div *ngIf="showAllProcedureCode">
+  <div *ngIf="showAllProcedureCode && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
     <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredProcedureCodes()">
     <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Preffred Procedure codes </span>
   </a>
@@ -38,13 +38,13 @@
   <h3 class="with-border">Selected Procedures</h3>
     <!--<a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteProcedureCode()">-->
   <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-      <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">
+      <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <!--<loader [visible]="isDeleteProgress"></loader>-->
     </a>
   </div>
   <div *ngIf="!sessionStore.isOnlyDoctorRole()">
-      <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
+      <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <!--<loader [visible]="isDeleteProgress"></loader>-->
     </a>
@@ -79,10 +79,10 @@
 </p-dataTable>
 <br>
 <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-  <button    class="btn btn-success sign-up" (click)="saveProcedures()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">Save    
+  <button    class="btn btn-success sign-up" (click)="saveProcedures()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id">Save    
   </button>
 </div>
 <div *ngIf="!sessionStore.isOnlyDoctorRole()">
-    <button  class="btn btn-success sign-up" (click)="saveProcedures()">Save      
+    <button  class="btn btn-success sign-up" (click)="saveProcedures()" *ngIf="selectedVisit.location.companyId == sessionStore.session.currentCompany.id">Save      
     </button>
 </div>

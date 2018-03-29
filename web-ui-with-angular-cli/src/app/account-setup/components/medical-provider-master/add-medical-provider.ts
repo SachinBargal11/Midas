@@ -52,6 +52,8 @@ export class AddMedicalProviderComponent implements OnInit {
     email: string = '';
     phoneNo: string= '';
     companyName: string='';
+    companyType: string='';
+    existingcompany: boolean=false;
 
     constructor(
         private fb: FormBuilder,
@@ -84,9 +86,9 @@ export class AddMedicalProviderComponent implements OnInit {
         this.providerformControls = this.providerform.controls;
     }
 
-    ngOnInit() {
-        console.log(this.inputCancel);
+    ngOnInit() {        
         this.loadAllProviders();
+        this.companyType = "1";
     }
 
     loadAllProviders() {
@@ -161,6 +163,9 @@ export class AddMedicalProviderComponent implements OnInit {
         //this.providerform.value.reset();
         this.validateOtpResponse = null;
         this.closeDialogBox.emit();
+        //this.providerform.reset();
+        //this.companyType = "1";
+        this.clearform();
     }
 
     saveMedicalProvider() {
@@ -312,9 +317,11 @@ export class AddMedicalProviderComponent implements OnInit {
     }
 
     CheckPreferredCompanyNameAlreadyExists() {
+        this.existingcompany = false;
         this._progressBarService.show();        
         this._medicalProviderMasterStore.getByCompanyByName(this.providerform.value.companyName)
             .subscribe((data: any) => {             
+                debugger;
                 this.firstName = '';
                 this.lastName = '';
                 this.email = '';
@@ -325,7 +332,8 @@ export class AddMedicalProviderComponent implements OnInit {
                 {
                     if(res.Signup.company.companyStatusTypeId != 3)
                     {
-                        this.companyExists = false;
+                        this.existingcompany = true;
+                        this.companyExists = true;
                         this.firstName = res.Signup.user.firstName;                    
                         this.lastName = res.Signup.user.lastName;                        
                         this.email = res.Signup.contactInfo.emailAddress;
@@ -361,15 +369,16 @@ export class AddMedicalProviderComponent implements OnInit {
                     }
                     else
                     {
+                        this.existingcompany = false;
                         let msg = 'This '+ this.providerform.value.companyName + ' company already registered in the Midas Portal, please contact '+ res.Signup.user.firstName +' '+ res.Signup.user.lastName +' ' + res.Signup.contactInfo.cellPhone + ' ' + res.Signup.contactInfo.emailAddress +' & get the token to associate';
-                        this.companyExists = true;                        
+                        this.companyExists = false;                        
                         let notification = new Notification({
                             'title': msg,
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
                         this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', msg);
+                        this._notificationsService.error('Oh No!', msg);                        
                     }
                 }
             },
@@ -386,9 +395,10 @@ export class AddMedicalProviderComponent implements OnInit {
         this.firstName = '';
         this.lastName = '';
         this.email = '';
-        this.phoneNo = '';
+        this.phoneNo = '';       
+        this.companyName = null;
+        this.companyName = '';
         this.providerform.value.companyName = '';
-        this.companyName = ''; 
     }
 }
 
