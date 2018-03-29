@@ -181,6 +181,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
+        [AllowAnonymous]
         public void Download(int caseId, int documentid)
         {
             string filepath = requestHandler.Download(Request, caseId, documentid);
@@ -188,7 +189,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             FileInfo fileInfo = new System.IO.FileInfo(filepath);
 
-            HttpContext.Current.Response.ContentType = "application/octet-stream";
+            // HttpContext.Current.Response.ContentType = "application/octet-stream";
+            HttpContext.Current.Response.ContentType = "application/pdf";
             HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
             HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
