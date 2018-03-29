@@ -50,7 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (entity is PatientVisit)
             {
                 PatientVisit patientVisit = entity as PatientVisit;
-                
+
                 if (patientVisit == null)
                     return default(T);
 
@@ -74,7 +74,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitBO.IsTransportationRequired = patientVisit.IsTransportationRequired;
                 patientVisitBO.TransportProviderId = patientVisit.TransportProviderId;
                 patientVisitBO.AncillaryProviderId = patientVisit.AncillaryProviderId;
-                patientVisitBO.VisitTypeId = patientVisit.VisitTypeId;                
+                patientVisitBO.VisitTypeId = patientVisit.VisitTypeId;
                 patientVisitBO.IsCancelled = patientVisit.IsCancelled;
                 patientVisitBO.IsDeleted = patientVisit.IsDeleted;
                 patientVisitBO.CreateByUserID = patientVisit.CreateByUserID;
@@ -101,20 +101,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (s <= 1)
                     {
                         //var calendaritem = _context.CalendarEvents.Where(p => p.Id == item.CalendarEventId)
-                        if (patientVisit.CalendarEvent.EventStart > DateTime.UtcNow)
+                        if (patientVisit.CalendarEvent != null)
                         {
-                            patientVisitBO.VisitTimeStatus = false;                            
-                        }
-                        else
-                        {
-                            if (patientVisitBO.VisitStatusId == 4)
+                            if (patientVisit.CalendarEvent.EventStart > DateTime.UtcNow)
                             {
                                 patientVisitBO.VisitTimeStatus = false;
                             }
                             else
                             {
-                                patientVisitBO.VisitTimeStatus = true;
+                                if (patientVisitBO.VisitStatusId == 4)
+                                {
+                                    patientVisitBO.VisitTimeStatus = false;
+                                }
+                                else
+                                {
+                                    patientVisitBO.VisitTimeStatus = true;
+                                }
                             }
+                        }
+                        else
+                        {
+                            patientVisitBO.VisitTimeStatus = true;
                         }
                     }
                     else
@@ -144,7 +151,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        if(patientVisitBO.VisitStatusId == 4)
+                        if (patientVisitBO.VisitStatusId == 4)
                         {
                             patientVisitBO.VisitTimeStatus = false;
                         }
@@ -152,7 +159,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         {
                             patientVisitBO.VisitTimeStatus = true;
                         }
-                        
+
                     }
                 }
 
@@ -310,7 +317,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     }
                                 }
 
-                               
+
 
                                 BOpatientVisitProcedureCode.Add(patientVisitProcedureCodeBO);
                             }
@@ -350,6 +357,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 locationBO.ID = location.id;
                 locationBO.Name = location.Name;
                 locationBO.IsDefault = location.IsDefault;
+                locationBO.CompanyId = location.CompanyID;
                 locationBO.LocationType = (BO.GBEnums.LocationType)location.LocationType;
                 if (location.IsDeleted.HasValue)
                     locationBO.IsDeleted = location.IsDeleted.Value;
@@ -425,7 +433,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
             }
-           
+
             if (patientVisit.Doctor != null)
             {
                 if (patientVisit.Doctor.IsDeleted.HasValue == false || (patientVisit.Doctor.IsDeleted.HasValue == true && patientVisit.Doctor.IsDeleted.Value == false))
@@ -456,7 +464,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             mpatientVisits.IsDeleted = patientVisit.IsDeleted;
             mpatientVisits.CreateByUserID = patientVisit.CreateByUserID;
             mpatientVisits.UpdateByUserID = patientVisit.UpdateByUserID;
-                        
+
             return (T)(object)mpatientVisits;
         }
 
@@ -756,7 +764,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Doctor Id
         public override object GetByDoctorId(int id)
         {
-            List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("CalendarEvent")                                                                       
+            List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("CalendarEvent")
                                                                         .Where(p => p.DoctorId == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit>();
@@ -883,11 +891,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitDBOld = _context.PatientVisits.Where(p => p.Id == patientVisitBO.ID
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<PatientVisit>();
-                if(patientVisitDBOld != null)
+                if (patientVisitDBOld != null)
                 {
                     DoctorIdOld = patientVisitDBOld.DoctorId;
                 }
-                
+
                 bool IsEditMode = false;
                 bool IsAddModeCalendarEvent = false;
                 IsEditMode = (patientVisitBO != null && patientVisitBO.ID > 0) ? true : false;
@@ -935,10 +943,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (patientVisitBO.VisitStatusId != 2 && patientVisitBO.VisitStatusId != 4)
                     {
-                        if(patientVisitBO.SpecialtyId != null)
-                        {  
-                        Specialty specialdetail = _context.Specialties.Where(p => p.id == patientVisitBO.SpecialtyId).FirstOrDefault<Specialty>();
-                        CompanySpecialtyDetail companyspecialtydetail = _context.CompanySpecialtyDetails.Where(p => p.SpecialtyId == patientVisitBO.SpecialtyId && p.CompanyID == patientVisitBO.AddedByCompanyId).FirstOrDefault<CompanySpecialtyDetail>();
+                        if (patientVisitBO.SpecialtyId != null)
+                        {
+                            Specialty specialdetail = _context.Specialties.Where(p => p.id == patientVisitBO.SpecialtyId).FirstOrDefault<Specialty>();
+                            CompanySpecialtyDetail companyspecialtydetail = _context.CompanySpecialtyDetails.Where(p => p.SpecialtyId == patientVisitBO.SpecialtyId && p.CompanyID == patientVisitBO.AddedByCompanyId).FirstOrDefault<CompanySpecialtyDetail>();
                             if (companyspecialtydetail == null)
                             {
                                 var lstPatientVisitDB = _context.PatientVisits.Include("CalendarEvent")
@@ -1305,7 +1313,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 #endregion
 
-               
+
 
                 #region PatientVisitProcedureCode
                 if (PatientVisitProcedureCodeBOList == null || (PatientVisitProcedureCodeBOList != null && PatientVisitProcedureCodeBOList.Count <= 0))
@@ -1806,7 +1814,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     else
                     {
                         lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                    } 
+                    }
                 }
                 return lstpatientvisit;
             }
@@ -1821,7 +1829,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 ToDate = ToDate.AddDays(1);
             }
 
-            List<int> caseid = _context.CaseCompanyMappings.Where(p => p.CompanyId == medicalProviderId 
+            List<int> caseid = _context.CaseCompanyMappings.Where(p => p.CompanyId == medicalProviderId
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                            .Select(p => p.CaseId).ToList<int>();
 
@@ -2084,7 +2092,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientVisits.Include("Location").Include("Location.Company")
+            var acc = _context.PatientVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                             .Include("Doctor")
                                             .Include("Doctor.User")
                                             .Include("Room").Include("Room.RoomTest")
@@ -2234,7 +2242,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-               // List<BO.patientVisit> lstpatientvisit = new List<BO.patientVisit>();
+                // List<BO.patientVisit> lstpatientvisit = new List<BO.patientVisit>();
                 BO.mPatientVisits mpatientVisits = new BO.mPatientVisits();
                 List<BO.mPatientVisits> lstmpatientVisits = new List<BO.mPatientVisits>();
                 foreach (PatientVisit item in acc)
@@ -2259,7 +2267,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                    description = vt.Description
                                };
 
-           var lstalltype =  allVisitType.ToList();
+            var lstalltype = allVisitType.ToList();
 
             if (allVisitType == null)
             {
@@ -2290,7 +2298,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     RecurrenceException = "";
                 }
-                
+
                 CalendarEvent.RecurrenceException = RecurrenceException + CancelEventStart.ToString("yyyy-MM-dd");
             }
 
@@ -2385,7 +2393,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                             .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.DoctorId == doctorId && p.Location.CompanyID == CompanyId
-                                                    &&  (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList();
 
             if (patientVisit == null)
@@ -2485,7 +2493,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-                }                
+                }
             }
 
             return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
@@ -2580,7 +2588,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-                }                
+                }
             }
 
             return (Object)lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
@@ -2671,7 +2679,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-                }                
+                }
             }
 
             return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
@@ -2766,7 +2774,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-                }                
+                }
             }
 
             return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
@@ -2795,7 +2803,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList();
 
-            
+
             List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
             foreach (PatientVisit item in patientVisit)
             {
@@ -2832,7 +2840,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
 
-            return new {
+            return new
+            {
                 appointments = Appointments,
                 noShows = NoShows,
                 referralsInbound = ReferralsInbound,
@@ -2878,7 +2887,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             foreach (var eachStartAndEndTime in eachfreeSlot.StartAndEndTimes)
                             {
                                 BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
-                                
+
                                 PatientVisitForDate.ID = 0;
                                 PatientVisitForDate.CalendarEventId = null;
                                 PatientVisitForDate.CaseId = null;
@@ -2899,7 +2908,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
                 }
-            }            
+            }
 
             return lstPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName).ToList();
         }
@@ -2935,7 +2944,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     lstDoctorPatientVisitForDate.AddRange(eachDoctorPatientVisitForDate);
                 }
-            }            
+            }
 
             return lstDoctorPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName).ToList();
         }
@@ -2983,7 +2992,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (ress != null)
                 {
                     var result1 = _context.PatientVisits.Where(p => p.Id == ress.ScheduledPatientVisitId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                    if(result1 != null)
+                    if (result1 != null)
                     {
                         var result = _context.PatientVisits.Where(p => p.CalendarEventId == result1.CalendarEventId && p.VisitStatusId == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
                         if (result != null && result.Count() > 0)
@@ -3013,12 +3022,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
                         return lstPatientVisit;
-                    }                    
+                    }
                 }
                 else
                 {
                     //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                    List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();                    
+                    List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
                     return lstPatientVisit;
                 }
             }

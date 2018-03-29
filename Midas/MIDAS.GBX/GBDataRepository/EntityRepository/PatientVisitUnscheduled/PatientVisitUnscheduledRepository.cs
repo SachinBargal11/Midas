@@ -214,7 +214,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 CalendarEventDB.Name = "Unscheduled Visit";
                 CalendarEventDB.EventStart = PatientVisitUnscheduledBO.EventStart.Value;
                 CalendarEventDB.EventEnd = PatientVisitUnscheduledBO.EventStart.Value;
-                CalendarEventDB.TimeZone = "-330";
+                CalendarEventDB.TimeZone = PatientVisitUnscheduledBO.TimeZone;
                 CalendarEventDB.Description = PatientVisitUnscheduledBO.Notes;
                 CalendarEventDB.RecurrenceId = null;
                 CalendarEventDB.RecurrenceRule = "";
@@ -391,14 +391,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                  .FirstOrDefault();
 
-                if (ReferralDB != null)
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Referral already exists for the pending referral.", ErrorLevel = ErrorLevel.Error };
-                }
-                else
-                {
-                    ReferralDB = new Referral();
+                //if (ReferralDB != null)
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Referral already exists for the pending referral.", ErrorLevel = ErrorLevel.Error };
+                //}
+                //else
+                //{
+                ReferralDB = new Referral();
 
                     var PendingReferralDB = _context.PendingReferrals.Include("PatientVisit")
                                                                      .Where(p => p.Id == ReferralVisitUnscheduledBO.PendingReferralId
@@ -444,6 +444,64 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         _context.SaveChanges();
 
+                        CalendarEvent CalendarEventDB = new CalendarEvent();
+                        #region Calendar Event
+                        //if (CalendarEventBO != null)
+                        //{
+                        bool Add_CalendarEventDB = false;
+                        CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == PatientVisitUnscheduledBO.CalendarEventId
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .FirstOrDefault();
+
+                        if (CalendarEventDB == null && PatientVisitUnscheduledBO.CalendarEventId != null)
+                        {
+                            CalendarEventDB = new CalendarEvent();
+                            Add_CalendarEventDB = true;
+                        }
+                        else if (CalendarEventDB == null && PatientVisitUnscheduledBO.CalendarEventId > 0)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        CalendarEventDB.Name = "Unscheduled Visit";
+                        CalendarEventDB.EventStart = PatientVisitUnscheduledBO.EventStart.Value;
+                        CalendarEventDB.EventEnd = PatientVisitUnscheduledBO.EventStart.Value;
+                        CalendarEventDB.TimeZone = PatientVisitUnscheduledBO.TimeZone;
+                        CalendarEventDB.Description = PatientVisitUnscheduledBO.Notes;
+                        CalendarEventDB.RecurrenceId = null;
+                        CalendarEventDB.RecurrenceRule = "";
+                        CalendarEventDB.RecurrenceException = "";
+                        CalendarEventDB.IsAllDay = false;
+
+                        if (Add_CalendarEventDB == true)
+                        {
+                            CalendarEventDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
+                            CalendarEventDB.CreateDate = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            CalendarEventDB.UpdateByUserID = PatientVisitUnscheduledBO.UpdateByUserID;
+                            CalendarEventDB.UpdateDate = DateTime.UtcNow;
+                        }
+
+                        if (Add_CalendarEventDB == true)
+                        {
+                            CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
+                        }
+                        _context.SaveChanges();
+                        //}
+                        //else
+                        //{
+                        //    if (IsEditMode == false && PatientVisitUnscheduledBO.CalendarEventId <= 0)
+                        //    {
+                        //        dbContextTransaction.Rollback();
+                        //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Calendar Event details.", ErrorLevel = ErrorLevel.Error };
+                        //    }
+                        //    CalendarEventDB = null;
+                        //}
+                        #endregion
+
                         #region Patient Visit Unscheduled
                         if (PatientVisitUnscheduledBO == null || (PatientVisitUnscheduledBO != null && PatientVisitUnscheduledBO.ID > 0))
                         {
@@ -484,6 +542,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
+                            PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
 
                             if (Add_patientVisitUnscheduledDB == true)
                             {
@@ -495,7 +554,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                         #endregion
                     }
-                }
+                //}
 
                 if (PatientVisitUnscheduledDB != null)
                 {

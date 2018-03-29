@@ -1855,8 +1855,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         var signt = "";
                         if(accPendingReffreal.DoctorSignatureType == 1)
                         {
-                            string pat = SaveByteArrayAsImage(path, accPendingReffreal.DoctorSignature);
-                            signt = "<img height='50' width='100' src = '" + pat + "'/>";
+                            if(accPendingReffreal.DoctorSignature != "" && accPendingReffreal.DoctorSignature != null)
+                            {
+                                string pat = SaveByteArrayAsImage(path, accPendingReffreal.DoctorSignature);
+                                signt = "<img height='50' width='100' src = '" + pat + "'/>";
+                            }
+                            else
+                            {
+                                string doctsigntext = accPendingReffreal.DoctorSignatureText != "" && accPendingReffreal.DoctorSignatureText != null ? accPendingReffreal.DoctorSignatureText : acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName;
+                                signt = "<span style='font-family:Brush Script MT,cursive;font-style: normal;font-variant: normal; font-size:18px;'><i> '" + doctsigntext + "'</i></span>";
+                            }
+                           
                         }
                         else if(accPendingReffreal.DoctorSignatureType == 2)
                         {
