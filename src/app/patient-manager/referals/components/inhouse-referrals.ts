@@ -146,7 +146,28 @@ export class InhouseReferralsComponent implements OnInit {
             });
     }
     DownloadPdf(document: ReferralDocument) {
-        window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
+        debugger;
+       // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
+       this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
+       .subscribe(
+       (response) => {
+           // this.document = document
+           // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+       },
+       (error) => {
+           let errString = 'Unable to download';
+           let notification = new Notification({
+               'messages': 'Unable to download',
+               'type': 'ERROR',
+               'createdAt': moment()
+           });
+           this._progressBarService.hide();
+           //  this._notificationsStore.addNotification(notification);
+           this._notificationsService.error('Oh No!', 'Unable to download');
+       },
+       () => {
+           this._progressBarService.hide();
+       });
     }
     // downloadConsent(caseDocuments: CaseDocument[]) {
     //     caseDocuments.forEach(caseDocument => {

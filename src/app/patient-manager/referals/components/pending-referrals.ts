@@ -195,8 +195,7 @@ export class PendingReferralsComponent implements OnInit {
                 // this._progressBarService.hide();
             });
         this._pendingReferralStore.getPreferredCompanyByCompanyId(companyId)       
-        .subscribe(preferredMedical => {
-            debugger;
+        .subscribe(preferredMedical => {            
                 let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {            
                     return currentPreferredMedical.companyStatusType == 1 || currentPreferredMedical.companyStatusType == 2;
                 });
@@ -209,7 +208,6 @@ export class PendingReferralsComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        
     }
 
     loadDoctorsByCompanyIdAndSpeciality(specialityId: number) {

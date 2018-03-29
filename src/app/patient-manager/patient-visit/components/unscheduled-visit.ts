@@ -312,7 +312,8 @@ export class UnscheduledVisitComponent implements OnInit {
                 eventStart: moment(this.eventStartAsDate).toDate(),
                 orignatorCompanyId: this.sessionStore.session.currentCompany.id,
                 calendarEventId: this.calendarEventId,
-                id: this.id
+                id: this.id,
+                timezone: this.eventStartAsDate.getTimezoneOffset()
             });
 
             this._progressBarService.show();
@@ -384,6 +385,7 @@ export class UnscheduledVisitComponent implements OnInit {
                     createByUserID: this.sessionStore.session.account.user.id,
                     eventStart: moment(this.eventStartAsDate),
                     orignatorCompanyId: this.sessionStore.session.currentCompany.id,
+                    timezone: this.eventStartAsDate.getTimezoneOffset()
                 })
             });
 
