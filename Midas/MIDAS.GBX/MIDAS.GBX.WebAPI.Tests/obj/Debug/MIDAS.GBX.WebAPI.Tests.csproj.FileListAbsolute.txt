@@ -214,13 +214,6 @@ F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\De
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\MIDAS.GBX.BusinessObjects.pdb
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Newtonsoft.Json.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Http.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Net.Http.Formatting.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Http.WebHost.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Mvc.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Razor.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.WebPages.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.WebPages.Razor.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Microsoft.Owin.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Optimization.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\System.Web.Http.Cors.xml

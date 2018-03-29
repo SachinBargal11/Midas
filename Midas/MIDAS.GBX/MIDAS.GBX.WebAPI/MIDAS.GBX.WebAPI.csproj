@@ -350,6 +350,7 @@
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />
     <Compile Include="ErrorHelper\ApiDataException.cs" />
     <Compile Include="ErrorHelper\ApiException.cs" />
+    <Compile Include="ErrorHelper\ExceptionUtility.cs" />
     <Compile Include="ErrorHelper\IApiExceptions.cs" />
     <Compile Include="Filters\ApiAuthenticationFilter.cs" />
     <Compile Include="Filters\BasicAuthenticationIdentity.cs" />

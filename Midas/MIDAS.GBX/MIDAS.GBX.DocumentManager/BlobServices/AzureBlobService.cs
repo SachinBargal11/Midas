@@ -108,7 +108,7 @@ namespace MIDAS.GBX.DocumentManager
 
         public override Object Merge(int companyId, object pdfFiles, string blobPath)
         {
-            string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
+            string tempUploadPath = HttpContext.Current.Server.MapPath("~/uploads/" + Path.GetFileName(blobPath));
             using (FileStream stream = new FileStream(tempUploadPath, FileMode.Create))
             {
                 PdfReader reader = null;
@@ -144,7 +144,7 @@ namespace MIDAS.GBX.DocumentManager
 
         public override Object Packet(int companyId, object pdfFiles, string blobPath)
         {
-            string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
+            string tempUploadPath = HttpContext.Current.Server.MapPath("~/uploads/" + Path.GetFileName(blobPath));
             tempUploadPath = tempUploadPath.Replace(Path.GetExtension(blobPath), "") + @"\src";
             if (Directory.Exists(tempUploadPath) == false)
             {

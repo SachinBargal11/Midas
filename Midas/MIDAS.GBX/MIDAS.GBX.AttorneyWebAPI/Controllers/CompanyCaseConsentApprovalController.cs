@@ -22,7 +22,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         public CompanyCaseConsentApprovalController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
+            sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
             requestHandler = new GbApiRequestHandler<CompanyCaseConsentApproval>();
             requestHandler1 = new GbApiRequestHandler<CompanyCaseConsentBase64>();
         }

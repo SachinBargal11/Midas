@@ -1850,8 +1850,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                         #endregion pending refferal
 
-                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
-                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id;
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id);
                         var signt = "";
                         if(accPendingReffreal.DoctorSignatureType == 1)
                         {
@@ -1888,9 +1888,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                          .Replace("{{TABLECONTENT}}", procedurecodes)
                                          .Replace("{{SignT}}", signt);
                         
-                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id;
                         htmlPDF.OpenHTML(pdfText);
-                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id);
                         htmlPDF.SavePDF(@path + "\\Referral_Case_" + acc.Case.Id + ".pdf");
 
                         MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
@@ -1898,7 +1898,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             ObjectType = Constants.ReferralType,
                             ObjectId = id,
                             DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
-                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "/app_data/uploads/case_" + acc.Case.Id,
+                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "uploads/case_" + acc.Case.Id,
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = acc.CreateByUserID
                         });
@@ -1937,9 +1937,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             byte[] bytes = System.Convert.FromBase64String(base64);
             using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bytes)))
             {
-                image.Save(@fullOutputPath + "/doctorsign.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);  // Or Png
+                image.Save(@fullOutputPath + "\\doctorsign.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);  // Or Png
             }
-            return fullOutputPath + "doctorsign.jpg";
+            return fullOutputPath + "\\doctorsign.jpg";
         }
 
         #region Associate Visit With Referral

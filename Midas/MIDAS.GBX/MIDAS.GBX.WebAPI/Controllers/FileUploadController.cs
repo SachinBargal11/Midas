@@ -29,8 +29,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
-            remotePath = "C:\\Users\\Sonali.A\\Midas\\Midas\\MIDAS.GBX\\MIDAS.GBX.PatientWebAPI\\App_Data\\uploads";
+            sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
+            remotePath = "C:\\inetpub\\website\\dev-gb-midasapi.qwinix.io\\uploads\\";
             requestHandler = new GbApiRequestHandler<Document>();
         }
 
@@ -182,21 +182,38 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
         [AllowAnonymous]
-        public void Download(int caseId, int documentid)
+        public HttpResponseMessage Download(int caseId, int documentid)
         {
-            string filepath = requestHandler.Download(Request, caseId, documentid);
-            filepath = filepath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH"));
+            HttpResponseMessage result = null;
+            try
+            {
+                string filepath = requestHandler.Download(Request, caseId, documentid);
+                filepath = filepath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH"));
+                string[] res = filepath.Split(new string[] { "uploads" }, StringSplitOptions.None);
 
-            FileInfo fileInfo = new System.IO.FileInfo(filepath);
+                sourcePath = sourcePath + res[1];
 
-            // HttpContext.Current.Response.ContentType = "application/octet-stream";
-            HttpContext.Current.Response.ContentType = "application/pdf";
-            HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-            HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            HttpContext.Current.Response.WriteFile(filepath);
-            //HttpContext.Current.Response.BinaryWrite(btFile);
-            HttpContext.Current.Response.End();
+               FileInfo fileInfo = new System.IO.FileInfo(sourcePath);
+
+
+                byte[] fileContents = File.ReadAllBytes(sourcePath);
+                Stream stream = new MemoryStream(fileContents);
+
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(stream);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                //result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue(Current_Response.Content_Disposition);
+                result.Content.Headers.ContentDisposition.FileName = fileInfo.Name.Replace(' ','_');
+
+                
+            }
+            catch(Exception er)
+            {
+                ExceptionUtility.LogException(er);
+            }
+
+            return result;
+
         }         
 
         [HttpGet]

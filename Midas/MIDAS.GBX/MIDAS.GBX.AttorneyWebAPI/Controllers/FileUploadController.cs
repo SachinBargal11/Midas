@@ -26,8 +26,8 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
-            remotePath = "C:\\Users\\Sonali.A\\Midas\\Midas\\MIDAS.GBX\\MIDAS.GBX.PatientWebAPI\\App_Data\\uploads";
+            sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
+            remotePath = "C:\\inetpub\\website\\dev-gb-midasapi.qwinix.io\\uploads\\";
             requestHandler = new GbApiRequestHandler<Document>();
         }
 
