@@ -391,14 +391,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                  .FirstOrDefault();
 
-                if (ReferralDB != null)
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Referral already exists for the pending referral.", ErrorLevel = ErrorLevel.Error };
-                }
-                else
-                {
-                    ReferralDB = new Referral();
+                //if (ReferralDB != null)
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Referral already exists for the pending referral.", ErrorLevel = ErrorLevel.Error };
+                //}
+                //else
+                //{
+                ReferralDB = new Referral();
 
                     var PendingReferralDB = _context.PendingReferrals.Include("PatientVisit")
                                                                      .Where(p => p.Id == ReferralVisitUnscheduledBO.PendingReferralId
@@ -554,7 +554,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                         #endregion
                     }
-                }
+                //}
 
                 if (PatientVisitUnscheduledDB != null)
                 {

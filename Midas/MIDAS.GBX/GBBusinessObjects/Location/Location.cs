@@ -35,6 +35,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("publicTransportNearOffice")]
         public bool PublicTransportNearOffice { get; set; }
 
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
         //[JsonProperty("addressInfo")]
         //public AddressInfo AddressInfo
         //{

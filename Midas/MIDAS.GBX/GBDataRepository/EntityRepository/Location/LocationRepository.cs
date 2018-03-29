@@ -43,6 +43,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             locationBO.HandicapRamp = location.HandicapRamp;
             locationBO.StairsToOffice = location.StairsToOffice;
             locationBO.PublicTransportNearOffice = location.PublicTransportNearOffice;
+            locationBO.CompanyId = location.CompanyID;
 
             if (location.IsDeleted.HasValue)
                 locationBO.IsDeleted = location.IsDeleted.Value;
