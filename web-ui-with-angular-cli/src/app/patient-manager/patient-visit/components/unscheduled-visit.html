@@ -92,7 +92,7 @@
         <div class="row">
             <div class="col-md-2"><label class="form-label">Specialty</label></div>
             <div class="col-lg-3">
-                <select formControlName="speciality"   [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                <select formControlName="speciality" [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                     <option data-type="0">- Select specialty -</option>
                     <optgroup label="Select Specialty"> 
                        <option data-type="1"  [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality">{{speciality.name}}</option>                                       
