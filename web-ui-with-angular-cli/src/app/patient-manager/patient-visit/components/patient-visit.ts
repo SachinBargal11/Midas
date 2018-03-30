@@ -61,6 +61,8 @@ import { SpecialityStore } from '../../../account-setup/stores/speciality-store'
 import { SpecialityDetailsStore } from '../../../account-setup/stores/speciality-details-store';
 import { SpecialityDetail } from '../../../account-setup/models/speciality-details';
 import { TestSpecialityDetail } from '../../../account-setup/models/test-speciality-details';
+import { ReferralDocument } from '../../../patient-manager/cases/models/referral-document';
+import { ConsentStore } from '../../../patient-manager/cases/stores/consent-store';
 
 @Component({
     selector: 'patient-visit',
@@ -264,7 +266,8 @@ export class PatientVisitComponent implements OnInit {
         private _userSettingStore: UserSettingStore,
         private _procedureCodeMasterStore: ProcedureCodeMasterStore,
         private _specialityStore: SpecialityStore,
-        private _specialityDetailStore: SpecialityDetailsStore        
+        private _specialityDetailStore: SpecialityDetailsStore,
+        private _consentStore: ConsentStore       
     ) {
 
         // getUserSettingsForCompany() {
@@ -2822,5 +2825,29 @@ export class PatientVisitComponent implements OnInit {
                 }
             //  });        
          //}
+
+         DownloadPdfReffreal(document: ReferralDocument) {
+            // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
+            this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+         }
 }
 
