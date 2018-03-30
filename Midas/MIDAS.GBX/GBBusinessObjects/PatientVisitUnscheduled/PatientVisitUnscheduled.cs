@@ -85,5 +85,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("patientVisitUnscheduled")]
         public PatientVisitUnscheduled PatientVisitUnscheduled { get; set; }
+
+        [JsonProperty("toCompanyId")]
+        public int ToCompanyId { get; set; }
+
     }
 }
