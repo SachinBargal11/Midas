@@ -66,6 +66,13 @@
 
     <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
+    <p-column header="Referred Document">
+            <ng-template let-currentReferral="rowData" pTemplate="body">
+                <span *ngFor="let document of currentReferral.referralDocument">
+                    <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+                </span>
+            </ng-template>
+    </p-column>
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">
