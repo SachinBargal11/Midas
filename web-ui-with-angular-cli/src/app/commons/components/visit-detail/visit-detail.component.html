@@ -131,6 +131,16 @@
             </div>
           </div>
         </div>
+        <div class="row" *ngIf="selectedVisit.referralDocument.length > 0">
+            <div class="col-md-1"><label class="form-label">Referred Document</label></div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <span *ngFor="let document of selectedVisit.referralDocument">
+                      <a (click)="DownloadPdfReffreal(document)"><u>{{document.documentName}}</u></a>
+                  </span>
+              </div>
+            </div>
+          </div>
         <div class="row">
           {{selectedVisit.doctorID}}
           <div class="col-md-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
