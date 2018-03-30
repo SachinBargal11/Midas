@@ -423,6 +423,7 @@ export class PendingReferralsComponent implements OnInit {
     }
     refreshEvents(event) {
         this.loadPendingReferralsForCompany(this.companyId);
+        this.selectedReferrals = null;
     }
     handleVisitDialogHide(){}
 

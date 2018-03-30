@@ -164,8 +164,9 @@ export class UnscheduledVisitComponent implements OnInit {
         this.unscheduledVisitFormControls = this.unscheduledVisitForm.controls;
     }
 
-    ngOnInit() {        
-        this.IsCompanyDisabled = false;
+    ngOnInit() {    
+        this.unscheduledForm.controls["speciality"].enable();    
+        this.IsCompanyDisabled = false;        
         if(this.toCompanyId != null)
         {
             if(this.toCompanyId != undefined)
@@ -177,6 +178,7 @@ export class UnscheduledVisitComponent implements OnInit {
                 .subscribe((data: any) => {                           
                     this.medicalProviderName = data.name;
                     this.IsCompanyDisabled = true;
+                    this.unscheduledForm.controls["speciality"].disable();
                 },
                 (error) => {                
                 this._progressBarService.hide();
@@ -192,6 +194,7 @@ export class UnscheduledVisitComponent implements OnInit {
         if (this.idPatient && this.caseId) {
             if(this.id == undefined || this.id == 0)
             {
+                this.unscheduledForm.controls["speciality"].disable();
                 let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
                 let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 

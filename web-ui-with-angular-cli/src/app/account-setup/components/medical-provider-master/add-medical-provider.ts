@@ -218,6 +218,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 //     }, 3000);
                 // }
                 // else {
+                    debugger;
                     this.clearform();
                     this.closeDialog();
                     
@@ -394,10 +395,13 @@ export class AddMedicalProviderComponent implements OnInit {
         this.firstName = '';
         this.lastName = '';
         this.email = '';
-        this.phoneNo = '';       
-        this.companyName = null;
-        this.companyName = '';
-        this.providerform.value.companyName = '';
+        this.phoneNo = '';               
+        this.companyExists = false;
+        this.providerform.controls['firstName'].reset();
+        this.providerform.controls['lastName'].reset();
+        this.providerform.controls['phoneNo'].reset();
+        this.providerform.controls['email'].reset();
+        this.providerform.controls['companyName'].reset();
     }
 }
 
