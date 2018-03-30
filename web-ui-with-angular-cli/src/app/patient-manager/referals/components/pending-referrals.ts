@@ -434,8 +434,7 @@ export class PendingReferralsComponent implements OnInit {
         } else if (this.selectedReferrals === null) {
             this._notificationsService.alert('Oh No!', 'Please select medical office!');
             shouldAppointVisit = false;
-        } else if (this.selectedOption === 3) {
-            debugger;
+        } else if (this.selectedOption === 3) {            
             this.showUnscheduleVisitDialog(this.selectedMedicalProviderId);
             return;
             // shouldAppointVisit = false;
