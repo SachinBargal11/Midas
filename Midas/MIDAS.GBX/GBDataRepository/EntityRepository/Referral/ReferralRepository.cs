@@ -22,7 +22,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             _dbReferral = context.Set<Referral>();
             context.Configuration.ProxyCreationEnabled = false;
-            context.Database.CommandTimeout = 180;
+            //context.Database.CommandTimeout = 180;
         }
 
         #region Entity Conversion
@@ -964,8 +964,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("User1")
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
-                                               .Include("ReferralDocuments")
-                                               .Include("ReferralDocuments.MidasDocument")
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
 

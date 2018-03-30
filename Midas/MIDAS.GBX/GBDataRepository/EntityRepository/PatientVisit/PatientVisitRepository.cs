@@ -327,6 +327,54 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patientVisitBO.PatientVisitProcedureCodes = BOpatientVisitProcedureCode;
                 }
 
+                #region Get Refferal Document
+                var _reffralDocument = _context.Referrals.Include("ReferralDocuments")
+                                         .Include("ReferralDocuments.MidasDocument")
+                                         .Where(p => p.ScheduledPatientVisitId == patientVisitBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                             .FirstOrDefault<Referral>();
+
+                if (_reffralDocument != null)
+                {
+                    List<BO.ReferralDocument> boReferralDocument = new List<BO.ReferralDocument>();
+
+                    foreach (var eachReferralDocument in _reffralDocument.ReferralDocuments)
+                    {
+                        if (eachReferralDocument.IsDeleted.HasValue == false || (eachReferralDocument.IsDeleted.HasValue == true && eachReferralDocument.IsDeleted.Value == false))
+                        {
+                            BO.ReferralDocument referralDocument = new BO.ReferralDocument();
+
+                            referralDocument.ID = eachReferralDocument.Id;
+                            referralDocument.ReferralId = eachReferralDocument.ReferralId;
+                            referralDocument.DocumentName = eachReferralDocument.DocumentName;
+                            referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
+                            referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
+                            referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
+                            referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
+
+                            if (eachReferralDocument.MidasDocument != null)
+                            {
+                                BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                                boMidasDocument.ID = eachReferralDocument.Id;
+                                boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
+                                boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
+                                boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
+                                boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
+                                boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
+                                boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
+                                boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+
+                                referralDocument.MidasDocument = boMidasDocument;
+                            }
+
+
+                            boReferralDocument.Add(referralDocument);
+                        }
+                    }
+
+                    patientVisitBO.ReferralDocument = boReferralDocument;
+                }
+                #endregion Get Refferal Document
 
                 return (T)(object)patientVisitBO;
             }
@@ -1803,18 +1851,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.PatientVisit> lstpatientvisit = new List<BO.PatientVisit>();
                 foreach (PatientVisit item in acc)
                 {
-                    if (item.EventStart == null)
-                    {
-                        int s = _context.PatientVisits.Where(p => p.CalendarEventId == item.CalendarEventId).Count();
-                        if (s <= 1)
-                        {
-                            lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                        }
-                    }
-                    else
-                    {
                         lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                    }
                 }
                 return lstpatientvisit;
             }
