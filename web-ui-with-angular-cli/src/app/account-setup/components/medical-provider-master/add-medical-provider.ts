@@ -162,10 +162,10 @@ export class AddMedicalProviderComponent implements OnInit {
         this.addMedicalProviderByToken.reset();
         //this.providerform.value.reset();
         this.validateOtpResponse = null;
+        this.clearform();
         this.closeDialogBox.emit();
         //this.providerform.reset();
-        //this.companyType = "1";
-        this.clearform();
+        //this.companyType = "1";        
     }
 
     saveMedicalProvider() {
@@ -218,6 +218,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 //     }, 3000);
                 // }
                 // else {
+                    debugger;
                     this.clearform();
                     this.closeDialog();
                     
@@ -320,8 +321,7 @@ export class AddMedicalProviderComponent implements OnInit {
         this.existingcompany = false;
         this._progressBarService.show();        
         this._medicalProviderMasterStore.getByCompanyByName(this.providerform.value.companyName)
-            .subscribe((data: any) => {             
-                debugger;
+            .subscribe((data: any) => {                             
                 this.firstName = '';
                 this.lastName = '';
                 this.email = '';
@@ -395,10 +395,13 @@ export class AddMedicalProviderComponent implements OnInit {
         this.firstName = '';
         this.lastName = '';
         this.email = '';
-        this.phoneNo = '';       
-        this.companyName = null;
-        this.companyName = '';
-        this.providerform.value.companyName = '';
+        this.phoneNo = '';               
+        this.companyExists = false;
+        this.providerform.controls['firstName'].reset();
+        this.providerform.controls['lastName'].reset();
+        this.providerform.controls['phoneNo'].reset();
+        this.providerform.controls['email'].reset();
+        this.providerform.controls['companyName'].reset();
     }
 }
 

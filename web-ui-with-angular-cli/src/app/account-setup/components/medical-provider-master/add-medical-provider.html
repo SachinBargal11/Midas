@@ -192,7 +192,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                     <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
-                        <p-inputMask [ngModel]="phoneNo" [disabled]="companyExists" mask="+1 999-999-9999" formControlName="phoneNo" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid"
+                        <p-inputMask [ngModel]="phoneNo" [readonly]="companyExists" mask="+1 999-999-9999" formControlName="phoneNo" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid"
                             placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                         <!--<input formControlName="phoneNo" type="text" class="form-control" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" />-->
                         <div class='error-list' *ngIf="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">

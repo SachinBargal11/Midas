@@ -59,8 +59,7 @@ export class AccountActivationComponent implements OnInit {
                     if (this.company.id > 0) {
                         let resultForUpdate = this._authenticationService.fetchByCompanyId(this.company.id);
                         resultForUpdate.subscribe(
-                            (companyMaster: Signup) => {
-                                debugger;
+                            (companyMaster: Signup) => {                                
                                 this.companyMaster = companyMaster.originalResponse;
                                 console.log(this.companyMaster.Signup);
                                 if (this.companyMaster.Signup.company.companyStatusTypeId == 3) {
