@@ -197,7 +197,7 @@ namespace MIDAS.GBX.DocumentManager
             IAmazonS3 s3Client;
             Amazon.S3.AmazonS3Config s3Config = new Amazon.S3.AmazonS3Config();
             s3Config.ServiceURL = _ServiceURL;
-            string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
+            string tempUploadPath = HttpContext.Current.Server.MapPath("~/uploads/" + Path.GetFileName(blobPath));
             using (FileStream stream = new FileStream(tempUploadPath, FileMode.Create))
             {
                 PdfReader reader = null;
@@ -254,7 +254,7 @@ namespace MIDAS.GBX.DocumentManager
             IAmazonS3 s3Client;
             Amazon.S3.AmazonS3Config s3Config = new Amazon.S3.AmazonS3Config();
             s3Config.ServiceURL = _ServiceURL;
-            string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
+            string tempUploadPath = HttpContext.Current.Server.MapPath("~/uploads/" + Path.GetFileName(blobPath));
             tempUploadPath = tempUploadPath.Replace(Path.GetExtension(blobPath), "") + @"\src";
             if (Directory.Exists(tempUploadPath) == false)
             {

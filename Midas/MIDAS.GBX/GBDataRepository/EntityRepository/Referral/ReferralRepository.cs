@@ -22,6 +22,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             _dbReferral = context.Set<Referral>();
             context.Configuration.ProxyCreationEnabled = false;
+            context.Database.CommandTimeout = 180;
         }
 
         #region Entity Conversion
@@ -1392,7 +1393,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
         #region Get inhouse Referral By  Doctor And Company Id
         public override object GetInhouseReferralByDoctorAndCompanyId(int doctorId, int companyId)
         {
@@ -1643,7 +1643,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
         #region Get By Case and CompanyId
         public override object GetByCaseAndCompanyId(int caseId,int companyId)
         {
@@ -1711,10 +1710,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Referrals.Include("Case")
                                              .Include("Case.Patient")
                                              .Include("Case.Patient.User")
+                                             .Include("Case.Patient.User.AddressInfo")
+                                             .Include("Case.Patient.User.ContactInfo")
                                              .Include("Doctor")
                                              .Include("Doctor.User")
+                                             .Include("Doctor.User.AddressInfo")
+                                             .Include("Doctor.User.ContactInfo")
                                              .Include("Company")
                                              .Where(p => p.Id == id).FirstOrDefault();
+
+           
 
             if (acc != null)
             {
@@ -1722,15 +1727,169 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 {
                     try
                     {
+                        #region Patient Address
+                        var Patientaddress = acc.Case.Patient.User.AddressInfo.Address1 + " " + acc.Case.Patient.User.AddressInfo.Address2;
+                        if((acc.Case.Patient.User.AddressInfo.City != "" && acc.Case.Patient.User.AddressInfo.City != null) && (acc.Case.Patient.User.AddressInfo.State != "" && acc.Case.Patient.User.AddressInfo.State != null) && (acc.Case.Patient.User.AddressInfo.ZipCode != "" && acc.Case.Patient.User.AddressInfo.ZipCode != null))
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.City + ", " + acc.Case.Patient.User.AddressInfo.State + " - " + acc.Case.Patient.User.AddressInfo.ZipCode;
+                        }
+                        else if((acc.Case.Patient.User.AddressInfo.City != "" && acc.Case.Patient.User.AddressInfo.City != null) && (acc.Case.Patient.User.AddressInfo.State != "" && acc.Case.Patient.User.AddressInfo.State != null))
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.City + ", " + acc.Case.Patient.User.AddressInfo.State;
+                        }
+                        else if ((acc.Case.Patient.User.AddressInfo.City != "" && acc.Case.Patient.User.AddressInfo.City != null) && (acc.Case.Patient.User.AddressInfo.ZipCode != "" && acc.Case.Patient.User.AddressInfo.ZipCode != null))
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.City + " - " + acc.Case.Patient.User.AddressInfo.ZipCode;
+                        }
+                        else if((acc.Case.Patient.User.AddressInfo.State != "" && acc.Case.Patient.User.AddressInfo.State != null) && (acc.Case.Patient.User.AddressInfo.ZipCode != "" && acc.Case.Patient.User.AddressInfo.ZipCode != null))
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.State + " - " + acc.Case.Patient.User.AddressInfo.ZipCode;
+                        }
+                        else if (acc.Case.Patient.User.AddressInfo.City != "" && acc.Case.Patient.User.AddressInfo.City != null)
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.City;
+                        }
+                        else if (acc.Case.Patient.User.AddressInfo.State != "" && acc.Case.Patient.User.AddressInfo.State != null)
+                        {
+                            Patientaddress = Patientaddress + "," + "\r\n" + acc.Case.Patient.User.AddressInfo.State;
+                        }
+                        else if (acc.Case.Patient.User.AddressInfo.ZipCode != "" && acc.Case.Patient.User.AddressInfo.ZipCode != null)
+                        {
+                            Patientaddress = Patientaddress + ", " +  acc.Case.Patient.User.AddressInfo.ZipCode;
+                        }
+
+                        #endregion Patient Address
+
+                        #region Doctor Address
+                        var Doctoraddress = "";
+                        if (acc.Doctor != null)
+                        {
+                            Doctoraddress = acc.Company.Name + ", " + acc.Doctor.User.AddressInfo.Address1 + " " + acc.Doctor.User.AddressInfo.Address2;
+                            if ((acc.Doctor.User.AddressInfo.City != "" && acc.Doctor.User.AddressInfo.City != null) && (acc.Doctor.User.AddressInfo.State != "" && acc.Doctor.User.AddressInfo.State != null) && (acc.Doctor.User.AddressInfo.ZipCode != "" && acc.Doctor.User.AddressInfo.ZipCode != null))
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.City + ", " + acc.Doctor.User.AddressInfo.State + " - " + acc.Doctor.User.AddressInfo.ZipCode;
+                            }
+                            else if ((acc.Doctor.User.AddressInfo.City != "" && acc.Doctor.User.AddressInfo.City != null) && (acc.Doctor.User.AddressInfo.State != "" && acc.Doctor.User.AddressInfo.State != null))
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.City + ", " + acc.Doctor.User.AddressInfo.State;
+                            }
+                            else if ((acc.Doctor.User.AddressInfo.City != "" && acc.Doctor.User.AddressInfo.City != null) && (acc.Doctor.User.AddressInfo.ZipCode != "" && acc.Doctor.User.AddressInfo.ZipCode != null))
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.City + " - " + acc.Doctor.User.AddressInfo.ZipCode;
+                            }
+                            else if ((acc.Doctor.User.AddressInfo.State != "" && acc.Doctor.User.AddressInfo.State != null) && (acc.Doctor.User.AddressInfo.ZipCode != "" && acc.Doctor.User.AddressInfo.ZipCode != null))
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.State + " - " + acc.Doctor.User.AddressInfo.ZipCode;
+                            }
+                            else if (acc.Doctor.User.AddressInfo.City != "" && acc.Doctor.User.AddressInfo.City != null)
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.City;
+                            }
+                            else if (acc.Doctor.User.AddressInfo.State != "" && acc.Doctor.User.AddressInfo.State != null)
+                            {
+                                Doctoraddress = Doctoraddress + "," + "\r\n" + acc.Doctor.User.AddressInfo.State;
+                            }
+                            else if (acc.Doctor.User.AddressInfo.ZipCode != "" && acc.Doctor.User.AddressInfo.ZipCode != null)
+                            {
+                                Doctoraddress = Doctoraddress + ", " + acc.Doctor.User.AddressInfo.ZipCode;
+                            }
+                        }
+                        else
+                        {
+                            Doctoraddress = "";
+                        }
+                        #endregion Doctor Address
+
+                        #region GetPending Refferals and Map Speciality
+
+                        var accPendingReffreal = _context.PendingReferrals.Include("PatientVisit")
+                                            .Include("PatientVisit.Case.Patient.User")
+                                            .Include("Doctor")
+                                            .Include("Doctor.User")
+                                            .Include("Specialty")
+                                            .Include("RoomTest")
+                                            .Include("PendingReferralProcedureCodes")
+                                            .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                     .Where(p => p.Id == acc.PendingReferralId
+                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                     .FirstOrDefault();
+
+                        var specilaityName = "";
+                        var NoofVisitCount = "";
+                        if (accPendingReffreal.ForSpecialtyId > 0 && accPendingReffreal.ForSpecialtyId != null)
+                        {
+                            specilaityName  = accPendingReffreal.Specialty.Name;
+                            NoofVisitCount = accPendingReffreal.NoOfVisits.ToString();
+                        }
+                        else if(accPendingReffreal.ForRoomTestId > 0 && accPendingReffreal.ForRoomTestId != null)
+                        {
+                            specilaityName = accPendingReffreal.RoomTest.Name;
+                            NoofVisitCount = accPendingReffreal.NoOfVisits.ToString();
+                        }
+
+                        StringBuilder sb1 = new StringBuilder();
+                        var procedurecodes = "";
+                        if (accPendingReffreal.PendingReferralProcedureCodes.Count > 0)
+                        {
+                            foreach(var item in accPendingReffreal.PendingReferralProcedureCodes)
+                            {
+                                sb1.Append(@"<tr>
+                                             <td colspan='4' style='text-align: center; border: 1px solid black; border-top: 0px; border-right: 0px;'>" + item.ProcedureCode.ProcedureCodeText + @"</td>
+                                             <td colspan='4' style='text-align: center; border: 1px solid black; border-top: 0px; border-right: 0px;'>" + item.ProcedureCode.ProcedureCodeDesc + @"</td></tr>");
+                            }
+                            procedurecodes = sb1.ToString();
+                        }
+                        else
+                        {
+                            sb1.Append(@"<tr>
+                                             <td colspan='4' style='text-align: center; border: 1px solid black; border-top: 0px; border-right: 0px;'>" + "" + @"</td>
+                                             <td colspan='4' style='text-align: center; border: 1px solid black; border-top: 0px; border-right: 0px;'>" + "" + @"</td></tr>");
+                            procedurecodes = sb1.ToString();
+                        }
+
+                        #endregion pending refferal
+
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id;
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id);
+                        var signt = "";
+                        if(accPendingReffreal.DoctorSignatureType == 1)
+                        {
+                            if(accPendingReffreal.DoctorSignature != "" && accPendingReffreal.DoctorSignature != null)
+                            {
+                                string pat = SaveByteArrayAsImage(path, accPendingReffreal.DoctorSignature);
+                                signt = "<img height='50' width='100' src = '" + pat + "'/>";
+                            }
+                            else
+                            {
+                                string doctsigntext = accPendingReffreal.DoctorSignatureText != "" && accPendingReffreal.DoctorSignatureText != null ? accPendingReffreal.DoctorSignatureText : acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName;
+                                signt = "<span style='font-family:Brush Script MT,cursive;font-style: normal;font-variant: normal; font-size:18px;'><i> '" + doctsigntext + "'</i></span>";
+                            }
+                           
+                        }
+                        else if(accPendingReffreal.DoctorSignatureType == 2)
+                        {
+                            string doctsigntext = accPendingReffreal.DoctorSignatureText != "" && accPendingReffreal.DoctorSignatureText != null ? accPendingReffreal.DoctorSignatureText : acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName;
+                            signt = "<span style='font-family:Brush Script MT,cursive;font-style: normal;font-variant: normal; font-size:18px;'><i> '" + doctsigntext + "'</i></span>";
+                        }
+
                         pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient.User.FirstName + " " + acc.Case.Patient.User.LastName)
+                                         .Replace("{{PatientPhoneNo}}", acc.Case.Patient.User.ContactInfo != null ? acc.Case.Patient.User.ContactInfo.CellPhone : "")
+                                         .Replace("{{PatientEmail}}", acc.Case.Patient.User.UserName)
+                                         .Replace("{{PatientDOB}}", acc.Case.Patient.User.DateOfBirth.Value.ToShortDateString())
+                                         .Replace("{{PatientAddress}}", Patientaddress)
                                          .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
                                          .Replace("{{ReferredToDoctor}}", acc.Doctor != null ? (acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName) : "")
-                                         //.Replace("{{Note}}", acc.Note)
-                                         .Replace("{{CompanyName}}", acc.Company.Name);
+                                         .Replace("{{DoctorPhoneNo}}", acc.Doctor != null ? (acc.Doctor.User.ContactInfo.CellPhone) : "")
+                                         .Replace("{{DoctorEmail}}", acc.Doctor != null ? (acc.Doctor.User.UserName) : "")
+                                         .Replace("{{DoctorAddress}}", Doctoraddress)
+                                         .Replace("{{SPECIALITY}}", specilaityName)
+                                         .Replace("{{NOOFVISITS}}", NoofVisitCount)
+                                         .Replace("{{TABLECONTENT}}", procedurecodes)
+                                         .Replace("{{SignT}}", signt);
                         
-                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id;
                         htmlPDF.OpenHTML(pdfText);
-                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id);
                         htmlPDF.SavePDF(@path + "\\Referral_Case_" + acc.Case.Id + ".pdf");
 
                         MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
@@ -1738,7 +1897,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             ObjectType = Constants.ReferralType,
                             ObjectId = id,
                             DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
-                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "/app_data/uploads/case_" + acc.Case.Id,
+                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "uploads/case_" + acc.Case.Id,
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = acc.CreateByUserID
                         });
@@ -1769,6 +1928,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             return acc;           
+        }
+
+        private string SaveByteArrayAsImage(string fullOutputPath, string base64String)
+        {
+            string base64 = base64String.Split(',')[1];
+            byte[] bytes = System.Convert.FromBase64String(base64);
+            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bytes)))
+            {
+                image.Save(@fullOutputPath + "\\doctorsign.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);  // Or Png
+            }
+            return fullOutputPath + "\\doctorsign.jpg";
         }
 
         #region Associate Visit With Referral
@@ -1817,7 +1987,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }            
         }
         #endregion
-
 
         public void Dispose()
         {

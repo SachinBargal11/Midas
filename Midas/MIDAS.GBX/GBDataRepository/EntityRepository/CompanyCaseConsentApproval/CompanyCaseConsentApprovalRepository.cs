@@ -384,10 +384,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (cases != null)
                         pdfText = pdfText.Replace("{{PatientName}}", cases.Patient.User.FirstName + " " + cases.Patient.User.LastName);
 
-                    if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\" + "blank.png");
+                    if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\" + "blank.png");
                     else pdfText = pdfText.Replace("{{Signature}}", signpath);
 
-                    path = ConfigurationManager.AppSettings.Get("LOCAL_PATH").TrimEnd("\\".ToCharArray()) + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
+                    path = ConfigurationManager.AppSettings.Get("LOCAL_PATH").TrimEnd("\\".ToCharArray()) + "\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                     htmlPDF.SavePDF(@path + "\\Consent_" + acc.Name + ".pdf");
@@ -473,7 +473,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
 
                 string fileName = CompanyCaseConsentBase64BO.CaseId + "-" + CompanyCaseConsentBase64BO.CompanyId;
-                string signpath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + "-" + Guid.NewGuid().ToString() + ".jpeg";
+                string signpath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"uploads\sign-" + fileName + "-" + Guid.NewGuid().ToString() + ".jpeg";
 
                 //if (File.Exists(signpath)) File.Delete(signpath);
                 using (FileStream imageFile = new FileStream(signpath, FileMode.Create))

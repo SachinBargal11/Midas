@@ -18,9 +18,9 @@ namespace MIDAS.GBX.DocumentManager
         private CloudBlockBlob _cblob;
         private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];              
         private Utility util = new Utility();
-        string tempIMGpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/sign.jpeg");
-        string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/tempUpload.docx");
-        string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/test.pdf");
+        string tempIMGpath = System.Web.HttpContext.Current.Server.MapPath(@"~/uploads/sign.jpeg");
+        string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/uploads/tempUpload.docx");
+        string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/uploads/test.pdf");
         #endregion
 
         public TemplateManager()
