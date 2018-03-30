@@ -35,6 +35,7 @@ import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { PendingReferralList } from "../../referals/models/pending-referral-list";
 import { UnscheduledVisitReferral } from '../models/unscheduled-visit-referral';
 import { VisitReferralStore } from '../stores/visit-referral-store';
+import { MedicalProviderMasterStore } from '../../../account-setup/stores/medical-provider-master-store';
 
 @Component({
     selector: 'unscheduled-visit',
@@ -84,6 +85,9 @@ export class UnscheduledVisitComponent implements OnInit {
     @Input() caseId: number;
     @Input() idPatient: number;
     @Input() id: number;
+    @Input() toCompanyId: number;
+    
+    IsCompanyDisabled:boolean=false;    
     caseDetail: Case;
     patient: Patient;
     selectedVisit;
@@ -134,6 +138,7 @@ export class UnscheduledVisitComponent implements OnInit {
         private _specialityStore: SpecialityStore,
         private _roomsStore: RoomsStore,
         private _visitReferralStore: VisitReferralStore,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
     ) {
         this.unscheduledForm = this._fb.group({
             patientId: ['', Validators.required],
@@ -159,7 +164,30 @@ export class UnscheduledVisitComponent implements OnInit {
         this.unscheduledVisitFormControls = this.unscheduledVisitForm.controls;
     }
 
-    ngOnInit() {
+    ngOnInit() {        
+        this.IsCompanyDisabled = false;
+        if(this.toCompanyId != null)
+        {
+            if(this.toCompanyId != undefined)
+            {
+              if(this.toCompanyId != 0)
+              {
+                 this._progressBarService.show();
+                this._medicalProviderMasterStore.getByCompanyById(this.toCompanyId)
+                .subscribe((data: any) => {                           
+                    this.medicalProviderName = data.name;
+                    this.IsCompanyDisabled = true;
+                },
+                (error) => {                
+                this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+               }
+            }
+        }
+        
         this.eventStartAsDate = moment().toDate();
         if (this.idPatient && this.caseId) {
             if(this.id == undefined || this.id == 0)
@@ -367,9 +395,10 @@ export class UnscheduledVisitComponent implements OnInit {
                     this._progressBarService.hide();
                     this.isSaveProgress = false;
                 });
-        } else if (this.routeFrom == 'pendingReferral') {
+        } else if (this.routeFrom == 'pendingReferral') {            
             let unscheduledVisitReferral = new UnscheduledVisitReferral({
                 pendingReferralId: this.selectedPendingReferral.id,
+                toCompanyId: this.toCompanyId,
                 patientVisitUnscheduled: new UnscheduledVisit({
                     patientId: this.idPatient,
                     caseId: this.caseId,
@@ -399,8 +428,9 @@ export class UnscheduledVisitComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this.emitExternalReferral.emit(response.id);
+                    //this.emitExternalReferral.emit(response.id);
                     this.refreshEvents.emit();
+                    this.closeDialog();
                 },
                 (error) => {
                     let errString = 'Unable to add unscheduled visit referral!';

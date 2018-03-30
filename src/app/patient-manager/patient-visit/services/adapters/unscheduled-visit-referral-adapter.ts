@@ -11,6 +11,7 @@ export class UnscheduledVisitReferralAdapter {
 
         unscheduledVisitReferral = new UnscheduledVisitReferral({
             pendingReferralId: data.pendingReferralId,
+            toCompanyId: data.toCompanyId,
             patientVisitUnscheduled: UnscheduledVisitAdapter.parseResponse(data.patientVisitUnscheduled)            
         });
 
