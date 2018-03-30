@@ -558,7 +558,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (Add_patientVisitUnscheduledDB == true)
                             {
-                                PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
+                            PatientVisitUnscheduledDB.VisitStatusId = 1;
+                            PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
                             }
                             _context.SaveChanges();
 
