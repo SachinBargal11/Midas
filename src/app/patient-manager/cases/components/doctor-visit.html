@@ -74,6 +74,13 @@
     <p-column field="doctorName" header="Treating Doctor" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="specialityName" header="Specialty" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column header="Referred Document">
+            <ng-template let-currentReferral="rowData" pTemplate="body">
+                <span *ngFor="let document of currentReferral.referralDocument">
+                    <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+                </span>
+            </ng-template>
+    </p-column>
     <!--<p-column field="" header="Billing Status" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
         </ng-template>

@@ -112,9 +112,14 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
+                    debugger;
+                    let referrals : any;
+                    if(data.length > 0)
+                    {
                     let referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
-                    });
+                    });                    
+                    }
                     resolve(referrals);
                 }, (error) => {
                     reject(error);
@@ -131,10 +136,14 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
+                    let referrals : any;
+                    if(data.length > 0)
+                    {
                     let referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
                     });
-                    resolve(referrals);
+                    }
+                    resolve(referrals);                    
                 }, (error) => {
                     reject(error);
                 });
@@ -152,10 +161,15 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
+                    debugger;
+                    let referrals : any;
+                    if(data.length > 0)
+                    {
+                     referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
+                    });            
+                }
+                resolve(referrals)  ;
                 }, (error) => {
                     reject(error);
                 });
@@ -170,10 +184,14 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
+                    let referrals :any;
+                    if(data.length > 0)
+                    {
+                    referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
                     });
-                    resolve(referrals);
+                    }
+                    resolve(referrals);                 
                 }, (error) => {
                     reject(error);
                 });
@@ -242,9 +260,13 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
+                    let referrals : any;
+                    if(data.length > 0)
+                    {
+                    referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
-                    });
+                    });                    
+                    }
                     resolve(referrals);
                 }, (error) => {
                     reject(error);
@@ -260,10 +282,15 @@ export class PendingReferralService {
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
+                    let referrals : any;
+                    if(data.length > 0)
+                    {
+                    referrals = (<Object[]>data).map((data: any) => {
                         return InboundOutboundReferralAdapter.parseResponse(data);
                     });
+                }
                     resolve(referrals);
+                 
                 }, (error) => {
                     reject(error);
                 });
@@ -280,12 +307,15 @@ export class PendingReferralService {
             }).map(res => res.json())            
                 .subscribe((data: any) => {
                     let prefferedMedicalProvider: PrefferedMedicalProvider[] = [];
+                    if(data.length > 0)
+                    {
                     if (_.isArray(data)) {
                         prefferedMedicalProvider = (<Object[]>data).map((data: any) => {
                             return PrefferedMedicalProviderAdapter.parseResponse(data);
                         });
                     }
                     resolve(prefferedMedicalProvider);
+                    }
                 }, (error) => {
                     reject(error);
                 });

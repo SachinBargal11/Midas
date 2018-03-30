@@ -228,4 +228,20 @@ export class MedicalProviderMasterService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
+    getByCompanyById(companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Company/Get/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    //let provider = null;
+                    // provider = SignupAdapter.parseResponse(data);
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }
