@@ -1347,7 +1347,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 eachMedicalProvider.Doctors = doctorsBO;
 
-                var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true && p.RoomTestID == RoomTestId
+                var rooms = _context.Rooms.Include("Location").Where(p => locations.Contains(p.LocationID) == true && p.RoomTestID == RoomTestId
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                           .ToList();
 

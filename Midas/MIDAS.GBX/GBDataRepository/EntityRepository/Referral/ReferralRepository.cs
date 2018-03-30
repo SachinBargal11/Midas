@@ -966,7 +966,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("ReferralProcedureCodes.ProcedureCode")
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
-
                                                .Where(p => p.FromCompanyId == companyId && p.ToCompanyId != companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
@@ -1391,7 +1390,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
         #region Get inhouse Referral By  Doctor And Company Id
         public override object GetInhouseReferralByDoctorAndCompanyId(int doctorId, int companyId)
         {
@@ -1642,7 +1640,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
         #region Get By Case and CompanyId
         public override object GetByCaseAndCompanyId(int caseId,int companyId)
         {
@@ -1890,13 +1887,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id;
                         htmlPDF.OpenHTML(pdfText);
                         if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\uploads\\case_" + acc.Case.Id);
-                        htmlPDF.SavePDF(@path + "\\Referral_Case_" + acc.Case.Id + ".pdf");
+                        htmlPDF.SavePDF(@path + "\\Referral_Case_" + acc.Case.Id + "_"+ id +".pdf");
 
                         MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
                         {
                             ObjectType = Constants.ReferralType,
                             ObjectId = id,
-                            DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
+                            DocumentName = "Referral_Case_" + acc.Case.Id + "_" + id + ".pdf",
                             DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "uploads/case_" + acc.Case.Id,
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = acc.CreateByUserID
@@ -1908,7 +1905,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         {
                             MidasDocumentId = midasdoc.Id,
                             ReferralId = id,
-                            DocumentName = "Referral_Case_" + acc.Case.Id + ".pdf",
+                            DocumentName = "Referral_Case_" + acc.Case.Id + "_"+ id +".pdf",
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = acc.CreateByUserID
                         });
@@ -1987,7 +1984,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }            
         }
         #endregion
-
 
         public void Dispose()
         {

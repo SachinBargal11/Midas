@@ -398,6 +398,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //}
                 //else
                 //{
+                int? tocompid = null;
+                if(ReferralVisitUnscheduledBO.ToCompanyId == 0)
+                {
+                    tocompid = null;
+                }
+                else
+                {
+                    tocompid = ReferralVisitUnscheduledBO.ToCompanyId;
+                }
+               
+
                 ReferralDB = new Referral();
 
                     var PendingReferralDB = _context.PendingReferrals.Include("PatientVisit")
@@ -422,7 +433,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         ReferralDB.ForSpecialtyId = PendingReferralDB.ForSpecialtyId;
                         ReferralDB.ForRoomId = PendingReferralDB.ForRoomId;
                         ReferralDB.ForRoomTestId = PendingReferralDB.ForRoomTestId;
-                        ReferralDB.ToCompanyId = null;
+                        ReferralDB.ToCompanyId = tocompid;
                         ReferralDB.ToLocationId = null;
                         ReferralDB.ToDoctorId = null;
                         ReferralDB.ToRoomId = null;
@@ -543,10 +554,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
                             PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
+                            PatientVisitUnscheduledDB.VisitStatusId = PatientVisitUnscheduledBO.VisitStatusId;
 
-                            if (Add_patientVisitUnscheduledDB == true)
+                        if (Add_patientVisitUnscheduledDB == true)
                             {
-                                PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
+                            PatientVisitUnscheduledDB.VisitStatusId = 1;
+                            PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
                             }
                             _context.SaveChanges();
 
