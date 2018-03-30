@@ -85,6 +85,7 @@ export class PendingReferralsComponent implements OnInit {
     compnayRoomListDisplay : Room[] = [];
     compnayDoctorId = '';
     compnayRoomId = '';
+    toCompanyId: number=0;
 
     showDoctorList = false;
     showRoomList = false;
@@ -119,6 +120,7 @@ export class PendingReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getPendingReferralByCompanyId(this.companyId)
             .subscribe(pendingReferralList => {
+
                 this.pendingReferralList = pendingReferralList.reverse();
             },
             (error) => {
@@ -180,7 +182,8 @@ export class PendingReferralsComponent implements OnInit {
                             room: currentRoom
                         });
                     });
-                });
+                });               
+                
                 this.medicalProviderDoctor = mappedMedicalProviderDoctor;
                 this.medicalProviderRoom = mappedMedicalProviderRoom;
                 //this.medicalProvider = matchingMedicalProvider;
@@ -199,7 +202,7 @@ export class PendingReferralsComponent implements OnInit {
                 let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {            
                     return currentPreferredMedical.companyStatusType == 1 || currentPreferredMedical.companyStatusType == 2;
                 });
-
+                
                 this.medicalProvider = matchingMedicalProvider;
             },
             (error) => {                
@@ -264,12 +267,18 @@ export class PendingReferralsComponent implements OnInit {
                 label: '-Select Room-',
                 value: ''
             }]
-            let roomMaster = _.map(compnayRooms, (currentRoomMaster: Room) => {
+            let roomMaster = _.map(compnayRooms, (currentRoomMaster: Room) => {                
+                let name = currentRoomMaster.location.location.name + ' - ' + currentRoomMaster.name;
                 return {
-                    label: `${currentRoomMaster.name}`,
+                    label: name,
                     value: currentRoomMaster.id
                 };
+                /*return {
+                    label: `${currentRoomMaster.name}`,
+                    value: currentRoomMaster.id
+                };*/
             })
+            
             this.compnayRoomListDisplay = _.union(defaultLabel, roomMaster);
         },
             (error) => {
@@ -393,7 +402,8 @@ export class PendingReferralsComponent implements OnInit {
         this.addMedicalDialogVisible = true;
         this.selectedCancel = 1;
     }
-    showUnscheduleVisitDialog() {
+    showUnscheduleVisitDialog(mid: number) {
+        this.toCompanyId = mid;
         if (this.selectedReferrals) {
             this.externalReferralDialogVisible = true;
         } else {
@@ -425,8 +435,11 @@ export class PendingReferralsComponent implements OnInit {
             this._notificationsService.alert('Oh No!', 'Please select medical office!');
             shouldAppointVisit = false;
         } else if (this.selectedOption === 3) {
-            shouldAppointVisit = false;
-            this.saveReferralForMedicalOnlyProvider()
+            debugger;
+            this.showUnscheduleVisitDialog(this.selectedMedicalProviderId);
+            return;
+            // shouldAppointVisit = false;
+            // this.saveReferralForMedicalOnlyProvider()
         } else if (this.selectedOption === 1) {
             this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
             if (!this.userSetting.isCalendarPublic) {
@@ -515,8 +528,7 @@ export class PendingReferralsComponent implements OnInit {
         return patientVisit;
     }
 
-    setVisit(slotDetail: AvailableSingleSlot) {
-        debugger;
+    setVisit(slotDetail: AvailableSingleSlot) {        
         let pendingReferral: PendingReferral = null;
         if (this.selectedOption === 1) {
             pendingReferral = this._populateReferralForMedicalProviderDoctor();
@@ -536,8 +548,7 @@ export class PendingReferralsComponent implements OnInit {
         let referralSaveResult: Promise<PendingReferral> = this._pendingReferralStore.savePendingReferral(pendingReferral).toPromise();
 
         Promise.all([visitResult, referralSaveResult])
-            .then((results) => {
-                debugger;
+            .then((results) => {                
                 let patientVisit: PatientVisit = results[0];
                 let referral: PendingReferral = results[1];
                 return this._pendingReferralService.associateReferralWithVisit(patientVisit, referral).toPromise();
@@ -664,8 +675,6 @@ export class PendingReferralsComponent implements OnInit {
             () => {
 
             });
-
-
     }
 
     private _populateReferralForMedicalProviderRoom(): PendingReferral {

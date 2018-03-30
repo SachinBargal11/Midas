@@ -54,9 +54,15 @@
                          <label *ngIf="!currentPreferredMedicalProviderDoctor.doctor.user">{{currentPreferredMedicalProviderDoctor.preferredMedical.name}}</label>
                         </option>
              </optgroup>
-             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
-                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
-                        {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
+             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">                 
+                        <option  data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
+                            <span *ngIf="currentPreferredMedicalProviderRoom.room.location != null">
+                                {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.location.location.name}} - {{currentPreferredMedicalProviderRoom.room.name}}
+                            </span>
+                            <span *ngIf="currentPreferredMedicalProviderRoom.room.location == null">
+                                {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}
+                            </span>
+                        </option>    
              </optgroup>
               <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Activation Pending">
                      <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
@@ -93,7 +99,7 @@
         <a class="btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Medical Provider</span>
         </a>
-        <a class="btn btn-primary btn-sm" (click)="showUnscheduleVisitDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+        <a class="btn btn-primary btn-sm" (click)="showUnscheduleVisitDialog(0)"><i class="fa fa-plus" aria-hidden="true"></i>
             <span class="hidden-md-down">Add Non Midas Provider Visit</span>
         </a>
     </div>
@@ -106,7 +112,7 @@
 <p-dialog *ngIf="selectedReferrals && externalReferralDialogVisible" [minWidth]="600" [width]="1200" (onAfterHide)="handleExternalReferralDialogHide()"
     [(visible)]="externalReferralDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
     [contentStyle]="{'overflow':'auto', 'max-height':'700px'}">
-    <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId"
+    <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId" [toCompanyId]="toCompanyId"
         (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeExternalReferralDialog()" (emitExternalReferral)="showUnscheduledVisitDialog($event)"></unscheduled-visit>
 </p-dialog>
 

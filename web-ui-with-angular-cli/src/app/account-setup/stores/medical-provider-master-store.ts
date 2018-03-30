@@ -188,4 +188,15 @@ export class MedicalProviderMasterStore {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
+    getByCompanyById(companyId: number): Observable<any> {
+        let promise = new Promise((resolve, reject) => {            
+           this._medicalProviderMasterService.getByCompanyById(companyId).subscribe((provider: any) => {
+               resolve(provider);
+            }, error => {
+                reject(error);
+            });            
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }

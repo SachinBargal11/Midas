@@ -162,10 +162,10 @@ export class AddMedicalProviderComponent implements OnInit {
         this.addMedicalProviderByToken.reset();
         //this.providerform.value.reset();
         this.validateOtpResponse = null;
+        this.clearform();
         this.closeDialogBox.emit();
         //this.providerform.reset();
-        //this.companyType = "1";
-        this.clearform();
+        //this.companyType = "1";        
     }
 
     saveMedicalProvider() {
@@ -320,8 +320,7 @@ export class AddMedicalProviderComponent implements OnInit {
         this.existingcompany = false;
         this._progressBarService.show();        
         this._medicalProviderMasterStore.getByCompanyByName(this.providerform.value.companyName)
-            .subscribe((data: any) => {             
-                debugger;
+            .subscribe((data: any) => {                             
                 this.firstName = '';
                 this.lastName = '';
                 this.email = '';

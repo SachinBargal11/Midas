@@ -5,6 +5,7 @@ import { UnscheduledVisit } from './unscheduled-visit';
 
 const UnscheduledVisitReferralRecord = Record({
     pendingReferralId: 0,
+    toCompanyId: 0,
     patientVisitUnscheduled: null
 });
 
@@ -12,6 +13,7 @@ const UnscheduledVisitReferralRecord = Record({
 export class UnscheduledVisitReferral extends UnscheduledVisitReferralRecord {
 
     pendingReferralId: number;
+    toCompanyId: number;
     patientVisitUnscheduled: UnscheduledVisit;
 
     constructor(props) {
