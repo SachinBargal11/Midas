@@ -554,8 +554,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
                             PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
+                            PatientVisitUnscheduledDB.VisitStatusId = PatientVisitUnscheduledBO.VisitStatusId;
 
-                            if (Add_patientVisitUnscheduledDB == true)
+                        if (Add_patientVisitUnscheduledDB == true)
                             {
                                 PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
                             }
