@@ -135,7 +135,7 @@
           {{selectedVisit.doctorID}}
           <div class="col-md-4" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
-            <button *ngIf="caseStatusId === 1 && selectedVisit.visitUpdateStatus && (sessionStore.session.user.id == selectedVisit.doctor.user.id)" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+            <button *ngIf="caseStatusId === 1 && selectedVisit.visitUpdateStatus && (sessionStore.session.user.id == selectedVisit.doctor.user.id) && selectedVisit.location.companyId == sessionStore.session.currentCompany.id" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>            
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
