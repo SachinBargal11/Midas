@@ -11,6 +11,6 @@ export const environment = {
   // ANCILLARY_PORTAL_URI: 'http://localhost:4201/',
   MEDICAL_PROVIDER_URI: 'http://dev-gb-medicalprovider.qwinix.io/',
   PATIENT_PORTAL_URI: 'http://gb-patient.qwinix.io/',
-  ATTORNEY_PORTAL_URI: 'http://gb-attorney.qwinix.io/',
+  ATTORNEY_PORTAL_URI: 'http://dev-gb-attorney.qwinix.io/',
   ANCILLARY_PORTAL_URI: 'http://gb-ancillary.qwinix.io/'
 };
