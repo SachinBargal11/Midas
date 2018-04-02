@@ -5,7 +5,7 @@ export const environment = {
   SERVICE_BASE_URL: 'http://dev-gb-midasattorneyapi.qwinix.io/midasattorneyapi',
   IDENTITY_SERVER_URL: 'https://dev-gb-identityserver.qwinix.io',
   NOTIFICATION_SERVER_URL: 'http://dev-gb-notificationmanager.qwinix.io',
-  HOME_URL: 'http://greenyourbills.qwinix.io',
+  HOME_URL: 'http://dev-greenyourbills.qwinix.io',
   APP_URL: 'http://dev-gb-attorney.qwinix.io',
   
   IDENTITY_SCOPE: "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
