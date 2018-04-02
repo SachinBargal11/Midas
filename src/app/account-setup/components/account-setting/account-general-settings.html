@@ -1,0 +1,29 @@
+<form [formGroup]="settingForm">
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label"> Generate Token 
+    </label></div>
+        <div class="col-md-4">
+            <a type="text" class="btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-commenting-o" aria-hidden="true"></i>
+    <span class="hidden-md-down">Generate Token</span></a>
+        </div>
+        <div class="col-md-4">
+            <p-dialog header="Generate 6-Digit token for Attorney Company" [(visible)]="display" [width]="350">
+                1.If you want to generate/share a six-digit valid token click on generate token button.<br>
+                2.Share this generated token with other medical provider in order to get add to their company.<br>
+            </p-dialog>
+            <button type="text" (click)="showHelpDialog()" pButton icon="fa fa-info-circle" label="Help"></button>
+        </div>
+    </div>
+    <p-dialog header="Generated Token Number" [(visible)]="displayToken" [width]="300" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="form-label">Token Number:
+                            </label></div>
+            <div class="col-lg-6">
+                <label class="form-label">{{otp}}
+                </label>
+            </div>
+        </div>
+    </p-dialog>
+</form>

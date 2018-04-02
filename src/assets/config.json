@@ -1,0 +1,9 @@
+{
+    "baseUrl": "http://qa-gb-midasattorneyapi.qwinix.io/midasattorneyapi",
+    "identityServerUrl": "https://qa-gb-identityserver.qwinix.io",
+    "notificationServerUrl": "http://qa-gb-notificationmanager.qwinix.io",
+    "home_url": "http://qa-greenyourbills.qwinix.io",
+    "mp_url": "http://qa-gb-attorney.qwinix.io",
+    "identity_scope": "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
+    "client_id": "MidasPortal"
+}
