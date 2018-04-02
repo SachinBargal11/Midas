@@ -1,0 +1,58 @@
+<form [formGroup]="patientVisitNotes" (ngSubmit)="saveVisit()">
+    <div *ngIf="currentVisit">
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Patient Notes Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                    <div class="col-md-4">
+                        <div class="form-group" [class.error]="patientVisitNotesControls.notes && patientVisitNotesControls.notes.touched && !patientVisitNotesControls.notes.valid">
+                            <textarea [ngModel]="currentVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
+                            <div class='error-list' *ngIf="patientVisitNotesControls.notes && patientVisitNotesControls.notes.touched && !patientVisitNotesControls.notes.valid">
+                                <ul>
+                                    <li *ngIf="patientVisitNotesControls.notes.hasError('required')">Please enter Notes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><label class="form-label">Status<span class="color-red">*</span></label></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select formControlName="visitStatusId" [ngModel]="currentVisit.visitStatusId" class="select2-arrow form-control">
+                        <option value="2">Complete</option>
+                        <option value="4">No Show</option>
+                    </select>
+                        </div>
+                    </div>
+                </div>
+
+                <p-footer>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <!--<button [disabled]="!patientVisitNotesControls.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
+                            <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+                            <button [routerLink]="['../../']" type="button" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div><br>
+                </p-footer>
+            </div>
+        </section>
+    </div>
+
+
+    <!--<section class="card">
+        <header class="card-header card-header-lg">
+            Upload Documents
+        </header>
+        <div class="card-block">
+            <label class="form-label">Documents Upload</label>
+        </div>
+    </section>-->
+</form>

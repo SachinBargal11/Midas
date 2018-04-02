@@ -1,0 +1,203 @@
+<section>
+    <h6 class="with-border">
+        <div class="row">
+            <div class="col-md-2">
+                <input type="radio" value="1" name="searchMode" [(ngModel)]="searchMode"> Medical Facility
+            </div>
+            <div class="col-md-2">
+                <input type="radio" value="2" name="searchMode" [(ngModel)]="searchMode"> Speciality
+            </div>
+            <div class="col-md-3">
+                <input type="radio" value="3" name="searchMode" [(ngModel)]="searchMode"> Testing Rooms
+            </div>
+            <div class="col-md-3">
+                <input type="radio" value="4" name="searchMode" [(ngModel)]="searchMode" (ngModelChange)="onSelectedReferralTypeChange($event)">                Referral's Outside Midas
+                <!--<input type="radio" value="4" name="searchMode" [(ngModel)]="searchMode"> Referral's Outside Midas-->
+            </div>
+        </div>
+    </h6>
+</section>
+<form [formGroup]="referralForm" *ngIf="searchMode !== '4'" (ngSubmit)="save()">
+    <section *ngIf="searchMode == '1'">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Medical Facility">
+            </div>
+        </div>
+        <p-dataTable [value]="locations" [(selection)]="selectedLocation" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
+            [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+            <header>Locations</header>
+            <p-column selectionMode="single"></p-column>
+            <p-column field="company.name" header="Company" [sortable]="true"></p-column>
+            <p-column field="location.name" header="Location" [sortable]="true"></p-column>
+        </p-dataTable>
+    </section>
+    <section *ngIf="searchMode == '2'">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctor">
+            </div>
+            <div class="col-lg-3" style="text-align: right">
+                <label class="form-label">Search Doctors by Speciality </label>
+            </div>
+            <div class="col-lg-4">
+                <select formControlName="speciality" type="text" (change)="selectSpeciality($event)" class="form-control">
+                            <option value="">-Select Speciality-</option>
+                            <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
+                        </select>
+            </div>
+        </div>
+        <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+            <header>Doctors</header>
+            <p-column selectionMode="single"></p-column>
+            <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
+            <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
+            <p-column header="Company" [sortable]="true">
+                <ng-template let-currentReferral="rowData" pTemplate="body">
+                    {{getCurrentDoctorCompanyName(currentReferral)}}
+                </ng-template>
+            </p-column>
+            <p-column header="Location" [sortable]="true">
+                <ng-template let-currentReferral="rowData" pTemplate="body">
+                    {{getCurrentDoctorLocationName(currentReferral)}}
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </section>
+    <section *ngIf="searchMode == '3'">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Room">
+            </div>
+            <div class="col-lg-3" style="text-align: right">
+                <label class="form-label">Search Rooms by Test</label>
+            </div>
+            <div class="col-lg-4">
+                <select formControlName="tests" (change)="selectTest($event)" class="selectpicker form-control">
+                            <option value="">-Select Test-</option>
+                            <option disabled>────────────────────</option>
+                            <option *ngFor="let test of tests" value="{{test.id}}">{{test.name}}</option>
+                        </select>
+            </div>
+        </div>
+        <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+            <p-column selectionMode="single"></p-column>
+            <p-column field="name" header="Name" [sortable]="true"></p-column>
+            <p-column field="phone" header="Phone" [sortable]="true"></p-column>
+            <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
+            <p-column field="location.company.name" header="Company" [sortable]="true"></p-column>
+            <p-column field="location.location.name" header="Location" [sortable]="true"></p-column>
+        </p-dataTable>
+    </section>
+    <br>
+    <section>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Notes <span class="color-red">*</span>
+                            </label>
+                <div class="form-group" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid">
+                    <textarea formControlName="note" class="form-control" rows="3" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid"></textarea>
+                    <div class='error-list' *ngIf="referralFormControls.note.touched && !referralFormControls.note.valid">
+                        <ul>
+                            <li *ngIf="referralFormControls.note.hasError('required')">Please enter Notes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <button [disabled]="!referralForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+</form>
+<form [formGroup]="referralOutOfMidasForm" (ngSubmit)="saveOutOfMidasReferral()">
+    <section class="card" *ngIf="searchMode == '4'">
+        <header class="card-header card-header-lg">
+            Referral's Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="referralOutOfMidasFormControls.firstName.touched && !referralOutOfMidasFormControls.firstName.valid">
+                        <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!referralOutOfMidasFormControls.firstName.valid">
+                        <div class='error-list' *ngIf="referralOutOfMidasFormControls.firstName.touched && !referralOutOfMidasFormControls.firstName.valid">
+                            <ul>
+                                <li *ngIf="referralOutOfMidasFormControls.firstName.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="referralOutOfMidasFormControls.lastName.touched && !referralOutOfMidasFormControls.lastName.valid">
+                        <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!referralOutOfMidasFormControls.lastName.valid">
+                        <div class='error-list' *ngIf="referralOutOfMidasFormControls.lastName.touched && !referralOutOfMidasFormControls.lastName.valid">
+                            <ul>
+                                <li *ngIf="referralOutOfMidasFormControls.lastName.hasError('required')">Last Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="referralOutOfMidasFormControls.email.touched && !referralOutOfMidasFormControls.email.valid">
+                        <input type="email" formControlName="email" [class.error]="!referralOutOfMidasFormControls.email.valid"
+                            class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="referralOutOfMidasFormControls.email.touched && !referralOutOfMidasFormControls.email.valid">
+                            <ul>
+                                <li *ngIf="referralOutOfMidasFormControls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="referralOutOfMidasFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid">
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                        <div class='error-list' *ngIf="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="referralOutOfMidasFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="referralOutOfMidasFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Notes <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="referralOutOfMidasFormControls.referralOutsideMidasNote.touched && !referralOutOfMidasFormControls.referralOutsideMidasNote.valid">
+                        <textarea formControlName="referralOutsideMidasNote" class="form-control" rows="3" [class.error]="referralOutOfMidasFormControls.referralOutsideMidasNote.touched && !referralOutOfMidasFormControls.referralOutsideMidasNote.valid"></textarea>
+                        <div class='error-list' *ngIf="referralOutOfMidasFormControls.referralOutsideMidasNote.touched && !referralOutOfMidasFormControls.referralOutsideMidasNote.valid">
+                            <ul>
+                                <li *ngIf="referralOutOfMidasFormControls.referralOutsideMidasNote.hasError('required')">Please enter Notes.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>.
+        <button [disabled]="!referralOutOfMidasForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+    </section>
+</form>

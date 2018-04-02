@@ -1,0 +1,68 @@
+<!--<h3 class="with-border">View Case</h3>-->
+<div *ngIf="caseDetail">
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Patient Name
+                            </label>
+            <div class="form-group">
+                <label>{{caseDetail.patientName}}
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Type</label>
+            <div class="form-group">
+                <label>{{caseDetail.caseTypeLabel}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Status
+                            </label>
+            <div class="form-group">
+                <label>{{caseDetail.caseStatusLabel}}
+                        </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Carrier Case Number
+                            </label>
+            <div class="form-group">
+                <label>{{caseDetail.carrierCaseNo}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label">Medical Provider                              
+                            </label>
+            <div class="form-group">
+                <label>{{caseDetail.medicalProviderName}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Source
+                            </label>
+            <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                <label>{{caseDetail.caseSource}}
+                 </label>
+            </div>
+            <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                <label>{{caseDetail.orignatorCaseSource}}
+                 </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Claim Number
+                            </label>
+            <div class="form-group">
+                <label>{{caseDetail.claimFileNumber}}
+                 </label>
+            </div>
+        </div>
+    </div>
+</div>
