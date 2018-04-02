@@ -507,6 +507,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         invitationDB1.UniqueID = Guid.NewGuid();
                         invitationDB1.CreateDate = DateTime.UtcNow;
                         invitationDB1.CreateByUserID = accs_.CreateByUserID;
+                        invitationDB1.CompanyID = _bocompanyobjnew.ID;
                         _dbInvitation.Add(invitationDB1);
                         _context.SaveChanges();
                         #endregion

@@ -107,6 +107,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("VisitUpdateStatus")]
         public bool? VisitUpdateStatus { get; set; }
 
+        [JsonProperty("referralDocument")]
+        public List<ReferralDocument> ReferralDocument { get; set; }
+
     }
 
     public class mPatientVisits : GbObject
@@ -165,6 +168,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("VisitUpdateStatus")]
         public bool? VisitUpdateStatus { get; set; }
+
+        [JsonProperty("referralDocument")]
+        public List<ReferralDocument> ReferralDocument { get; set; }
     }
 
     public class PatientVisitCompleted
