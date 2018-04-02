@@ -800,6 +800,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
             Invitation invitationDB = new Invitation();
 
+            if (string.IsNullOrEmpty(companyBO.TaxID) == false && _context.Companies.Any(o => o.TaxID == companyBO.TaxID && o.id != companyBO.ID))
+            {
+                return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 if (signUPBO == null)

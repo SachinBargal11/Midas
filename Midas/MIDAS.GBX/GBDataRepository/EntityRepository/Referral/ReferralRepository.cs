@@ -1015,7 +1015,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                 .Include("ReferralDocuments")
                                                 .Include("ReferralDocuments.MidasDocument")
-
+                                                .Include("PatientVisitUnscheduled")
                                                .Where(p => p.ToCompanyId == companyId && p.FromCompanyId != companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();
