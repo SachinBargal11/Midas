@@ -46,7 +46,7 @@ export class AccountActivationComponent implements OnInit {
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService
     ) {
-        this._route.params.subscribe((routeParams: any) => {
+        this._route.params.subscribe((routeParams: any) => {            
             this.token = routeParams.token;
             let result = this._authenticationService.checkForValidToken(this.token);
             result.subscribe(

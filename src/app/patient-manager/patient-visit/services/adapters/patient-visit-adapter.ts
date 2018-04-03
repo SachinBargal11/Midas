@@ -12,11 +12,14 @@ import { DiagnosisCode } from '../../../../commons/models/diagnosis-code';
 import { Procedure } from '../../../../commons/models/procedure';
 import { DiagnosisCodeAdapter } from '../../../../commons/services/adapters/diagnosis-code-adapter';
 import { ProcedureAdapter } from '../../../../commons/services/adapters/procedure-adapter';
+import { ReferralDocument } from '../../../cases/models/referral-document';
+import { ReferralDocumentAdapter } from '../../../cases/services/adapters/referral-document-adapters';
 
 export class PatientVisitAdapter {
     static parseResponse(data: any): PatientVisit {
 
         let patientVisit = null;
+        let caseReferralDocument: ReferralDocument[] = [];        
         if (data) {
             let diagnosisCodes: DiagnosisCode[] = [];
             let procedureCodes: Procedure[] = [];
@@ -30,6 +33,12 @@ export class PatientVisitAdapter {
                 currentProcedureCode.procedureCode.procedureTotalAmount = currentProcedureCode.procedureTotalAmount;
                 procedureCodes.push(ProcedureAdapter.parseResponse(currentProcedureCode.procedureCode));
             });
+
+            if (data.referralDocument) {
+                for (let referralDocument of data.referralDocument) {
+                    caseReferralDocument.push(ReferralDocumentAdapter.parseResponse(referralDocument));
+                }
+            }
             patientVisit = new PatientVisit({
                 id: data.id,
                 calendarEventId: data.calendarEventId,
@@ -64,7 +73,8 @@ export class PatientVisitAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 visitTimeStatus: data.VisitTimeStatus,
                 visitUpdateStatus: data.VisitUpdateStatus,
-                originalResponse: data
+                originalResponse: data,
+                referralDocument: caseReferralDocument
             });
         }
 

@@ -21,6 +21,8 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { Observable } from 'rxjs/Rx';
 import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
+import { ReferralDocument } from '../models/referral-document';
+import { ConsentStore } from '../../cases/stores/consent-store';
 
 @Component({
     selector: 'patient-visit-treatingroom-list',
@@ -87,7 +89,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
-
+        private _consentStore: ConsentStore
 
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
@@ -182,14 +184,6 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
         Observable.forkJoin([patientVisits, unscheduleVisits])
             .subscribe((results: any[]) => {
                 let patientVisitDetails = results[0];
-                // let matchingVisits: PatientVisit[] = _.filter(patientVisitDetails, (currentVisit: PatientVisit) => {
-                //     return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-                // });
-
-                // this.visits = matchingVisits.reverse();
-                // let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                //     return currentVisit.doctor != null && currentVisit.specialtyId != null;
-                // });
                 let matchingVisits: PatientVisit[];
                 if(!this.viewall)
                 {
@@ -219,7 +213,8 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                     isPatientVisitType: boolean,
                     isUnscheduledVisitType: boolean,
                     medicalProviderName: string,
-                    visitTimeStatus: boolean
+                    visitTimeStatus: boolean,
+                    referralDocument : ReferralDocument[]
                 }[] = [];
                 _.forEach(roomsVisits, (currRoomVisit: PatientVisit) => {                    
                     doctorname = currRoomVisit.doctor == null ? "" : currRoomVisit.doctor.user.displayName;
@@ -234,7 +229,8 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                         isPatientVisitType: true,
                         isUnscheduledVisitType: false,
                         medicalProviderName: null,
-                        visitTimeStatus: currRoomVisit.visitTimeStatus
+                        visitTimeStatus: currRoomVisit.visitTimeStatus,
+                        referralDocument: currRoomVisit.referralDocument
                     })
                 })
                 _.forEach(unscheduledVisits, (currRoomVisit: UnscheduledVisit) => {
@@ -250,7 +246,8 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                             isPatientVisitType: false,
                             isUnscheduledVisitType: true,
                             medicalProviderName: currRoomVisit.medicalProviderName,
-                            visitTimeStatus: currRoomVisit.visitTimeStatus
+                            visitTimeStatus: currRoomVisit.visitTimeStatus,
+                            referralDocument: null
                         })
                     }
 
@@ -265,6 +262,30 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 this._progressBarService.hide();
             });
 
+    }
+
+    DownloadPdf(document: ReferralDocument) {
+       // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
+       this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
+       .subscribe(
+       (response) => {
+           // this.document = document
+           // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+       },
+       (error) => {
+           let errString = 'Unable to download';
+           let notification = new Notification({
+               'messages': 'Unable to download',
+               'type': 'ERROR',
+               'createdAt': moment()
+           });
+           this._progressBarService.hide();
+           //  this._notificationsStore.addNotification(notification);
+           this._notificationsService.error('Oh No!', 'Unable to download');
+       },
+       () => {
+           this._progressBarService.hide();
+       });
     }
 
     loadPatientVisitsLazy(event: LazyLoadEvent) {

@@ -23,7 +23,8 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Observable } from 'rxjs/Rx';
-
+import { ReferralDocument } from '../models/referral-document';
+import { ConsentStore } from '../../cases/stores/consent-store';
 @Component({
     selector: 'patient-visit-doctor-list',
     templateUrl: './doctor-visit.html'
@@ -94,7 +95,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
-        public sessionStore: SessionStore
+        public sessionStore: SessionStore,
+        private _consentStore: ConsentStore
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -260,7 +262,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     isPatientVisitType: boolean,
                     isUnscheduledVisitType: boolean,
                     medicalProviderName: string,
-                    visitTimeStatus: boolean
+                    visitTimeStatus: boolean,
+                    referralDocument : ReferralDocument[]
                 }[] = [];
                 _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {                    
                     mappedAllVisits.push({
@@ -274,7 +277,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
                         isPatientVisitType: true,
                         isUnscheduledVisitType: false,
                         medicalProviderName: null,
-                        visitTimeStatus: currDoctorVisit.visitTimeStatus
+                        visitTimeStatus: currDoctorVisit.visitTimeStatus,
+                        referralDocument:currDoctorVisit.referralDocument
                     })
                 });
                 _.forEach(unscheduleddoctorsVisits, (currDoctorVisit: UnscheduledVisit) => {
@@ -290,7 +294,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
                             isPatientVisitType: false,
                             isUnscheduledVisitType: true,
                             medicalProviderName: currDoctorVisit.medicalProviderName,
-                            visitTimeStatus: true
+                            visitTimeStatus: true,
+                            referralDocument: null
                         });
                     }
                 });
@@ -302,6 +307,31 @@ export class PatientVisitListDoctorComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+    DownloadPdf(document: ReferralDocument) {
+        debugger;
+       // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
+       this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
+       .subscribe(
+       (response) => {
+           // this.document = document
+           // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+       },
+       (error) => {
+           let errString = 'Unable to download';
+           let notification = new Notification({
+               'messages': 'Unable to download',
+               'type': 'ERROR',
+               'createdAt': moment()
+           });
+           this._progressBarService.hide();
+           //  this._notificationsStore.addNotification(notification);
+           this._notificationsService.error('Oh No!', 'Unable to download');
+       },
+       () => {
+           this._progressBarService.hide();
+       });
     }
 
     loadPatientVisitsLazy(event: LazyLoadEvent) {

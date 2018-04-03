@@ -14,7 +14,8 @@ import { VisitReferralProcedureCodeAdapter } from '../../../patient-visit/servic
 import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import { ReferralDocumentAdapter } from '../../../cases/services/adapters/referral-document-adapters';
 import { ReferralDocument } from '../../../cases/models/referral-document';
-
+import { UnscheduledVisitAdapter } from '../../../../patient-manager/patient-visit/services/adapters/unscheduled-visit-adapter';
+import { UnscheduledVisit } from '../../../patient-visit/models/unscheduled-visit';
 
 export class InboundOutboundReferralAdapter {
     static parseResponse(data: any): InboundOutboundList {
@@ -22,6 +23,7 @@ export class InboundOutboundReferralAdapter {
         let inboundOutboundList = null;
         let visitReferralProcedureCodes: VisitReferralProcedureCode[] = [];
         let caseReferralDocument: ReferralDocument[] = [];
+        let refunScheduledVisit: UnscheduledVisit[] = [];
         if (data) {
             if (data.referralProcedureCode) {
                 for (let referralProcedureCode of data.referralProcedureCode) {
@@ -34,6 +36,12 @@ export class InboundOutboundReferralAdapter {
                 }
             }
 
+            if (data.unScheduledVisit) {
+                for (let unScheduledVisit of data.unScheduledVisit) {
+                    refunScheduledVisit.push(UnscheduledVisitAdapter.parseResponse(unScheduledVisit));
+                }
+            }
+            
             inboundOutboundList = new InboundOutboundList({
                 id: data.id,
                 pendingReferralId: data.pendingReferralId,
@@ -73,7 +81,7 @@ export class InboundOutboundReferralAdapter {
                 createDate: moment(data.createDate), // Moment
                 updateDate: moment(data.updateDate), // Moment
                 caseId: data.caseId,
-
+                unScheduledVisit: refunScheduledVisit
             });
         }
         return inboundOutboundList;

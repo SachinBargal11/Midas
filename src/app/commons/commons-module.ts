@@ -32,7 +32,8 @@ import { AddMedicalProviderComponent } from '../account-setup/components/medical
 import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
 import { ImeVisitDetailComponent } from './components/ime-visit-detail/ime-visit-detail.component';
 import { AssociateUsersComponent } from '../commons/components/associate-users/associate-users-component';
-import { UnscheduledVisitDetailComponent } from '../commons/components/unscheduled-visit-detail/unscheduled-visit-detail.component'
+import { UnscheduledVisitDetailComponent } from '../commons/components/unscheduled-visit-detail/unscheduled-visit-detail.component';
+import { CreateVisitComponent } from '../commons/components/visit-detail/create-visit.component';
 
 import {
   AccordionModule,
@@ -126,7 +127,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     VisitDetailComponent,
     ImeVisitDetailComponent,
     AssociateUsersComponent,
-    UnscheduledVisitDetailComponent
+    UnscheduledVisitDetailComponent,
+    CreateVisitComponent
   ],
   exports: [
     CommonModule,
@@ -186,7 +188,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     VisitDetailComponent,
     ImeVisitDetailComponent,
     AssociateUsersComponent,
-    UnscheduledVisitDetailComponent
+    UnscheduledVisitDetailComponent,
+    CreateVisitComponent
   ]
 })
 export class CommonsModule { }

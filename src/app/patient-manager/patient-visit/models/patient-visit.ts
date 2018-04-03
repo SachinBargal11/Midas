@@ -14,6 +14,7 @@ import { Location } from '../../../medical-provider/locations/models/location';
 import { Patient } from '../../../patient-manager/patients/models/patient';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { Procedure } from '../../../commons/models/procedure';
+import { ReferralDocument } from '../../cases/models/referral-document';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -51,7 +52,9 @@ const PatientVisitRecord = Record({
     originalResponse: null,
     addedByCompanyId: null,
     visitTimeStatus: false,
-    visitUpdateStatus: false
+    visitUpdateStatus: false,
+    referralDocument: null,
+    referralId:0,
 });
 
 export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
@@ -60,7 +63,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     calendarEventId: number;
     location: Location;
     locationId: number;
-    case: Case;
+    case: Case; 
     caseId: number;
     patient: Patient;
     patientId: number;
@@ -92,6 +95,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     addedByCompanyId: number;
     visitTimeStatus: boolean;
     visitUpdateStatus: boolean;
+    referralDocument: ReferralDocument[];
+    referralId: number;
+    
 
     constructor(props) {
         super(props);

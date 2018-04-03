@@ -32,6 +32,8 @@ import { VisitReferralStore } from '../../../patient-manager/patient-visit/store
 import { DignosisComponent } from '../dignosis/dignosis.component';
 import { ProcedureComponent } from '../procedure/procedure.component';
 import { ReferralsComponent } from '../referrals/referrals.component';
+import { ReferralDocument } from '../../../patient-manager/cases/models/referral-document';
+import { ConsentStore } from '../../../patient-manager/cases/stores/consent-store';
 
 @Component({
     selector: 'app-visit-detail',
@@ -93,7 +95,8 @@ export class VisitDetailComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
         private _visitReferralStore: VisitReferralStore,
-        public sessionStore: SessionStore
+        public sessionStore: SessionStore,
+        private _consentStore: ConsentStore
     ) {
         this.visitDetailForm = this._fb.group({
             notes: ['', Validators.required],
@@ -138,8 +141,7 @@ export class VisitDetailComponent implements OnInit {
         });
     }
 
-    ngOnInit() {        
-        debugger;
+    ngOnInit() {                
         this.readingDoctor = this.selectedVisit.doctorId != null ? this.selectedVisit.doctorId : 0;
         this.getReadingDoctorsByCompanyId();
         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -504,5 +506,29 @@ export class VisitDetailComponent implements OnInit {
                 }
         //      });        
         // }
+
+        DownloadPdfReffreal(document: ReferralDocument) {
+            // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
+            this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+         }
 }
     
