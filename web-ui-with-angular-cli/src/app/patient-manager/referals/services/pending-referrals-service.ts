@@ -160,12 +160,11 @@ export class PendingReferralService {
                 headers: this._headers
             })
                 .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    debugger;
+                .subscribe((data: Array<Object>) => {                    
                     let referrals : any;
                     if(data.length > 0)
                     {
-                     referrals = (<Object[]>data).map((data: any) => {
+                     referrals = (<Object[]>data).map((data: any) => {                        
                         return InboundOutboundReferralAdapter.parseResponse(data);
                     });            
                 }
