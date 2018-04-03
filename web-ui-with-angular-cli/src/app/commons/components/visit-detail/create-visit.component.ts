@@ -5,7 +5,7 @@ import { User } from '../../../commons/models/user';
 import { Case } from '../../../patient-manager/cases/models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
@@ -61,12 +61,12 @@ import { SpecialityDetail } from '../../../account-setup/models/speciality-detai
 import { TestSpecialityDetail } from '../../../account-setup/models/test-speciality-details';
 
 @Component({
-    selector: 'patient-visit',
-    templateUrl: './patient-visit.html',
-    styleUrls: ['./patient-visit.scss']
+    selector: 'create-visit',
+    templateUrl: './create-visit.component.html',
+    styleUrls: ['./create-visit.component.scss']
 })
 
-export class PatientVisitComponent implements OnInit {
+export class CreateVisitComponent implements OnInit {
 
     @ViewChild(ScheduledEventEditorComponent)
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
@@ -169,8 +169,8 @@ export class PatientVisitComponent implements OnInit {
     specialities: Speciality[];
     tests: Tests[];
     @Input() routeFromCase: boolean = false;
-    @Input() caseId: number;
-    // @Input() patientId:number;
+    @Input() caseId: number=0;
+    @Input() referrenceId: number;    
     @Input() idPatient: number;
     companyId: number = this.sessionStore.session.currentCompany.id;
     userId: number = this.sessionStore.session.user.id;
@@ -184,12 +184,13 @@ export class PatientVisitComponent implements OnInit {
     userSetting: UserSetting;
     unscheduledVisit: UnscheduledVisit;
     unscheduledDialogVisible = false;
-    id:number=0;
-    patientId: number;
-    procedurecodeheading: string = "Displaying preferred procedure codes"
-
+    id:number=0;    
+    procedurecodeheading: string = "Displaying preferred procedure codes";
+    @Input() patientId:number;
     unscheduledEditVisitDialogVisible = false;
     unscheduledVisitDialogVisible = false;
+    @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    @Output() loadReferrals: EventEmitter<any> = new EventEmitter();
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -371,7 +372,12 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        if(this.caseId != 0)
+        {            
+        let ss = this.referrenceId;
         this.routeFromCase;
+        
         // this.getUserSettingsForCompany();
         this.getReadingDoctorsByCompanyId();
         this.header = {
@@ -450,8 +456,27 @@ export class PatientVisitComponent implements OnInit {
         // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
         //     this._progressBarService.show();
-        if (this.idPatient && this.caseId) {
-            let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+
+        this.selectedVisit = new PatientVisit({          
+            caseId: this.caseDetail ? this.caseDetail.id : '',
+            patientId: this.patientId,
+            locationId: this.selectedLocationId,
+            doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+            doctor: null,
+            roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
+            room: null,
+            calendarEvent: new ScheduledEvent({
+                name: '',
+                eventStart: moment(),
+                eventEnd: moment().add(30, 'minutes'),
+                timezone: '',
+                isAllDay: false
+            }),
+            createByUserID: this.sessionStore.session.account.user.id
+        });
+
+        if (this.patientId && this.caseId) {
+            let fetchPatient = this._patientsStore.fetchPatientById(this.patientId);
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 
             Observable.forkJoin([fetchPatient, fetchCaseDetail])
@@ -459,6 +484,11 @@ export class PatientVisitComponent implements OnInit {
                 (results) => {
                     this.patient = results[0];
                     this.caseDetail = results[1];
+
+                    
+        
+        this.visitInfo = this.selectedVisit.visitDisplayString;
+        this.eventDialogVisible = true;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -468,6 +498,7 @@ export class PatientVisitComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         }
+    }
 
     }
 
@@ -1045,23 +1076,9 @@ export class PatientVisitComponent implements OnInit {
     }
 
     clearselection()
-    {
-        this.selectedLocationId = 0;
-        this.selectedLocationIdFilter = 0;
-        this.idPatient = 0;
-        this.selectedMode = 0;
-        this.selectedModeFilter = 0;
-        this.selectedOption = 0;
-        this.selectedOptionFilter = 0;
-        this.selectedDoctorId = 0;
-        this.selectedDoctorIdFilter = 0;
-        this.selectedRoomId = 0;
-        this.selectedRoomIdFilter = 0;
-        this.selectedSpecialityId = 0;
-        this.selectedSpecialityIdFilter = 0;
-        this.selectedTestId = 0;
-        this.selectedTestIdFilter = 0;
-        this.ShowProcedureCode = false;        
+    {        
+        this.closeDialog.emit();
+        this.loadReferrals.emit();                     
     }
 
     loadVisits() {                
@@ -1303,13 +1320,13 @@ export class PatientVisitComponent implements OnInit {
         this.patientScheduleForm.reset();
     }
 
-    closePatientVisitDialog() {
-        this.visitDialogVisible = false;
-        this.handleVisitDialogHide();
-        this.patientVisitForm.reset();
-        this.unscheduledDialogVisible = false;
-        this.unscheduledEditVisitDialogVisible = false;
-    }
+    // closePatientVisitDialog() {
+    //     this.visitDialogVisible = false;
+    //     this.handleVisitDialogHide();
+    //     this.patientVisitForm.reset();
+    //     this.unscheduledDialogVisible = false;
+    //     this.unscheduledEditVisitDialogVisible = false;
+    // }
 
     handleEventDialogHide() {
         this.selectedVisit = null;
@@ -1600,8 +1617,7 @@ export class PatientVisitComponent implements OnInit {
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            this.getDocuments();
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';            
             if(!patientVisit.isUnscheduledVisitType)
             {
                 this.visitDialogVisible = true;                        
@@ -2003,7 +2019,7 @@ export class PatientVisitComponent implements OnInit {
         {
             docID = this.selectedOption == 1 ? this.selectedDoctorId : null;
         }
-
+        
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             // patientId: leaveEvent ? null : patientScheduleFormValues.patientId ? patientScheduleFormValues.patientId : this.idPatient,
             patientId: leaveEvent ? null : this.idPatient ? (this.idPatient) : patientScheduleFormValues.patientId,
@@ -2020,155 +2036,11 @@ export class PatientVisitComponent implements OnInit {
             notes: patientScheduleFormValues.notes,
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
             createByUserID: this.sessionStore.session.account.user.id,
-            addedByCompanyId : this.sessionStore.session.currentCompany.id
+            addedByCompanyId : this.sessionStore.session.currentCompany.id,
+            referralId: this.referrenceId
         }));
-        if (updatedVisit.id) {
-            if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {
-                let endDate: Date = this.selectedVisit.calendarEvent.recurrenceRule.before(this.selectedCalEvent.start.startOf('day').toDate());
-                let updatedvisitWithRecurrence: PatientVisit = this._getUpdatedVisitWithSeriesTerminatedOn(this.selectedVisit, moment(endDate));
-                this._progressBarService.show();
-                let result = this._patientVisitsStore.updateCalendarEvent(updatedvisitWithRecurrence);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event cancelled successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();                        
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    (error) => {
-                        let errString = 'Unable to cancel event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-                // Add New Visit
-                // Change the recurrence rule of selected event to start with selected date from the form 
-                // but end on same date as selected Visit rule.
-                // new series should start from selected/clicked date
-                let occurrences: Date[] = this.selectedVisit.calendarEvent.recurrenceRule.all();
-                let until: Date = moment(occurrences[occurrences.length - 1]).set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
-                let eventStart: Date = this.selectedCalEvent.start.set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
-                let eventEnd: Date = this.selectedCalEvent.end.set({ 'hour': updatedVisit.calendarEvent.eventEnd.hour(), 'minute': updatedVisit.calendarEvent.eventEnd.minute() }).toDate();
-                let rrule = new RRule(_.extend({}, updatedVisit.calendarEvent.recurrenceRule.origOptions, {
-                    count: 0,
-                    dtstart: eventStart,
-                    until: until
-                }));
-
-                let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
-                    id: 0,
-                    calendarEventId: 0,
-                    calendarEvent: new ScheduledEvent(_.extend(updatedVisit.calendarEvent.toJS(), {
-                        id: 0,
-                        eventStart: moment(eventStart),
-                        eventEnd: moment(eventEnd),
-                        recurrenceRule: rrule
-                    })),
-                    createByUserID: this.sessionStore.session.account.user.id
-                }));
-
-                let addVisitResult = this._patientVisitsStore.addPatientVisit(updatedAddNewVisit);
-                addVisitResult.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event added successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._notificationsStore.addNotification(notification);
-                        // this.event = null;                        
-                        //this.selectLocation();
-                    },
-                    (error) => {
-                        let errString = 'Unable to add event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            } else {
-                let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event updated successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();                        
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    (error) => {
-                        let errString = 'Unable to update event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            }
-        } else {
-            if (updatedVisit.calendarEvent.isChangedInstanceOfSeries) {
-                let exceptionResult: Observable<{ exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }> = this._patientVisitsStore.createExceptionInRecurringEvent(updatedVisit);
-                exceptionResult.subscribe(
-                    (response: { exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }) => {
-
-                        let notification = new Notification({
-                            'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionVisit.calendarEvent.eventStart.format('M d, yy')}`,
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this.loadVisits();
-                    },
-                    (error) => {
-                        let errString = 'Unable to add event!';
-                        let notification = new Notification({
-                            'messages': `Unable to create occurrence for recurring event ${updatedEvent.name} created for ${updatedEvent.eventStart.format('M d, yy')}`,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            } else {
-                let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
+       
+            let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
@@ -2177,7 +2049,7 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.clearselection();
-                        this.loadVisits();
+                        //this.loadVisits();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null; 
                         //this.selectLocation();
@@ -2190,75 +2062,13 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.clearselection();
-                        this.loadVisits();
+                        //this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
                         this._progressBarService.hide();
                     });
-            }
-        }
-        this.eventDialogVisible = false;
-        this.handleEventDialogHide();
-    }
-
-    getDocuments() {
-        // this._progressBarService.show();
-        let result;
-        if (this.selectedVisit.isPatientVisitType) {
-            result = this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
-        } else if (this.selectedVisit.isImeVisitType) {
-            result = this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
-        } else if (this.selectedVisit.isEoVisitType) {
-            result = this._patientVisitsStore.getDocumentsForEoVisitId(this.selectedVisit.id)
-        }
-        else if (this.selectedVisit.isUnscheduledVisitType) {
-            result = this._patientVisitsStore.getDocumentsForUnscheduledVisitId(this.selectedVisit.id)
-        }
-        result.subscribe(document => {
-            this.documents = document;
-        },
-
-            (error) => {
-                // this._progressBarService.hide();
-            },
-            () => {
-                // this._progressBarService.hide();
-            });
-    }
-
-    documentUploadComplete(documents: Document[]) {
-        _.forEach(documents, (currentDocument: Document) => {
-            if (currentDocument.status == 'Failed') {
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message);
-            } else if (currentDocument.status == 'Success') {
-                let notification = new Notification({
-                    'title': 'Document uploaded successfully',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success!', 'Document uploaded successfully');
-                this.addConsentDialogVisible = false;
-            }
-        });
-        this.getDocuments();
-    }
-
-    documentUploadError(error: Error) {
-        if (error.message == 'Please select document Type') {
-            this._notificationsService.error('Oh No!', 'Please select document Type');
-        }
-        else {
-            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-        }
     }
 
     showDialog(currentCaseId: number) {
@@ -2266,85 +2076,6 @@ export class PatientVisitComponent implements OnInit {
         this.selectedCaseId = currentCaseId;
     }
 
-    downloadPdf(documentId) {
-        this._progressBarService.show();
-        this._patientVisitsStore.downloadDocumentForm(this.visitId, documentId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                //  this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to download');
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this._progressBarService.hide();
-    }
-
-    deleteDocuments() {
-        if (this.selectedDocumentList.length > 0) {
-            // this.confirmationService.confirm({
-            //     message: 'Do you want to delete this record?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'fa fa-trash',
-            //     accept: () => {
-
-            this.selectedDocumentList.forEach(currentCase => {
-                this._progressBarService.show();
-                this.isDeleteProgress = true;
-                this._patientVisitsStore.deleteDocument(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'record deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-
-                        });
-                        this.getDocuments();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedDocumentList = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete record';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedDocumentList = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                    });
-            });
-            //     }
-            // });
-        } else {
-            let notification = new Notification({
-                'title': 'select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
-        }
-    }
 
     addNewPatient() {
         if (!this.isAddNewPatient) {
@@ -2486,55 +2217,6 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select procedure to update preffered procedure code');
         }
-    }
-
-    // showIMEDialog() {
-    //     this.addImeVisitDialogVisible = true;
-    // }
-
-    // showEoDialog() {
-    //     this.addEoVisitDialogVisible = true;
-    // }
-
-    deleteDocument(currentdocument: any) {                 
-        // this.confirmationService.confirm({
-        // message: 'Do you want to delete this record?',
-        // header: 'Delete Confirmation',
-        // icon: 'fa fa-trash',
-        // accept: () => {            
-               this._progressBarService.show();
-               this.isDeleteProgress = true;
-               this._patientVisitsStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
-                   .subscribe(
-                   (response) => {
-                       let notification = new Notification({
-                           'title': 'Record deleted successfully!',
-                           'type': 'SUCCESS',
-                           'createdAt': moment()
-                       });
-                       this.getDocuments();
-                       this._notificationsStore.addNotification(notification);
-                       this.selectedDocumentList = [];
-                   },
-                   (error) => {
-                       let errString = 'Unable to delete record';
-                       let notification = new Notification({
-                           'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                           'type': 'ERROR',
-                           'createdAt': moment()
-                       });
-                       this.selectedDocumentList = [];
-                       this._progressBarService.hide();
-                       this.isDeleteProgress = false;
-                       this._notificationsStore.addNotification(notification);
-                       this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                   },
-                   () => {
-                       this._progressBarService.hide();
-                       this.isDeleteProgress = false;
-                   });            
-                }
-            //  });        
-         //}
+    }   
 }
 
