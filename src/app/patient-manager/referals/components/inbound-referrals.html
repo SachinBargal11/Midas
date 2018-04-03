@@ -151,7 +151,7 @@
 </p-dialog>
 <router-outlet></router-outlet>
 
-<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="createPatientVisitDialogVisible"
+<p-dialog [width]="1200" [height]="500" header="{{visitInfo}}" [(visible)]="createPatientVisitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">    
         <create-visit [referrenceId]="referrenceId" [caseId]="caseId" [patientId]="patientId" (closeDialog)="closePatientVisitDialog($event)"></create-visit>    
 </p-dialog>
