@@ -51,6 +51,7 @@ export class InboundReferralsComponent implements OnInit {
     referrenceId: number = 0;
     patientId: number= null;
     caseId: number=null;
+    visitInfo: string='';
 
     constructor(
         private _router: Router,
