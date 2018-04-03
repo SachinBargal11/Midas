@@ -3,3 +3,5 @@ os: windows
 files:
   - source: dist
     destination: C:\inetpub\website\dev-greenyourbills.qwinix.io\
+  BeforeInstall:
+     - location: before-install.bat
