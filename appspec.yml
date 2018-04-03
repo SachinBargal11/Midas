@@ -5,6 +5,8 @@ files:
     destination: C:\inetpub\website\dev-greenyourbills.qwinix.io\
 BeforeInstall:
      - location: before-install.bat
+AfterInstall:
+     - location: after-install.bat
 
 
 
