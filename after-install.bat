@@ -1,1 +1,0 @@
-C:\invalidate.bat
