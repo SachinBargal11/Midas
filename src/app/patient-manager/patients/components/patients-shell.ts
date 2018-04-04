@@ -40,7 +40,7 @@ export class PatientsShellComponent implements OnInit {
     constructor(
         public _router: Router,
         private _patientStore: PatientsStore,
-        private _sessionStore: SessionStore,
+        private sessionStore: SessionStore,
         private _progressBarService: ProgressBarService,
         public _route: ActivatedRoute,
         private _userSettingStore: UserSettingStore
@@ -73,7 +73,7 @@ export class PatientsShellComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._userSettingStore.getUserSettingByUserId(this._sessionStore.session.user.id, this._sessionStore.session.currentCompany.id)
+        this._userSettingStore.getUserSettingByUserId(this.sessionStore.session.user.id, this.sessionStore.session.currentCompany.id)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
                 this.preferredUIViewId = userSetting.preferredUIViewId;

@@ -7,8 +7,7 @@ import { PatientDocument } from '../../models/patient-document';
 import * as moment from 'moment';
 
 export class PatientAdapter {
-    static parseResponse(data: any): Patient {
-
+    static parseResponse(data: any): Patient {                
         let patient: Patient = null;
         let companies: Company[] = [];
         let LanguagePreferenceMappings: any[] = [];
@@ -54,7 +53,8 @@ export class PatientAdapter {
                 emergencyContactPhone: data.emergencyContactPhone,
                 spouseName: data.spouseName,
                 patientLanguagePreferenceMappings: LanguagePreferenceMappings,
-                languagePreferenceOther: data.languagePreferenceOther
+                languagePreferenceOther: data.languagePreferenceOther,
+                isRefferedPatient: data.IsRefferedPatient
             });
         }
         
