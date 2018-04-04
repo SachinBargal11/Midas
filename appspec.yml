@@ -4,10 +4,10 @@ files:
   - source: dist
     destination: C:\inetpub\website\dev-greenyourbills.qwinix.io\
 hooks:
-	BeforeInstall:
-     	   - location: before-install.bat
-	AfterInstall:
-     	   - location: after-install.bat
+   BeforeInstall:
+      - location: before-install.bat
+   AfterInstall:
+       - location: after-install.bat
 
 
 
