@@ -230,5 +230,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("fromUser")]
         public User User1 { get; set; }
+
+        [JsonProperty("unScheduledVisit")]
+        public List<PatientVisitUnscheduled> PatientVisitUnscheduled { get; set; }
     }
 }

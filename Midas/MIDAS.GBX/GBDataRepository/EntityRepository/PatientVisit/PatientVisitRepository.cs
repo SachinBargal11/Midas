@@ -1286,6 +1286,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_patientVisitDB == true)
                     {
+                        if(patientVisitBO.ReferralId != 0)
+                        {
+                            var acc = _context.PatientVisitUnscheduleds.Where(p => p.ReferralId == patientVisitBO.ReferralId).ToList<PatientVisitUnscheduled>();
+                            foreach (PatientVisitUnscheduled pv in acc)
+                            {                               
+                                pv.IsDeleted = true;
+                                pv.UpdateByUserID = patientVisitBO.UpdateByUserID;
+                                pv.UpdateDate = DateTime.UtcNow;
+
+                                _context.SaveChanges();
+                            }
+                        }
                         patientVisitDB = _context.PatientVisits.Add(patientVisitDB);
                     }
                     _context.SaveChanges();

@@ -232,6 +232,216 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        //#region Entity Conversion Convert With Company Parameter
+        //public T Convert<T, U>(U entity, int CompanyId)
+        //{
+        //    Case cases = entity as Case;
+
+        //    if (cases == null)
+        //        return default(T);
+
+        //    BO.Case caseBO = new BO.Case();
+
+        //    caseBO.ID = cases.Id;
+        //    caseBO.PatientId = cases.PatientId;
+        //    caseBO.CaseName = cases.CaseName;
+        //    caseBO.CaseTypeId = cases.CaseTypeId;
+        //    caseBO.CarrierCaseNo = cases.CarrierCaseNo;
+        //    caseBO.CaseStatusId = cases.CaseStatusId;
+        //    caseBO.ClaimFileNumber = cases.ClaimFileNumber;
+        //    caseBO.Medicare = cases.Medicare;
+        //    caseBO.Medicaid = cases.Medicaid;
+        //    caseBO.SSDisabililtyIncome = cases.SSDisabililtyIncome;
+
+        //    caseBO.IsDeleted = cases.IsDeleted;
+        //    caseBO.CreateByUserID = cases.CreateByUserID;
+        //    caseBO.UpdateByUserID = cases.UpdateByUserID;
+
+        //    if (cases.PatientEmpInfoes != null)
+        //    {
+        //        var PatientEmpInfo = cases.PatientEmpInfoes.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).FirstOrDefault();
+        //        if (PatientEmpInfo != null)
+        //        {
+        //            BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+        //            using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+        //            {
+        //                boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(PatientEmpInfo);
+        //                caseBO.PatientEmpInfo = boPatientEmpInfo;
+        //            }
+        //        }
+        //    }
+
+        //    if (cases.Patient != null)
+        //    {
+        //        BO.Patient boPatient = new BO.Patient();
+        //        using (PatientRepository cmp = new PatientRepository(_context))
+        //        {
+        //            boPatient = cmp.ConvertwithReferral<BO.Patient, Patient>(cases.Patient, CompanyId);
+        //            caseBO.Patient = boPatient;
+        //        }
+        //    }
+
+        //    if (cases.CaseCompanyMappings != null)
+        //    {
+        //        List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+        //        foreach (var casemap in cases.CaseCompanyMappings)
+        //        {
+        //            if (casemap != null)
+        //            {
+        //                if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+        //                {
+        //                    using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+        //                    {
+        //                        boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+        //                    }
+
+        //                    if (casemap.IsOriginator == true)
+        //                    {
+        //                        caseBO.OrignatorCompanyId = casemap.CompanyId;
+        //                        caseBO.OrignatorCompanyName = (casemap.Company != null) ? casemap.Company.Name : "";
+
+        //                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1)
+        //                        {
+        //                            caseBO.MedicalProviderId = casemap.CompanyId;
+        //                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 != null && p.Company1.CompanyType == 2)
+        //                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.CompanyId).FirstOrDefault();
+        //                        }
+        //                        else if (casemap.Company1 != null && casemap.Company1.CompanyType == 2)
+        //                        {
+        //                            caseBO.AttorneyProviderId = casemap.CompanyId;
+        //                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 != null && p.Company1.CompanyType == 1)
+        //                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.CompanyId).FirstOrDefault();
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        caseBO.CaseCompanyMappings = boCaseCompanyMapping;
+        //    }
+
+        //    if (cases.CompanyCaseConsentApprovals != null)
+        //    {
+        //        List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
+        //        foreach (var casemap in cases.CompanyCaseConsentApprovals)
+        //        {
+        //            if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+        //            {
+        //                if (casemap != null)
+        //                {
+        //                    using (CompanyCaseConsentApprovalRepository cmp = new CompanyCaseConsentApprovalRepository(_context))
+        //                    {
+        //                        boCompanyCaseConsentApproval.Add(cmp.Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(casemap));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        caseBO.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+        //    }
+
+        //    if (cases.CaseCompanyConsentDocuments != null)
+        //    {
+        //        List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
+
+        //        foreach (var eachcaseCompanyConsentDocument in cases.CaseCompanyConsentDocuments)
+        //        {
+        //            if (eachcaseCompanyConsentDocument.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.IsDeleted.Value == false))
+        //            {
+        //                BO.CaseCompanyConsentDocument caseCompanyConsentDocument = new BO.CaseCompanyConsentDocument();
+
+        //                caseCompanyConsentDocument.ID = eachcaseCompanyConsentDocument.Id;
+        //                caseCompanyConsentDocument.CaseId = eachcaseCompanyConsentDocument.CaseId;
+        //                caseCompanyConsentDocument.CompanyId = eachcaseCompanyConsentDocument.CompanyId;
+        //                caseCompanyConsentDocument.DocumentName = eachcaseCompanyConsentDocument.DocumentName;
+        //                caseCompanyConsentDocument.MidasDocumentId = eachcaseCompanyConsentDocument.MidasDocumentId;
+        //                caseCompanyConsentDocument.IsDeleted = eachcaseCompanyConsentDocument.IsDeleted;
+        //                caseCompanyConsentDocument.UpdateByUserID = eachcaseCompanyConsentDocument.UpdateUserId;
+        //                caseCompanyConsentDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.CreateUserId.Value : 0);
+
+        //                if (eachcaseCompanyConsentDocument.MidasDocument != null)
+        //                {
+        //                    if (eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.Value == false))
+        //                    {
+        //                        BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+        //                        boMidasDocument.ID = eachcaseCompanyConsentDocument.Id;
+        //                        boMidasDocument.ObjectType = eachcaseCompanyConsentDocument.MidasDocument.ObjectType;
+        //                        boMidasDocument.ObjectId = eachcaseCompanyConsentDocument.MidasDocument.ObjectId;
+        //                        boMidasDocument.DocumentPath = eachcaseCompanyConsentDocument.MidasDocument.DocumentPath;
+        //                        boMidasDocument.DocumentName = eachcaseCompanyConsentDocument.MidasDocument.DocumentName;
+        //                        boMidasDocument.IsDeleted = eachcaseCompanyConsentDocument.MidasDocument.IsDeleted;
+        //                        boMidasDocument.UpdateByUserID = eachcaseCompanyConsentDocument.MidasDocument.UpdateUserId;
+        //                        boMidasDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.Value : 0);
+
+        //                        caseCompanyConsentDocument.MidasDocument = boMidasDocument;
+        //                    }
+        //                }
+        //                if (eachcaseCompanyConsentDocument.Company != null)
+        //                {
+        //                    if (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.Company.IsDeleted.Value == false))
+        //                    {
+        //                        BO.Company boCompany = new BO.Company();
+        //                        boCompany.ID = eachcaseCompanyConsentDocument.Company.id;
+        //                        boCompany.Name = eachcaseCompanyConsentDocument.Company.Name;
+        //                        boCompany.TaxID = eachcaseCompanyConsentDocument.Company.TaxID;
+        //                        boCompany.Status = (BO.GBEnums.AccountStatus)eachcaseCompanyConsentDocument.Company.Status;
+        //                        boCompany.CompanyType = (BO.GBEnums.CompanyType)eachcaseCompanyConsentDocument.Company.CompanyType;
+
+        //                        caseCompanyConsentDocument.Company = boCompany;
+        //                    }
+        //                }
+        //                boCaseCompanyConsentDocument.Add(caseCompanyConsentDocument);
+        //            }
+        //        }
+
+        //        caseBO.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+        //    }
+
+        //    if (cases.Referrals != null)
+        //    {
+        //        List<BO.Referral> BOListReferral = new List<BO.Referral>();
+        //        foreach (var eachRefrral in cases.Referrals)
+        //        {
+        //            if (eachRefrral != null)
+        //            {
+        //                if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+        //                {
+        //                    BO.Referral referralBO = new BO.Referral();
+
+        //                    referralBO.ID = eachRefrral.Id;
+        //                    referralBO.PendingReferralId = eachRefrral.PendingReferralId;
+        //                    referralBO.FromCompanyId = eachRefrral.FromCompanyId;
+        //                    referralBO.FromLocationId = eachRefrral.FromLocationId;
+        //                    referralBO.FromDoctorId = eachRefrral.FromDoctorId;
+        //                    referralBO.FromUserId = eachRefrral.FromUserId;
+        //                    referralBO.ForSpecialtyId = eachRefrral.ForSpecialtyId;
+        //                    referralBO.ForRoomId = eachRefrral.ForRoomId;
+        //                    referralBO.ForRoomTestId = eachRefrral.ForRoomTestId;
+        //                    referralBO.ToCompanyId = eachRefrral.ToCompanyId;
+        //                    referralBO.ToLocationId = eachRefrral.ToLocationId;
+        //                    referralBO.ToDoctorId = eachRefrral.ToDoctorId;
+        //                    referralBO.ToRoomId = eachRefrral.ToRoomId;
+        //                    referralBO.ScheduledPatientVisitId = eachRefrral.ScheduledPatientVisitId;
+        //                    referralBO.DismissedBy = eachRefrral.DismissedBy;
+        //                    referralBO.CaseId = eachRefrral.CaseId;
+        //                    referralBO.IsDeleted = eachRefrral.IsDeleted;
+        //                    referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+        //                    referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+        //                    BOListReferral.Add(referralBO);
+        //                }
+        //            }
+        //        }
+
+        //        caseBO.Referrals = BOListReferral;
+        //    }
+
+        //    caseBO.CaseSource = cases.CaseSource;
+
+        //    return (T)(object)caseBO;
+        //}
+        //#endregion
+
         #region Entity Conversion Convert For Company
         public T ConvertForCompany<T, U>(U entity, int CompanyId)
         {
@@ -701,7 +911,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)boCompany;
         }
         #endregion
-
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
