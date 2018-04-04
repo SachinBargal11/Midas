@@ -365,6 +365,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="appspec.yml" />
+    <Content Include="before-install.bat" />
     <None Include="Properties\PublishProfiles\MIDAS.GBX.AttorneyWebAPI.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

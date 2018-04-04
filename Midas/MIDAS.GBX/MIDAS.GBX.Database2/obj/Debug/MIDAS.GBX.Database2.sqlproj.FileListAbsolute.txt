@@ -8,3 +8,7 @@ F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Debug
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Debug\MIDAS.GBX.Database2.pdb
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\MIDAS.GBX.Database2.dll
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\MIDAS.GBX.Database2.pdb
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\Model.xml
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\refactor.xml
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\postdeploy.sql
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Debug\predeploy.sql

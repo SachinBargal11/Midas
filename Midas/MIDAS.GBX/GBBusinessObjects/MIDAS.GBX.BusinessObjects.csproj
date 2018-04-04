@@ -227,6 +227,7 @@
     <Compile Include="User\User.cs" />
     <Compile Include="User\UserCompany.cs" />
     <Compile Include="User\UserCompanyRole.cs" />
+    <Compile Include="User\UserLocationSchedule.cs" />
     <Compile Include="ValidateOTP.cs" />
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\Validations.cs" />
