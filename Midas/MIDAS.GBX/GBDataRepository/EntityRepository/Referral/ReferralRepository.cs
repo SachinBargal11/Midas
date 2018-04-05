@@ -341,6 +341,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.CreateByUserID = Referral.CreateByUserID;
             ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
 
+            ReferralListBO.PatientVisitUnscheduled = new List<BO.PatientVisitUnscheduled>();
+
+            if (Referral.PatientVisitUnscheduleds != null)
+            {
+                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
+                foreach (PatientVisitUnscheduled item in Referral.PatientVisitUnscheduleds)
+                {
+                    if(item.IsDeleted == false || item.IsDeleted == null)
+                    {
+                        using (PatientVisitUnscheduledRepository cmp = new PatientVisitUnscheduledRepository(_context))
+                        {
+                            lstpatientvisit.Add(cmp.Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
+                        }
+                    }   
+                }
+                ReferralListBO.PatientVisitUnscheduled = lstpatientvisit;           
+            }
+
+            //var _patientunscheduledvist = _context.PatientVisitUnscheduleds.Where(p => p.ReferralId == Referral.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+            //if (_patientunscheduledvist.Count() > 0)
+            //{
+            //    BO.PatientVisitUnscheduled boUser = new BO.PatientVisitUnscheduled();
+            //    using (PatientVisitUnscheduledRepository cmp = new PatientVisitUnscheduledRepository(_context))
+            //    {
+            //        boUser = cmp.Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(_patientunscheduledvist);
+
+            //        ReferralListBO.User1 = boUser;
+            //    }
+            //}
+
+
             if (Referral.PendingReferral != null)
             {
                 if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
@@ -1015,7 +1046,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                 .Include("ReferralDocuments")
                                                 .Include("ReferralDocuments.MidasDocument")
-
+                                                .Include("PatientVisitUnscheduleds")
                                                .Where(p => p.ToCompanyId == companyId && p.FromCompanyId != companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .OrderByDescending(p => p.Id).ToList<Referral>();

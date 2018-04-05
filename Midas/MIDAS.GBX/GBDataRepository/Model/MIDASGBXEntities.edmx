@@ -918,6 +918,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="LegallyMarried" Type="bit" />
           <Property Name="SpouseName" Type="nvarchar" MaxLength="256" />
           <Property Name="LanguagePreferenceOther" Type="nvarchar" MaxLength="256" />
+          <Property Name="AddedByCompanyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
           <Key>
@@ -1692,6 +1693,20 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="CompanyID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="UserLocationSchedule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="ScheduleID" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
@@ -2855,6 +2870,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Principal>
             <Dependent Role="OTPCompanyMapping">
               <PropertyRef Name="UsedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="AddedByCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4166,6 +4193,42 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserLocationSchedule_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLocationSchedule_Schedule">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLocationSchedule_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserPersonalSettings_CalendarView_CalendarViewId">
           <End Role="CalendarView" Type="Self.CalendarView" Multiplicity="1" />
           <End Role="UserPersonalSettings" Type="Self.UserPersonalSettings" Multiplicity="*" />
@@ -4357,6 +4420,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <EntitySet Name="UserApiRoleMapping" EntityType="Self.UserApiRoleMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLocationSchedule" EntityType="Self.UserLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserStatus" EntityType="Self.UserStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
@@ -4727,6 +4791,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <AssociationSet Name="FK_OTPCompanyMapping_Company_UsedByCompanyId" Association="Self.FK_OTPCompanyMapping_Company_UsedByCompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="OTPCompanyMapping" EntitySet="OTPCompanyMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Patient" EntitySet="Patient" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_MaritalStatusId" Association="Self.FK_Patient_MaritalStatusId">
             <End Role="MaritalStatus" EntitySet="MaritalStatus" />
@@ -5164,6 +5232,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="User" EntitySet="User" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_Location" Association="Self.FK_UserLocationSchedule_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_Schedule" Association="Self.FK_UserLocationSchedule_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_User" Association="Self.FK_UserLocationSchedule_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedule" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId">
             <End Role="CalendarView" EntitySet="CalendarView" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
@@ -5563,6 +5643,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
           <NavigationProperty Name="OTPCompanyMappings" Relationship="Self.FK_OTPCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="OTPCompanyMapping" />
           <NavigationProperty Name="OTPCompanyMappings1" Relationship="Self.FK_OTPCompanyMapping_Company_UsedByCompanyId" FromRole="Company" ToRole="OTPCompanyMapping" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Company_AncillaryProviderId" FromRole="Company" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_Company_OrignatorCompanyId" FromRole="Company" ToRole="PatientVisitUnscheduled" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="Company" ToRole="PendingReferral" />
@@ -6161,6 +6242,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Location_FromLocationId" FromRole="Location" ToRole="Referral" />
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Location_ToLocationId" FromRole="Location" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Location" FromRole="Location" ToRole="Room" />
+          <NavigationProperty Name="UserLocationSchedules" Relationship="Self.FK_UserLocationSchedule_Location" FromRole="Location" ToRole="UserLocationSchedule" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -6309,8 +6391,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="LegallyMarried" Type="Boolean" />
           <Property Name="SpouseName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LanguagePreferenceOther" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AddedByCompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Patient_PatientId" FromRole="Patient" ToRole="AttorneyVisit" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient_PatientId" FromRole="Patient" ToRole="Case" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="Patient" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Patient_PatientId" FromRole="Patient" ToRole="IMEVisit" />
           <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient_MaritalStatusId" FromRole="Patient" ToRole="MaritalStatus" />
@@ -7027,6 +7111,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
           <NavigationProperty Name="ScheduleDetails" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
+          <NavigationProperty Name="UserLocationSchedules" Relationship="Self.FK_UserLocationSchedule_Schedule" FromRole="Schedule" ToRole="UserLocationSchedule" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
           <Key>
@@ -7222,6 +7307,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="UserType1" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
           <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
+          <NavigationProperty Name="UserLocationSchedules" Relationship="Self.FK_UserLocationSchedule_User" FromRole="User" ToRole="UserLocationSchedule" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="User" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="UserApiRoleMapping">
@@ -7265,6 +7351,23 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserCompanyRole_Company" FromRole="UserCompanyRole" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserLocationSchedule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_UserLocationSchedule_Location" FromRole="UserLocationSchedule" ToRole="Location" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_UserLocationSchedule_Schedule" FromRole="UserLocationSchedule" ToRole="Schedule" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserLocationSchedule_User" FromRole="UserLocationSchedule" ToRole="User" />
         </EntityType>
         <EntityType Name="UserPersonalSetting">
           <Key>
@@ -8318,6 +8421,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Patient_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="AddedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisit_Company_AncillaryProviderId">
           <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="PatientVisit" Type="Self.PatientVisit" Multiplicity="*" />
@@ -9110,6 +9225,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserLocationSchedule_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Patient_MaritalStatusId">
           <End Role="MaritalStatus" Type="Self.MaritalStatu" Multiplicity="0..1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
@@ -9722,6 +9849,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserLocationSchedule_Schedule">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SpecialityDetails_Specialty">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
           <End Role="SpecialityDetails" Type="Self.SpecialityDetail" Multiplicity="*" />
@@ -9790,6 +9929,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="UserCompanyRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLocationSchedule_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLocationSchedule" Type="Self.UserLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserLocationSchedule">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -9913,6 +10064,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <EntitySet Name="UserApiRoleMappings" EntityType="Self.UserApiRoleMapping" />
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
+          <EntitySet Name="UserLocationSchedules" EntityType="Self.UserLocationSchedule" />
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSetting" />
           <EntitySet Name="UserStatus" EntityType="Self.UserStatu" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
@@ -10237,6 +10389,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Company" EntitySet="Companies" />
             <End Role="OTPCompanyMapping" EntitySet="OTPCompanyMappings" />
           </AssociationSet>
+          <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisit_Company_AncillaryProviderId" Association="Self.FK_PatientVisit_Company_AncillaryProviderId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
@@ -10501,6 +10657,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Location" EntitySet="Locations" />
             <End Role="Room" EntitySet="Rooms" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_Location" Association="Self.FK_UserLocationSchedule_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedules" />
+          </AssociationSet>
           <AssociationSet Name="FK_Patient_MaritalStatusId" Association="Self.FK_Patient_MaritalStatusId">
             <End Role="MaritalStatus" EntitySet="MaritalStatus" />
             <End Role="Patient" EntitySet="Patients" />
@@ -10705,6 +10865,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Schedule" EntitySet="Schedules" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_Schedule" Association="Self.FK_UserLocationSchedule_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedules" />
+          </AssociationSet>
           <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
@@ -10728,6 +10892,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLocationSchedule_User" Association="Self.FK_UserLocationSchedule_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserLocationSchedule" EntitySet="UserLocationSchedules" />
           </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_User_UserId" Association="Self.FK_UserPersonalSettings_User_UserId">
             <End Role="User" EntitySet="Users" />
@@ -11740,6 +11908,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
                 <ScalarProperty Name="LegallyMarried" ColumnName="LegallyMarried" />
                 <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
                 <ScalarProperty Name="LanguagePreferenceOther" ColumnName="LanguagePreferenceOther" />
+                <ScalarProperty Name="AddedByCompanyId" ColumnName="AddedByCompanyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -12557,6 +12726,21 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLocationSchedules">
+            <EntityTypeMapping TypeName="MIDASModel.UserLocationSchedule">
+              <MappingFragment StoreEntitySet="UserLocationSchedule">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

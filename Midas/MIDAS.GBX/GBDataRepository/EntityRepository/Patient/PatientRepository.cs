@@ -216,7 +216,206 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)patientBO2;
         }
 
-        public T mConvert<T, U>(U entity)
+        public T ConvertwithReferral<T, U>(U entity, int? companyId)
+        {
+            Patient Patient = entity as Patient;
+
+            if (Patient == null)
+                return default(T);
+
+            BO.Patient patientBO2 = new BO.Patient();
+
+            patientBO2.ID = Patient.Id;
+            patientBO2.SSN = Patient.SSN;
+            patientBO2.Weight = Patient.Weight;
+            patientBO2.Height = Patient.Height;
+            patientBO2.MaritalStatusId = Patient.MaritalStatusId;
+            patientBO2.DateOfFirstTreatment = Patient.DateOfFirstTreatment;
+
+            patientBO2.ParentOrGuardianName = Patient.ParentOrGuardianName;
+            patientBO2.EmergencyContactName = Patient.EmergencyContactName;
+            patientBO2.EmergencyContactPhone = Patient.EmergencyContactPhone;
+            patientBO2.LegallyMarried = Patient.LegallyMarried;
+            patientBO2.SpouseName = Patient.SpouseName;
+            patientBO2.LanguagePreferenceOther = Patient.LanguagePreferenceOther;
+
+            if (Patient.IsDeleted.HasValue)
+                patientBO2.IsDeleted = Patient.IsDeleted.Value;
+            if (Patient.UpdateByUserID.HasValue)
+                patientBO2.UpdateByUserID = Patient.UpdateByUserID.Value;
+
+            var ulist = _context.Patients.Include("User").Include("User.UserCompanies")
+                                                .Include("User.AddressInfo")
+                                                .Include("User.ContactInfo")
+                                                .Include("Cases")
+                                                .Include("Cases.Referrals")
+                                                .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                .Any(p3 => p3.id == Patient.Id && p3.CompanyID == companyId)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Patient>();
+            if(ulist.Count() > 0)
+            {
+                patientBO2.IsRefferedPatient = false;
+            }
+            else
+            {
+                patientBO2.IsRefferedPatient = true;
+            }
+
+            if (Patient.User != null)
+            {
+                if (Patient.User.IsDeleted.HasValue == false || (Patient.User.IsDeleted.HasValue == true && Patient.User.IsDeleted.Value == false))
+                {
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(Patient.User);
+                        patientBO2.User = boUser;
+                    }
+                }
+            }
+
+            List<BO.PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappingsBO = new List<BO.PatientLanguagePreferenceMapping>();
+            if (Patient.PatientLanguagePreferenceMappings != null)
+            {
+                foreach (var eachPatientLanguagePreferenceMapping in Patient.PatientLanguagePreferenceMappings)
+                {
+                    if (eachPatientLanguagePreferenceMapping.IsDeleted.HasValue == false || (eachPatientLanguagePreferenceMapping.IsDeleted.HasValue == true && eachPatientLanguagePreferenceMapping.IsDeleted.Value == false))
+                    {
+                        BO.PatientLanguagePreferenceMapping PatientLanguagePreferenceMappingBO = new BO.PatientLanguagePreferenceMapping();
+                        PatientLanguagePreferenceMappingBO.PatientId = eachPatientLanguagePreferenceMapping.PatientId;
+                        PatientLanguagePreferenceMappingBO.LanguagePreferenceId = eachPatientLanguagePreferenceMapping.LanguagePreferenceId;
+
+                        PatientLanguagePreferenceMappingsBO.Add(PatientLanguagePreferenceMappingBO);
+                    }
+                }
+            }
+            patientBO2.PatientLanguagePreferenceMappings = PatientLanguagePreferenceMappingsBO;
+
+            List<BO.PatientSocialMediaMapping> PatientSocialMediaMappingsBO = new List<BO.PatientSocialMediaMapping>();
+            if (Patient.PatientSocialMediaMappings != null)
+            {
+                foreach (var eachPatientSocialMediaMapping in Patient.PatientSocialMediaMappings)
+                {
+                    if (eachPatientSocialMediaMapping.IsDeleted.HasValue == false || (eachPatientSocialMediaMapping.IsDeleted.HasValue == true && eachPatientSocialMediaMapping.IsDeleted.Value == false))
+                    {
+                        BO.PatientSocialMediaMapping PatientSocialMediaMappingBO = new BO.PatientSocialMediaMapping();
+                        PatientSocialMediaMappingBO.PatientId = eachPatientSocialMediaMapping.PatientId;
+                        PatientSocialMediaMappingBO.SocialMediaId = eachPatientSocialMediaMapping.SocialMediaId;
+
+                        PatientSocialMediaMappingsBO.Add(PatientSocialMediaMappingBO);
+                    }
+                }
+            }
+            patientBO2.PatientSocialMediaMappings = PatientSocialMediaMappingsBO;
+
+
+            if (Patient.PatientDocuments != null)
+            {
+                List<BO.PatientDocument> boPatientDocuments = new List<BO.PatientDocument>();
+                foreach (var item in Patient.PatientDocuments)
+                {
+                    if (item != null)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+
+                            BO.PatientDocument boPatientDocument = new BO.PatientDocument();
+
+                            boPatientDocument.ID = item.Id;
+                            boPatientDocument.PatientId = item.PatientId;
+                            boPatientDocument.MidasDocumentId = item.MidasDocumentId;
+                            boPatientDocument.DocumentName = item.DocumentName;
+                            boPatientDocument.DocumentType = item.DocumentType;
+
+                            boPatientDocuments.Add(boPatientDocument);
+                        }
+                    }
+
+                }
+                patientBO2.PatientDocuments = boPatientDocuments;
+            }
+
+            if (Patient.Cases != null)
+            {
+                List<BO.Case> boCase = new List<BO.Case>();
+                foreach (var casemap in Patient.Cases)
+                {
+                    if (casemap != null)
+                    {
+                        if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+                        {
+                            BO.Case caseBO = new BO.Case();
+
+                            caseBO.ID = casemap.Id;
+                            caseBO.PatientId = casemap.PatientId;
+                            caseBO.CaseName = casemap.CaseName;
+                            caseBO.CaseTypeId = casemap.CaseTypeId;
+                            //caseBO.LocationId = casemap.LocationId;
+                            //caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
+                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
+                            caseBO.CaseStatusId = casemap.CaseStatusId;
+                            //caseBO.AttorneyId = casemap.AttorneyId;
+
+                            caseBO.IsDeleted = casemap.IsDeleted;
+                            caseBO.CreateByUserID = casemap.CreateByUserID;
+                            caseBO.UpdateByUserID = casemap.UpdateByUserID;
+
+                            if (casemap.Referrals != null)
+                            {
+                                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                                foreach (var eachRefrral in casemap.Referrals)
+                                {
+                                    if (eachRefrral != null)
+                                    {
+                                        if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+                                        {
+                                            BO.Referral referralBO = new BO.Referral();
+
+                                            referralBO.ID = eachRefrral.Id;
+                                            referralBO.CaseId = eachRefrral.CaseId;
+                                            referralBO.PendingReferralId = eachRefrral.PendingReferralId;
+                                            referralBO.FromCompanyId = eachRefrral.FromCompanyId;
+                                            referralBO.FromLocationId = eachRefrral.FromLocationId;
+                                            referralBO.FromDoctorId = eachRefrral.FromDoctorId;
+                                            referralBO.FromUserId = eachRefrral.FromUserId;
+                                            referralBO.ForSpecialtyId = eachRefrral.ForSpecialtyId;
+                                            referralBO.ForRoomId = eachRefrral.ForRoomId;
+                                            referralBO.ForRoomTestId = eachRefrral.ForRoomTestId;
+                                            referralBO.ToCompanyId = eachRefrral.ToCompanyId;
+                                            referralBO.ToLocationId = eachRefrral.ToLocationId;
+                                            referralBO.ToDoctorId = eachRefrral.ToDoctorId;
+                                            referralBO.ToRoomId = eachRefrral.ToRoomId;
+                                            referralBO.ScheduledPatientVisitId = eachRefrral.ScheduledPatientVisitId;
+                                            referralBO.DismissedBy = eachRefrral.DismissedBy;
+                                            referralBO.IsDeleted = eachRefrral.IsDeleted;
+                                            referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+                                            referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+                                            BOListReferral.Add(referralBO);
+                                        }
+                                    }
+                                }
+
+                                caseBO.Referrals = BOListReferral;
+                            }
+
+                            boCase.Add(caseBO);
+                        }
+                    }
+
+                }
+                patientBO2.Cases = boCase;
+            }
+
+            patientBO2.IsDeleted = Patient.IsDeleted;
+            patientBO2.CreateByUserID = Patient.CreateByUserID;
+            patientBO2.UpdateByUserID = Patient.UpdateByUserID;
+
+            return (T)(object)patientBO2;
+        }
+
+        public T mConvert<T, U>(U entity, int CompanyId)
         {
             Patient Patient = entity as Patient;
 
@@ -233,6 +432,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 mPatientBO2.IsDeleted = Patient.IsDeleted.Value;
             if (Patient.UpdateByUserID.HasValue)
                 mPatientBO2.UpdateByUserID = Patient.UpdateByUserID.Value;
+
+            var ulist = _context.Patients.Include("User").Include("User.UserCompanies")
+                                                .Include("User.AddressInfo")
+                                                .Include("User.ContactInfo")
+                                                .Include("Cases")
+                                                .Include("Cases.Referrals")
+                                                .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                .Any(p3 => p3.id == Patient.Id && p3.CompanyID == CompanyId)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Patient>();
+            if (ulist.Count() > 0)
+            {
+                mPatientBO2.IsRefferedPatient = false;
+            }
+            else
+            {
+                mPatientBO2.IsRefferedPatient = true;
+            }
 
             if (Patient.User != null)
             {
@@ -409,7 +626,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.Patient> lstpatients = new List<BO.Patient>();
                 foreach (Patient item in patientList1.Union(patientList2).Distinct())
                 {
-                    lstpatients.Add(Convert<BO.Patient, Patient>(item));
+                    lstpatients.Add(ConvertwithReferral<BO.Patient, Patient>(item, CompanyId));
                 }
                 return lstpatients;
             }
@@ -456,7 +673,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.minPatient> lstpatients = new List<BO.minPatient>();
                 foreach (Patient item in patientList1.Union(patientList2).Distinct())
                 {
-                    lstpatients.Add(mConvert<BO.minPatient, Patient>(item));
+                    lstpatients.Add(mConvert<BO.minPatient, Patient>(item, CompanyId));
                 }
                 return lstpatients;
             }
@@ -505,7 +722,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient, Patient>(p)));
                 foreach (Patient item in patientList1.Union(patientList2).Distinct())
                 {
-                    lstpatients.Add(Convert<BO.Patient, Patient>(item));
+                    lstpatients.Add(ConvertwithReferral<BO.Patient, Patient>(item, CompanyId));
                 }
 
                 return lstpatients;

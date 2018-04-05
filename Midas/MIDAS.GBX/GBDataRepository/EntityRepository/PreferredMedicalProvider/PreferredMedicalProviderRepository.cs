@@ -403,11 +403,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
-                //else if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                //{
-                //    dbContextTransaction.Rollback();
-                //    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
+
+                if (!_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    var _usserexists = _context.Users.Where(p => p.UserName == prefMedProviderBO.user.UserName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if (_usserexists != null)
+                    {
+                        if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                }
+
+
                 var user_ = _context.Users.Include("UserCompanies").Include("UserCompanies.Company").Include("UserCompanyRoles").Include("AddressInfo").Include("ContactInfo").Where(p => p.UserName == prefMedProviderBO.user.UserName).FirstOrDefault(); ;
                 if (user_ != null)
                 {
@@ -501,7 +511,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         Invitation invitationDB1 = new Invitation();
                         if (company != null)
                         {
-                            invitationDB1.Company = company;
+                            invitationDB1.Company = companyobjnew;
                         }
                         invitationDB1.User = user_;
                         invitationDB1.UniqueID = Guid.NewGuid();
@@ -651,7 +661,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                 string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB1.UniqueID + "</a>";
 
-                                string MailMessageForStaff = "Dear " + accss_.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + company.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>"+ company.Name;
+                                string MailMessageForStaff = "Dear " + accss_.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + company.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>" + company.Name;
                                 string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
                                 string SmsMessageForStaff = "Dear " + accss_.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + company.Name + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks<br>" + company.Name;
 
@@ -768,6 +778,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //_context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
                 }
 
+
                 BO.Company prefMedProviderCompanyBO = prefMedProviderBO.company;
                 BO.ContactInfo ContactInfoBO = prefMedProviderBO.contactInfo;
                 BO.User userBO = prefMedProviderBO.user;
@@ -850,7 +861,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //        RoleType = (BO.GBEnums.RoleType)item.RoleID
                 //    });
                 //}
-                
+
                 BO.Company _bocompanyobj = new BO.Company();
                 using (CompanyRepository userRepo = new CompanyRepository(_context))
                 {
@@ -864,7 +875,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
                 //UserCompanyRoleDB.CreateByUserID = 0;
                 //_context.UserCompanyRoles.Add(UserCompanyRoleDB);
-               // _context.SaveChanges();
+                // _context.SaveChanges();
 
 
                 RoleBOs.Add(new BO.Role()
@@ -880,18 +891,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 updUserBO.user.UserName = userBO.UserName;
                 updUserBO.user.FirstName = userBO.FirstName;
                 updUserBO.user.LastName = userBO.LastName;
-                updUserBO.user.MiddleName = userBO.MiddleName;              
+                updUserBO.user.MiddleName = userBO.MiddleName;
                 updUserBO.user.UserType = (BO.GBEnums.UserType)2;
                 //updUserBO.user.ImageLink = user_.ImageLink;
                 updUserBO.user.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
-                updUserBO.user.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));                
+                updUserBO.user.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
                 //updUserBO.user.ID = user_.id;
                 updUserBO.user.Roles = RoleBOs;
                 updUserBO.company = _bocompanyobj;
+                updUserBO.createdCompanyId = companyBO.ID;
                 updUserBO.role = accsnew_.Roles.ToArray();
                 // if (doctorBO.DoctorSpecialities.Count > 0) updUserBO.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
-                 updUserBO.address = accsnew_.AddressInfo;
-                 updUserBO.contactInfo = accsnew_.ContactInfo;
+                updUserBO.address = accsnew_.AddressInfo;
+                updUserBO.contactInfo = accsnew_.ContactInfo;
                 using (UserRepository userRepo = new UserRepository(_context))
                 {
                     object obj = userRepo.Save<BO.AddUser>(updUserBO);
@@ -917,7 +929,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //_context.UserCompanyRoles.Add(UserCompanyRoleDB);
                 //_context.SaveChanges();
 
-                var _prefmplist3 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == prefMedProvider_CompanyDB.id  && o.CompanyId == companyBO.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
+                var _prefmplist3 = _context.PreferredMedicalProviders.Where(o => o.PrefMedProviderId == prefMedProvider_CompanyDB.id && o.CompanyId == companyBO.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))).ToList();
                 if (_prefmplist3.Count() == 0)
                 {
                     prefMedProvider.PrefMedProviderId = prefMedProvider_CompanyDB.id;
@@ -1372,7 +1384,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                     .ToList();
 
             List<BO.PreferredMedicalCompany> PreferredMedicalCompanyBO = new List<BO.PreferredMedicalCompany>();
-            medicalProvider.ForEach(p => PreferredMedicalCompanyBO.Add(ConvertPreferredMedicalCompany<BO.PreferredMedicalCompany, Company>(p)));           
+            medicalProvider.ForEach(p => PreferredMedicalCompanyBO.Add(ConvertPreferredMedicalCompany<BO.PreferredMedicalCompany, Company>(p)));
 
             return PreferredMedicalCompanyBO;
         }

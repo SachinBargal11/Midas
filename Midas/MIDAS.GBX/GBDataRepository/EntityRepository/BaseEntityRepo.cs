@@ -1231,6 +1231,21 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AssociateLocationToUser<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociateUserToLocations<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object DeleteAllAppointmentsandUserLocationSchedule<T>(T gbObject)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

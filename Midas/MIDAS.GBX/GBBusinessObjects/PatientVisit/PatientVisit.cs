@@ -110,6 +110,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referralDocument")]
         public List<ReferralDocument> ReferralDocument { get; set; }
 
+        [JsonProperty("referralId")]
+        public int ReferralId { get; set; }
     }
 
     public class mPatientVisits : GbObject
@@ -171,6 +173,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("referralDocument")]
         public List<ReferralDocument> ReferralDocument { get; set; }
+
+        [JsonProperty("referralId")]
+        public int ReferralId { get; set; }
     }
 
     public class PatientVisitCompleted
