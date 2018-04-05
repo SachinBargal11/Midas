@@ -2,7 +2,7 @@
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
-				<li *ngIf="!sessionStore.isOnlyDoctorRole()" class="nav-item">
+				<li *ngIf="!sessionStore.isOnlyAttorneyRole()" class="nav-item">
 					<a class="nav-link" routerLink="pending-referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Pending Referrals

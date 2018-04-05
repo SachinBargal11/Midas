@@ -6,10 +6,10 @@ import { SelectItem, LazyLoadEvent } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorLocationsStore } from '../stores/doctor-locations-store';
-import { DoctorLocationScheduleStore } from '../stores/doctor-location-schedule-store';
+import { UserLocationScheduleStore } from '../stores/user-location-schedule-store';
 import { LocationDetails } from '../models/location-details';
-import { DoctorLocationSchedule } from '../models/doctor-location-schedule';
-import { Location } from '../models/doctor-location';
+import { UserLocationSchedule } from '../models/user-location-schedule';
+import { UserLocation } from '../models/user-location';
 import { Company } from '../../../account/models/company';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
@@ -26,16 +26,16 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'add-doctor-location',
-    templateUrl: './add-doctor-location.html'
+    selector: 'add-user-location',
+    templateUrl: './add-user-location.html'
 })
 
-export class AddDoctorLocationComponent implements OnInit {
+export class AddUserLocationComponent implements OnInit {
     userId: number;
     schedule: Schedule;
     selectedLocation;
     locations: LocationDetails[];
-    doctorLocations: DoctorLocationSchedule[];
+    attorneyLocations: UserLocationSchedule[];
     locationsArr: SelectItem[] = [];
     selectedLocations: LocationDetails[] = [];
 
@@ -54,7 +54,7 @@ export class AddDoctorLocationComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _doctorLocationsStore: DoctorLocationsStore,
-        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
+        private _userLocationScheduleStore: UserLocationScheduleStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
@@ -64,28 +64,19 @@ export class AddDoctorLocationComponent implements OnInit {
         });
         this._progressBarService.show();
         let fetchLocations = this._doctorLocationsStore.getLocations();
-        let fetchDoctorLocations = this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorId(this.userId);
+        let fetchAttorneyLocations = this._userLocationScheduleStore.getUserLocationScheduleByUserId(this.userId);
 
-        Observable.forkJoin([fetchLocations, fetchDoctorLocations])
+        Observable.forkJoin([fetchLocations, fetchAttorneyLocations])
             .subscribe((results) => {
                 let locations: LocationDetails[] = results[0];
-                let doctorLocations: DoctorLocationSchedule[] = results[1];
-                let doctorLocationIds: number[] = _.map(doctorLocations, (currentDoctorLocation: DoctorLocationSchedule) => {
-                    if(currentDoctorLocation.location != null)
-                    {
-                        return currentDoctorLocation.location.location.id;
-                    }                    
+                let attorneyLocations: UserLocationSchedule[] = results[1];
+                let userLocationIds: number[] = _.map(attorneyLocations, (currentUserLocation: UserLocationSchedule) => {
+                    return currentUserLocation.location.location.id;
                 });
                 let locationDetails = _.filter(locations, (currentLocation: LocationDetails) => {
-                    return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
+                    return _.indexOf(userLocationIds, currentLocation.location.id) < 0 ? true : false;
                 });
                 this.locations = locationDetails.reverse();
-                // let locationDetails = _.filter(locations, (currentLocation: LocationDetails) => {
-                //     return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
-                // });
-                // this.datasource = locationDetails.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.locations = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.locations = [];
@@ -101,25 +92,7 @@ export class AddDoctorLocationComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        // this._doctorLocationsStore.getLocations()
-        //     .subscribe(
-        //     (data) => {
-        //         this.locations = data;
-        //     },
-        //     (error) => {
-        //         this.locations = [];
-        //         let notification = new Notification({
-        //             'title': error.message,
-        //             'type': 'ERROR',
-        //             'createdAt': moment()
-        //         });
-        //         this._notificationsStore.addNotification(notification);
-        //         this._notificationsService.error('Oh No!', error.message);
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
+        
         this.addlocationform = this.fb.group({
             location: ['', Validators.required]
         });
@@ -148,15 +121,11 @@ export class AddDoctorLocationComponent implements OnInit {
 
     save() {
         let addlocationformValues = this.addlocationform.value;
-        // let selectedLocations = [];
-        // addlocationformValues.location.forEach(location => {
-        //     selectedLocations.push({ 'id': parseInt(location) });
-        // });
         let basicInfo = [];
         this.selectedLocations.forEach(element => {
             basicInfo.push(
                 {
-                    doctor: {
+                    user: {
                         id: this.userId
                     },
                     location: {
@@ -167,22 +136,11 @@ export class AddDoctorLocationComponent implements OnInit {
                     }
                 });
         });
-        // let basicInfo = new DoctorLocationSchedule({
-        //     doctor: {
-        //         id: this.userId
-        //     },
-        //     location: {
-        //         id: parseInt(addlocationformValues.location)
-        //     },
-        //     schedule: {
-        //         id: this.schedule.id
-        //     }
-        // });
         this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
-        result = this._doctorLocationScheduleStore.associateLocationsToDoctor(basicInfo);
+        result = this._userLocationScheduleStore.associateLocationsToUser(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

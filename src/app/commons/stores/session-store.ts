@@ -201,26 +201,57 @@ export class SessionStore {
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
     }
-    isOnlyDoctorRole() {
-        let isOnlyDoctorRole: boolean = false;
+
+    isOnlyAttorneyRole() {
+        let isOnlyAttorneyRole: boolean = false;
         let roles: UserRole[] = [];
         roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
         if (roles) {
             if (roles.length === 1) {
-                let doctorRoleOnly = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
+                let attorneyRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 6;
                 });
-                if (doctorRoleOnly) {
-                    isOnlyDoctorRole = true;
+                if (attorneyRoleOnly) {
+                    isOnlyAttorneyRole = true;
                 } else {
-                    isOnlyDoctorRole = false;
+                    isOnlyAttorneyRole = false;
                 }
             } else {
-                isOnlyDoctorRole = false;
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 6)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
+                });
+                if(count > 1)
+                {
+                    isOnlyAttorneyRole = false;
+                }
+                else{
+                    if(currentcompanyrole == 6)
+                    {
+                        isOnlyAttorneyRole = true;
+                    }
+                    else{
+                        isOnlyAttorneyRole = false;
+                    }
+                }
             }
         }
-        return isOnlyDoctorRole;
+        return isOnlyAttorneyRole;
     }
+
 
     getToken() {
         var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';

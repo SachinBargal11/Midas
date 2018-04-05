@@ -27,8 +27,8 @@ import { ConfirmationService } from 'primeng/primeng';
 
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
-import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
-import { ValidateInActiveDoctorSession } from './commons/guards/validate-inactivedoctor-session';
+import { ValidateAttorneySession } from './commons/guards/validate-attorney-session';
+import { ValidateInActiveAttorneySession } from './commons/guards/validate-inactiveattorney-session';
 
 import { RegistrationService } from './account/services/registration-service';
 import { CompanyStore } from './account/stores/company-store';
@@ -36,6 +36,8 @@ import { CompanyStore } from './account/stores/company-store';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { ScannerService } from './commons/services/scanner-service';
+import { InsuranceMasterTypeStore } from './commons/stores/insurance-master-type-store';
+import { InsuranceMasterTypeService } from './commons/services/insurance-master-type-service';
 import { DocumentUploadService } from './commons/services/document-upload-service';
 import { DiagnosisService } from './commons/services/diagnosis-service';
 import { DiagnosisStore } from './commons/stores/diagnosis-store';
@@ -154,8 +156,8 @@ export function createConfig(): SignalRConfiguration {
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DateFormatPipe,
-    ValidateDoctorSession,
-    ValidateInActiveDoctorSession,
+    ValidateAttorneySession,
+    ValidateInActiveAttorneySession,
     DiagnosisService,
     DiagnosisStore,
     ProcedureService,
@@ -164,6 +166,8 @@ export function createConfig(): SignalRConfiguration {
     UserSettingService,
     PushNotificationStore,
     PushNotificationService,
+    InsuranceMasterTypeStore,
+    InsuranceMasterTypeService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore
   ],

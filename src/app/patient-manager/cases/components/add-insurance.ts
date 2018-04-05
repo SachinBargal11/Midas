@@ -171,7 +171,7 @@ export class AddInsuranceComponent implements OnInit {
                 .subscribe(
                 (insuranceMaster) => {
                     this.insuranceMaster = insuranceMaster;
-                    this.insuranceMastersAdress = insuranceMaster.Address
+                    this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[0]
                 });
         } else {
             this.insuranceMaster = null;

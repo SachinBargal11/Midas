@@ -54,15 +54,15 @@
           </div>
         </div>
         <div class="row" *ngIf="selectedVisit.isCreatedByCompany(sessionStore.session.currentCompany.id)">
-          <!--<div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
+          <!--<div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyAttorneyRole()" class="color-red">*</span></label></div>-->
           <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
-          <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+          <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyAttorneyRole()">
             <div class="form-group">
               <label class="form-label">{{selectedVisit.notes}}
                   </label>
             </div>
           </div>-->
-          <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
+          <!--<div *ngIf="sessionStore.isOnlyAttorneyRole()" class="col-md-6">-->
           <div class="col-md-6">
             <div class="form-group" [class.error]="unscheduledVisitDetailFormControls.notes && unscheduledVisitDetailFormControls.notes.touched && !unscheduledVisitDetailFormControls.notes.valid">
               <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
@@ -93,15 +93,15 @@
           </div>
         </div>
         <!--<div class="row">-->
-        <!--<div class="col-md-1"><label class="form-label">Status<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
+        <!--<div class="col-md-1"><label class="form-label">Status<span *ngIf="sessionStore.isOnlyAttorneyRole()" class="color-red">*</span></label></div>-->
         <!--<div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>-->
-        <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+        <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyAttorneyRole()">
             <div class="form-group">
               <label class="form-label">{{selectedVisit.visitStatusLabel}}
                   </label>
             </div>
           </div>-->
-        <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
+        <!--<div *ngIf="sessionStore.isOnlyAttorneyRole()" class="col-md-6">-->
         <!--<div class="col-md-6">
             <div class="form-group">
               <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
@@ -124,11 +124,11 @@
         </div>-->
         <div class="row">
           <div class="col-md-4">
-            <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
+            <!--<button *ngIf="sessionStore.isOnlyAttorneyRole()" [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
             <button *ngIf="isCreatedByCompany(sessionStore.session.currentCompany.id)" [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
-            <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
+            <!--<button *ngIf="sessionStore.isOnlyAttorneyRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
           </div>
         </div>
