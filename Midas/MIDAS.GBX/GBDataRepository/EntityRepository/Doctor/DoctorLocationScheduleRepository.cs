@@ -83,6 +83,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return (T)(object)doctorlocationscheduleBO;
         }
+
+        public override T ConvertbySpecialtyId<T, U>(U entity,int specialtyId)
+        {
+            DoctorLocationSchedule doctorlocationschedule = entity as DoctorLocationSchedule;
+
+            if (doctorlocationschedule == null)
+                return default(T);
+
+            BO.DoctorLocationSchedule doctorlocationscheduleBO = new BO.DoctorLocationSchedule();
+
+            doctorlocationscheduleBO.ID = doctorlocationschedule.id;
+            if (doctorlocationschedule.IsDeleted.HasValue)
+                doctorlocationscheduleBO.IsDeleted = doctorlocationschedule.IsDeleted.Value;
+            if (doctorlocationschedule.UpdateByUserID.HasValue)
+                doctorlocationscheduleBO.UpdateByUserID = doctorlocationschedule.UpdateByUserID.Value;
+
+            if (doctorlocationschedule.Doctor != null && (doctorlocationschedule.Doctor.IsDeleted.HasValue == false || (doctorlocationschedule.Doctor.IsDeleted.HasValue == true && doctorlocationschedule.Doctor.IsDeleted.Value == false)))
+            {
+                BO.Doctor boDoctor = new BO.Doctor();
+                using (DoctorRepository cmp = new DoctorRepository(_context))
+                {
+                    boDoctor = cmp.ObjectConvertbySpecialtyId<BO.Doctor, Doctor>(doctorlocationschedule.Doctor, specialtyId);
+
+                    if (boDoctor != null && doctorlocationschedule.Doctor != null && doctorlocationschedule.Doctor.User != null)
+                    {
+                        using (UserRepository userRep = new UserRepository(_context))
+                        {
+                            boDoctor.user = userRep.Convert<BO.User, User>(doctorlocationschedule.Doctor.User);
+                        }
+                    }
+
+                    doctorlocationscheduleBO.doctor = boDoctor;
+                }
+            }
+
+            if (doctorlocationschedule.Location != null && (doctorlocationschedule.Location.IsDeleted.HasValue == false || (doctorlocationschedule.Location.IsDeleted.HasValue == true && doctorlocationschedule.Location.IsDeleted.Value == false)))
+            {
+                BO.Location boLocation = new BO.Location();
+                using (LocationRepository cmp = new LocationRepository(_context))
+                {
+                    boLocation = cmp.Convert<BO.Location, Location>(doctorlocationschedule.Location);
+                    doctorlocationscheduleBO.location = boLocation;
+                }
+            }
+
+            if (doctorlocationschedule.Schedule != null && (doctorlocationschedule.Schedule.IsDeleted.HasValue == false || (doctorlocationschedule.Schedule.IsDeleted.HasValue == true && doctorlocationschedule.Schedule.IsDeleted.Value == false)))
+            {
+                BO.Schedule boSchedule = new BO.Schedule();
+                using (ScheduleRepository cmp = new ScheduleRepository(_context))
+                {
+                    boSchedule = cmp.Convert<BO.Schedule, Schedule>(doctorlocationschedule.Schedule);
+                    doctorlocationscheduleBO.schedule = boSchedule;
+                }
+            }
+
+            return (T)(object)doctorlocationscheduleBO;
+        }
         #endregion
 
         #region Validate Entities
@@ -702,6 +759,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (ac != 0)
                     {
                         lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                    }                    
+                }
+                return lstDoctorLocationSchedule;
+            }
+        }
+        #endregion
+
+         #region Get By Location Speciality Id
+        public override object GetByLocationSpecalityId(int id, int specialityId)
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.DoctorSpecialities").Include("Doctor.DoctorSpecialities.Specialty")
+                                                        .Include("Doctor.User")
+                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+                                                       .Include("Schedule")
+                                                       .Include("Doctor.User.UserCompanies")
+                                                       .Where(p => p.LocationID == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.Doctor.IsDeleted.HasValue == false || (p.Doctor.IsDeleted.HasValue == true && p.Doctor.IsDeleted.Value == false)) && (p.Doctor.User.IsDeleted.HasValue == false || (p.Doctor.User.IsDeleted.HasValue == true && p.Doctor.User.IsDeleted.Value == false))).ToList<DoctorLocationSchedule>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    var ac = _context.UserCompanyRoles.Where(p => p.UserID == item.Doctor.User.id && p.CompanyID == item.Location.CompanyID && p.RoleID == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Count();
+                    if (ac != 0)
+                    {
+                        List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                        foreach (var items in item.Doctor.DoctorSpecialities)
+                        {
+                            if (items.IsDeleted == false)
+                            {
+                                if (items.SpecialityID == specialityId)
+                                {
+                                    using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                                    {
+                                        lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(items));
+                                    }
+
+                                    lstDoctorLocationSchedule.Add(ConvertbySpecialtyId<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item, specialityId));
+                                }
+                            }
+                        }
                     }                    
                 }
                 return lstDoctorLocationSchedule;

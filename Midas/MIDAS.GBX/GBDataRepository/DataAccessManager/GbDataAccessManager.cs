@@ -5209,6 +5209,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetByLocationSpecalityId(int LocationId, int specialtyid)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByLocationSpecalityId(LocationId, specialtyid);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
 
         public Object AssociateLocationToUser(T data)
         {
@@ -5294,6 +5315,29 @@ namespace MIDAS.GBX.DataAccessManager
             }
             catch (Exception ex)
             {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetbyLocationRoomTestId(T gbObject)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetbyLocationRoomTestId(gbObject);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
                 return ex;
             }
         }
@@ -5323,22 +5367,21 @@ namespace MIDAS.GBX.DataAccessManager
         {
             try
             {
-                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());                
                 var gbdata = baseRepo.GetByUserId(UserId);
+
 
                 return gbdata;
             }
 
             catch (GbException gbe)
             {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            
         }
-
-
+             
+        }
     }
-}
+
