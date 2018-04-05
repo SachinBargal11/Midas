@@ -32,6 +32,8 @@ export class UserRole extends UserRoleRecord {
                 return 'Billing Staff';
             case RoleType.NURSE:
                 return 'Nurse';
+            case RoleType.ATTORNEY:
+                return 'Attorney';    
         }
     }
 }

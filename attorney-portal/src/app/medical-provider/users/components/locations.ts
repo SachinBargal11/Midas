@@ -8,8 +8,8 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
-import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
+import { UserLocationSchedule } from '../../users/models/user-location-schedule';
+import { UserLocationScheduleStore } from '../../users/stores/user-location-schedule-store';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 
@@ -20,10 +20,10 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 
 export class LocationsComponent implements OnInit {
-    locations: DoctorLocationSchedule[];
-    selectedLocations: DoctorLocationSchedule[];
+    locations: UserLocationSchedule[];
+    selectedLocations: UserLocationSchedule[];
     userId: number;
-    datasource: DoctorLocationSchedule[];
+    datasource: UserLocationSchedule[];
     totalRecords: number;
     isDeleteProgress:boolean = false;
 
@@ -31,7 +31,7 @@ export class LocationsComponent implements OnInit {
         public _route: ActivatedRoute,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
+        private _userLocationScheduleStore: UserLocationScheduleStore,
         public _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService,
@@ -51,7 +51,7 @@ export class LocationsComponent implements OnInit {
 
     loadLocations() {
         this._progressBarService.show();
-        this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorId(this.userId)
+        this._userLocationScheduleStore.getUserLocationScheduleByUserId(this.userId)
             .subscribe(
             (data) => {
                 this.locations = data.reverse();
@@ -94,7 +94,7 @@ export class LocationsComponent implements OnInit {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
-                result = this._doctorLocationScheduleStore.deleteDoctorLocationSchedule(currentLocation);
+                result = this._userLocationScheduleStore.deleteUserLocationSchedule(currentLocation);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
