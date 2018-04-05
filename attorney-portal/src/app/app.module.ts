@@ -27,8 +27,8 @@ import { ConfirmationService } from 'primeng/primeng';
 
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
-import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
-import { ValidateInActiveDoctorSession } from './commons/guards/validate-inactivedoctor-session';
+import { ValidateAttorneySession } from './commons/guards/validate-attorney-session';
+import { ValidateInActiveAttorneySession } from './commons/guards/validate-inactiveattorney-session';
 
 import { RegistrationService } from './account/services/registration-service';
 import { CompanyStore } from './account/stores/company-store';
@@ -156,8 +156,8 @@ export function createConfig(): SignalRConfiguration {
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DateFormatPipe,
-    ValidateDoctorSession,
-    ValidateInActiveDoctorSession,
+    ValidateAttorneySession,
+    ValidateInActiveAttorneySession,
     DiagnosisService,
     DiagnosisStore,
     ProcedureService,

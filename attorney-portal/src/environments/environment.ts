@@ -5,11 +5,10 @@
 
 export const environment = {
   production: false,
-  // SERVICE_BASE_URL: 'http://attorneyapi.codearray.tk/midasattorneyapi'
    SERVICE_BASE_URL: 'http://localhost:53438/midasattorneyapi',
   //SERVICE_BASE_URL: 'http://gb-attorneywebapi.qwinix.io/midasattorneyapi',
-  IDENTITY_SERVER_URL: 'https://gb-identityserver.qwinix.io',
-  NOTIFICATION_SERVER_URL: 'http://gb-notificationmanager.qwinix.io',
+  IDENTITY_SERVER_URL: 'https://localhost:44300',
+  NOTIFICATION_SERVER_URL: 'http://dev-gb-notificationmanager.qwinix.io',
   HOME_URL: 'http://localhost:4200',
   APP_URL: 'http://localhost:4203',
   

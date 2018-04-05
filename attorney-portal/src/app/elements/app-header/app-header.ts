@@ -29,7 +29,7 @@ export class AppHeaderComponent implements OnInit {
     private _notificationServerUrl: string = `${environment.NOTIFICATION_SERVER_URL}`;
     messages: PushNotification[] = [];
     userSetting: UserSetting;
-    doctorRoleFlag = false;
+    attorneyRoleFlag = false;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
@@ -111,25 +111,53 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let doctorRolewithOther;
-        let doctorRolewithoutOther;
+        let attorneyRolewithOther;
+        let attorneyRolewithoutOther;
         let roles = this.sessionStore.session.user.roles;
-        if (roles) {
+        if (roles) { 
+            let currentcompnayrole  = this.sessionStore.session.user.roles;
             if (roles.length === 1) {
-                doctorRolewithoutOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
+                attorneyRolewithoutOther = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 6;
                 });
             } else if (roles.length > 1) {
-                doctorRolewithOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this.sessionStore.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 6)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
                 });
+                if(count > 1)
+                {
+                    attorneyRolewithOther = true;
+                }
+                else{
+                    if(currentcompanyrole == 6)
+                    {
+                        attorneyRolewithoutOther = true;
+                    }
+                    else{
+                        attorneyRolewithOther = true;
+                    }
+                }
             }
-            if (doctorRolewithoutOther) {
-                this.doctorRoleFlag = true;
-            } else if (doctorRolewithOther) {
-                this.doctorRoleFlag = false;
+            if (attorneyRolewithoutOther) {
+                this.attorneyRoleFlag = true;
+            } else if (attorneyRolewithOther) {
+                this.attorneyRoleFlag = false;
             } else {
-                this.doctorRoleFlag = false;
+                this.attorneyRoleFlag = false;
             }
         }
     }
