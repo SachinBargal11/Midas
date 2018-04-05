@@ -192,7 +192,7 @@ export class AddUserComponent implements OnInit {
             let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
-                userType: UserType.STAFF,
+                userType: UserType.ATTORNEY,
                 roles: roles,
                 userName: userFormValues.contact.email,
                 contact: new Contact({
