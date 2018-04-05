@@ -42,7 +42,7 @@ export class CaseEmployerComponent implements OnInit {
     isCurrentEmp: any;
     selectedCity = '';
     caseDetail: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
     isCitiesLoading = false;
     options = {
         timeOut: 3000,
@@ -153,23 +153,42 @@ export class CaseEmployerComponent implements OnInit {
 
         });
 
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        caseResult.subscribe(
-            (cases: Case[]) => {
-                this.caseDetail = cases;
-                if (this.caseDetail.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        // let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        // caseResult.subscribe(
+        //     (cases: Case[]) => {
+        //         this.caseDetail = cases;
+        //         if (this.caseDetail.length > 0) {
+        //             let matchedCompany = null;
+        //             matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+        //                 return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+        //             })
+        //             if (matchedCompany) {
+        //                 this.referredToMe = true;
+        //             } else {
+        //                 this.referredToMe = false;
+        //             }
+        //         } else {
+        //             this.referredToMe = false;
+        //         }
+        //     },
+        //     (error) => {
+        //         this._router.navigate(['../'], { relativeTo: this._route });
+        //         this._progressBarService.hide();
+        //     },
+        //     () => {
+        //         this._progressBarService.hide();
+        //     });
+
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }
+                this.caseStatusId = caseDetail.caseStatusId;
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -178,7 +197,7 @@ export class CaseEmployerComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-
+        
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
             employerName: ['', Validators.required],

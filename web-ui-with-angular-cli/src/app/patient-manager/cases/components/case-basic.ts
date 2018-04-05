@@ -50,7 +50,7 @@ export class CaseBasicComponent implements OnInit {
     currentAttorneyId: number;
     companyId:  number;
     caseDetails: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -76,7 +76,7 @@ export class CaseBasicComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this.MatchReferal();
+            this.MatchCase();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
@@ -311,27 +311,15 @@ export class CaseBasicComponent implements OnInit {
             });
     }
 
-    MatchReferal() {    
-        //this._casesStore.MatchReferal(this.patientId);
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetails = results[0];
-                if (this.caseDetails.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }                
             },
             (error) => {
@@ -340,6 +328,6 @@ export class CaseBasicComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
-    }    
+            });
+    }   
 }

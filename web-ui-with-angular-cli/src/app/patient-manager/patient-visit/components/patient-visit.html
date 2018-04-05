@@ -5,12 +5,12 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <select [(ngModel)]="selectedLocationIdFilter" class="select2-arrow form-control" (change)="selectLocationforFilter()">
-            <option value="0"> -- Select Location -- </option>
-            <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
-        </select>
+                         <option value="0"> -- Select Location -- </option>
+                         <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
+                    </select>
                 </div>
             </div>
-            <div *ngIf="sessionStore.isOnlyDoctorRole()">
+            <div *ngIf="sessionStore.isOnlyDoctorRole() || showmyappointments">
                 <div class="col-lg-3">
                     <div class="form-group">
                         <select [(ngModel)]="selectedModeFilter" class="select2-arrow form-control" (change)="selectOptionForFilter($event)">
@@ -27,7 +27,7 @@
                     </div>
                 </div>                
             </div>
-            <div *ngIf="!sessionStore.isOnlyDoctorRole()">
+            <div *ngIf="!sessionStore.isOnlyDoctorRole() && !showmyappointments">
                 <div class="col-lg-3">
                     <div class="form-group">
                         <select [(ngModel)]="selectedModeFilter" class="select2-arrow form-control" (change)="selectOptionForFilter($event)">
@@ -42,8 +42,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <button type="button" pButton icon="" label="Refresh Calendar" (click)="loadAllVisits()"></button>
+            </div>
+            <div class="col-lg-3" *ngIf="sessionStore.isStaffDoctorRole()" >
+                    <p-checkbox (onChange)="loadDoctorFilterSchedules()" [(ngModel)]="showmyappointments" 
+                    binary="true" label="Show my appointments"></p-checkbox>
             </div>
         </div>
     </div>

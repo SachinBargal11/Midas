@@ -724,7 +724,7 @@
             </div>
         </div>
     </section>
-    <button *ngIf="referredToMe == false" [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
+    <button *ngIf="caseViewedByOriginator" [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
         <loader [visible]="isSaveProgress"></loader>
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
