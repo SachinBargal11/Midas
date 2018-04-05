@@ -217,5 +217,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByPrefMedProviderCompanyName(HttpRequestMessage request, string CompanyName);
         HttpResponseMessage GetbyCompanyName(HttpRequestMessage request, string CompanyName);
         HttpResponseMessage GetPreferredMedicalProviderbyCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByLocationSpecalityId(HttpRequestMessage request, int id, int specialtyid);
+        HttpResponseMessage GetbyLocationRoomTestId(HttpRequestMessage request, T gbObject);
     }
 }

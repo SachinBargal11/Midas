@@ -209,7 +209,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return (T)(object)doctorBO;
         }
+
+        public override T ObjectConvertbySpecialtyId<T, U>(U entity, int specialtyId)
+        {
+            Doctor doctor = entity as Doctor;
+
+            if (doctor == null)
+                return default(T);
+
+            BO.Doctor doctorBO = new BO.Doctor();
+
+            doctorBO.ID = doctor.Id;
+            doctorBO.LicenseNumber = doctor.LicenseNumber;
+            doctorBO.WCBAuthorization = doctor.WCBAuthorization;
+            doctorBO.WcbRatingCode = doctor.WcbRatingCode;
+            doctorBO.NPI = doctor.NPI;
+            doctorBO.Title = doctor.Title;
+            doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxTypeId;
+
+            if (doctor.IsDeleted.HasValue)
+                doctorBO.IsDeleted = doctor.IsDeleted.Value;
+            if (doctor.UpdateByUserID.HasValue)
+                doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
+
+            doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
+
+            if (doctor.DoctorSpecialities != null)
+            {
+                List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                foreach (var item in doctor.DoctorSpecialities)
+                {
+                    if (item.IsDeleted == false)
+                    {
+                        if (item.SpecialityID == specialtyId)
+                        {
+                            using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                            {
+                                lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                            }
+                        }
+                    }
+                }
+                doctorBO.DoctorSpecialities = lstDoctorSpecility;
+            }
+
+
+            return (T)(object)doctorBO;
+        }
         #endregion
+
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)

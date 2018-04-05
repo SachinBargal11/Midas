@@ -28,8 +28,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             requestHandler = new GbApiRequestHandler<Room>();
         }
-
-        
+                
         [HttpPost]
         [Route("GetAll")]
         public HttpResponseMessage Get([FromBody]Room data)
@@ -37,7 +36,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, data);
         }
 
-        
+        [HttpPost]
+        [Route("GetbyLocationRoomTestId")]
+        public HttpResponseMessage GetbyLocationRoomTestId([FromBody]Room data)
+        {
+            return requestHandler.GetbyLocationRoomTestId(Request, data);
+        }
+
         [HttpGet]
         [Route("Get/{id}")]
         public HttpResponseMessage Get(int id)
