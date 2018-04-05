@@ -64,13 +64,14 @@ export class AddInsuranceComponent implements OnInit {
     insuranceContactPerson:string = '';
     showAdjusterList = false;
     adjusterMasterId = '';
-    caseDetails: Case[];    
-    referredToMe: boolean = false;
+    caseDetails: Case[];        
     insuranceisReadOnly : boolean = false;
     insuranceMastersAddressList : InsuranceAddress[];
     insuranceMastersAddressDisplay : InsuranceAddress[];
     insuranceMasterAddressId: number = 0;
     showinsuranceAddressList = false;
+    caseViewedByOriginator = false;
+    
 
     constructor(
         private fb: FormBuilder,
@@ -97,7 +98,7 @@ export class AddInsuranceComponent implements OnInit {
 
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
             this.patientId = parseInt(routeParams.patientId, 10);
-            this.MatchReferal();
+            this.MatchCase();
             this.clearInsuranceFields();
             this.clearInsuranceAdjusterFields();
         });
@@ -623,27 +624,15 @@ export class AddInsuranceComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
-        //this._casesStore.MatchReferal(this.patientId);
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientsStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetails = results[0];
-                if (this.caseDetails.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }                
             },
             (error) => {
@@ -652,7 +641,7 @@ export class AddInsuranceComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
+            });
     }
 
     AddinsuranceAddress()

@@ -62,7 +62,7 @@ export class DoctorLocationScheduleService {
 
         });
         return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
-    }
+    }    
     getDoctorLocationScheduleByDoctorId(doctorId: Number): Observable<any> {
         let promise: Promise<DoctorLocationSchedule[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/DoctorLocationSchedule/GetByDoctorId/' + doctorId, {
@@ -270,6 +270,27 @@ export class DoctorLocationScheduleService {
                 });
         });
         return <Observable<DoctorLocationSchedule>>Observable.from(promise);
+    }
+
+    getDoctorLocationScheduleByLocationSpecialtyId(locationId: Number, specialtyId: Number): Observable<DoctorLocationSchedule[]> {
+        let promise: Promise<DoctorLocationSchedule[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DoctorLocationSchedule/GetByLocationSpecalityId/' + locationId +'/'+ specialtyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let schedules: DoctorLocationSchedule[] = [];
+                    if (_.isArray(data)) {
+                        schedules = (<Object[]>data).map((data: any) => {
+                            return DoctorLocationScheduleAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(schedules);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
     }
 
 

@@ -32,6 +32,7 @@ const PatientRecord = Record({
     updateByUserID: 0,
     updateDate: null,
     isRefferedPatient : false,
+    addedByCompanyId: 0,
 });
 
 export class Patient extends PatientRecord {
@@ -60,6 +61,7 @@ export class Patient extends PatientRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     isRefferedPatient: boolean;
+    addedByCompanyId: number;
 
     constructor(props) {
         super(props);

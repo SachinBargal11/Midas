@@ -350,7 +350,7 @@
                 </div>
             </section>
         </div>
-        <button *ngIf="referredToMe == false" [disabled]="!autoInfoform.valid || isSaveProgress " type="submit " class="btn btn-success sign-up ">Save
+        <button *ngIf="caseViewedByOriginator" [disabled]="!autoInfoform.valid || isSaveProgress " type="submit " class="btn btn-success sign-up ">Save
                     <loader [visible]="isSaveProgress "></loader>
                 </button>
         <a [routerLink]="['../../']" class="btn btn-secondary ">Cancel</a>

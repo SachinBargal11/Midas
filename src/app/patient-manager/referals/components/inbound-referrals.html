@@ -63,7 +63,7 @@
     <p-column>
             <ng-template let-currentReferral="rowData" pTemplate="body">
                 <span *ngFor="let unschvisit of currentReferral.unScheduledVisit">
-                    <a (click)="Createnewvisit(unschvisit,unschvisit.referralId, unschvisit.caseId, unschvisit.patientId)"><u>Create Visit</u></a>
+                    <a (click)="createVisit(unschvisit)"><u>Create Visit</u></a>
                 </span>
             </ng-template>
         </p-column>
@@ -153,7 +153,7 @@
 
 <p-dialog [width]="1200" [height]="500" header="{{visitInfo}}" [(visible)]="createPatientVisitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">    
-        <create-visit [referrenceId]="referrenceId" [caseId]="caseId" [patientId]="patientId" (closeDialog)="closePatientVisitDialog()"></create-visit>    
+        <create-visit [referrenceId]="referrenceId" [caseId]="caseId" [patientId]="patientId" [specialtyId]="specialtyId" [roomTestId]="roomTestId" (closeDialog)="closePatientVisitDialog()"></create-visit>    
 </p-dialog>
 
 <!--routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">-->

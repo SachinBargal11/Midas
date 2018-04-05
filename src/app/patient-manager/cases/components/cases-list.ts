@@ -49,7 +49,7 @@ export class CasesListComponent implements OnInit {
     companyId: number;
     url;
     caseDetail: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
     Filterby: number=1;
 
     constructor(
@@ -326,26 +326,15 @@ export class CasesListComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetail = results[0];
-                if (this.caseDetail.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }                
             },
             (error) => {
@@ -354,7 +343,7 @@ export class CasesListComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
+            });
     }
 
     filterCases()

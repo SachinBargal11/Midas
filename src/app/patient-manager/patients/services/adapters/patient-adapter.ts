@@ -54,7 +54,8 @@ export class PatientAdapter {
                 spouseName: data.spouseName,
                 patientLanguagePreferenceMappings: LanguagePreferenceMappings,
                 languagePreferenceOther: data.languagePreferenceOther,
-                isRefferedPatient: data.IsRefferedPatient
+                isRefferedPatient: data.IsRefferedPatient,
+                addedByCompanyId: data.addedByCompanyId,
             });
         }
         

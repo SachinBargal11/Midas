@@ -52,6 +52,8 @@ export class InboundReferralsComponent implements OnInit {
     patientId: number= null;
     caseId: number=null;
     visitInfo: string='';
+    specialtyId: number=0;
+    roomTestId: number=0;
 
     constructor(
         private _router: Router,
@@ -344,13 +346,13 @@ export class InboundReferralsComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    Createnewvisit(unschvist: any, id:number, caseId:number, patientId: number)
-    {   
-        debugger;
-        let ss = unschvist;
+    createVisit(unschvist: any)
+    {           
         this.referrenceId = unschvist.referralId;        
-        this.caseId = caseId;
-        this.patientId= patientId;
+        this.caseId = unschvist.caseId;
+        this.patientId = unschvist.patientId;
+        this.specialtyId = unschvist.specialtyId;
+        this.roomTestId = unschvist.roomTestId;
         this.createPatientVisitDialogVisible = true;
     }
 
