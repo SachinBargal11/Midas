@@ -261,7 +261,7 @@ export class EditInsuranceComponent implements OnInit {
             .subscribe(
             (insuranceMaster) => {
                 this.insuranceMaster = insuranceMaster;
-                this.insuranceMastersAdress = insuranceMaster.Address
+                this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[0]
             });
     }
     save() {
