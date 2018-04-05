@@ -293,6 +293,7 @@
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\GeneralSettingController.cs" />
     <Compile Include="Controllers\IMEVisitController.cs" />
+    <Compile Include="Controllers\InsuranceMasterTypeController.cs" />
     <Compile Include="Controllers\OTPCompanyMappingController.cs" />
     <Compile Include="Controllers\PatientInsuranceInfoController.cs" />
     <Compile Include="Controllers\InsuranceMasterController.cs" />
