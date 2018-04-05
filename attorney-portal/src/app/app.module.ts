@@ -36,6 +36,8 @@ import { CompanyStore } from './account/stores/company-store';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { ScannerService } from './commons/services/scanner-service';
+import { InsuranceMasterTypeStore } from './commons/stores/insurance-master-type-store';
+import { InsuranceMasterTypeService } from './commons/services/insurance-master-type-service';
 import { DocumentUploadService } from './commons/services/document-upload-service';
 import { DiagnosisService } from './commons/services/diagnosis-service';
 import { DiagnosisStore } from './commons/stores/diagnosis-store';
@@ -164,6 +166,8 @@ export function createConfig(): SignalRConfiguration {
     UserSettingService,
     PushNotificationStore,
     PushNotificationService,
+    InsuranceMasterTypeStore,
+    InsuranceMasterTypeService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore
   ],

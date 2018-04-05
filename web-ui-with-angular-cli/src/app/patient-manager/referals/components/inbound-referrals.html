@@ -18,6 +18,7 @@
             <p-column header="Procedure" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Consent Recieved" [style]="{'width':'7%'}" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred Document" [style]="{'width':'15%'}" rowspan="2"></p-column>
+            <p-column header="Action" rowspan="2" ></p-column>
         </p-row>
         <p-row>
             <p-column header="Company" styleClass="inbound-column"></p-column>
@@ -59,6 +60,13 @@
             </span>
         </ng-template>
     </p-column>
+    <p-column>
+            <ng-template let-currentReferral="rowData" pTemplate="body">
+                <span *ngFor="let unschvisit of currentReferral.unScheduledVisit">
+                    <a (click)="Createnewvisit(unschvisit,unschvisit.referralId, unschvisit.caseId, unschvisit.patientId)"><u>Create Visit</u></a>
+                </span>
+            </ng-template>
+        </p-column>
 </p-dataTable>
 
 </div>
@@ -142,5 +150,11 @@
     </div>
 </p-dialog>
 <router-outlet></router-outlet>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="createPatientVisitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">    
+        <create-visit [referrenceId]="referrenceId" [caseId]="caseId" [patientId]="patientId" (closeDialog)="closePatientVisitDialog($event)"></create-visit>    
+</p-dialog>
+
 <!--routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">-->
 <!--routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"-->

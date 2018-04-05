@@ -6,6 +6,7 @@ import { Speciality } from '../../../account-setup/models/speciality';
 import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { Case } from '../../cases/models/case';
 import { ReferralDocument } from '../../cases/models/referral-document';
+import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
 
 
 const InboundOutboundReferralRecord = Record({
@@ -49,8 +50,8 @@ const InboundOutboundReferralRecord = Record({
     invitationID: 0,
     isDeleted: false,
     createByUserId: 0,
-    updateByUserId: 0
-
+    updateByUserId: 0,
+    unScheduledVisit: null,
 });
 
 export class InboundOutboundList extends InboundOutboundReferralRecord {
@@ -93,6 +94,7 @@ export class InboundOutboundList extends InboundOutboundReferralRecord {
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
+    unScheduledVisit: UnscheduledVisit[];
 
     constructor(props) {
         super(props);
