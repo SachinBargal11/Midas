@@ -195,6 +195,7 @@ export class PatientVisitComponent implements OnInit {
 
     unscheduledEditVisitDialogVisible = false;
     unscheduledVisitDialogVisible = false;
+    showmyappointments=false;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -550,6 +551,32 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
+    }
+
+    loadDoctorFilterSchedules()
+    {
+        this.clearselection();
+        if(this.showmyappointments)
+        { 
+            this.loadAllVisitsByCompanyId();
+            this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+            this.doctorsStore.fetchDoctorById(this.doctorId)
+                .subscribe((doctor: Doctor) => {
+                    this.doctorSpecialities = doctor.doctorSpecialities;
+                },
+                (error) => {                    
+                },
+                () => {                    
+                });            
+        }
+        else
+        {
+            this.loadAllVisitsByCompanyId();
+            this.loadImeVisits();
+            this.loadEoVisits();
+            this.loadAllUnScheduledVisitByCompanyId();
+            this.locationsStore.getLocations();
+        }
     }
 
     loadAllProceduresForSpeciality(specialityId: number)
@@ -916,10 +943,11 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-    loadAllVisitsByCompanyId() {
+    loadAllVisitsByCompanyId() {       
+        debugger;
         this.events = [];
         this._progressBarService.show();                  
-        if(this.sessionStore.isOnlyDoctorRole())
+        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
         {
             this._patientVisitsStore.getPatientVisitsByCompanyIdDoctorId()
             .subscribe(
@@ -1069,7 +1097,7 @@ export class PatientVisitComponent implements OnInit {
         this.selectedSpecialityIdFilter = 0;
         this.selectedTestId = 0;
         this.selectedTestIdFilter = 0;
-        this.ShowProcedureCode = false;        
+        this.ShowProcedureCode = false;         
     }
 
     loadVisits() {                
@@ -1085,8 +1113,16 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    loadAllVisits() {             
-            this.clearselection();           
+    loadAllVisits() {          
+            this.showmyappointments = false;
+            this.clearselection();          
+            this.doctorLocationSchedules = [];
+            this.rooms = [];
+            if (!this.sessionStore.isOnlyDoctorRole()) {
+                this.locationsStore.getLocations();
+            } else {
+                this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);               
+            } 
             this.loadAllVisitsByCompanyId();
             this.loadAllUnScheduledVisitByCompanyId();
             this.loadEoVisits();
@@ -1282,7 +1318,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationRoomVisits(locationid, roomid) {
         this._progressBarService.show();
-        if(this.sessionStore.isOnlyDoctorRole())
+        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
         {
             this._patientVisitsStore.getPatientVisitsByLocationDoctorAndRoomId(locationid, this.sessionStore.session.user.id, roomid)
             .subscribe(
@@ -1328,7 +1364,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationVisits(locationid) {
         this._progressBarService.show();
-        if(this.sessionStore.isOnlyDoctorRole())
+        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
         {
             this._patientVisitsStore.getPatientVisitsByLocationDoctorAndCompanyId(locationid, this.sessionStore.session.user.id)
             .subscribe(

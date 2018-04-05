@@ -25,7 +25,7 @@ import { PatientsStore } from '../../patients/stores/patients-store';
 
 export class FamilyMemberListComponent implements OnInit {
     caseDetail: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
     selectedFamilyMembers: FamilyMember[] = [];
     familyMembers: FamilyMember[];
     caseId: number;
@@ -49,11 +49,11 @@ export class FamilyMemberListComponent implements OnInit {
         private _patientsStore: PatientsStore
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this.MatchReferal();            
+            this.patientId = parseInt(routeParams.patientId, 10);                     
         });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
+            this.MatchCase();   
             this._progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
@@ -179,27 +179,16 @@ export class FamilyMemberListComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
-        //this._casesStore.MatchReferal(this.patientId);
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientsStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetails = results[0];
-                if (this.caseDetails.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                  
+                debugger;  
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }                
             },
             (error) => {
@@ -208,7 +197,7 @@ export class FamilyMemberListComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
-    }
+            });
+    }   
 
 }

@@ -217,24 +217,23 @@ export class AddMedicalProviderComponent implements OnInit {
                 //         this._router.navigate(['../'], { relativeTo: this._route });
                 //     }, 3000);
                 // }
-                // else {
-                    debugger;
+                // else {                    
                     this.clearform();
                     this.closeDialog();
                     
                 //}
             },
             (error) => {
-                let errString = 'Unable to register user.';
-                // let notification = new Notification({
-                //     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                //     'type': 'ERROR',
-                //     'createdAt': moment()
-                // });                
-                //this._notificationsStore.addNotification(notification);
-
-                this._notificationsService.error('Oh No!', errString);
+                let errString = '';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
+                this.isSaveProgress = false;
             },
             () => {
                 this.isSaveProgress = false;
@@ -309,6 +308,7 @@ export class AddMedicalProviderComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },

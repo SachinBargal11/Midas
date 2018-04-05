@@ -31,6 +31,7 @@ export class CaseMergedDocumentsComponent implements OnInit {
     isDeleteProgress: boolean = false;
     caseId: number;
     caseStatusId: number;
+    caseViewedByOriginator: boolean= false;
     constructor(
         private _fb: FormBuilder,
         private _router: Router,
@@ -49,6 +50,11 @@ export class CaseMergedDocumentsComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
+                    if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                        this.caseViewedByOriginator = false;
+                    } else {
+                        this.caseViewedByOriginator = true;
+                    }     
                     this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {

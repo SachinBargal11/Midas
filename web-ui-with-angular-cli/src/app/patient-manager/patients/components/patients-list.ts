@@ -28,6 +28,8 @@ export class PatientsListComponent implements OnInit {
     datasource: Patient[];
     totalRecords: number;
     isDeleteProgress:boolean = false;
+    Filterby: number;
+    fpatients: Patient[];
 
     constructor(
         private _router: Router,
@@ -48,6 +50,7 @@ export class PatientsListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.Filterby = 1;
         this.loadPatientsCheckingDoctor();
     }
     loadPatientsCheckingDoctor() {
@@ -102,8 +105,9 @@ export class PatientsListComponent implements OnInit {
     loadPatients() {
         this._progressBarService.show();
         this._patientsStore.getPatients()
-            .subscribe(patients => {
+            .subscribe(patients => {                
                 this.patients = patients.reverse();
+                this.fpatients = this.patients;
                 // this.datasource = patients.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.patients = this.datasource.slice(0, 10);
@@ -120,6 +124,7 @@ export class PatientsListComponent implements OnInit {
         this._patientsStore.getPatientsByCompanyAndDoctorId()
             .subscribe(patients => {
                 this.patients = patients.reverse();
+                this.fpatients = this.patients;
                 // this.datasource = patients.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.patients = this.datasource.slice(0, 10);
@@ -136,6 +141,7 @@ export class PatientsListComponent implements OnInit {
         setTimeout(() => {
             if (this.datasource) {
                 this.patients = this.datasource.slice(event.first, (event.first + event.rows));
+                this.fpatients = this.patients;
             }
         }, 250);
     }
@@ -194,6 +200,26 @@ export class PatientsListComponent implements OnInit {
     }
     showMsg() {
             this._notificationsService.error('Oh No!', 'There is no consent for this case');
+    }
+
+    filterPatient()
+    {        
+        if(this.Filterby == 2)
+        {
+            this.fpatients = _.filter(this.patients, (currentPatient: Patient) => {                
+                return currentPatient.isRefferedPatient === true;
+            });
+        }
+        else if(this.Filterby == 3)
+        {
+            this.fpatients = _.filter(this.patients, (currentPatient: Patient) => {                
+                return currentPatient.isRefferedPatient === false;
+            });
+        }
+        else
+        {
+            this.fpatients = this.patients;
+        }
     }
 
 }

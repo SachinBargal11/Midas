@@ -33,6 +33,7 @@ import { PendingReferral } from '../../referals/models/pending-referral';
 export class CasesListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     cases: Case[];
+    fcases: Case[];
     patientId: number;
     patientName: string;
     patient: Patient;
@@ -48,7 +49,8 @@ export class CasesListComponent implements OnInit {
     companyId: number;
     url;
     caseDetail: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
+    Filterby: number=1;
 
     constructor(
         public _route: ActivatedRoute,
@@ -91,6 +93,7 @@ export class CasesListComponent implements OnInit {
         this._casesStore.getCases(this.patientId)
             .subscribe((cases:Case[]) => {
                 this.cases = cases; 
+                this.fcases = this.cases;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -264,6 +267,7 @@ export class CasesListComponent implements OnInit {
         setTimeout(() => {
             if (this.datasource) {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
+                this.fcases = this.cases;
             }
         }, 250);
     }
@@ -322,26 +326,15 @@ export class CasesListComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetail = results[0];
-                if (this.caseDetail.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this.sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
+                    this.caseViewedByOriginator = true;
                 }                
             },
             (error) => {
@@ -350,6 +343,26 @@ export class CasesListComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
+            });
+    }
+
+    filterCases()
+    {        
+        if(this.Filterby == 2)
+        {
+            this.fcases = _.filter(this.cases, (currentPatient: Case) => {                
+                return currentPatient.orignatorCompanyId !== this.sessionStore.session.currentCompany.id;
+            });
+        }
+        else if(this.Filterby == 3)
+        {
+            this.fcases = _.filter(this.cases, (currentPatient: Case) => {                
+                return currentPatient.orignatorCompanyId === this.sessionStore.session.currentCompany.id;
+            });
+        }
+        else
+        {
+            this.fcases = this.cases;
+        }
     }
 }
