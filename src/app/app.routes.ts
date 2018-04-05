@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NoContentComponent } from './no-content-component';
-import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
+import { ValidateAttorneySession } from './commons/guards/validate-attorney-session';
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    // { path: '', redirectTo: '/patient-manager/appointments', pathMatch: 'full', canActivate: [ValidateDoctorSession] },
+    // { path: '', redirectTo: '/patient-manager/appointments', pathMatch: 'full', canActivate: [ValidateAttorneySession] },
     { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: 'doctor-manager', loadChildren: 'app/doctor-manager/doctor-manager-module#DoctorManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },

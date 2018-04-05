@@ -184,6 +184,7 @@ export class AddPatientComponent implements OnInit {
             emergencyContactPhone: patientFormValues.contact.emergencyContactCellPhone,
             legallyMarried: null,
             spouseName: parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
+            addedByCompanyId: this._sessionStore.session.currentCompany.id,
             user: new User({
                 dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                 firstName: patientFormValues.userInfo.firstname,

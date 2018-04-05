@@ -1,6 +1,6 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <br>
-<div class="col-lg-6" *ngIf="sessionStore.isOnlyDoctorRole()">
+<div class="col-lg-6" *ngIf="sessionStore.isOnlyAttorneyRole()">
   <div class="row">
     <div class="col-lg-6">
       <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
@@ -50,7 +50,7 @@
       <span class="input-group-addon"><i class="fa fa-search"></i></span>
       <input #gbsl type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
-    <div class="col-lg-6 input-group" *ngIf="sessionStore.isOnlyDoctorRole()">
+    <div class="col-lg-6 input-group" *ngIf="sessionStore.isOnlyAttorneyRole()">
       <button class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Referrals </span>
       <loader [visible]="isDeleteProgress"></loader>
@@ -86,7 +86,7 @@
     <p-column field="procedureCodeDesc" header="Description"></p-column>
   </p-dataTable>
   <br>
-  <button *ngIf="sessionStore.isOnlyDoctorRole()" class="btn btn-success sign-up" (click)="saveReferral()">Save
+  <button *ngIf="sessionStore.isOnlyAttorneyRole()" class="btn btn-success sign-up" (click)="saveReferral()">Save
     <loader [visible]="isSaveProgress"></loader>
 </button>
 </div>

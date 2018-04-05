@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { AttorneyMasterStore } from '../../stores/attorney-store';
 import { Attorney } from '../../models/attorney';
@@ -12,6 +13,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { MedicalProviderMasterStore } from '../../stores/medical-provider-master-store';
 
 @Component({
     selector: 'attorney-master-list',
@@ -19,6 +21,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 })
 
 export class AttorneyMasterListComponent implements OnInit {
+    displayToken: boolean = false;
     currentAttorneyId: number = 0;
     selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
@@ -28,6 +31,13 @@ export class AttorneyMasterListComponent implements OnInit {
     companyId: number;
     patientId: number;
     isDeleteProgress: boolean = false;
+    displayValidation: boolean = false;
+    otp: string;
+    attorneyProviderName: string;
+    attorneyAddress: string;
+    validateOtpResponse: any;
+    addAttorneyByToken: FormGroup;
+    addAttorneyByTokenControls;
 
     constructor(
         private _router: Router,
@@ -38,18 +48,122 @@ export class AttorneyMasterListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private confirmationService: ConfirmationService,
+        private fb: FormBuilder,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
     ) {
-
+        this.addAttorneyByToken = this.fb.group({
+            token: ['', Validators.required],
+        })
+        this.addAttorneyByTokenControls = this.addAttorneyByToken.controls
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadAttorney();
-            this.loadAllAttorney();
         });
 
     }
 
     ngOnInit() {
         this.loadAttorney();
-        this.loadAllAttorney();
+    }
+
+    showDialog() {
+        this.generateToken();
+        this.displayToken = true;
+    }
+
+    showValidation() {
+        this.validateOtpResponse = null;
+        this.displayValidation = true;
+        this.addAttorneyByToken.reset();
+    }
+
+    closeDialog() {
+        this.displayValidation = false;
+        this.validateOtpResponse = null;
+    }
+
+    generateToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.generateToken()
+            .subscribe((data: any) => {
+                this.otp = data.otp;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    validateGeneratedToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.validateToken(this.addAttorneyByToken.value.token)
+            .subscribe((data: any) => {
+                this.validateOtpResponse = data;
+                if(this.validateOtpResponse.company.location.length > 0){
+                    this.attorneyProviderName = this.validateOtpResponse.company.name;
+                    this.attorneyAddress = this.validateOtpResponse.company.location[0].name + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
+                    // this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
+                    this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.zipCode
+                }
+                else{
+                    let notification = new Notification({
+                        'title': 'The '+ this.validateOtpResponse.company.name + ' do not have location. Cannot be associated',
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', 'The '+ this.validateOtpResponse.company.name + ' do not have location. Cannot be associated');
+                    this.closeDialog();
+                    this._progressBarService.hide();
+                    this.validateOtpResponse = null;
+                }
+            },
+            (error) => {
+                let errString = 'Invalid token.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this.closeDialog();
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    associateAttorney() {
+        this._medicalProviderMasterStore.associateValidateTokenWithCompany(this.addAttorneyByToken.value.token)
+            .subscribe((data: any) => {
+                let notification = new Notification({
+                    'title': 'Attorney added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                // this.loadAllProviders();
+                this.loadAttorney();
+                this._notificationsStore.addNotification(notification);
+                this.closeDialog()
+            },
+            (error) => {
+                let errString = 'Unable to associate attorney.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     loadAttorney() {
@@ -69,76 +183,12 @@ export class AttorneyMasterListComponent implements OnInit {
             });
     }
 
-    loadAllAttorney() {
-        this._progressBarService.show();
-        this._attorneyMasterStore.getAllAttorney()
-            .subscribe((allAttorney: Attorney[]) => {
-                this.allAttorneys = allAttorney;
-                // let allFilteredAttorneys: Attorney[] = _.reject(allAttorney, (currentAttorney: Attorney) => {
-                //     return currentAttorney.user == null;
-                // });
-                // this.allAttorneys = allFilteredAttorneys;
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
     loadAttorneysLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
                 this.attorneys = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
-    }
-
-    selectAttorney(event) {
-        let currentAttorneyId = parseInt(event.target.value);
-        this.currentAttorneyId = currentAttorneyId;
-    }
-
-    assignAttorneyToCompany() {
-        if (this.currentAttorneyId !== 0) {
-            let result;
-            result = this._attorneyMasterStore.assignAttorney(this.currentAttorneyId);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Attorney assigned successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this.loadAttorney();
-                    this.loadAllAttorney();
-                    this.currentAttorneyId = 0;
-                    // this._router.navigate(['../'], { relativeTo: this._route });
-                },
-                (error) => {
-                    let errString = 'Unable to assign attorney.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                },
-                () => {
-                });
-        } else {
-            let notification = new Notification({
-                'title': 'Select attorney to assign to company',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select attorney to assign to company');
-        }
-
     }
 
     deleteAttorneys() {
@@ -162,12 +212,12 @@ export class AttorneyMasterListComponent implements OnInit {
                                     'createdAt': moment()
                                 });
                                 this.loadAttorney();
-                                this.loadAllAttorney();
                                 this._notificationsStore.addNotification(notification);
+                                this._notificationsService.success('Success!', 'Attorney deleted successfully!');
                                 this.selectedAttorneys = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete attorney';
+                                let errString = 'Unable to delete Attorney';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',

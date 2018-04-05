@@ -269,7 +269,7 @@ export class UserBasicComponent implements OnInit {
                 id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
-                userType: UserType.STAFF,
+                userType: UserType.ATTORNEY,
                 roles: roles,
                 userName: this.user.userName,
                 contact: new Contact({
