@@ -56,7 +56,7 @@
                                 Case Manager
 							</a>
 						</div>
-						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
+						<div class="dropdown dropdown-typical" *ngIf="!attorneyRoleFlag">
 							<a [routerLink]="['/medical-provider']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                Office Manager
 							</a>
@@ -72,7 +72,7 @@
                                 Medical Facilities
 							</a>
 						</div>-->
-						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
+						<div class="dropdown dropdown-typical" *ngIf="!attorneyRoleFlag">
 							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup
 							</a>
@@ -102,7 +102,7 @@
 
 <!-- <p-dialog header="User Settings" [width]="600" [height]="300" [responsive]="true" showEffect="fade" modal="modal" [style]="{'overflow':'visible'}"
  [(visible)]="settingsDialogVisible">
-	<div *ngIf="doctorRoleFlag">
+	<div *ngIf="attorneyRoleFlag">
 		<form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
 			<div class="row">
 				<div class="col-md-4"> User Profile:</div>
@@ -141,7 +141,7 @@
 			</p-footer>
 		</form>
 	</div>
-	<div *ngIf="!doctorRoleFlag">
+	<div *ngIf="!attorneyRoleFlag">
 		<h3> Staff </h3>
 	</div>
 </p-dialog> -->

@@ -40,12 +40,7 @@
                             </label>
                     <div class="form-group" [class.error]="!userformControls.userInfo.controls.role.valid">
                         <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" value="1"></p-checkbox> &nbsp;&nbsp;
-                        <!--<p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)"
-                            value="1"></p-checkbox> &nbsp;&nbsp;-->
-                        <!--<p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="2"></p-checkbox>-->
-                        <!--<p-checkbox id="attorneyRole" name="role" label="Attorney" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>-->
-                        <!--<p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="4"></p-checkbox>
-                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="5"></p-checkbox>-->
+                        <p-checkbox id="attorneyRole" name="role" label="Attorney" formControlName="role" [(ngModel)]="selectedRole"  value="6"></p-checkbox>
                         <div class='error-list' *ngIf="!userformControls.userInfo.controls.role.valid">
                             <ul>
                                 <li *ngIf="userformControls.userInfo.controls.role.hasError('required')">Minimum 1 role must be selected.</li>

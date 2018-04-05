@@ -22,4 +22,5 @@ export class Company extends CompanyRecord {
     constructor(props) {
         super(props);
     }
+
 }
