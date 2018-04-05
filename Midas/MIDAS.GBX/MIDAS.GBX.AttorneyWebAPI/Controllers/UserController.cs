@@ -83,8 +83,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             {
                 //Since the API should only validate for Staff Users.
                 //Rest all other even if valid are not Authorised.
-                // user.UserType = GBEnums.UserType.Attorney;
-                 user.UserType = GBEnums.UserType.Staff;
+                 user.UserType = GBEnums.UserType.Attorney;
             }
 
             return requestHandler.Login(Request, user);
@@ -120,9 +119,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             {
                 //Since the API should only validate for Patient Users.
                 //Rest all other even if valid are not Authorised.
-                //user.UserType = GBEnums.UserType.Attorney;
-                user.UserType = GBEnums.UserType.Staff;
-
+                user.UserType = GBEnums.UserType.Attorney;
             }
 
             return requestHandler.LoginWithUserName(Request, user);

@@ -233,14 +233,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    CompanyCreatedInfo = _context.Companies.Where(p => p.id == addUserBO.ID
+                    CompanyCreatedInfo = _context.Companies.Where(p => p.id == companyBO.ID
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                      .FirstOrDefault<Company>();
                 }
             }
             else
             {
-                CompanyCreatedInfo = _context.Companies.Where(p => p.id == addUserBO.ID
+                CompanyCreatedInfo = _context.Companies.Where(p => p.id == companyBO.ID
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                      .FirstOrDefault<Company>();
             }
@@ -554,7 +554,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.User acc_ = Convert<BO.User, User>(userDB);
 
             #region Notification and messaging code for staff
-            if (userBO.UserType == BO.GBEnums.UserType.Staff)
+            if (userBO.UserType == BO.GBEnums.UserType.Staff || userBO.UserType == BO.GBEnums.UserType.Attorney)
             {
                 //try
                 //{
