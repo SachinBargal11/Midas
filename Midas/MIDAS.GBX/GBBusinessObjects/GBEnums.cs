@@ -80,7 +80,8 @@ namespace MIDAS.GBX.BusinessObjects
         {
             Admin = 1,
             Manager = 2,
-            Doctor=3
+            Doctor=3,
+            Attorney=6
         }
         #endregion
 

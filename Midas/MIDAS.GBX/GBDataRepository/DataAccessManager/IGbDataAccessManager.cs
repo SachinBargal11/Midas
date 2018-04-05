@@ -243,5 +243,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetPreferredMedicalProviderbyCompanyId(int CompanyId);
         Object GetByLocationSpecalityId(int LocationId, int specialityId);
         Object GetbyLocationRoomTestId(T gbObject);
+        Object AssociateLocationToUser(T gbObject);
+        Object AssociateUserToLocations(T gbObject);
+        object DeleteAllAppointmentsandUserLocationSchedule(T gbObject);
+        Object GetByUserId(int UserId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

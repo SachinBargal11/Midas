@@ -288,19 +288,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/27/2018 07:34:39</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.BusinessObjects.dll">
-      <publishTime>04/04/2018 21:52:17</publishTime>
+      <publishTime>04/05/2018 15:54:30</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.Common.dll">
-      <publishTime>04/04/2018 16:17:55</publishTime>
+      <publishTime>04/05/2018 15:09:55</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>04/04/2018 21:52:23</publishTime>
+      <publishTime>04/05/2018 15:54:37</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
-      <publishTime>04/04/2018 21:52:33</publishTime>
+      <publishTime>04/05/2018 15:54:48</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.WebAPI.dll">
-      <publishTime>04/04/2018 21:52:40</publishTime>
+      <publishTime>04/05/2018 15:54:57</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/27/2018 07:34:37</publishTime>
@@ -525,7 +525,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/27/2018 07:34:28</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/02/2018 12:17:57</publishTime>
+      <publishTime>04/05/2018 15:55:00</publishTime>
     </File>
   </ItemGroup>
 </Project>
