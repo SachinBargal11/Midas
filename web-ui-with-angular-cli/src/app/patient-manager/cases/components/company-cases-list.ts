@@ -30,6 +30,7 @@ import { ConsentStore } from '../../cases/stores/consent-store';
 export class CompanyCasesComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     cases: any[];
+    fcases: any[];
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
@@ -44,6 +45,7 @@ export class CompanyCasesComponent implements OnInit {
     caseId: number;
     companyId: number;
     selectedCaseId: number;
+    Filterby: number=1;
 
     constructor(
         public _route: ActivatedRoute,
@@ -90,6 +92,7 @@ export class CompanyCasesComponent implements OnInit {
         this._casesStore.getCasesByCompany()
             .subscribe((cases: Case[]) => {
                 this.cases = cases;
+                this.fcases = this.cases;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -222,6 +225,7 @@ export class CompanyCasesComponent implements OnInit {
         this._casesStore.getCasesByCompanyAndDoctorId()
             .subscribe(cases => {
                 this.cases = cases.reverse();
+                this.fcases = this.cases;
                 // this.datasource = cases.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.cases = this.datasource.slice(0, 10);
@@ -238,6 +242,7 @@ export class CompanyCasesComponent implements OnInit {
         setTimeout(() => {
             if (this.datasource) {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
+                this.fcases = this.cases;
             }
         }, 250);
     }
@@ -420,6 +425,26 @@ export class CompanyCasesComponent implements OnInit {
             });
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select record to delete');
+        }
+    }
+
+    filterCases()
+    {   
+        if(this.Filterby == 2)
+        {
+            this.fcases = _.filter(this.cases, (currentPatient: Case) => {                  
+                return currentPatient.orignatorCompanyId !== this.sessionStore.session.currentCompany.id;
+            });
+        }
+        else if(this.Filterby == 3)
+        {
+            this.fcases = _.filter(this.cases, (currentPatient: Case) => {                
+                return currentPatient.orignatorCompanyId === this.sessionStore.session.currentCompany.id;
+            });
+        }
+        else
+        {
+            this.fcases = this.cases;
         }
     }
 }

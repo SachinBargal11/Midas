@@ -39,10 +39,9 @@ export class PriorAccidentComponent implements OnInit {
     prioraccidentformControls;
     isSaveProgress = false;
     caseDetail: Case;
-    caseStatusId: number;
-    caseViewedByOriginator: boolean = false;
+    caseStatusId: number;    
     caseDetails: Case[];    
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
 
     isAccidentBefore = '0';
     isLawsuitOrWorkersComp = '0';
@@ -66,11 +65,11 @@ export class PriorAccidentComponent implements OnInit {
         private _patientStore: PatientsStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {                
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this.MatchReferal();
+            this.patientId = parseInt(routeParams.patientId, 10);            
         });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.MatchCase();
             this._progressBarService.show();
             let result = this._accidentStore.getPriorAccidentByCaseId(this.caseId);
             result.subscribe(
@@ -227,28 +226,17 @@ export class PriorAccidentComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
-        //this._casesStore.MatchReferal(this.patientId);
+    MatchCase() {            
         this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetails = results[0];
-                if (this.caseDetails.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
-                    } else {
-                        this.referredToMe = false;
-                    }
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
                 } else {
-                    this.referredToMe = false;
-                }                
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -256,8 +244,8 @@ export class PriorAccidentComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
-    }
+            });
+        }
 
 }
 

@@ -416,7 +416,7 @@
             </section>
         </div>
         <!--button-->
-        <button *ngIf="!referredToMe" [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
+        <button *ngIf="caseViewedByOriginator" [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveEmployerProgress"></loader>
                 </button>
         <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel

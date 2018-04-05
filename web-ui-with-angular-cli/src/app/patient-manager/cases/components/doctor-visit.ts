@@ -309,8 +309,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
             });
     }
 
-    DownloadPdf(document: ReferralDocument) {
-        debugger;
+    DownloadPdf(document: ReferralDocument) {        
        // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
        this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
        .subscribe(

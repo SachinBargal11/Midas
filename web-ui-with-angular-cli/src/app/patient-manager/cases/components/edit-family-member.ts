@@ -25,7 +25,7 @@ import * as _ from "underscore";
 
 export class EditFamilyMemberComponent implements OnInit {
     caseDetail: Case[];
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
     cellPhone: string;
     caseId: number;
     familyMemberForm: FormGroup;
@@ -59,19 +59,37 @@ export class EditFamilyMemberComponent implements OnInit {
             caseResult.subscribe(
                 (cases: Case[]) => {
                     this.caseDetail = cases;
-                    if (this.caseDetail.length > 0) {
-                        let matchedCompany = null;
-                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                        })
-                        if (matchedCompany) {
-                            this.referredToMe = true;
-                        } else {
-                            this.referredToMe = false;
-                        }
-                    } else {
-                        this.referredToMe = false;
-                    }
+                    // if (this.caseDetail.length > 0) {
+                    //     let matchedCompany = null;
+                    //     matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                    //         return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                    //     })
+                    //     if (matchedCompany) {
+                    //         this.referredToMe = true;
+                    //     } else {
+                    //         this.referredToMe = false;
+                    //     }
+                    // } else {
+                    //     this.referredToMe = false;
+                    // }
+
+                    this._progressBarService.show();
+                    let result1 = this._casesStore.fetchCaseById(this.caseId);
+                    result1.subscribe(
+                        (caseDetail: Case) => {                    
+                            if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                                this.caseViewedByOriginator = false;
+                            } else {
+                                this.caseViewedByOriginator = true;
+                            }                
+                        },
+                        (error) => {
+                            this._router.navigate(['../'], { relativeTo: this._route });
+                            this._progressBarService.hide();
+                        },
+                        () => {
+                            this._progressBarService.hide();
+                        });
 
                     let result = this._casesStore.fetchCaseById(this.caseId);
                     result.subscribe(
