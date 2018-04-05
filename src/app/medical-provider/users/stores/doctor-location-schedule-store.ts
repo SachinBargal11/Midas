@@ -244,5 +244,17 @@ export class DoctorLocationScheduleStore {
         return <Observable<DoctorLocationSchedule>>Observable.from(promise);
     }
 
+    getDoctorLocationScheduleByLocationSpecialtyId(locationId: number, specialtyId: number): Observable<DoctorLocationSchedule[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorLocationScheduleService.getDoctorLocationScheduleByLocationSpecialtyId(locationId, specialtyId)
+                .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
+                    this._doctorLocationSchedules.next(List(doctorLocationSchedules));
+                    resolve(doctorLocationSchedules);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
+    }
 
 }

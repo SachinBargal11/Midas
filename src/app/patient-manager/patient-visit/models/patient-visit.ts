@@ -53,7 +53,8 @@ const PatientVisitRecord = Record({
     addedByCompanyId: null,
     visitTimeStatus: false,
     visitUpdateStatus: false,
-    referralDocument: null
+    referralDocument: null,
+    referralId:0,
 });
 
 export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
@@ -62,7 +63,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     calendarEventId: number;
     location: Location;
     locationId: number;
-    case: Case;
+    case: Case; 
     caseId: number;
     patient: Patient;
     patientId: number;
@@ -95,6 +96,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     visitTimeStatus: boolean;
     visitUpdateStatus: boolean;
     referralDocument: ReferralDocument[];
+    referralId: number;
+    
 
     constructor(props) {
         super(props);

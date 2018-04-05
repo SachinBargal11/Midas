@@ -19,8 +19,7 @@ export class PatientVisitAdapter {
     static parseResponse(data: any): PatientVisit {
 
         let patientVisit = null;
-        let caseReferralDocument: ReferralDocument[] = [];
-        debugger;
+        let caseReferralDocument: ReferralDocument[] = [];        
         if (data) {
             let diagnosisCodes: DiagnosisCode[] = [];
             let procedureCodes: Procedure[] = [];

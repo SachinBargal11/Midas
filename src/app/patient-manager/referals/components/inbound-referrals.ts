@@ -19,6 +19,8 @@ import { InboundOutboundList } from '../models/inbound-outbound-referral';
 import { PendingReferralStore } from '../stores/pending-referrals-stores';
 import { ConsentStore } from '../../cases/stores/consent-store';
 import { Document } from '../../../commons/models/document';
+//  import { CreateVisitComponent } from '../../../commons/components/visit-detail/create-visit.component'
+
 @Component({
     selector: 'inbound-referrals',
     templateUrl: './inbound-referrals.html',
@@ -45,6 +47,13 @@ export class InboundReferralsComponent implements OnInit {
     signedDocumentUploadUrl: string;
     signedDocumentPostRequestData: any;
     isElectronicSignatureOn: boolean = false;
+    createPatientVisitDialogVisible: boolean = false;
+    referrenceId: number = 0;
+    patientId: number= null;
+    caseId: number=null;
+    visitInfo: string='';
+    specialtyId: number=0;
+    roomTestId: number=0;
 
     constructor(
         private _router: Router,
@@ -132,8 +141,9 @@ export class InboundReferralsComponent implements OnInit {
             });
     }
 
-    loadReferrals() {
+    loadReferrals() {        
         this._progressBarService.show();
+        this.referredMedicalOffices = [];
         this._pendingReferralStore.getReferralsByReferredToCompanyId()
             .subscribe((referrals: InboundOutboundList[]) => {
                 this.referredMedicalOffices = referrals;
@@ -146,8 +156,7 @@ export class InboundReferralsComponent implements OnInit {
             });
     }
    
-    DownloadPdf(document: ReferralDocument) {
-        debugger;
+    DownloadPdf(document: ReferralDocument) {        
        // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
        this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
        .subscribe(
@@ -337,4 +346,23 @@ export class InboundReferralsComponent implements OnInit {
         this._progressBarService.hide();
     }
 
+    createVisit(unschvist: any)
+    {           
+        this.referrenceId = unschvist.referralId;        
+        this.caseId = unschvist.caseId;
+        this.patientId = unschvist.patientId;
+        this.specialtyId = unschvist.specialtyId;
+        this.roomTestId = unschvist.roomTestId;
+        this.createPatientVisitDialogVisible = true;
+    }
+
+
+    closePatientVisitDialog() {
+        this.createPatientVisitDialogVisible = false;
+        this.loadReferrals();
+        /*this.handleVisitDialogHide();
+        this.patientVisitForm.reset();
+        this.unscheduledDialogVisible = false;
+        this.unscheduledEditVisitDialogVisible = false;*/
+    }
 }

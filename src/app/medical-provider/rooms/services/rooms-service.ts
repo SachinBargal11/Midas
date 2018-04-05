@@ -63,6 +63,27 @@ export class RoomsService {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+    getRoomsByLocationRoomTestId(locationId: number, roomTestId: number): Observable<Room[]> {
+        debugger;
+        let promise: Promise<Room[]> = new Promise((resolve, reject) => {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/GetbyLocationRoomTestId', JSON.stringify({ location: { id: locationId}, roomTest: {id: roomTestId} }), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((roomsData: any) => {
+                    let rooms: any[] = [];
+                    if (_.isArray(roomsData)) {
+                        rooms = (<Object[]>roomsData).map((roomsData: any) => {
+                            return RoomsAdapter.parseResponse(roomsData);
+                        });
+                    }
+                    resolve(rooms);
+
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
+    }
     getRoomsByLocationDoctorId(locationId: number, DoctorId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Room/getByLocationId/' + locationId +'/'+ DoctorId, {

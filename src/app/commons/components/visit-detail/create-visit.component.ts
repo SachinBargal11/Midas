@@ -1,13 +1,11 @@
 import { SelectItem } from 'primeng/primeng';
-import { ImeVisit } from '../models/ime-visit';
-import { EoVisit } from '../models/eo-visit';
 import { Procedure } from '../../../commons/models/procedure';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { User } from '../../../commons/models/user';
-import { Case } from '../../cases/models/case';
+import { Case } from '../../../patient-manager/cases/models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
@@ -21,18 +19,18 @@ import { DoctorLocationSchedule } from '../../../medical-provider/users/models/d
 import { ScheduleDetail } from '../../../medical-provider/locations/models/schedule-detail';
 import { Schedule } from '../../../medical-provider/rooms/models/rooms-schedule';
 import { Room } from '../../../medical-provider/rooms/models/room';
-import { Patient } from '../../patients/models/patient';
-import { PatientVisit } from '../models/patient-visit';
+import { Patient } from '../../../patient-manager/patients/models/patient';
+import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
-import { PatientsStore } from '../../patients/stores/patients-store';
+import { PatientsStore } from '../../../patient-manager/patients/stores/patients-store';
 import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { DoctorsStore } from '../../../medical-provider/users/stores/doctors-store';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
 import { ScheduleStore } from '../../../medical-provider/locations/stores/schedule-store';
 import { RoomScheduleStore } from '../../../medical-provider/rooms/stores/rooms-schedule-store';
 import { DoctorLocationScheduleStore } from '../../../medical-provider/users/stores/doctor-location-schedule-store';
-import { PatientVisitsStore } from '../stores/patient-visit-store';
+import { PatientVisitsStore } from '../../../patient-manager/patient-visit/stores/patient-visit-store';
 import { RoomsService } from '../../../medical-provider/rooms/services/rooms-service';
 import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { Speciality } from '../../../account-setup/models/speciality';
@@ -46,31 +44,29 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 import { Document } from '../../../commons/models/document';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { LeaveEvent } from '../../../commons/models/leave-event';
-import { VisitDocument } from '../../patient-visit/models/visit-document';
+import { VisitDocument } from '../../../patient-manager/patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
 import { ProcedureStore } from '../../../commons/stores/procedure-store';
-import { VisitReferralStore } from '../stores/visit-referral-store';
-import { VisitReferral } from '../models/visit-referral';
-import { CasesStore } from '../../cases/stores/case-store';
+import { VisitReferralStore } from '../../../patient-manager/patient-visit/stores/visit-referral-store';
+import { VisitReferral } from '../../../patient-manager/patient-visit/models/visit-referral';
+import { CasesStore } from '../../../patient-manager/cases/stores/case-store';
 import { UserSettingStore } from '../../../commons/stores/user-setting-store';
 import { UserSetting } from '../../../commons/models/user-setting';
 import { ProcedureCodeMasterStore } from '../../../account-setup/stores/procedure-code-master-store';
-import { UnscheduledVisit } from '../models/unscheduled-visit';
+import { UnscheduledVisit } from '../../../patient-manager/patient-visit/models/unscheduled-visit';
 import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
 import { SpecialityDetailsStore } from '../../../account-setup/stores/speciality-details-store';
 import { SpecialityDetail } from '../../../account-setup/models/speciality-details';
 import { TestSpecialityDetail } from '../../../account-setup/models/test-speciality-details';
-import { ReferralDocument } from '../../../patient-manager/cases/models/referral-document';
-import { ConsentStore } from '../../../patient-manager/cases/stores/consent-store';
 
 @Component({
-    selector: 'patient-visit',
-    templateUrl: './patient-visit.html',
-    styleUrls: ['./patient-visit.scss']
+    selector: 'create-visit',
+    templateUrl: './create-visit.component.html',
+    styleUrls: ['./create-visit.component.scss']
 })
 
-export class PatientVisitComponent implements OnInit {
+export class CreateVisitComponent implements OnInit {
 
     @ViewChild(ScheduledEventEditorComponent)
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
@@ -92,8 +88,7 @@ export class PatientVisitComponent implements OnInit {
     doctorSchedule: Schedule;
 
     /* Selections */
-    selectedVisit: any;
-    selectedEoVisit: EoVisit;
+    selectedVisit: any;    
     selectedCalEvent: ScheduledEventInstance;
     selectedLocationId: number = 0;
     selectedLocationIdFilter: number = 0;    
@@ -174,9 +169,11 @@ export class PatientVisitComponent implements OnInit {
     specialities: Speciality[];
     tests: Tests[];
     @Input() routeFromCase: boolean = false;
-    @Input() caseId: number;
-    // @Input() patientId:number;
+    @Input() caseId: number=0;
+    @Input() referrenceId: number;    
     @Input() idPatient: number;
+    @Input() specialtyId: number;
+    @Input() roomTestId: number;
     companyId: number = this.sessionStore.session.currentCompany.id;
     userId: number = this.sessionStore.session.user.id;
     selectedVisitType = '1';
@@ -189,13 +186,13 @@ export class PatientVisitComponent implements OnInit {
     userSetting: UserSetting;
     unscheduledVisit: UnscheduledVisit;
     unscheduledDialogVisible = false;
-    id:number=0;
-    patientId: number;
-    procedurecodeheading: string = "Displaying preferred procedure codes"
-
+    id:number=0;    
+    procedurecodeheading: string = "Displaying preferred procedure codes";
+    @Input() patientId:number;
     unscheduledEditVisitDialogVisible = false;
     unscheduledVisitDialogVisible = false;
-    showmyappointments=false;
+    @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    @Output() loadReferrals: EventEmitter<any> = new EventEmitter();
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -267,8 +264,7 @@ export class PatientVisitComponent implements OnInit {
         private _userSettingStore: UserSettingStore,
         private _procedureCodeMasterStore: ProcedureCodeMasterStore,
         private _specialityStore: SpecialityStore,
-        private _specialityDetailStore: SpecialityDetailsStore,
-        private _consentStore: ConsentStore       
+        private _specialityDetailStore: SpecialityDetailsStore        
     ) {
 
         // getUserSettingsForCompany() {
@@ -287,9 +283,7 @@ export class PatientVisitComponent implements OnInit {
         this.loadAllVisitsByCompanyId();
         this.loadAllUnScheduledVisitByCompanyId();
         this.loadAllSpecialitiesAndTests();    
-
-        this.loadEoVisits();
-        this.loadImeVisits();
+        
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
             caseId: ['', Validators.required],
@@ -380,7 +374,12 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        if(this.caseId != 0)
+        {            
+        let ss = this.referrenceId;
         this.routeFromCase;
+        
         // this.getUserSettingsForCompany();
         this.getReadingDoctorsByCompanyId();
         this.header = {
@@ -459,8 +458,27 @@ export class PatientVisitComponent implements OnInit {
         // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
         //     this._progressBarService.show();
-        if (this.idPatient && this.caseId) {
-            let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+
+        this.selectedVisit = new PatientVisit({          
+            caseId: this.caseDetail ? this.caseDetail.id : '',
+            patientId: this.patientId,
+            locationId: this.selectedLocationId,
+            doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+            doctor: null,
+            roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
+            room: null,
+            calendarEvent: new ScheduledEvent({
+                name: '',
+                eventStart: moment(),
+                eventEnd: moment().add(30, 'minutes'),
+                timezone: '',
+                isAllDay: false
+            }),
+            createByUserID: this.sessionStore.session.account.user.id
+        });
+
+        if (this.patientId && this.caseId) {
+            let fetchPatient = this._patientsStore.fetchPatientById(this.patientId);
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 
             Observable.forkJoin([fetchPatient, fetchCaseDetail])
@@ -468,6 +486,11 @@ export class PatientVisitComponent implements OnInit {
                 (results) => {
                     this.patient = results[0];
                     this.caseDetail = results[1];
+
+                    
+        
+        this.visitInfo = this.selectedVisit.visitDisplayString;
+        this.eventDialogVisible = true;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -477,6 +500,7 @@ export class PatientVisitComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         }
+    }
 
     }
 
@@ -551,32 +575,6 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
-    }
-
-    loadDoctorFilterSchedules()
-    {
-        this.clearselection();
-        if(this.showmyappointments)
-        { 
-            this.loadAllVisitsByCompanyId();
-            this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
-            this.doctorsStore.fetchDoctorById(this.doctorId)
-                .subscribe((doctor: Doctor) => {
-                    this.doctorSpecialities = doctor.doctorSpecialities;
-                },
-                (error) => {                    
-                },
-                () => {                    
-                });            
-        }
-        else
-        {
-            this.loadAllVisitsByCompanyId();
-            this.loadImeVisits();
-            this.loadEoVisits();
-            this.loadAllUnScheduledVisitByCompanyId();
-            this.locationsStore.getLocations();
-        }
     }
 
     loadAllProceduresForSpeciality(specialityId: number)
@@ -800,7 +798,7 @@ export class PatientVisitComponent implements OnInit {
         } else {
             // this.events = [];
             // this.loadLocationVisits(this.selectedLocationId);
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
+            this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationSpecialtyId(this.selectedLocationId, this.specialtyId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
                     let mappedDoctorLocationSchedules: {
                         doctorLocationSchedule: DoctorLocationSchedule,
@@ -821,7 +819,7 @@ export class PatientVisitComponent implements OnInit {
                 
                 if(!this.sessionStore.isOnlyDoctorRole())
                 {
-                    this._roomsStore.getRooms(this.selectedLocationId)
+                    this._roomsStore.getRoomsByLocationRoomTestId(this.selectedLocationId, this.roomTestId)
                     .subscribe((rooms: Room[]) => {
                         this.rooms = rooms;
                     }, error => {
@@ -943,11 +941,10 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-    loadAllVisitsByCompanyId() {       
-        debugger;
+    loadAllVisitsByCompanyId() {
         this.events = [];
         this._progressBarService.show();                  
-        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
+        if(this.sessionStore.isOnlyDoctorRole())
         {
             this._patientVisitsStore.getPatientVisitsByCompanyIdDoctorId()
             .subscribe(
@@ -1081,23 +1078,9 @@ export class PatientVisitComponent implements OnInit {
     }
 
     clearselection()
-    {
-        this.selectedLocationId = 0;
-        this.selectedLocationIdFilter = 0;
-        this.idPatient = 0;
-        this.selectedMode = 0;
-        this.selectedModeFilter = 0;
-        this.selectedOption = 0;
-        this.selectedOptionFilter = 0;
-        this.selectedDoctorId = 0;
-        this.selectedDoctorIdFilter = 0;
-        this.selectedRoomId = 0;
-        this.selectedRoomIdFilter = 0;
-        this.selectedSpecialityId = 0;
-        this.selectedSpecialityIdFilter = 0;
-        this.selectedTestId = 0;
-        this.selectedTestIdFilter = 0;
-        this.ShowProcedureCode = false;         
+    {        
+        this.closeDialog.emit();
+        this.loadReferrals.emit();                     
     }
 
     loadVisits() {                
@@ -1107,26 +1090,14 @@ export class PatientVisitComponent implements OnInit {
             this.loadLocationRoomVisits(this.selectedLocationId, this.selectedRoomId);
         } else {
             this.loadAllVisitsByCompanyId();
-            this.loadAllUnScheduledVisitByCompanyId();
-            this.loadEoVisits();
-            this.loadImeVisits();
+            this.loadAllUnScheduledVisitByCompanyId();            
         }
     }
 
-    loadAllVisits() {          
-            this.showmyappointments = false;
-            this.clearselection();          
-            this.doctorLocationSchedules = [];
-            this.rooms = [];
-            if (!this.sessionStore.isOnlyDoctorRole()) {
-                this.locationsStore.getLocations();
-            } else {
-                this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);               
-            } 
+    loadAllVisits() {             
+            this.clearselection();           
             this.loadAllVisitsByCompanyId();
-            this.loadAllUnScheduledVisitByCompanyId();
-            this.loadEoVisits();
-            this.loadImeVisits();        
+            this.loadAllUnScheduledVisitByCompanyId();            
     }
 
     getVisitOccurrences(visits) {                
@@ -1216,84 +1187,7 @@ export class PatientVisitComponent implements OnInit {
         return occurrences;
     }
 
-    getEOVisitOccurrences(visits) {
-        let occurrences: ScheduledEventInstance[] = [];
-        let calendarEvents: ScheduledEvent[] = _.chain(visits)
-            .map((visit: EoVisit) => {
-                return visit.calendarEvent;
-            })
-            .unique((event: ScheduledEvent) => {
-                return event.id;
-            })
-            .value();
-        _.forEach(calendarEvents, (event: ScheduledEvent) => {
-            occurrences.push(...event.getEventInstances(null));
-        });
-        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
-            let matchingVisits: EoVisit[] = _.filter(visits, (currentVisit: EoVisit) => {
-                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
-            });
-            let visitForOccurrence: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
-                if (!currentMatchingVisit.isOriginalVisit) {
-                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
-                }
-                return false;
-            });
-            if (visitForOccurrence) {
-                // occurrence.eventWrapper = visitForOccurrence;
-            } else {
-                let originalVisit: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
-                    return currentMatchingVisit.isOriginalVisit;
-                });
-                occurrence.eventWrapper = originalVisit;
-            }
-            return occurrence;
-        });
-        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
-        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
-        // });
-        return occurrences;
-    }
-
-    getImeVisitOccurrences(visits) {
-        let occurrences: ScheduledEventInstance[] = [];
-        let calendarEvents: ScheduledEvent[] = _.chain(visits)
-            .map((visit: ImeVisit) => {
-                return visit.calendarEvent;
-            })
-            .unique((event: ScheduledEvent) => {
-                return event.id;
-            })
-            .value();
-        _.forEach(calendarEvents, (event: ScheduledEvent) => {
-            occurrences.push(...event.getEventInstances(null));
-        });
-        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
-            let matchingVisits: ImeVisit[] = _.filter(visits, (currentVisit: ImeVisit) => {
-                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
-            });
-            let visitForOccurrence: ImeVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
-                if (!currentMatchingVisit.isOriginalVisit) {
-                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
-                }
-                return false;
-            });
-            if (visitForOccurrence) {
-                // occurrence.eventWrapper = visitForOccurrence;
-            } else {
-                let originalVisit: ImeVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
-                    return currentMatchingVisit.isOriginalVisit;
-                });
-                occurrence.eventWrapper = originalVisit;
-            }
-            return occurrence;
-        });
-        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
-        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
-        // });
-        return occurrences;
-    }    
-
+   
     loadLocationDoctorSpeciatityVisits(locationid, doctorid, specialtyid ) {
         this._progressBarService.show();
         this._patientVisitsStore.getPatientVisitsByLocationDoctorAndSpecialityId(locationid, doctorid, specialtyid)
@@ -1318,7 +1212,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationRoomVisits(locationid, roomid) {
         this._progressBarService.show();
-        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
+        if(this.sessionStore.isOnlyDoctorRole())
         {
             this._patientVisitsStore.getPatientVisitsByLocationDoctorAndRoomId(locationid, this.sessionStore.session.user.id, roomid)
             .subscribe(
@@ -1364,7 +1258,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationVisits(locationid) {
         this._progressBarService.show();
-        if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
+        if(this.sessionStore.isOnlyDoctorRole())
         {
             this._patientVisitsStore.getPatientVisitsByLocationDoctorAndCompanyId(locationid, this.sessionStore.session.user.id)
             .subscribe(
@@ -1411,59 +1305,7 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    loadEoVisits() {
-        let result;
-        this._progressBarService.show();
-        if (this.sessionStore.isOnlyDoctorRole()) {
-            result = this._patientVisitsStore.getEoVisitByCompanyAndDoctorId(this.companyId, this.doctorId);
-        } else {
-            result = this._patientVisitsStore.getEoVisitByCompanyId(this.companyId);
-        }
-        result.subscribe(
-            (visits: EoVisit[]) => {
-                let events = this.getEOVisitOccurrences(visits);
-                this.events = _.union(this.events, events);                
-            },
-            (error) => {
-                this.events = [];
-                let notification = new Notification({
-                    'title': error.message,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    loadImeVisits() {
-        if (!this.sessionStore.isOnlyDoctorRole()) {
-            this._progressBarService.show();
-            this._patientVisitsStore.getImeVisitByCompanyId(this.companyId)
-                .subscribe(
-                (visits: ImeVisit[]) => {
-                    let events = this.getImeVisitOccurrences(visits);
-                    this.events = _.union(this.events, events);                    
-                },
-                (error) => {
-                    this.events = [];
-                    let notification = new Notification({
-                        'title': error.message,
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        }
-    }
-
+    
     // closeDialog() {
     //     this.addImeVisitDialogVisible = false;
     //     this.addEoVisitDialogVisible = false;
@@ -1480,13 +1322,13 @@ export class PatientVisitComponent implements OnInit {
         this.patientScheduleForm.reset();
     }
 
-    closePatientVisitDialog() {
-        this.visitDialogVisible = false;
-        this.handleVisitDialogHide();
-        this.patientVisitForm.reset();
-        this.unscheduledDialogVisible = false;
-        this.unscheduledEditVisitDialogVisible = false;
-    }
+    // closePatientVisitDialog() {
+    //     this.visitDialogVisible = false;
+    //     this.handleVisitDialogHide();
+    //     this.patientVisitForm.reset();
+    //     this.unscheduledDialogVisible = false;
+    //     this.unscheduledEditVisitDialogVisible = false;
+    // }
 
     handleEventDialogHide() {
         this.selectedVisit = null;
@@ -1750,55 +1592,7 @@ export class PatientVisitComponent implements OnInit {
         }
         return unscheduledVisit;
     }
-
-    private _getEoVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): EoVisit {
-        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
-        let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
-        debugger;
-        if (eventInstance.isInPast) {
-            this.isVisitTypeDisabled = false;
-            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
-                visitStatusId: eoVisit.visitStatusId,
-                calendarEvent: scheduledEventForInstance,
-                doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
-                    // user: new User(_.extend(eoVisit.doctor.user.toJS()))
-                })) : null,
-            }));
-        } else {
-            this.isVisitTypeDisabled = true;
-            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
-                calendarEvent: scheduledEventForInstance,
-                doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
-                    // user: new User(_.extend(eoVisit.doctor.user.toJS()))
-                })) : null,
-            }))
-        }
-        return eoVisit;
-    }
-
-    private _getImeVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): ImeVisit {
-        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
-        let imeVisit: ImeVisit = <ImeVisit>(eventInstance.eventWrapper);        
-        if (eventInstance.isInPast) {
-            imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
-                calendarEvent: scheduledEventForInstance,
-                visitStatusId: imeVisit.visitStatusId,
-                case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
-                patient: imeVisit.patient ? new Patient(_.extend(imeVisit.patient.toJS(), {
-                    user: new User(_.extend(imeVisit.patient.user.toJS()))
-                })) : null
-            }))
-        }
-        else {
-            this.isVisitTypeDisabled = true;
-            imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
-                calendarEvent: scheduledEventForInstance,
-                case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
-            }))
-        }
-        return imeVisit;
-    }
-   
+       
     handleEventClick(event) {           
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
@@ -1807,61 +1601,6 @@ export class PatientVisitComponent implements OnInit {
         if (patientVisit.isPatientVisitType) {
             this.selectedVisitType = '1';
             this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);            
-        } else if (patientVisit.isImeVisitType) {
-            debugger;
-            this.selectedVisitType = '2';
-            this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
-        } else if(patientVisit.isUnscheduledVisitType)
-        {
-           this.selectedVisitType = '4';
-            let result = this._patientVisitsStore.getUnscheduledVisitDetailById(patientVisit.id);
-                result.subscribe((visit: UnscheduledVisit) => {                                      
-                    this.unscheduledVisit = visit;
-                    this.patientId = visit.patientId;
-                    this.caseId = visit.caseId;
-                    let isinpast = visit.eventStart.isBefore(moment());
-                    this.visitInfo = '';
-                    if (this.unscheduledVisit.locationName) {
-                        this.visitInfo = `${this.visitInfo}Location Name: ${this.unscheduledVisit.locationName} - `;
-                    }
-                    if (this.unscheduledVisit.patientId && this.unscheduledVisit.caseId && this.unscheduledVisit.patient) {
-                        this.visitInfo = `${this.visitInfo}Patient Name: ${this.unscheduledVisit.patient.user.displayName} - Case Id: ${this.caseId} - `;
-                    }
-                    if (this.unscheduledVisit.doctorName) {
-                        this.visitInfo = `${this.visitInfo}Doctor Name: ${this.unscheduledVisit.doctorName}`;
-                        if (this.unscheduledVisit.specialtyId && this.unscheduledVisit.specialty) {
-                            this.visitInfo = `${this.visitInfo} - Speciality: ${this.unscheduledVisit.specialty.name}`;
-                        }
-                    }
-                    if (this.unscheduledVisit.roomTestId && this.unscheduledVisit.roomTest) {
-                        this.visitInfo = `${this.visitInfo} Test ${this.unscheduledVisit.roomTest.name}`;
-                        // if (this.room.roomTest) {
-                        //     visitInfo = `${visitInfo} - Test: ${this.room.roomTest.name}`;
-                        // }
-                    }
-            
-                    // if (this.eventStart) {
-                    //     visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
-                    // }                   
-                    //this.selectedVisit = null; 
-                    if(isinpast)
-                    {                        
-                        this.id = null;                                 
-                        this.visitDialogVisible = null;              
-                        this.unscheduledDialogVisible = true;
-                        this.unscheduledEditVisitDialogVisible = null;
-                    }
-                    else{
-                        this.id = visit.id;
-                        this.unscheduledVisit = null;                        
-                        this.visitDialogVisible = null;
-                        this.unscheduledDialogVisible = null;
-                        this.unscheduledEditVisitDialogVisible = true;                       
-                    }                    
-                });            
-        }else if (patientVisit.isEoVisitType) {
-            this.selectedVisitType = '3';
-            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
         }
         Object.keys(this.patientScheduleForm.controls).forEach(key => {
             this.patientScheduleForm.controls[key].setValidators(null);
@@ -1880,8 +1619,7 @@ export class PatientVisitComponent implements OnInit {
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            this.getDocuments();
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';            
             if(!patientVisit.isUnscheduledVisitType)
             {
                 this.visitDialogVisible = true;                        
@@ -1983,52 +1721,7 @@ export class PatientVisitComponent implements OnInit {
                 doctorId: docID
             }));
             result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
-        } else if (this.selectedVisit.isEoVisitType) {
-            let updatedVisit: EoVisit;
-            updatedVisit = new EoVisit(_.extend(this.selectedVisit.toJS(), {
-                notes: patientVisitFormValues.notes,
-                visitStatusId: patientVisitFormValues.visitStatusId,
-                doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
-            }));
-            result = this._patientVisitsStore.updateEoVisitDetail(updatedVisit);
-        } else if (this.selectedVisit.isImeVisitType) {
-            let updatedVisit: ImeVisit;
-            updatedVisit = new ImeVisit(_.extend(this.selectedVisit.toJS(), {
-                notes: patientVisitFormValues.notes,
-                visitStatusId: patientVisitFormValues.visitStatusId,
-                doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
-            }));
-            result = this._patientVisitsStore.updateImeVisitDetail(updatedVisit);
-        } else if(this.selectedVisit.isUnscheduledVisitType)
-        {
-            let updatedVisit: UnscheduledVisit;
-            updatedVisit = new UnscheduledVisit(_.extend(this.selectedVisit.toJS(), {
-                notes: patientVisitFormValues.notes,
-                visitStatusId: patientVisitFormValues.visitStatusId                
-             })); 
-
-            let unscheduled = new UnscheduledVisit({
-                id: updatedVisit.id,
-                patientId: updatedVisit.patientId,
-                caseId: updatedVisit.caseId,
-                medicalProviderName: updatedVisit.medicalProviderName,
-                locationName: updatedVisit.locationName,
-                doctorName: updatedVisit.doctorName,
-                specialtyId: updatedVisit.specialtyId,
-                roomTestId: updatedVisit.roomTestId,
-                notes: patientVisitFormValues.notes,
-                referralId: null,
-                patient: null,
-                case: null,
-                createByUserID: this.sessionStore.session.account.user.id,
-                eventStart: updatedVisit.eventStart,
-                orignatorCompanyId: this.sessionStore.session.currentCompany.id,
-                calendarEventId: updatedVisit.calendarEventId,
-                visitStatusId: patientVisitFormValues.visitStatusId
-            });
-
-            result = this._patientVisitsStore.updateUnscheduledVisitDetail(unscheduled);
-        }
+        } 
         this.isSaveProgress = true;
         result.subscribe(
             (response) => {
@@ -2328,7 +2021,7 @@ export class PatientVisitComponent implements OnInit {
         {
             docID = this.selectedOption == 1 ? this.selectedDoctorId : null;
         }
-
+        
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             // patientId: leaveEvent ? null : patientScheduleFormValues.patientId ? patientScheduleFormValues.patientId : this.idPatient,
             patientId: leaveEvent ? null : this.idPatient ? (this.idPatient) : patientScheduleFormValues.patientId,
@@ -2345,155 +2038,11 @@ export class PatientVisitComponent implements OnInit {
             notes: patientScheduleFormValues.notes,
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
             createByUserID: this.sessionStore.session.account.user.id,
-            addedByCompanyId : this.sessionStore.session.currentCompany.id
+            addedByCompanyId : this.sessionStore.session.currentCompany.id,
+            referralId: this.referrenceId
         }));
-        if (updatedVisit.id) {
-            if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {
-                let endDate: Date = this.selectedVisit.calendarEvent.recurrenceRule.before(this.selectedCalEvent.start.startOf('day').toDate());
-                let updatedvisitWithRecurrence: PatientVisit = this._getUpdatedVisitWithSeriesTerminatedOn(this.selectedVisit, moment(endDate));
-                this._progressBarService.show();
-                let result = this._patientVisitsStore.updateCalendarEvent(updatedvisitWithRecurrence);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event cancelled successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();                        
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    (error) => {
-                        let errString = 'Unable to cancel event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-                // Add New Visit
-                // Change the recurrence rule of selected event to start with selected date from the form 
-                // but end on same date as selected Visit rule.
-                // new series should start from selected/clicked date
-                let occurrences: Date[] = this.selectedVisit.calendarEvent.recurrenceRule.all();
-                let until: Date = moment(occurrences[occurrences.length - 1]).set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
-                let eventStart: Date = this.selectedCalEvent.start.set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
-                let eventEnd: Date = this.selectedCalEvent.end.set({ 'hour': updatedVisit.calendarEvent.eventEnd.hour(), 'minute': updatedVisit.calendarEvent.eventEnd.minute() }).toDate();
-                let rrule = new RRule(_.extend({}, updatedVisit.calendarEvent.recurrenceRule.origOptions, {
-                    count: 0,
-                    dtstart: eventStart,
-                    until: until
-                }));
-
-                let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
-                    id: 0,
-                    calendarEventId: 0,
-                    calendarEvent: new ScheduledEvent(_.extend(updatedVisit.calendarEvent.toJS(), {
-                        id: 0,
-                        eventStart: moment(eventStart),
-                        eventEnd: moment(eventEnd),
-                        recurrenceRule: rrule
-                    })),
-                    createByUserID: this.sessionStore.session.account.user.id
-                }));
-
-                let addVisitResult = this._patientVisitsStore.addPatientVisit(updatedAddNewVisit);
-                addVisitResult.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event added successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._notificationsStore.addNotification(notification);
-                        // this.event = null;                        
-                        //this.selectLocation();
-                    },
-                    (error) => {
-                        let errString = 'Unable to add event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            } else {
-                let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Event updated successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();                        
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    (error) => {
-                        let errString = 'Unable to update event!';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            }
-        } else {
-            if (updatedVisit.calendarEvent.isChangedInstanceOfSeries) {
-                let exceptionResult: Observable<{ exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }> = this._patientVisitsStore.createExceptionInRecurringEvent(updatedVisit);
-                exceptionResult.subscribe(
-                    (response: { exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }) => {
-
-                        let notification = new Notification({
-                            'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionVisit.calendarEvent.eventStart.format('M d, yy')}`,
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this.loadVisits();
-                    },
-                    (error) => {
-                        let errString = 'Unable to add event!';
-                        let notification = new Notification({
-                            'messages': `Unable to create occurrence for recurring event ${updatedEvent.name} created for ${updatedEvent.eventStart.format('M d, yy')}`,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.clearselection();
-                        this.loadVisits();
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            } else {
-                let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
+       
+            let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
@@ -2502,7 +2051,7 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.clearselection();
-                        this.loadVisits();
+                        //this.loadVisits();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null; 
                         //this.selectLocation();
@@ -2515,75 +2064,13 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.clearselection();
-                        this.loadVisits();
+                        //this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
                         this._progressBarService.hide();
                     });
-            }
-        }
-        this.eventDialogVisible = false;
-        this.handleEventDialogHide();
-    }
-
-    getDocuments() {
-        // this._progressBarService.show();
-        let result;
-        if (this.selectedVisit.isPatientVisitType) {
-            result = this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
-        } else if (this.selectedVisit.isImeVisitType) {
-            result = this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
-        } else if (this.selectedVisit.isEoVisitType) {
-            result = this._patientVisitsStore.getDocumentsForEoVisitId(this.selectedVisit.id)
-        }
-        else if (this.selectedVisit.isUnscheduledVisitType) {
-            result = this._patientVisitsStore.getDocumentsForUnscheduledVisitId(this.selectedVisit.id)
-        }
-        result.subscribe(document => {
-            this.documents = document;
-        },
-
-            (error) => {
-                // this._progressBarService.hide();
-            },
-            () => {
-                // this._progressBarService.hide();
-            });
-    }
-
-    documentUploadComplete(documents: Document[]) {
-        _.forEach(documents, (currentDocument: Document) => {
-            if (currentDocument.status == 'Failed') {
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message);
-            } else if (currentDocument.status == 'Success') {
-                let notification = new Notification({
-                    'title': 'Document uploaded successfully',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success!', 'Document uploaded successfully');
-                this.addConsentDialogVisible = false;
-            }
-        });
-        this.getDocuments();
-    }
-
-    documentUploadError(error: Error) {
-        if (error.message == 'Please select document Type') {
-            this._notificationsService.error('Oh No!', 'Please select document Type');
-        }
-        else {
-            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-        }
     }
 
     showDialog(currentCaseId: number) {
@@ -2591,85 +2078,6 @@ export class PatientVisitComponent implements OnInit {
         this.selectedCaseId = currentCaseId;
     }
 
-    downloadPdf(documentId) {
-        this._progressBarService.show();
-        this._patientVisitsStore.downloadDocumentForm(this.visitId, documentId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                //  this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to download');
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this._progressBarService.hide();
-    }
-
-    deleteDocuments() {
-        if (this.selectedDocumentList.length > 0) {
-            // this.confirmationService.confirm({
-            //     message: 'Do you want to delete this record?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'fa fa-trash',
-            //     accept: () => {
-
-            this.selectedDocumentList.forEach(currentCase => {
-                this._progressBarService.show();
-                this.isDeleteProgress = true;
-                this._patientVisitsStore.deleteDocument(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'record deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-
-                        });
-                        this.getDocuments();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedDocumentList = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete record';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedDocumentList = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                    });
-            });
-            //     }
-            // });
-        } else {
-            let notification = new Notification({
-                'title': 'select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
-        }
-    }
 
     addNewPatient() {
         if (!this.isAddNewPatient) {
@@ -2811,79 +2219,6 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select procedure to update preffered procedure code');
         }
-    }
-
-    // showIMEDialog() {
-    //     this.addImeVisitDialogVisible = true;
-    // }
-
-    // showEoDialog() {
-    //     this.addEoVisitDialogVisible = true;
-    // }
-
-    deleteDocument(currentdocument: any) {                 
-        // this.confirmationService.confirm({
-        // message: 'Do you want to delete this record?',
-        // header: 'Delete Confirmation',
-        // icon: 'fa fa-trash',
-        // accept: () => {            
-               this._progressBarService.show();
-               this.isDeleteProgress = true;
-               this._patientVisitsStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
-                   .subscribe(
-                   (response) => {
-                       let notification = new Notification({
-                           'title': 'Record deleted successfully!',
-                           'type': 'SUCCESS',
-                           'createdAt': moment()
-                       });
-                       this.getDocuments();
-                       this._notificationsStore.addNotification(notification);
-                       this.selectedDocumentList = [];
-                   },
-                   (error) => {
-                       let errString = 'Unable to delete record';
-                       let notification = new Notification({
-                           'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                           'type': 'ERROR',
-                           'createdAt': moment()
-                       });
-                       this.selectedDocumentList = [];
-                       this._progressBarService.hide();
-                       this.isDeleteProgress = false;
-                       this._notificationsStore.addNotification(notification);
-                       this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                   },
-                   () => {
-                       this._progressBarService.hide();
-                       this.isDeleteProgress = false;
-                   });            
-                }
-            //  });        
-         //}
-
-         DownloadPdfReffreal(document: ReferralDocument) {
-            // window.location.assign(this._url + '/FileUpload/download/' + document.referralId + '/' + document.midasDocumentId);
-            this._consentStore.downloadRefferalFormByRefferalIdDocumetId(document.referralId, document.midasDocumentId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                //  this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to download');
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-         }
+    }   
 }
 
