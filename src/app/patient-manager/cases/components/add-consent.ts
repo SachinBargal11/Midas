@@ -75,6 +75,7 @@ export class AddConsentComponent implements OnInit {
     caseStatusId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    caseViewedByOriginator : boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -107,6 +108,7 @@ export class AddConsentComponent implements OnInit {
             } else {
                 this.caseId = this.inputCaseId;
             }
+            this.MatchCase();
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
             // this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
@@ -349,7 +351,26 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
-
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 }
 
 
