@@ -10,7 +10,7 @@ export const environment = {
   SERVICE_BASE_URL: 'http://localhost:65184/midasapi',
   IDENTITY_SERVER_URL: 'https://localhost:44300',
   //NOTIFICATION_SERVER_URL: 'http://localhost/CANotificationService',
-  NOTIFICATION_SERVER_URL: 'http://dev-gb-notificationmanager.qwinix.io',
+  NOTIFICATION_SERVER_URL: 'http://qa-gb-notificationmanager.qwinix.io',
   // HOME_URL: 'http://caserver:7013',
   HOME_URL: 'http://localhost:4201',
   MP_URL: 'http://localhost:4201',

@@ -47,6 +47,7 @@ export class CasesListComponent implements OnInit {
     signedDocumentPostRequestData: any;
     isElectronicSignatureOn: boolean = false;
     addConsentDialogVisible: boolean = false;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         public _route: ActivatedRoute,
@@ -58,7 +59,7 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
-        private _consentStore: ConsentStore,
+        private _consentStore: ConsentStore
     ) {
 
         this.companyId = this.sessionStore.session.currentCompany.id;
@@ -67,6 +68,7 @@ export class CasesListComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
+            this.MatchCase();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(
                 (patient: Patient) => {
@@ -354,4 +356,24 @@ export class CasesListComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+ 
+        }
 }
