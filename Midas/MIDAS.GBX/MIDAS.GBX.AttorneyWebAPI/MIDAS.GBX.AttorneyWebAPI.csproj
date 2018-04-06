@@ -284,6 +284,7 @@
     <Compile Include="Controllers\DiagnosisCodeController.cs" />
     <Compile Include="Controllers\DiagnosisTypeController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
+    <Compile Include="Controllers\UserLocationScheduleController.cs" />
     <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
     <Compile Include="Controllers\DocumentManagerController.cs" />
@@ -366,6 +367,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="appspec.yml" />
+    <Content Include="before-install.bat" />
     <None Include="Properties\PublishProfiles\MIDAS.GBX.AttorneyWebAPI.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

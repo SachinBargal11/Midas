@@ -244,17 +244,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (Patient.UpdateByUserID.HasValue)
                 patientBO2.UpdateByUserID = Patient.UpdateByUserID.Value;
 
-            var ulist = _context.Patients.Include("User").Include("User.UserCompanies")
-                                                .Include("User.AddressInfo")
-                                                .Include("User.ContactInfo")
-                                                .Include("Cases")
-                                                .Include("Cases.Referrals")
-                                                .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                                .Any(p3 => p3.id == Patient.Id && p3.CompanyID == companyId)
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                .ToList<Patient>();
-            if(ulist.Count() > 0)
-            {
+            if(Patient.AddedByCompanyId == companyId)
+            { 
                 patientBO2.IsRefferedPatient = false;
             }
             else
@@ -681,7 +672,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-
         #region Get By Company ID and DoctorId For Patient 
         public override object Get(int CompanyId, int DoctorId)
         {
@@ -768,7 +758,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         }
         #endregion
-
 
         #region GetByCompanyWithCloseCases For Patient 
         public override object GetByCompanyWithCloseCases(int CompanyId)
@@ -1105,6 +1094,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_patientDB == true)
                     {
+                        PatientDB.AddedByCompanyId = PatientBO.AddedByCompanyId;
                         PatientDB = _context.Patients.Add(PatientDB);
                     }
                     _context.SaveChanges();

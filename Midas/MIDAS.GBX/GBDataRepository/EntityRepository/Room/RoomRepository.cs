@@ -540,6 +540,62 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Filter
+        public override object GetbyLocationRoomTestId<T>(T entity)
+        {
+            List<BO.Room> lstRoom = new List<BO.Room>();
+            BO.Room roomBO = (BO.Room)(object)entity;
+
+            if (roomBO != null)
+            {
+                if (roomBO.roomTest != null && roomBO.location != null)
+                {
+                    if (roomBO.roomTest.ID > 0 && roomBO.location.ID > 0)
+                    {
+                        var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.RoomTestID == roomBO.roomTest.ID && p.LocationID == roomBO.location.ID && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
+                        if (acc_ == null || acc_.Count < 1)
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        foreach (Room item in acc_)
+                        {
+                            lstRoom.Add(Convert<BO.Room, Room>(item));
+                        }
+                    }
+                }
+                //else if (roomBO.location != null)
+                //{
+                //    if (roomBO.location.ID > 0)
+                //    {
+                //        var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.LocationID == roomBO.location.ID && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
+                //        if (acc_ == null || acc_.Count < 1)
+                //        {
+                //            return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //        }
+                //        foreach (Room item in acc_)
+                //        {
+                //            lstRoom.Add(Convert<BO.Room, Room>(item));
+                //        }
+                //    }
+                //}
+            }
+            else
+            {
+                //var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.Location.IsDeleted == false || p.Location.IsDeleted == null)).ToList<Room>();
+                //if (acc_ == null || acc_.Count < 1)
+                //{
+                //    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
+                //foreach (Room item in acc_)
+                //{
+                //    lstRoom.Add(Convert<BO.Room, Room>(item));
+                //}
+            }
+
+            return lstRoom;
+        }
+        #endregion
+
         #region Get By LocationId
         public override object GetByLocationId(int LocationId)
         {
@@ -602,7 +658,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)doctorBO;
         }
         #endregion
-
 
         #region GetByRoomCompany
         public override object GetByRoomInAllAppCompany(int roomTestId, int companyId)

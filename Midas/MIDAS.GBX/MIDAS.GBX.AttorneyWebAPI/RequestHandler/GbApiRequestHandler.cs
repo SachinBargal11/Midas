@@ -2193,5 +2193,57 @@ namespace MIDAS.GBX.AttorneyWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage AssociateLocationToUser(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AssociateLocationToUser(gbObject);
+
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociateUserToLocations(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AssociateUserToLocations(gbObject);
+
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage GetByUserId(HttpRequestMessage request, int UserId)
+        {
+            var objResult = dataAccessManager.GetByUserId(UserId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

@@ -69,6 +69,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("IsRefferedPatient")]
         public bool IsRefferedPatient { get; set; }
 
+        [JsonProperty("addedByCompanyId")]
+        public int AddedByCompanyId { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
@@ -90,12 +93,12 @@ namespace MIDAS.GBX.BusinessObjects
         public User User { get; set; }
 
         [JsonProperty("cases")]
-        public List<Case> Cases { get; set; }
+        public List<Case> Cases { get; set; }        
 
         //[JsonProperty("patientInsuranceInfoes")]
         //public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
 
-  }
+    }
 
     public class AddPatient : GbObject
     {

@@ -394,6 +394,14 @@ namespace MIDAS.GBX
             {
                 repo = new DiagnosisCodeCompanyMappingRepository(context);
             }
+            else if (typeof(T) == typeof(BO.UserLocationSchedule))
+            {
+                repo = new UserLocationScheduleRepository(context);
+            }
+            else if (typeof(T) == typeof(List<BO.UserLocationSchedule>))
+            {
+                repo = new UserLocationScheduleRepository(context);
+            }
             return repo;
         }
     }

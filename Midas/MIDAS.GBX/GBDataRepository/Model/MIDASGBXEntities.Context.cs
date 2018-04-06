@@ -133,6 +133,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserApiRoleMapping> UserApiRoleMappings { get; set; }
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
+        public virtual DbSet<UserLocationSchedule> UserLocationSchedules { get; set; }
         public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }

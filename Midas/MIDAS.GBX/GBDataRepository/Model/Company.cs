@@ -39,6 +39,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Notifications = new HashSet<Notification>();
             this.OTPCompanyMappings = new HashSet<OTPCompanyMapping>();
             this.OTPCompanyMappings1 = new HashSet<OTPCompanyMapping>();
+            this.Patients = new HashSet<Patient>();
             this.PatientVisits = new HashSet<PatientVisit>();
             this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
             this.PendingReferrals = new HashSet<PendingReferral>();
@@ -124,6 +125,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<OTPCompanyMapping> OTPCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OTPCompanyMapping> OTPCompanyMappings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patient> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -2848,7 +2848,6 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-
         public HttpResponseMessage GetByLocationDoctorAndRoomId(HttpRequestMessage request, int locationId, int doctorId, int roomId)
         {
             var objResult = dataAccessManager.GetByLocationDoctorAndRoomId(locationId, doctorId, roomId);
@@ -3070,6 +3069,36 @@ namespace MIDAS.GBX.WebAPI
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
+        }
+
+        public HttpResponseMessage GetByLocationSpecalityId(HttpRequestMessage request, int LocationId, int specialtyid)
+        {
+            var objResult = dataAccessManager.GetByLocationSpecalityId(LocationId, specialtyid);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetbyLocationRoomTestId(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.GetbyLocationRoomTestId(gbObject);
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }            
         }
     }
 }

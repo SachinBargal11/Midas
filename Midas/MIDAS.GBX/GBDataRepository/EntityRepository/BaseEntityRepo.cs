@@ -1231,6 +1231,40 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByLocationSpecalityId(int LocationId, int SpecialityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociateLocationToUser<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetbyLocationRoomTestId<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociateUserToLocations<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T ObjectConvertbySpecialtyId<T, U>(U entity, int specialtyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T ConvertbySpecialtyId<T, U>(U entity, int specialtyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object DeleteAllAppointmentsandUserLocationSchedule<T>(T gbObject)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

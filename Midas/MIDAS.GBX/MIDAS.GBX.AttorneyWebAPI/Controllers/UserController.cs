@@ -18,7 +18,7 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
-    [RoutePrefix("midasattorneyapi/User")]    
+    [RoutePrefix("midasattorneyapi/User")]
     public class UserController : ApiController
     {
 
@@ -33,7 +33,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         [HttpPost]
         [Route("GetByUserName")]
         [Route("GetAll")]
-        
+
         public HttpResponseMessage Get([FromBody]User data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -41,7 +41,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        
+
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -55,14 +55,14 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         }
 
         [Route("Update")]
-        [HttpPut]        
+        [HttpPut]
         public HttpResponseMessage Put([FromBody]User User)
         {
             return requestHandler.UpdateGbObject(Request, User);
         }
 
         [HttpDelete]
-        [Route("Delete")]        
+        [Route("Delete")]
         public HttpResponseMessage Delete([FromBody]User User)
         {
             return requestHandler.DeleteGbObject(Request, User);
@@ -74,7 +74,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             return requestHandler.Delete(Request, id);
         }
-        
+
         [HttpPost]
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
@@ -83,19 +83,19 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             {
                 //Since the API should only validate for Staff Users.
                 //Rest all other even if valid are not Authorised.
-                user.UserType = GBEnums.UserType.Attorney;
+                 user.UserType = GBEnums.UserType.Attorney;
             }
 
             return requestHandler.Login(Request, user);
         }
-        
+
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]User User)
         {
             return requestHandler.ValidateUniqueName(Request, User);
         }
-                
+
         [HttpGet]
         [Route("IsExisting/{user}")]
         public HttpResponseMessage IsExisting(string User)

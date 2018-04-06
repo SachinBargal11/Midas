@@ -5,11 +5,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>E:\Publish\MIDAS.GBX.AttorneyWebAPI</_PublishTargetUrl>
+    <_PublishTargetUrl>F:\Midas-develop\Midas-develop-attorneypublishedapi</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
       <publishTime>11/01/2017 05:18:14</publishTime>
+    </File>
+    <File Include="appspec.yml">
+      <publishTime>04/02/2018 11:03:57</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>11/01/2017 05:18:14</publishTime>
@@ -74,6 +77,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/HelpPage/Views/_ViewStart.cshtml">
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
+    <File Include="before-install.bat">
+      <publishTime>04/02/2018 11:03:57</publishTime>
+    </File>
     <File Include="bin/antlr.runtime.dll">
       <publishTime>05/02/2017 16:51:36</publishTime>
     </File>
@@ -85,6 +91,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/Aspose.Words.dll">
       <publishTime>06/06/2017 13:43:46</publishTime>
+    </File>
+    <File Include="bin/AWSSDK.dll">
+      <publishTime>10/10/2016 15:00:00</publishTime>
     </File>
     <File Include="bin/de/Microsoft.Data.Edm.resources.dll">
       <publishTime>02/01/2017 14:00:38</publishTime>
@@ -273,19 +282,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/23/2017 15:48:04</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.AttorneyWebAPI.dll">
-      <publishTime>12/15/2017 12:50:33</publishTime>
+      <publishTime>04/05/2018 12:34:31</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.BusinessObjects.dll">
-      <publishTime>11/24/2017 19:01:25</publishTime>
+      <publishTime>04/05/2018 12:34:00</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.Common.dll">
-      <publishTime>11/24/2017 19:01:25</publishTime>
+      <publishTime>04/05/2018 10:38:18</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>12/15/2017 10:56:05</publishTime>
+      <publishTime>04/05/2018 12:34:14</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
-      <publishTime>12/15/2017 12:34:55</publishTime>
+      <publishTime>04/05/2018 10:38:50</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>06/13/2016 23:06:14</publishTime>
@@ -504,7 +513,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/15/2017 12:39:43</publishTime>
+      <publishTime>04/05/2018 12:34:35</publishTime>
     </File>
   </ItemGroup>
 </Project>
