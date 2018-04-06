@@ -361,12 +361,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
                                 if (pv != null)
                                 {
-                                    pv.CalendarEvent.IsDeleted = true;
+                                    pv.CalendarEvent.UnAssigned = true;
                                     pv.CalendarEvent.UpdateByUserID = 0;
                                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                                 }
 
-                                pv.IsDeleted = true;
+                                //pv.IsDeleted = true;
                                 pv.UpdateByUserID = 0;
                                 pv.UpdateDate = DateTime.UtcNow;
 
@@ -394,12 +394,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 {
                                     if (pv != null)
                                     {
-                                        pv.CalendarEvent.IsDeleted = true;
+                                        pv.CalendarEvent.UnAssigned = true;
                                         pv.CalendarEvent.UpdateByUserID = 0;
                                         pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                                     }
 
-                                    pv.IsDeleted = true;
+                                    //pv.IsDeleted = true;
                                     pv.UpdateByUserID = 0;
                                     pv.UpdateDate = DateTime.UtcNow;
 
@@ -1445,7 +1445,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             DateTime currentDate = DateTime.Now;
             var patientVisit = _context.PatientVisits.Include("CalendarEvent")
                                          .Include("Location")
-                                         .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate
+                                         .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate && p.CalendarEvent.UnAssigned == true
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .ToList();
 
@@ -1697,12 +1697,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (pv != null)
                 {
-                    pv.CalendarEvent.IsDeleted = true;
+                    pv.CalendarEvent.UnAssigned = true;
                     pv.CalendarEvent.UpdateByUserID = 0;
                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                 }
 
-                pv.IsDeleted = true;
+                //pv.IsDeleted = true;
                 pv.UpdateByUserID = 0;
                 pv.UpdateDate = DateTime.UtcNow;
 

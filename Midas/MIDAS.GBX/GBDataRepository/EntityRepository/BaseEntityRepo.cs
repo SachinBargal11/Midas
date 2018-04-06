@@ -1265,6 +1265,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetUnAssignedByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

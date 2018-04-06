@@ -175,6 +175,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getUnAssignedByCompanyId/{CompanyId}")]
+        public HttpResponseMessage GetUnAssignedByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetUnAssignedByCompanyId(Request, CompanyId);
+        }
+
+        [HttpGet]
         [Route("getByCompanyAndDoctorId/{CompanyId}/{DoctorId}")]
         public HttpResponseMessage GetByCompanyAndDoctorId(int CompanyId, int DoctorId)
         {
