@@ -95,6 +95,7 @@ export class AccidentInfoComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.MatchCase();
             this._progressBarService.show();
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
@@ -467,6 +468,27 @@ export class AccidentInfoComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         }
+        
+    }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
 }
