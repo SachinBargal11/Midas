@@ -172,6 +172,8 @@ export class CreateVisitComponent implements OnInit {
     @Input() caseId: number=0;
     @Input() referrenceId: number;    
     @Input() idPatient: number;
+    @Input() specialtyId: number;
+    @Input() roomTestId: number;
     companyId: number = this.sessionStore.session.currentCompany.id;
     userId: number = this.sessionStore.session.user.id;
     selectedVisitType = '1';
@@ -796,7 +798,7 @@ export class CreateVisitComponent implements OnInit {
         } else {
             // this.events = [];
             // this.loadLocationVisits(this.selectedLocationId);
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
+            this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationSpecialtyId(this.selectedLocationId, this.specialtyId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
                     let mappedDoctorLocationSchedules: {
                         doctorLocationSchedule: DoctorLocationSchedule,
@@ -817,7 +819,7 @@ export class CreateVisitComponent implements OnInit {
                 
                 if(!this.sessionStore.isOnlyDoctorRole())
                 {
-                    this._roomsStore.getRooms(this.selectedLocationId)
+                    this._roomsStore.getRoomsByLocationRoomTestId(this.selectedLocationId, this.roomTestId)
                     .subscribe((rooms: Room[]) => {
                         this.rooms = rooms;
                     }, error => {

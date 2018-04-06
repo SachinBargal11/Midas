@@ -9,8 +9,8 @@ import { BalancesComponent } from './components/balances';
 import { DocumentsComponent } from './components/documents';
 import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
-import { ValidateDoctorSession } from '../../commons/guards/validate-doctor-session';
-import { ValidateInActiveDoctorSession } from '../../commons/guards/validate-inactivedoctor-session';
+import { ValidateAttorneySession } from '../../commons/guards/validate-attorney-session';
+import { ValidateInActiveAttorneySession } from '../../commons/guards/validate-inactiveattorney-session';
 import { ShellComponent } from '../../commons/shell-component';
 // import { AddFamilyMemberComponent } from './components/add-family-member';
 // import { FamilyMemberListComponent } from './components/family-member-list';
@@ -25,7 +25,7 @@ export const PatientsShellRoutes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'appointments',
-        canActivate: [ValidateDoctorSession, ValidateActiveSession]
+        canActivate: [ValidateAttorneySession, ValidateActiveSession]
     },
     {
         path: '',
@@ -43,7 +43,7 @@ export const PatientsShellRoutes: Routes = [
             {
                 path: '',
                 component: DoctorAppointmentComponent,
-                canActivate: [ValidateDoctorSession],
+                canActivate: [ValidateAttorneySession],
                 data: {
                     breadcrumb: 'root'
                 }

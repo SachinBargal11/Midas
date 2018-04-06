@@ -1,8 +1,8 @@
 // import { NgModule } from '@angular/core';
 // import { Routes, RouterModule } from '@angular/router';
 // import { ValidateActiveSession } from '../../../commons/guards/validate-active-session';
-// import { ValidateDoctorSession } from '../../../commons/guards/validate-doctor-session';
-// import { ValidateInActiveDoctorSession } from '../../../commons/guards/validate-inactivedoctor-session';
+// import { ValidateAttorneySession } from '../../../commons/guards/validate-attorney-session';
+// import { ValidateInActiveAttorneySession } from '../../../commons/guards/validate-inactiveattorney-session';
 // import { ShellComponent } from '../../../commons/shell-component';
 // import { AccountSettingShellComponent } from './account-setting-shell';
 // import { ProcedureCodeComponent } from './procedure-code-master';
@@ -51,8 +51,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../../commons/guards/validate-active-session';
-import { ValidateDoctorSession } from '../../../commons/guards/validate-doctor-session';
-import { ValidateInActiveDoctorSession } from '../../../commons/guards/validate-inactivedoctor-session';
+import { ValidateAttorneySession } from '../../../commons/guards/validate-attorney-session';
+import { ValidateInActiveAttorneySession } from '../../../commons/guards/validate-inactiveattorney-session';
 import { ShellComponent } from '../../../commons/shell-component';
 import { AccountSettingShellComponent } from './account-setting-shell';
 import { DocumentTypeComponent } from './document-type';

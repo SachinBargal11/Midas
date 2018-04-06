@@ -4,7 +4,7 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
-    "build": "ng build --prod",
+    "build": "node --max_old_space_size=5048 ./node_modules/@angular/cli/bin/ng build --prod --aot --no-sourcemap",
     "ng": "ng",
     "start": "ng serve --port 4203",
     "lint": "tslint \"src/**/*.ts\"",

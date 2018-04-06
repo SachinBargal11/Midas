@@ -228,4 +228,15 @@ export class RoomsStore {
         this._tests.next(this._tests.getValue().clear());
     }
 
+    getRoomsByLocationRoomTestId(locationId: number, roomTestId: number): Observable<Room[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.getRoomsByLocationRoomTestId(locationId, roomTestId).subscribe((rooms: Room[]) => {
+                this._rooms.next(List(rooms));
+                resolve(rooms);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
+    }
 }

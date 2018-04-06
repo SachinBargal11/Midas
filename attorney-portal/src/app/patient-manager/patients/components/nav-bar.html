@@ -27,11 +27,11 @@
                 </a>
             </li>
             <!--<li [routerLinkActive]="['opened']">
-                <a *ngIf="!sessionStore.isOnlyDoctorRole()" [routerLink]="['/patient-manager/referrals/pending-referrals']">
+                <a *ngIf="!sessionStore.isOnlyAttorneyRole()" [routerLink]="['/patient-manager/referrals/pending-referrals']">
                     <i class="fa fa-retweet"></i>
                     <span class="lbl">Referrals</span>
                 </a>
-                <a *ngIf="sessionStore.isOnlyDoctorRole()" [routerLink]="['/patient-manager/referrals/inbound-referrals']">
+                <a *ngIf="sessionStore.isOnlyAttorneyRole()" [routerLink]="['/patient-manager/referrals/inbound-referrals']">
                     <i class="fa fa-retweet"></i>
                     <span class="lbl">Referrals</span>
                 </a>

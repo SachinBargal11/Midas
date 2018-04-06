@@ -1,6 +1,6 @@
 <section class="tabs-section" *ngIf="preferredUIViewId == 2">
 	<h3 class="with-border">Details of {{patientName}}
-		<a title="Add Case" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
+		<a *ngIf="!sessionStore.isOnlyDoctorRole()" title="Add Case" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Case</span>
     </a>
 		<a title="Case List" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -96,7 +96,7 @@
 
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<h3 class="with-border">Details of {{patientName}}
-		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
+		<a *ngIf="!sessionStore.isOnlyDoctorRole()" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Case</span>
     </a>
 		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-plus" aria-hidden="true"></i>

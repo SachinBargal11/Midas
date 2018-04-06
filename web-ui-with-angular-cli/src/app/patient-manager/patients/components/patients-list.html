@@ -1,11 +1,11 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">Patients
-        <a class="pull-right btn btn-danger btn-sm" (click)="deletePatients()">
+        <a class="pull-right btn btn-danger btn-sm" (click)="deletePatients()" *ngIf="!sessionStore.isOnlyDoctorRole()" >
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Patients</span>
             <loader [visible]="isDeleteProgress"></loader>
         </a>
-        <a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+        <a *ngIf="!sessionStore.isOnlyDoctorRole()" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Patient</span>
     </a>
     </h3>
@@ -14,11 +14,19 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patient">
-</div>
+    </div>    
+    <div class="col-lg-2 input-group">        
+        <span class="input-group-addon">Filter</span>
+        <select [(ngModel)]="Filterby" type="text" class="form-control" (change)="filterPatient()">
+            <option value="1">All</option>
+            <option value="2">Assigned</option>
+            <option value="3">Office</option>
+        </select>
+    </div>
 </div>
 <!--<p-dataTable [value]="patients" [(selection)]="selectedPatients" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)">-->
-<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
+<p-dataTable [value]="fpatients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
     [globalFilter]="gb" [responsive]="true" #dt>
     <header>Patients</header>
     <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>

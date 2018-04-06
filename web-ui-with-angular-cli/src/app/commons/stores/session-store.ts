@@ -254,6 +254,43 @@ export class SessionStore {
         return isOnlyDoctorRole;
     }
 
+    isStaffDoctorRole() {
+        let isStaffDoctorRole: boolean = false;
+        let roles: UserRole[] = [];
+        roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
+        if (roles) {
+            if (roles.length === 1) {              
+                    isStaffDoctorRole = false;                
+            } else {
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 3)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
+                });
+                if(count > 1)
+                {
+                    isStaffDoctorRole = true;
+                }
+                else{
+                    isStaffDoctorRole = false;
+                }
+            }
+        }
+        return isStaffDoctorRole;
+    }
+
     rand() {
         return (Date.now() + "" + Math.random()).replace(".", "");
     }

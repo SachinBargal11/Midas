@@ -64,7 +64,8 @@ export class PatientAdapter {
                 spouseName: data.spouseName,
                 patientLanguagePreferenceMappings: LanguagePreferenceMappings,
                 languagePreferenceOther: data.languagePreferenceOther,
-                patientSocialMediaMappings: SocialMediaMappings
+                patientSocialMediaMappings: SocialMediaMappings,
+                addedByCompanyId: data.addedByCompanyId,
             });
         }
         return patient;

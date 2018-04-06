@@ -55,8 +55,7 @@ export class AccidentInfoComponent implements OnInit {
     caseDetail: Case;
     caseStatusId: number;
     caseDetails: Case[];
-    caseViewedByOriginator: boolean = false;
-
+    
     policeAtScene = '0';
     isWearingSeatbelt = '0';
     isAirBagDeploy = '0';
@@ -82,7 +81,7 @@ export class AccidentInfoComponent implements OnInit {
     treatmentDoctorName: string;
     treatmentContactNumber: string;
     treatmentAddress: string;
-    referredToMe: boolean = false;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -99,11 +98,11 @@ export class AccidentInfoComponent implements OnInit {
         private _casesStore: CasesStore,
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {                
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this.MatchReferal();
+            this.patientId = parseInt(routeParams.patientId, 10);            
         });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.MatchCase();
             this._progressBarService.show();
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
@@ -169,7 +168,7 @@ export class AccidentInfoComponent implements OnInit {
             this._progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
-                (caseDetail: Case) => {
+                (caseDetail: Case) => {                    
                     if (caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id) {
                         this.caseViewedByOriginator = false;
                     } else {
@@ -184,7 +183,6 @@ export class AccidentInfoComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-
         });
 
         this.accidentform = this.fb.group({
@@ -477,37 +475,25 @@ export class AccidentInfoComponent implements OnInit {
         }
     }
 
-    MatchReferal() {    
-        //this._casesStore.MatchReferal(this.patientId);
-        this._progressBarService.show();
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        let result = this._patientStore.getPatientById(this.patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                this.caseDetails = results[0];
-                if (this.caseDetails.length > 0) {
-                    let matchedCompany = null;
-                    matchedCompany = _.find(this.caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                        return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
-                    })
-                    if (matchedCompany) {
-                        this.referredToMe = true;
+    MatchCase() {            
+            this._progressBarService.show();
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {                    
+                    if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                        this.caseViewedByOriginator = false;
                     } else {
-                        this.referredToMe = false;
+                        this.caseViewedByOriginator = true;
                     }
-                } else {
-                    this.referredToMe = false;
-                }                
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });    
-    
-        }
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+    }
 }
 

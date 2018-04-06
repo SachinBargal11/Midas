@@ -4,7 +4,7 @@
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Documents">
     </div>
-    <div class="col-lg-8" *ngIf="caseStatusId === 1">
+    <div class="col-lg-8" *ngIf="caseStatusId === 1 && caseViewedByOriginator">
     <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
         <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete </span>
         <loader [visible]="isDeleteProgress"></loader>
