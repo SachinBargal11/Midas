@@ -52,6 +52,7 @@ export class CaseBasicComponent implements OnInit {
     providerId: number = 0;
     medicalProviderId: number;
     companyId: number;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -75,6 +76,7 @@ export class CaseBasicComponent implements OnInit {
         });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchCase();
             this._progressBarService.show();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             // let fetchlocations = this._locationsStore.getLocations();
@@ -269,6 +271,26 @@ saveCase() {
             this._progressBarService.hide();
         });
 
-}
 
+    }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 }

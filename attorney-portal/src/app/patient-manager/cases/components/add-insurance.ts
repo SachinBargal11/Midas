@@ -16,7 +16,9 @@ import { Insurance } from '../../patients/models/insurance';
 import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
+import { CasesStore } from '../../cases/stores/case-store';
 import * as _ from 'underscore';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'add-insurance',
@@ -38,10 +40,12 @@ export class AddInsuranceComponent implements OnInit {
     isInsuranceCitiesLoading = false;
     // msgs: Message[];
     uploadedFiles: any[] = [];
-
+    caseStatusId: number;
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
+    caseViewedByOriginator = false;
+    patientId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -53,21 +57,18 @@ export class AddInsuranceComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _casesStore : CasesStore
     ) {
 
         this.eventStartAsDate = moment().toDate();
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
         });
-        //  this._insuranceStore.getInsurancesMaster()
-        //     .subscribe(
-        //     (insuranceMasters) => {
-        //         this.insuranceMasters = insuranceMasters;
-        //         this.insuranceMasters.forEach(element => {
-        //             this.insuranceMastersAdress = element.Address
-        //         });
-        //     });
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.MatchCase();
+        });
 
 
         this.insuranceform = this.fb.group({
@@ -267,6 +268,26 @@ export class AddInsuranceComponent implements OnInit {
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
+    }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
                 this._progressBarService.hide();
             });
     }

@@ -255,7 +255,7 @@ export class AddCaseComponent implements OnInit {
         result = this._casesStore.addCase(caseDetail);
         result.subscribe(
             (response) => {
-                if (this.providerId > 0) {
+                if (this.providerId >= 0) {
 
                     let result1 = this._patientsStore.assignPatientToMedicalProvider((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.providerId);
                     result1.subscribe(
@@ -285,6 +285,14 @@ export class AddCaseComponent implements OnInit {
                             this._progressBarService.hide();
                         });
                 }
+
+                let notification = new Notification({
+                    'title': 'Case added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to add case.';

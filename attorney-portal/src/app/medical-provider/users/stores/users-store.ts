@@ -139,4 +139,15 @@ export class UsersStore {
         }
     }
 
+    getIsExistingUser(userName: string): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.getIsExistingUser(userName).subscribe((user: any) => {
+                resolve(user);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
 }

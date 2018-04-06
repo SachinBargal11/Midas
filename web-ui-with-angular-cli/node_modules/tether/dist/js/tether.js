@@ -1,4 +1,4 @@
-/*! tether 1.4.3 */
+/*! tether 1.4.0 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -77,7 +77,7 @@ function getScrollParents(el) {
     var overflowX = _style.overflowX;
     var overflowY = _style.overflowY;
 
-    if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
+    if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
       if (position !== 'absolute' || ['relative', 'absolute', 'fixed'].indexOf(style.position) >= 0) {
         parents.push(parent);
       }
@@ -476,7 +476,7 @@ var position = function position() {
 };
 
 function now() {
-  if (typeof performance === 'object' && typeof performance.now === 'function') {
+  if (typeof performance !== 'undefined' && typeof performance.now !== 'undefined') {
     return performance.now();
   }
   return +new Date();
@@ -1248,9 +1248,7 @@ var TetherClass = (function (_Evented) {
 
       if (!moved) {
         if (this.options.bodyElement) {
-          if (this.element.parentNode !== this.options.bodyElement) {
-            this.options.bodyElement.appendChild(this.element);
-          }
+          this.options.bodyElement.appendChild(this.element);
         } else {
           var offsetParentIsBody = true;
           var currentNode = this.element.parentNode;
