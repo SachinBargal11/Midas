@@ -28,6 +28,8 @@
           <Property Name="RequireSignOutPrompt" Type="bit" Nullable="false" />
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="IsTwoFactorAuthentication" Type="bit" Nullable="false" />
+          <Property Name="UserStoreServiceName" Type="varchar" MaxLength="255" />
+          <Property Name="UserStoreConnectionString" Type="varchar" MaxLength="512" />
         </EntityType>
         <EntityType Name="ClientAllowedCorsOrigin">
           <Key>
@@ -69,6 +71,27 @@
           <Property Name="ClientID" Type="int" Nullable="false" />
           <Property Name="SecretValue" Type="varchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="OTP">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Pin" Type="int" Nullable="false" />
+          <Property Name="OTPCode" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Scope">
           <Key>
             <PropertyRef Name="Id" />
@@ -97,6 +120,33 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScopeID" Type="int" Nullable="false" />
           <Property Name="SecretValue" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="tinyint" />
+          <Property Name="Password" Type="varchar" MaxLength="2000" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="2FactAuthEmailEnabled" Type="bit" />
+          <Property Name="2FactAuthSMSEnabled" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__ClientAll__Clien__403A8C7D">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
@@ -182,6 +232,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserRole__RoleID__778AC167">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRole__UserID__76969D2E">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CAIdentityServerModelStoreContainer">
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientAllowedCorsOrigin" EntityType="Self.ClientAllowedCorsOrigin" Schema="dbo" store:Type="Tables" />
@@ -189,9 +263,13 @@
           <EntitySet Name="ClientRedirectURI" EntityType="Self.ClientRedirectURI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientScope" EntityType="Self.ClientScope" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientSecret" EntityType="Self.ClientSecret" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Scope" EntityType="Self.Scope" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScopeClaim" EntityType="Self.ScopeClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScopeSecret" EntityType="Self.ScopeSecret" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__ClientAll__Clien__403A8C7D" Association="Self.FK__ClientAll__Clien__403A8C7D">
             <End Role="Client" EntitySet="Client" />
             <End Role="ClientAllowedCorsOrigin" EntitySet="ClientAllowedCorsOrigin" />
@@ -219,6 +297,14 @@
           <AssociationSet Name="FK__ScopeSecr__Scope__45F365D3" Association="Self.FK__ScopeSecr__Scope__45F365D3">
             <End Role="Scope" EntitySet="Scope" />
             <End Role="ScopeSecret" EntitySet="ScopeSecret" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRole__RoleID__778AC167" Association="Self.FK__UserRole__RoleID__778AC167">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRole__UserID__76969D2E" Association="Self.FK__UserRole__UserID__76969D2E">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -253,6 +339,8 @@
           <NavigationProperty Name="ClientScopes" Relationship="Self.FK__ClientSco__Clien__4316F928" FromRole="Client" ToRole="ClientScope" />
           <NavigationProperty Name="ClientSecrets" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="Client" ToRole="ClientSecret" />
           <Property Name="IsTwoFactorAuthentication" Type="Boolean" Nullable="false" />
+          <Property Name="UserStoreServiceName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserStoreConnectionString" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ClientAllowedCorsOrigin">
           <Key>
@@ -433,6 +521,18 @@
             <End Role="Client" EntitySet="Clients" />
             <End Role="ClientSecret" EntitySet="ClientSecrets" />
           </AssociationSet>
+          <EntitySet Name="OTPs" EntityType="CAIdentityServerModel.OTP" />
+          <EntitySet Name="Roles" EntityType="CAIdentityServerModel.Role" />
+          <EntitySet Name="Users" EntityType="CAIdentityServerModel.User" />
+          <EntitySet Name="UserRoles" EntityType="CAIdentityServerModel.UserRole" />
+          <AssociationSet Name="FK__UserRole__RoleID__778AC167" Association="CAIdentityServerModel.FK__UserRole__RoleID__778AC167">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRole__UserID__76969D2E" Association="CAIdentityServerModel.FK__UserRole__UserID__76969D2E">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ClientSecret">
           <Key>
@@ -455,6 +555,82 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="OTP">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Pin" Type="Int32" Nullable="false" />
+          <Property Name="OTPCode" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserRoles" Relationship="CAIdentityServerModel.FK__UserRole__RoleID__778AC167" FromRole="Role" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Byte" />
+          <Property Name="Password" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="C2FactAuthEmailEnabled" Type="Boolean" />
+          <Property Name="C2FactAuthSMSEnabled" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="UserRoles" Relationship="CAIdentityServerModel.FK__UserRole__UserID__76969D2E" FromRole="User" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="CAIdentityServerModel.FK__UserRole__RoleID__778AC167" FromRole="UserRole" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="CAIdentityServerModel.FK__UserRole__UserID__76969D2E" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__UserRole__RoleID__778AC167">
+          <End Type="CAIdentityServerModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="CAIdentityServerModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRole__UserID__76969D2E">
+          <End Type="CAIdentityServerModel.User" Role="User" Multiplicity="1" />
+          <End Type="CAIdentityServerModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -464,6 +640,8 @@
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="CAIdentityServerModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="UserStoreConnectionString" ColumnName="UserStoreConnectionString" />
+                <ScalarProperty Name="UserStoreServiceName" ColumnName="UserStoreServiceName" />
                 <ScalarProperty Name="IsTwoFactorAuthentication" ColumnName="IsTwoFactorAuthentication" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
@@ -560,6 +738,58 @@
                 <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OTPs">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.OTP">
+              <MappingFragment StoreEntitySet="OTP">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OTPCode" ColumnName="OTPCode" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="C2FactAuthSMSEnabled" ColumnName="2FactAuthSMSEnabled" />
+                <ScalarProperty Name="C2FactAuthEmailEnabled" ColumnName="2FactAuthEmailEnabled" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

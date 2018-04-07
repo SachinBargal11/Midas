@@ -42,7 +42,7 @@ namespace CAIdentityServer.Controllers
             var env = Request.GetOwinContext().Environment;
             var signInMessage = env.GetSignInMessage(id);
             OwinEnvironmentService owin = new OwinEnvironmentService(env);
-            MidasUserService userService = new MidasUserService(owin);
+            IndentityUserService userService = new IndentityUserService(owin);
 
             if (!(await userService.VerifyTwoFactorTokenAsync(subjectid, code, signInMessage)))
             {

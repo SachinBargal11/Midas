@@ -26,7 +26,7 @@ namespace CAIdentityServer
                     //.UseInMemoryScopes(Scopes.Get());
                     .UseInMemoryScopes(clientscopeservice.GetScopes());
 
-                factory.UserService = new Registration<IUserService, MidasUserService>();
+                factory.UserService = new Registration<IUserService, IndentityUserService>();
 
 
 

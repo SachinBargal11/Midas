@@ -21,6 +21,12 @@
         <AssociationConnector Association="CAIdentityServerModel.FK__ScopeSecr__Scope__45F365D3" ManuallyRouted="false" />
         <EntityTypeShape EntityType="CAIdentityServerModel.ClientSecret" Width="1.5" PointX="3" PointY="12.25" />
         <AssociationConnector Association="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.OTP" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.Role" Width="1.5" PointX="9.375" PointY="7.125" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.User" Width="1.5" PointX="9.375" PointY="15" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.UserRole" Width="1.5" PointX="11.625" PointY="6.875" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__UserRole__RoleID__778AC167" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__UserRole__UserID__76969D2E" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

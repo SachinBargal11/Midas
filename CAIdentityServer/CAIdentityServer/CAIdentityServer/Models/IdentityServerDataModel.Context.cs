@@ -34,5 +34,9 @@ namespace CAIdentityServer.Models
         public virtual DbSet<ScopeClaim> ScopeClaims { get; set; }
         public virtual DbSet<ScopeSecret> ScopeSecrets { get; set; }
         public virtual DbSet<ClientSecret> ClientSecrets { get; set; }
+        public virtual DbSet<OTP> OTPs { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

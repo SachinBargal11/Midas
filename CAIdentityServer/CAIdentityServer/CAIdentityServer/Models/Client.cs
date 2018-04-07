@@ -43,6 +43,8 @@ namespace CAIdentityServer.Models
         public bool RequireSignOutPrompt { get; set; }
         public bool IsEnabled { get; set; }
         public bool IsTwoFactorAuthentication { get; set; }
+        public string UserStoreServiceName { get; set; }
+        public string UserStoreConnectionString { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientAllowedCorsOrigin> ClientAllowedCorsOrigins { get; set; }

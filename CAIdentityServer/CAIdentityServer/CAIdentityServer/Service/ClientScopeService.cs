@@ -100,13 +100,13 @@ namespace CAIdentityServer.Service
 
             Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
 
-            foreach (Models.ClientScope clientscope in context.ClientScopes.Where(s=> s.Client.ClientId == clientid).ToList())
+            foreach (Models.ClientScope clientscope in context.ClientScopes.Where(s => s.Client.ClientId == clientid).ToList())
             {
                 scope = scope + clientscope.ScopeName + " ";
             }
 
             return scope;
-            
+
         }
 
         public bool IsTwoFactorAuthentication(string clientid)
@@ -127,6 +127,22 @@ namespace CAIdentityServer.Service
                     result = client.IsTwoFactorAuthentication;
                 }
             }
+            return result;
+        }
+
+        public string GetClientUserStoreServiceURL(string clientID)
+        {
+            string result = null;
+
+            Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
+
+            Models.Client client = context.Clients.Where(c => c.ClientId == clientID).FirstOrDefault();
+
+            if (client != null)
+            {
+                result = client.UserStoreServiceName;
+            }
+
             return result;
         }
     }

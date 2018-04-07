@@ -48,7 +48,7 @@ namespace CAIdentityServer.Controllers
             };
 
             OwinEnvironmentService owin = new OwinEnvironmentService(env);
-            MidasUserService userService = new MidasUserService(owin);
+            IndentityUserService userService = new IndentityUserService(owin);
             await userService.AuthenticateLocalAsync(authenticationContext);
 
             var authResult = authenticationContext.AuthenticateResult;
