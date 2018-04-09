@@ -46,7 +46,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<bool> LegallyMarried { get; set; }
         public string SpouseName { get; set; }
         public string LanguagePreferenceOther { get; set; }
-        public int AddedByCompanyId { get; set; }
+        public Nullable<int> AddedByCompanyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }
@@ -58,6 +58,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
+        public virtual Patient Patient1 { get; set; }
+        public virtual Patient Patient2 { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientDocument> PatientDocuments { get; set; }

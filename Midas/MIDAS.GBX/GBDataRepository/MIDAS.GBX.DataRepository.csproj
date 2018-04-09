@@ -183,6 +183,7 @@
     <Compile Include="EntityRepository\DefendantVehicle\DefendantVehicleRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisCodeCompanyMapping\DiagnosisCodeCompanyMappingRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisTypeCompnay\DiagnosisTypeCompanyRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
     <Compile Include="EntityRepository\EOVisit\EOVisitRepository.cs" />
     <Compile Include="EntityRepository\Helper\IdentityHelper.cs" />
@@ -221,7 +222,6 @@
     <Compile Include="EntityRepository\DiagnosisCode\DiagnosisCodeRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisType\DiagnosisTypeRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
-    <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\CaseDocumentRepository.cs" />

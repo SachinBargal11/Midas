@@ -579,12 +579,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (pv != null)
                 {
-                    pv.CalendarEvent.IsDeleted = true;
+                    //pv.CalendarEvent.IsDeleted = true;
+                    pv.CalendarEvent.Unassigned = true;
                     pv.CalendarEvent.UpdateByUserID = 0;
                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                 }
 
-                pv.IsDeleted = true;
+                //pv.IsDeleted = true;
                 pv.UpdateByUserID = 0;
                 pv.UpdateDate = DateTime.UtcNow;
 

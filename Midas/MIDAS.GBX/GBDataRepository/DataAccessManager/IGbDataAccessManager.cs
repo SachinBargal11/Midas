@@ -247,6 +247,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociateUserToLocations(T gbObject);
         object DeleteAllAppointmentsandUserLocationSchedule(T gbObject);
         Object GetByUserId(int UserId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetUnAssignedByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyAndUserId(int companyId, int userId);
     }
 }

@@ -42,6 +42,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isCancelled")]
         public bool? IsCancelled { get; set; }
 
+        [JsonProperty("unAssigned")]
+        public bool? UnAssigned { get; set; }
     }
 
     public class mCalendarEvent : GbObject

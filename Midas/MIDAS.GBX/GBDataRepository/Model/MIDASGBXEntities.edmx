@@ -920,7 +920,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="LegallyMarried" Type="bit" />
           <Property Name="SpouseName" Type="nvarchar" MaxLength="256" />
           <Property Name="LanguagePreferenceOther" Type="nvarchar" MaxLength="256" />
-          <Property Name="AddedByCompanyId" Type="int" Nullable="false" />
+          <Property Name="AddedByCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
           <Key>
@@ -2839,6 +2839,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MidasDocuments_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MidasDocuments">
+              <PropertyRef Name="CreateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notification_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -2888,7 +2900,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Patient_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
@@ -2908,6 +2920,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Principal>
             <Dependent Role="Patient">
               <PropertyRef Name="MaritalStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Patient1" Type="Self.Patient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Patient1">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4794,6 +4818,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Company" EntitySet="Company" />
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
           </AssociationSet>
+          <AssociationSet Name="FK_MidasDocuments_User" Association="Self.FK_MidasDocuments_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="Notification" EntitySet="Notification" />
@@ -4817,6 +4845,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <AssociationSet Name="FK_Patient_MaritalStatusId" Association="Self.FK_Patient_MaritalStatusId">
             <End Role="MaritalStatus" EntitySet="MaritalStatus" />
             <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Patient" Association="Self.FK_Patient_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Patient1" EntitySet="Patient" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_User_id" Association="Self.FK_Patient_User_id">
             <End Role="User" EntitySet="User" />
@@ -6321,6 +6353,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
           <NavigationProperty Name="Company" Relationship="Self.FK_MidasDocuments_Company" FromRole="MidasDocuments" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="Self.FK_MidasDocuments_User" FromRole="MidasDocuments" ToRole="User" />
           <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="PatientDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
           <NavigationProperty Name="VisitDocuments" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="VisitDocuments" />
@@ -6413,13 +6446,15 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="LegallyMarried" Type="Boolean" />
           <Property Name="SpouseName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LanguagePreferenceOther" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="AddedByCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="AddedByCompanyId" Type="Int32" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Patient_PatientId" FromRole="Patient" ToRole="AttorneyVisit" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient_PatientId" FromRole="Patient" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="Patient" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Patient_PatientId" FromRole="Patient" ToRole="IMEVisit" />
           <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient_MaritalStatusId" FromRole="Patient" ToRole="MaritalStatus" />
+          <NavigationProperty Name="Patient1" Relationship="Self.FK_Patient_Patient" FromRole="Patient" ToRole="Patient1" />
+          <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient_Patient" FromRole="Patient1" ToRole="Patient" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patient_User_id" FromRole="Patient" ToRole="User" />
           <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_Patient_PatientId" FromRole="Patient" ToRole="PatientDocuments" />
           <NavigationProperty Name="PatientLanguagePreferenceMappings" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientLanguagePreferenceMapping" />
@@ -7322,6 +7357,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
+          <NavigationProperty Name="MidasDocuments" Relationship="Self.FK_MidasDocuments_User" FromRole="User" ToRole="MidasDocuments" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Patient_User_id" FromRole="User" ToRole="Patient" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="User" ToRole="PendingReferral" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_User_DismissedBy" FromRole="User" ToRole="Referral" />
@@ -8456,7 +8492,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Patient_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
@@ -9283,6 +9319,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MidasDocuments_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="MidasDocuments" Type="Self.MidasDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MidasDocuments">
+              <PropertyRef Name="CreateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientDocuments_MidasDocuments_MidasDocumentId">
           <End Role="MidasDocuments" Type="Self.MidasDocument" Multiplicity="1" />
           <End Role="PatientDocuments" Type="Self.PatientDocument" Multiplicity="*" />
@@ -9316,6 +9364,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Principal>
             <Dependent Role="VisitDocuments">
               <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Patient1" Type="Self.Patient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Patient1">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10703,6 +10763,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="MaritalStatus" EntitySet="MaritalStatus" />
             <End Role="Patient" EntitySet="Patients" />
           </AssociationSet>
+          <AssociationSet Name="FK_MidasDocuments_User" Association="Self.FK_MidasDocuments_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
             <End Role="PatientDocuments" EntitySet="PatientDocuments" />
@@ -10714,6 +10778,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <AssociationSet Name="FK_VisitDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Patient" Association="Self.FK_Patient_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Patient1" EntitySet="Patients" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_User_id" Association="Self.FK_Patient_User_id">
             <End Role="User" EntitySet="Users" />
