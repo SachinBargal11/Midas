@@ -1,2 +1,2 @@
-C:\inetpub\website\qa-gb-midasattorneyapi.qwinix.io
+cd C:\inetpub\website\dev-gb-midaspatientapi.qwinix.io
 del * /S /Q
