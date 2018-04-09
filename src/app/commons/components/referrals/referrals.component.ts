@@ -635,8 +635,7 @@ export class ReferralsComponent implements OnInit {
     })
   }
 
-  saveReferral() {
-    debugger;
+  saveReferral() {    
     let procedureCodes = [];
     let visitReferralDetails: VisitReferral[] = [];
     let docSign = '';
