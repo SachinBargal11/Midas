@@ -18,6 +18,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientId")]
         public int? PatientId { get; set; }
 
+        [JsonProperty("locationId")]
+        public int? LocationId { get; set; }
+
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
 
@@ -53,6 +56,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("company")]
         public Company Company { get; set; }
+
+        [JsonProperty("location")]
+        public Location Location { get; set; }
     }
 
     public class AttorneyVisitDashboard : GbObject
@@ -65,6 +71,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("patientId")]
         public int? PatientId { get; set; }
+
+        [JsonProperty("locationId")]
+        public int? LocationId { get; set; }
 
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }

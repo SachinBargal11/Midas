@@ -245,6 +245,5 @@ F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\bin
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\bin\Ical.Net.Collections.pdb
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\bin\antlr.runtime.pdb
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\bin\antlr.runtime.xml
-F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\obj\Debug\MIDAS.GBX.FundingWebAPI.csprojResolveAssemblyReference.cache
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\obj\Debug\MIDAS.GBX.FundingWebAPI.dll
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.FundingWebAPI\obj\Debug\MIDAS.GBX.FundingWebAPI.pdb

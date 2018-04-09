@@ -580,7 +580,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (pv != null)
                 {
                     //pv.CalendarEvent.IsDeleted = true;
-                    pv.CalendarEvent.UnAssigned = true;
+                    pv.CalendarEvent.Unassigned = true;
                     pv.CalendarEvent.UpdateByUserID = 0;
                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                 }

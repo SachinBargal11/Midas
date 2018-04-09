@@ -356,12 +356,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         {
                             // Deleting the Doctor Appointments
                             DateTime currentDate = DateTime.Now.Date;
-                            var acc = _context.PatientVisits.Include("CalendarEvent").Where(p => p.DoctorId == doctorDB.Id && p.SpecialtyId ==  oldspc && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
+                            var acc = _context.PatientVisits.Include("CalendarEvent").Where(p => p.DoctorId == doctorDB.Id && p.SpecialtyId == oldspc && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
                             foreach (PatientVisit pv in acc)
                             {
                                 if (pv != null)
                                 {
-                                    pv.CalendarEvent.UnAssigned = true;
+                                    pv.CalendarEvent.Unassigned = true;
                                     pv.CalendarEvent.UpdateByUserID = 0;
                                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                                 }
@@ -394,7 +394,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 {
                                     if (pv != null)
                                     {
-                                        pv.CalendarEvent.UnAssigned = true;
+                                        pv.CalendarEvent.Unassigned = true;
                                         pv.CalendarEvent.UpdateByUserID = 0;
                                         pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                                     }
@@ -1339,7 +1339,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                    .Any(p3 => p3.CompanyID == companyId && p3.RoleID == 3)
                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .ToList<Doctor>();
-                                       //&& p.User.UserCompanies.Contains(companyId)                                       
+            //&& p.User.UserCompanies.Contains(companyId)                                       
 
             if (acc_ == null)
             {
@@ -1373,8 +1373,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc_ = _context.Doctors.Include("User")
                                        .Include("User.UserCompanyRoles")
                                        .Include("DoctorRoomTestMappings")
-                                       .Include("DoctorLocationSchedules")                                       
-                                       .Where(p => p.IsDeleted == false || p.IsDeleted == null 
+                                       .Include("DoctorLocationSchedules")
+                                       .Where(p => p.IsDeleted == false || p.IsDeleted == null
                                        //&& p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
                                        //            .Any(p3 => p3.CompanyID == companyId)
                                        //&& p.User.UserCompanyRoles.Where(p4 => (p4.IsDeleted.HasValue == false || (p4.IsDeleted.HasValue == true && p4.IsDeleted.Value == false)))
@@ -1397,7 +1397,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 int _docCount = _context.UserCompanyRoles.Where(p => p.UserID == item.User.id && p.CompanyID == companyId && p.RoleID == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Count();
                 if (_docCount != 0)
                 {
-                    int _locCount = _context.DoctorLocationSchedules.Where(p => p.DoctorID == item.User.id && p.LocationID == LocationId  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Count();
+                    int _locCount = _context.DoctorLocationSchedules.Where(p => p.DoctorID == item.User.id && p.LocationID == LocationId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Count();
                     if (_locCount != 0)
                     {
                         int _roomtestCount = _context.DoctorRoomTestMappings.Where(p => p.DoctorId == item.User.id && p.RoomTestId == docroom.RoomTestID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Count();
@@ -1445,7 +1445,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             DateTime currentDate = DateTime.Now;
             var patientVisit = _context.PatientVisits.Include("CalendarEvent")
                                          .Include("Location")
-                                         .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate && p.CalendarEvent.UnAssigned == true
+                                         .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate && p.CalendarEvent.Unassigned == true
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .ToList();
 
@@ -1458,7 +1458,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
 
-            var EUO = _context.EOVisits.Include("CalendarEvent")                                         
+            var EUO = _context.EOVisits.Include("CalendarEvent")
                                          .Where(p => p.DoctorId == DoctorId && p.CalendarEvent.EventStart >= currentDate
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .ToList();
@@ -1697,7 +1697,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (pv != null)
                 {
-                    pv.CalendarEvent.UnAssigned = true;
+                    pv.CalendarEvent.Unassigned = true;
                     pv.CalendarEvent.UpdateByUserID = 0;
                     pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
                 }
@@ -1994,12 +1994,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 newalldocspecDB.AddRange(test);
             }
 
-              List<Room> rommSpecilaties = new List<Room>();
-              rommSpecilaties = _context.Rooms.Include("RoomTest").Include("Location")
-              .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-              && p.Location.CompanyID == id).ToList<Room>();
-          
-           
+            List<Room> rommSpecilaties = new List<Room>();
+            rommSpecilaties = _context.Rooms.Include("RoomTest").Include("Location")
+            .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            && p.Location.CompanyID == id).ToList<Room>();
+
+
 
             List<BO.RoomTest> newalldocspec = new List<BO.RoomTest>();
             foreach (var specilaitu in newalldocspecDB)

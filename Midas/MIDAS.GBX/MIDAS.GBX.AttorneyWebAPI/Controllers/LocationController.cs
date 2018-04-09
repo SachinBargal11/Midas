@@ -87,6 +87,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.GetByCompanyAndDoctorId(Request, CompanyId, DoctorId);
         }
 
+        [HttpGet]
+        [Route("getByCompanyAndUserId/{CompanyId}/{UserId}")]
+        public HttpResponseMessage GetByCompanyAndUserId(int CompanyId, int UserId)
+        {
+            return requestHandler.GetByCompanyAndUserId(Request, CompanyId, UserId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

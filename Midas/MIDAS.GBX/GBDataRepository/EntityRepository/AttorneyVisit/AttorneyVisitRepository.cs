@@ -50,6 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 AttorneyVisitBO.CalendarEventId = AttorneyVisitDB.CalendarEventId;
                 AttorneyVisitBO.CaseId = AttorneyVisitDB.CaseId;
                 AttorneyVisitBO.PatientId = AttorneyVisitDB.PatientId;
+                AttorneyVisitBO.LocationId = AttorneyVisitDB.LocationId;
                 AttorneyVisitBO.CompanyId = AttorneyVisitDB.CompanyId;
                 AttorneyVisitBO.AttorneyId = AttorneyVisitDB.AttorneyId;
                 AttorneyVisitBO.EventStart = AttorneyVisitDB.EventStart;
@@ -117,6 +118,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
                     {
                         AttorneyVisitBO.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(AttorneyVisitDB.CalendarEvent);
+                    }
+                }
+                if (AttorneyVisitDB.Location != null)
+                {
+                    BO.Location boLocation = new BO.Location();
+                    using (LocationRepository cmp = new LocationRepository(_context))
+                    {
+                        boLocation = cmp.Convert<BO.Location, Location>(AttorneyVisitDB.Location);
+                        AttorneyVisitBO.Location = boLocation;
                     }
                 }
 
@@ -206,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_CalendarEventDB == true)
                     {
-                        CalendarEventDB.UnAssigned = false;
+                        CalendarEventDB.Unassigned = false;
                         CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
                     }
                     _context.SaveChanges();                    
@@ -273,6 +283,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     AttorneyVisitDB.PatientId = IsEditMode == true && AttorneyVisitBO.PatientId.HasValue == false ? AttorneyVisitDB.PatientId : (AttorneyVisitBO.PatientId.HasValue == false ? AttorneyVisitDB.PatientId : AttorneyVisitBO.PatientId.Value);
                     AttorneyVisitDB.AttorneyId = IsEditMode == true && AttorneyVisitBO.AttorneyId.HasValue == false ? AttorneyVisitDB.AttorneyId : (AttorneyVisitBO.AttorneyId.HasValue == false ? AttorneyVisitDB.AttorneyId : AttorneyVisitBO.AttorneyId.Value);
                     AttorneyVisitDB.CompanyId = IsEditMode == true && AttorneyVisitBO.CompanyId.HasValue == false ? AttorneyVisitDB.CompanyId : (AttorneyVisitBO.CompanyId.HasValue == false ? AttorneyVisitDB.CompanyId : AttorneyVisitBO.CompanyId.Value);
+                    AttorneyVisitDB.LocationId = IsEditMode == true && AttorneyVisitBO.LocationId.HasValue == false ? AttorneyVisitDB.LocationId : (AttorneyVisitBO.LocationId.HasValue == false ? AttorneyVisitDB.LocationId : AttorneyVisitBO.LocationId.Value);
 
                     AttorneyVisitDB.EventStart = AttorneyVisitBO.EventStart;
                     AttorneyVisitDB.EventEnd = AttorneyVisitBO.EventEnd;
@@ -324,7 +335,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (AttorneyVisitDB != null)
                 {
-                    AttorneyVisitDB = _context.AttorneyVisits.Include("CalendarEvent")
+                    AttorneyVisitDB = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                              .Include("Company")
                                                              .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")                                                            
                                                              .Where(p => p.Id == AttorneyVisitDB.Id
@@ -444,7 +455,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company And Attorney Id
         public override object GetByCompanyAndAttorneyId(int CompanyId, int AttorneyId)
         {
-            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                                           .Include("Patient")
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
@@ -471,7 +482,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company And Attorney Id
         //public override object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
         //{
-        //    List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+        //    List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
         //                                                                  .Include("Patient")
         //                                                                  .Include("Patient.User")
         //                                                                  .Include("Case")
@@ -498,7 +509,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company And Attorney Id
         public override object GetByPatientId(int PatientId)
         {
-            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                                           .Include("Patient")
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
@@ -524,7 +535,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Id
         public override object Get(int id)
         {
-            AttorneyVisit AttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+            AttorneyVisit AttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                                           .Include("Patient")
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
@@ -550,7 +561,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int caseId)
         {
-            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                                           .Include("Patient")
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
@@ -576,7 +587,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Attorney Visit For Date By CompanyId
         public override Object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId)
         {
-            var attorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+            var attorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                        .Include("Patient")
                                                        .Include("Patient.User")
                                                        .Where(p => p.CompanyId == CompanyId

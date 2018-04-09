@@ -482,22 +482,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             DateTime currentDate = DateTime.Now.Date;
-            //var acc = _context.AttorneyVisits.Include("CalendarEvent").Where(p => p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate && p.LocationId == userlocationscheduleDB.LocationID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientVisit>();
-            //foreach (PatientVisit pv in acc)
-            //{
-            //    if (pv != null)
-            //    {
-            //        pv.CalendarEvent.IsDeleted = true;
-            //        pv.CalendarEvent.UpdateByUserID = 0;
-            //        pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
-            //    }
+            var acc = _context.AttorneyVisits.Include("CalendarEvent").Where(p => p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate && p.LocationId == userlocationscheduleDB.LocationID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AttorneyVisit>();
+            foreach (AttorneyVisit pv in acc)
+            {
+                if (pv != null)
+                {
+                    pv.CalendarEvent.IsDeleted = true;
+                    pv.CalendarEvent.UpdateByUserID = 0;
+                    pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                }
 
-            //    pv.IsDeleted = true;
-            //    pv.UpdateByUserID = 0;
-            //    pv.UpdateDate = DateTime.UtcNow;
+                pv.IsDeleted = true;
+                pv.UpdateByUserID = 0;
+                pv.UpdateDate = DateTime.UtcNow;
 
-            //    _context.SaveChanges();
-            //}
+                _context.SaveChanges();
+            }
 
             userlocationscheduleDB.IsDeleted = true;
 
@@ -526,20 +526,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             DateTime currentDate = DateTime.Now.Date;
-            //var patientVisit = _context.AttorneyVisits.Include("CalendarEvent")
-            //                             .Include("Location")
-            //                             .Where(p => p.LocationId == userlocationscheduleDB.LocationID && p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate
-            //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                             .ToList();
+            var patientVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                         .Include("Location")
+                                         .Where(p => p.LocationId == userlocationscheduleDB.LocationID && p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .ToList();
 
-            //if (patientVisit != null)
-            //{
-            //    if (patientVisit.Count > 0)
-            //    {
+            if (patientVisit != null)
+            {
+                if (patientVisit.Count > 0)
+                {
 
-            //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future appointments already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
-            //    }
-            //}
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future appointments already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
+                }
+            }
 
             userlocationscheduleDB.IsDeleted = true;
 
@@ -565,20 +565,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             DateTime currentDate = DateTime.Now.Date;
-            //var patientVisit = _context.AttorneyVisits.Include("CalendarEvent")
-            //                             .Include("Location")
-            //                             .Where(p => p.LocationId == userlocationscheduleDB.LocationID && p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate
-            //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                             .ToList();
+            var patientVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                         .Include("Location")
+                                         .Where(p => p.LocationId == userlocationscheduleDB.LocationID && p.AttorneyId == userlocationscheduleDB.UserID && p.CalendarEvent.EventStart >= currentDate
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .ToList();
 
-            //if (patientVisit != null)
-            //{
-            //    if (patientVisit.Count > 0)
-            //    {
+            if (patientVisit != null)
+            {
+                if (patientVisit.Count > 0)
+                {
 
-            //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future appointments already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
-            //    }
-            //}
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future appointments already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
+                }
+            }
 
             userlocationscheduleDB.IsDeleted = true;
 

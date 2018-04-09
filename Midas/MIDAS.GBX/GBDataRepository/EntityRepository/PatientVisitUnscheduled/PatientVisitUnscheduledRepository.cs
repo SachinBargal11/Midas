@@ -227,7 +227,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (Add_CalendarEventDB == true)
                 {
-                    CalendarEventDB.UnAssigned = false;
+                    CalendarEventDB.Unassigned = false;
                     CalendarEventDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                     CalendarEventDB.CreateDate = DateTime.UtcNow;
                 }
@@ -746,7 +746,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (Add_CalendarEventDB == true)
                         {
-                            CalendarEventDB.UnAssigned = false;
+                            CalendarEventDB.Unassigned = false;
                             CalendarEventDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             CalendarEventDB.CreateDate = DateTime.UtcNow;
                         }

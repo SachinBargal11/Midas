@@ -67,7 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             calendarEventBO.IsDeleted = calendarEvent.IsDeleted;
             calendarEventBO.CreateByUserID = calendarEvent.CreateByUserID;
             calendarEventBO.UpdateByUserID = calendarEvent.UpdateByUserID;
-            calendarEventBO.UnAssigned = calendarEvent.UnAssigned;      
+            calendarEventBO.UnAssigned = calendarEvent.Unassigned;      
 
             return (T)(object)calendarEventBO;
 
@@ -83,7 +83,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                              .Select(p => p.LocationID).FirstOrDefault();
             }
 
-            var CalendarEvents = _context.PatientVisits.Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId && p.CalendarEvent.UnAssigned == false
+            var CalendarEvents = _context.PatientVisits.Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId && p.CalendarEvent.Unassigned == false
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .Select(p => p.CalendarEvent)
                                                         .ToList();

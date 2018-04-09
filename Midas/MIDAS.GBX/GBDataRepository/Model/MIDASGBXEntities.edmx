@@ -91,6 +91,7 @@
           <Property Name="CalendarEventId" Type="int" Nullable="false" />
           <Property Name="CaseId" Type="int" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
           <Property Name="AttorneyId" Type="int" Nullable="false" />
           <Property Name="EventStart" Type="datetime2" Precision="7" />
           <Property Name="EventEnd" Type="datetime2" Precision="7" />
@@ -141,7 +142,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="IsCancelled" Type="bit" />
-          <Property Name="UnAssigned" Type="bit" />
+          <Property Name="Unassigned" Type="bit" />
         </EntityType>
         <EntityType Name="CalendarView">
           <Key>
@@ -1953,6 +1954,18 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="AttorneyVisit">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyVisit_Location_Id">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="AttorneyVisit" Type="Self.AttorneyVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyVisit">
+              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4513,6 +4526,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Company" EntitySet="Company" />
             <End Role="AttorneyVisit" EntitySet="AttorneyVisit" />
           </AssociationSet>
+          <AssociationSet Name="FK_AttorneyVisit_Location_Id" Association="Self.FK_AttorneyVisit_Location_Id">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="AttorneyVisit" EntitySet="AttorneyVisit" />
+          </AssociationSet>
           <AssociationSet Name="FK_AttorneyVisit_Patient_PatientId" Association="Self.FK_AttorneyVisit_Patient_PatientId">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="AttorneyVisit" EntitySet="AttorneyVisit" />
@@ -5407,6 +5424,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="CalendarEventId" Type="Int32" Nullable="false" />
           <Property Name="CaseId" Type="Int32" Nullable="false" />
           <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="LocationId" Type="Int32" Nullable="false" />
           <Property Name="AttorneyId" Type="Int32" Nullable="false" />
           <Property Name="EventStart" Type="DateTime" Precision="7" />
           <Property Name="EventEnd" Type="DateTime" Precision="7" />
@@ -5423,6 +5441,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_AttorneyVisit_CalendarEvent_CaseId" FromRole="AttorneyVisit" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_AttorneyVisit_Case_CaseId" FromRole="AttorneyVisit" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_AttorneyVisit_Company_CompanyId" FromRole="AttorneyVisit" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_AttorneyVisit_Location_Id" FromRole="AttorneyVisit" ToRole="Location" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_AttorneyVisit_Patient_PatientId" FromRole="AttorneyVisit" ToRole="Patient" />
           <NavigationProperty Name="User" Relationship="Self.FK_AttorneyVisit_User_UserId" FromRole="AttorneyVisit" ToRole="User" />
         </EntityType>
@@ -5465,7 +5484,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsCancelled" Type="Boolean" />
-          <Property Name="UnAssigned" Type="Boolean" />
+          <Property Name="Unassigned" Type="Boolean" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_CalendarEvent_CaseId" FromRole="CalendarEvent" ToRole="AttorneyVisit" />
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="IMEVisit" />
@@ -6266,6 +6285,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
           <Property Name="StairsToOffice" Type="Boolean" Nullable="false" />
           <Property Name="PublicTransportNearOffice" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
+          <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Location_Id" FromRole="Location" ToRole="AttorneyVisit" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Location_Company" FromRole="Location" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
@@ -7748,6 +7768,18 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             </Principal>
             <Dependent Role="AttorneyVisit">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyVisit_Location_Id">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="AttorneyVisit" Type="Self.AttorneyVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyVisit">
+              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10215,6 +10247,10 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
             <End Role="Company" EntitySet="Companies" />
             <End Role="AttorneyVisit" EntitySet="AttorneyVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_AttorneyVisit_Location_Id" Association="Self.FK_AttorneyVisit_Location_Id">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="AttorneyVisit" EntitySet="AttorneyVisits" />
+          </AssociationSet>
           <AssociationSet Name="FK_AttorneyVisit_Patient_PatientId" Association="Self.FK_AttorneyVisit_Patient_PatientId">
             <End Role="Patient" EntitySet="Patients" />
             <End Role="AttorneyVisit" EntitySet="AttorneyVisits" />
@@ -11108,6 +11144,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
                 <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="AttorneyId" ColumnName="AttorneyId" />
                 <ScalarProperty Name="EventStart" ColumnName="EventStart" />
                 <ScalarProperty Name="EventEnd" ColumnName="EventEnd" />
@@ -11161,7 +11198,7 @@ warning 6035: The relationship 'FK_InsuranceAddressInfo_State_StateCode' has col
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsCancelled" ColumnName="IsCancelled" />
-                <ScalarProperty Name="UnAssigned" ColumnName="UnAssigned" />
+                <ScalarProperty Name="Unassigned" ColumnName="Unassigned" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

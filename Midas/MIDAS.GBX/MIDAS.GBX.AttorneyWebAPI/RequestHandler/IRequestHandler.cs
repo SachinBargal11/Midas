@@ -158,5 +158,6 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage AssociateLocationToUser(HttpRequestMessage request, T gbObject);
         HttpResponseMessage AssociateUserToLocations(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByUserId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByCompanyAndUserId(HttpRequestMessage request, int companyId, int userId);
     }
 }

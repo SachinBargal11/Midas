@@ -315,7 +315,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_CalendarEventDB == true)
                     {
-                        CalendarEventDB.UnAssigned = false;
+                        CalendarEventDB.Unassigned = false;
                         CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
                     }
                     _context.SaveChanges();

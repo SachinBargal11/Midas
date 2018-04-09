@@ -2245,5 +2245,18 @@ namespace MIDAS.GBX.AttorneyWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetByCompanyAndUserId(HttpRequestMessage request, int companyId, int userId)
+        {
+            var objResult = dataAccessManager.GetByCompanyAndUserId(companyId, userId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
