@@ -19,7 +19,7 @@ const PatientVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
     location: null,
-    // locationId: 0,
+    locationId: 0,
     // case: null,
     caseId: 0,
     patient: null,
@@ -64,7 +64,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     id: number;
     calendarEventId: number;
     location: Location;
-    // locationId: number;
+    locationId: number;
     // case: Case;
     caseId: number;
     patient: Patient;

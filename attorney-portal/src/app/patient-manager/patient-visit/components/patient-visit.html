@@ -49,8 +49,36 @@
             <!--<option value="">-Select -</option>-->
             <option value="1">Client Visit</option>
             <option value="2">IME Visit</option>
-            <option value="3">EUO Visit</option>
+            <!--<option value="3">EUO Visit</option>-->
         </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div *ngIf="selectedVisitType =='1'">
+            <div class="col-md-2"><label class="form-label">Location<span class="color-red">*</span></label></div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
+                    <option value="0"> -- Select Location -- </option>
+                    <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="col-md-2"><label class="form-label">Attorney<span class="color-red">*</span></label></div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <option value="0"></option>
+                        <optgroup label="Select Attorney">
+                        <option data-type="1" [attr.data-userId]="currentUserLocationSchedule.userLocationSchedule.user.id" *ngFor="let currentUserLocationSchedule of userLocationSchedules" [value]="currentUserLocationSchedule.userLocationSchedule.user.id" [selected]="currentUserLocationSchedule.userLocationSchedule.user.id === selectedAttorneyId ? true : null">{{currentUserLocationSchedule.userLocationSchedule.user.displayName}}</option>
+                        </optgroup>
+                        </select>
+                    </div>
+                    <!--<div *ngIf="selectedMode == 0" style="color:red;">Select specialty</div>-->
+                </div>
+            </div>
         </div>
     </div>
     <div *ngIf="selectedVisitType =='1'">
@@ -136,7 +164,7 @@
         </form>
         <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
             <div *ngIf="selectedVisit">
-                <div class="row" *ngIf="!selectedVisit.id">
+               <!-- <div class="row" *ngIf="!selectedVisit.id">
                     <div *ngIf="selectedOption == 1" class="col-md-4">
                         <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true" label="Going out office"></p-checkbox>
                     </div>
@@ -147,7 +175,7 @@
                 <br>
                 <div *ngIf="isGoingOutOffice">
                     <leave-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="leaveEventEditorValid = $event"></leave-event-editor>
-                </div>
+                </div>-->
 
                 <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
                     <div class="col-md-2"><label class="form-label">Client<span class="color-red">*</span></label></div>
