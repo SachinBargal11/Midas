@@ -1,5 +1,5 @@
 <p-confirmDialog width="425"></p-confirmDialog>
-<div *ngIf="sessionStore.isOnlyAttorneyRole()">
+<!--<div>
   <br>
   <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
@@ -21,14 +21,14 @@
     <p-column field="procedureCodeDesc"></p-column>
   </p-dataTable>
   <br>
-</div>
+</div>-->
 
 <div class="input-group">
   <h3 class="with-border">Selected Procedures
-    <a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyAttorneyRole()" (click)="deleteProcedureCode()">
+    <!--<a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <loader [visible]="isDeleteProgress"></loader>
-    </a>
+    </a>-->
   </h3>
 </div>
 <p-dataTable [value]="selectedProcedures" [(selection)]="selectedProceduresToDelete" [rows]="10" [paginator]="true" [responsive]="true">
@@ -38,7 +38,7 @@
   <p-column field="procedureCodeText" header="Procedure Code"></p-column>
   <p-column field="procedureCodeDesc" header="Description"></p-column>
   <p-column field="amount" header="Amount"></p-column>
-  <p-column header="Unit">
+  <!--<p-column header="Unit">
     <ng-template let-procedure="rowData" pTemplate="body">
       <input type="number" [(ngModel)]="selectedValue" value="" min="1" max="10" class="form-control" />
     </ng-template>
@@ -47,9 +47,9 @@
     <ng-template let-procedure="rowData" pTemplate="body">
       {{selectedValue * procedure.amount}}
     </ng-template>
-  </p-column>
+  </p-column>-->
 </p-dataTable>
 <br>
-<button *ngIf="sessionStore.isOnlyAttorneyRole()" class="btn btn-success sign-up" (click)="saveProcedures()">Save
+<!--<button  class="btn btn-success sign-up" (click)="saveProcedures()">Save
     <loader [visible]="isSaveProgress"></loader>
-</button>
+</button>-->

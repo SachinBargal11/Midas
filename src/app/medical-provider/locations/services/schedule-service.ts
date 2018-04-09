@@ -68,7 +68,7 @@ export class ScheduleService {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Schedule/getByCompanyId/' + companyId, {
                 headers: this._headers
-            }).map(res => res.json())
+            } ).map(res => res.json())
                 .subscribe((schedulesData: Array<Object>) => {
                     let schedules: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
                         return ScheduleAdapter.parseResponse(schedulesData);

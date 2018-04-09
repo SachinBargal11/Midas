@@ -98,22 +98,6 @@ export class RoomsService {
         });
         return <Observable<Tests[]>>Observable.fromPromise(promise);
     }
-    getTestsByLocationId(locationId: number): Observable<Tests[]> {
-        let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${environment.SERVICE_BASE_URL}/room/getByLocationId/${locationId}`, {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((testsData: Array<Object>) => {
-                    let tests: any[] = (<Object[]>testsData).map((testsData: any) => {
-                        return TestsAdapter.parseResponse(testsData);
-                    });
-                    resolve(tests);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Tests[]>>Observable.fromPromise(promise);
-    }
     addRoom(roomDetail: Room): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
@@ -188,20 +172,24 @@ export class RoomsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    // deleteRoom(room: Room): Observable<Room> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         return this._http.delete(`${environment.SERVICE_BASE_URL}/${room.id}`, {
-            //     headers: this._headers
-            // })
-    //             .map(res => res.json())
-    //             .subscribe((room) => {
-    //                 resolve(room);
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
-    //     });
-    //     return <Observable<Room>>Observable.from(promise);
-    // }
+    getTestsByLocationId(locationId: number): Observable<Tests[]> {
+        let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/room/getByLocationId/${locationId}`, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((testsData: Array<Object>) => {
+                    let tests: any[] = (<Object[]>testsData).map((testsData: any) => {
+                        return TestsAdapter.parseResponse(testsData);
+                    });
+                    resolve(tests);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Tests[]>>Observable.fromPromise(promise);
+    }
+
+
 
 }
 

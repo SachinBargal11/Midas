@@ -34,8 +34,8 @@
                     <div class="form-group" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid">
                         <!--<input formControlName="phone" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.phone.valid">-->
                         <!--<input type="text" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" class="form-control"/>-->
-                        <p-inputMask mask="+1 999-999-9999" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" 
-                         placeholder="+1 999-999-9999" styleClass="form-control" ></p-inputMask>
+                        <p-inputMask mask="999-999-9999" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" 
+                         placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                         <div class='error-list' *ngIf="addroomformControls.phone.touched && !addroomformControls.phone.valid">
                             <ul>
                                 <li *ngIf="addroomformControls.phone.hasError('required')">Phone is required.</li>

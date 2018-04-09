@@ -26,7 +26,7 @@ export class UserSettingService {
 
     getUserSettingById(id: Number): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/UserPersonalSetting/get/' + id, {
+            return this._http.get(this._url + '/UserPersonalSetting/get/' + id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -46,9 +46,9 @@ export class UserSettingService {
     }
 
 
-    getUserSettingByUserId(userId: Number,companyId:Number): Observable<UserSetting> {
+    getPatientPersonalSettingByPatientId(patientId: Number): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/UserPersonalSetting/GetByUserAndCompanyId/' + userId + '/' + companyId, {
+            return this._http.get(this._url + '/PatientPersonalSetting/getByPatientId/' + patientId , {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -68,9 +68,9 @@ export class UserSettingService {
     }
 
 
-    saveUserSettings(userSetting: UserSetting): Observable<UserSetting> {
+    savePatientPersonalSetting(userSetting: UserSetting): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.post(environment.SERVICE_BASE_URL + '/UserPersonalSetting/save', JSON.stringify(userSetting), {
+            return this._http.post(this._url + '/PatientPersonalSetting/Save', JSON.stringify(userSetting), {
                 headers: this._headers
             })
                 .map(res => res.json())

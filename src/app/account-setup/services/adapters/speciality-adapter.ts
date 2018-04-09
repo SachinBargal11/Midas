@@ -1,4 +1,4 @@
-import { Speciality } from '../../models/speciality';
+import {Speciality} from '../../models/speciality';
 
 
 export class SpecialityAdapter {
@@ -7,12 +7,10 @@ export class SpecialityAdapter {
         let speciality = null;
         if (specialityData) {
             speciality = new Speciality({
-                id: specialityData.id,
-                name: specialityData.name,
-                specialityCode: specialityData.specialityCode,
-                isunitApply: specialityData.isunitApply,
-                color: specialityData.colorCode,
-                mandatoryProcCode: specialityData.mandatoryProcCode ? true : false
+                    id: specialityData.id,
+                    name: specialityData.name,
+                    specialityCode: specialityData.specialityCode,
+                    isunitApply: specialityData.isunitApply
             });
         }
         return speciality;

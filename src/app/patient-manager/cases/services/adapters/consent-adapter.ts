@@ -31,6 +31,7 @@ export class ConsentAdapter {
                 companyId: data.companyId,
                 case: CaseAdapter.parseResponse(data.case),
                 company: CompanyAdapter.parseResponse(data.company),
+                // companyType1: CompanyAdapter.parseResponse(data.companyType1),
                 // doctorId: data.doctorId,
                 // consentReceived: data.consentReceived,
                 //accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),

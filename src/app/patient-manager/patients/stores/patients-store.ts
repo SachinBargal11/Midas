@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { Patient } from '../models/patient';
-import { PatientsService } from '../services/patients-service';
-import { List } from 'immutable';
-import { BehaviorSubject } from 'rxjs/Rx';
-import { SessionStore } from '../../../commons/stores/session-store';
+import {Patient} from '../models/patient';
+import {PatientsService} from '../services/patients-service';
+import {List} from 'immutable';
+import {BehaviorSubject} from 'rxjs/Rx';
+import {SessionStore} from '../../../commons/stores/session-store';
+import { PatientDocument } from '../models/patient-document';
+import { PatientDocumentAdapter } from '../services/adapters/patient-document-adapter';
 
 @Injectable()
 export class PatientsStore {
@@ -17,10 +19,10 @@ export class PatientsStore {
 
     constructor(
         private _patientsService: PatientsService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this.getPatients();
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        // this.getPatients();
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -42,31 +44,20 @@ export class PatientsStore {
         return this._selectedPatients.asObservable();
     }
 
-    getPatients(): Observable<Patient[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._patientsService.getPatients().subscribe((patients: Patient[]) => {
-                this._patients.next(List(patients));
-                resolve(patients);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
-    getPatientsByCompanyAndDoctorId(): Observable<Patient[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._patientsService.getPatientsByCompanyAndDoctorId().subscribe((patients: Patient[]) => {
-                this._patients.next(List(patients));
-                resolve(patients);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
+    // getPatients(): Observable<Patient[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._patientsService.getPatients().subscribe((patients: Patient[]) => {
+    //             this._patients.next(List(patients));
+    //             resolve(patients);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Patient[]>>Observable.fromPromise(promise);
+    // }
 
-    //
-    getPatientsWithNoCase(): Observable<Patient[]> {
+        //
+     getPatientsWithNoCase(): Observable<Patient[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.getPatientsWithNoCase().subscribe((patients: Patient[]) => {
                 resolve(patients);
@@ -99,16 +90,16 @@ export class PatientsStore {
 
     fetchPatientById(id: number): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
-            // let matchedPatient: Patient = this.findPatientById(id);
-            // if (matchedPatient) {
-            //     resolve(matchedPatient);
-            // } else {
+            let matchedPatient: Patient = this.findPatientById(id);
+            if (matchedPatient) {
+                resolve(matchedPatient);
+            } else {
                 this._patientsService.getPatient(id).subscribe((patient: Patient) => {
                     resolve(patient);
                 }, error => {
                     reject(error);
                 });
-            // }
+            }
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
@@ -128,18 +119,6 @@ export class PatientsStore {
     addPatient(patient: Patient): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.addPatient(patient).subscribe((patient: Patient) => {
-                this._patients.next(this._patients.getValue().push(patient));
-                resolve(patient);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Patient>>Observable.from(promise);
-    }
-
-    addQuickPatient(patient: any): Observable<Patient> {
-        let promise = new Promise((resolve, reject) => {
-            this._patientsService.addQuickPatient(patient).subscribe((patient: Patient) => {
                 this._patients.next(this._patients.getValue().push(patient));
                 resolve(patient);
             }, error => {
@@ -194,15 +173,16 @@ export class PatientsStore {
         this._selectedPatients.next(selectedPatients.delete(index));
     }
 
-    assignPatientToMedicalProvider(id: number, caseId: number, providerId: number): Observable<Patient> {
+      getDocumentsForPatientId(patientId: number): Observable<PatientDocument[]> {
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.assignPatientToMedicalProvider(id, caseId, providerId).subscribe((patient: Patient) => {
-                resolve(patient);
+            this._patientsService.getDocumentsForPatientId(patientId).subscribe((documents: PatientDocument[]) => {
+                resolve(documents);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Patient>>Observable.fromPromise(promise);
+        return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
+
 
 }

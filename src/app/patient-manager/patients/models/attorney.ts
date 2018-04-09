@@ -3,19 +3,16 @@ import { Record } from 'immutable';
 
 const AttorneyRecord = Record({
     id: 0,
-    attorney:''
+    attorney: ''
 });
 
 export class Attorney extends AttorneyRecord {
 
     id: number;
-    attorney:string;
-    
+    attorney: string;
+
 
     constructor(props) {
         super(props);
     }
-
-   
-
 }

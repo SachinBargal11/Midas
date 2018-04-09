@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import {environment} from '../../../environments/environment';
 import {States} from '../models/states';
 import {Cities} from '../models/cities';
-import { SessionStore } from '../../commons/stores/session-store';
+import { SessionStore } from '../stores/session-store';
 
 @Injectable()
 export class StateService {
@@ -16,17 +16,17 @@ export class StateService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
 
     getStates(): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
         return this._http.get(environment.SERVICE_BASE_URL + '/common/getstates', {
-            headers: this._headers
-        }).map(res => res.json())
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -38,8 +38,8 @@ export class StateService {
     getStatesByCities(cityName: string): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
         return this._http.get(environment.SERVICE_BASE_URL + '/common/getstatesbycity/' + cityName, {
-            headers: this._headers
-        }).map(res => res.json())
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -51,8 +51,8 @@ export class StateService {
     getCitiesByStates(stateName: string): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
         return this._http.get(environment.SERVICE_BASE_URL + '/common/getcitiesbystates/' + stateName, {
-            headers: this._headers
-        }).map(res => res.json())
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -64,8 +64,8 @@ export class StateService {
     getCities(): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
         return this._http.get(environment.SERVICE_BASE_URL + '/common/getcities', {
-            headers: this._headers
-        }).map(res => res.json())
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {

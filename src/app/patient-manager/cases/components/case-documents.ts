@@ -20,7 +20,6 @@ import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
-import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'case-documents',
@@ -38,11 +37,10 @@ export class CaseDocumentsUploadComponent implements OnInit {
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
     caseId: number;
-    caseDetail: Case;
-    caseStatusId: number;
     addConsentDialogVisible: boolean = false;
+    caseStatusId: number;
     selectedCaseId: number;
-    caseViewedByOriginator: boolean = false;
+    // companyId: number;
 
     constructor(
         private _router: Router,
@@ -54,15 +52,11 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _scannerService: ScannerService,
         private confirmationService: ConfirmationService,
-        private sessionStore : SessionStore
 
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
-            // this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
-            this.MatchCase();
-            this.url = `${this._url}/documentmanager/uploadtoblob`;
-            // documentmanager/uploadtoblob?inputjson={"ObjectType":"visit","DocumentType":"reval","CompanyId":"16",%20"ObjectId":"60"}
+            this.url = `${this._url}/documentmanager/uploadtonoproviderblob`;
         });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -85,13 +79,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this.getDocuments();
     }
 
-    showDialog(currentCaseId: number) {
-        this.addConsentDialogVisible = true;
-        this.selectedCaseId = currentCaseId;
-    }
-
     documentUploadComplete(documents: Document[]) {
-
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -116,12 +104,19 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        if (error.message == 'Please select document type') {
-            this._notificationsService.error('Oh No!', 'Please select document type');
+        if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please select document Type');
         }
         else {
             this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
         }
+    }
+
+
+    showDialog() {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = this.currentCaseId;
+        // this.companyId = providerCompanyId;
     }
 
     getDocuments() {
@@ -138,7 +133,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
 
     downloadPdf(documentId) {
         this._progressBarService.show();
@@ -218,26 +212,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select record to delete');
         }
-    }
-    MatchCase() {            
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-                this.caseStatusId = caseDetail.caseStatusId;
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
     }
 }
 

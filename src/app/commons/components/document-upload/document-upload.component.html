@@ -1,7 +1,7 @@
 <div class="form-group">
     <div class="form-check form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Upload Documents
+            <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)">Upload Documents
         </label>
     </div>
     <div class="form-check  form-check-inline">
@@ -35,11 +35,11 @@
     <div class="card-block">
         <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onBeforeSend)="onBeforeSendEvent($event)" (onError)="onFilesUploadError($event)"
             (onUpload)="onFilesUploadComplete($event)" maxFileSize="1000000">
-            <!--<ng-template pTemplate type="content">
+            <!-- <ng-template pTemplate type="content">
                 <ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
                 </ul>
-            </ng-template>-->
+            </ng-template> -->
         </p-fileUpload>
     </div>
 </section>
@@ -76,6 +76,7 @@
             </div>
         </div>
         <div id="{{scannerContainerId}}" style="width: 600px;margin-top: 10px;margin-bottom: 10px;">
+
         </div>
         <div class="alert alert-warning" *ngIf="twainSources.length == 0">
             <h4 class="alert-heading">Aww No!</h4>
@@ -87,14 +88,14 @@
 
 <section class="card" [hidden]="documentMode != '3'" *ngIf="isElectronicSignatureOn">
     <header class="card-header card-header-lg">
-
     </header>
     <div class="card-block">
         <form [formGroup]="digitalForm" (submit)="saveDigitalForm()">
             <div class="row">
                 <div class="col-md-6">
                     <!--<embed src="./Consent_iCare Clinic.pdf" width="100%" height="500px" />-->
-                    <object [attr.data]="cosentFormUrl" type="application/pdf" width="100%" height="100%"></object>
+                    <object *ngIf="changeCompneyConsenturl" [attr.data]="changeCompneyConsenturl" type="application/pdf" width="100%" height="100%"></object>
+                    <object *ngIf="!changeCompneyConsenturl" [attr.data]="cosentFormUrl" type="application/pdf" width="100%" height="100%"></object>
                 </div>
                 <div class="col-md-6">
                     <div class="signature-box">

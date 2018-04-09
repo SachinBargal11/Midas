@@ -87,30 +87,7 @@ export class PriorAccidentComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    if (caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id) {
-                        this.caseViewedByOriginator = false;
-                    } else {
-                        this.caseViewedByOriginator = true;
-                    }
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-
-        });
-
+        
         this.prioraccidentform = this.fb.group({
             isAccidentBefore: [''],
             previusAccidentDescription: [''],
@@ -153,8 +130,7 @@ export class PriorAccidentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    // this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._notificationsService.success('Success!', 'Prior accident/injuries information updated successfully');
+                    this._router.navigate(['../../'], { relativeTo: this._route });
                 },
                 (error) => {
                     let errString = 'Unable to update prior accident/injuries information.';
@@ -196,8 +172,7 @@ export class PriorAccidentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    // this._router.navigate(['/patient-manager/patients']);
-                    this._notificationsService.success('Success!', 'Prior accident/injuries information added successfully');
+                    this._router.navigate(['/patient-manager/patients']);
                 },
                 (error) => {
                     let errString = 'Unable to add prior accident/injuries information.';

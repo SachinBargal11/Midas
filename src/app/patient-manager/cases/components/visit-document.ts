@@ -29,7 +29,8 @@ export class VisitDocumentsUploadComponent implements OnInit {
     url;
     selectedDocumentList = [];
     isDeleteProgress: boolean = false;
-
+    visitId: number;
+    visitUploadDocumentUrl: string;
 
     constructor(
         private _router: Router,
@@ -45,7 +46,8 @@ export class VisitDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentVisitId = parseInt(routeParams.visitId, 10);
-            this.url = `${this._url}/fileupload/multiupload/${this.currentVisitId}/visit`;
+            // this.url = `${this._url}/fileupload/multiupload/${this.currentVisitId}/visit`;
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtonoproviderblob';
             //this.url = this._url + '/fileupload/multiupload/'+ this.currentVisitId +'/visit';
             // this._progressBarService.show();
             // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
@@ -75,11 +77,20 @@ export class VisitDocumentsUploadComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();
     }
+
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
@@ -98,6 +109,31 @@ export class VisitDocumentsUploadComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 
     deleteDocument() {

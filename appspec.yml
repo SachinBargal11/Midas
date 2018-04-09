@@ -2,7 +2,7 @@ version: 0.0
 os: windows
 files:
   - source: dist
-    destination: C:\inetpub\website\dev-gb-attorney.qwinix.io\
+    destination: C:\inetpub\website\dev-gb-patient.qwinix.io\
 hooks:
    BeforeInstall:
      - location: before-install.bat

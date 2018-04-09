@@ -8,6 +8,9 @@ import { environment } from '../../../../environments/environment';
 import { Patient } from '../models/patient';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { PatientAdapter } from './adapters/patient-adapter';
+import { PatientDocument } from '../models/patient-document';
+import { PatientDocumentAdapter } from '../services/adapters/patient-document-adapter';
+
 
 @Injectable()
 export class PatientsService {
@@ -18,10 +21,10 @@ export class PatientsService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
 
     getPatient(patientId: Number): Observable<Patient> {
@@ -46,7 +49,7 @@ export class PatientsService {
     }
 
     getPatientsWithOpenCases() {
-        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let companyId: number = this.sessionStore.session.user.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithOpenCases/' + companyId, {
                 headers: this._headers
@@ -65,51 +68,28 @@ export class PatientsService {
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
 
-    getPatients(): Observable<Patient[]> {
-        let companyId: number = this._sessionStore.session.currentCompany.id;
-        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getPatientsByCompanyId/' + companyId, {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let patients = (<Object[]>data).map((patientData: any) => {
-                        return PatientAdapter.parseResponse(patientData);
-                    });
-                    resolve(patients);
-                    // resolve(data);
-                }, (error) => {
-                    reject(error);
-                });
+    // getPatients(): Observable<Patient[]> {
+    //     let companyId: number = this.sessionStore.session.user.id;
+    //     let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getPatientsByCompanyId/' + companyId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let patients = (<Object[]>data).map((patientData: any) => {
+    //                     return PatientAdapter.parseResponse(patientData);
+    //                 });
+    //                 resolve(patients);
+    //                 // resolve(data);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
-    getPatientsByCompanyAndDoctorId(): Observable<Patient[]> {
-        let companyId: number = this._sessionStore.session.currentCompany.id;
-        let doctorId: number = this._sessionStore.session.user.id;
-        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let patients = (<Object[]>data).map((patientData: any) => {
-                        return PatientAdapter.parseResponse(patientData);
-                    });
-                    resolve(patients);
-                    // resolve(data);
-                }, (error) => {
-                    reject(error);
-                });
-
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
+    //     });
+    //     return <Observable<Patient[]>>Observable.fromPromise(promise);
+    // }
 
 
-    getPatientsWithNoCase(): Observable<Patient[]> {
-        let companyId: number = this._sessionStore.session.currentCompany.id;
+        getPatientsWithNoCase(): Observable<Patient[]> {
+        let companyId: number = this.sessionStore.session.user.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithCloseCases/' + companyId, {
                 headers: this._headers
@@ -146,34 +126,8 @@ export class PatientsService {
                     name: 'sergi----'
                 }
             });
-            requestData.user = _.extend(requestData.user, {
-                UserCompanies: [{
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    }
-                }]
-            });
 
             return this._http.post(environment.SERVICE_BASE_URL + '/patient/savePatient', JSON.stringify(requestData), {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((patientData: any) => {
-                    let parsedPatient: Patient = null;
-                    parsedPatient = PatientAdapter.parseResponse(patientData);
-                    resolve(parsedPatient);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Patient>>Observable.fromPromise(promise);
-
-    }
-
-    addQuickPatient(patient: any): Observable<Patient> {
-        let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            patient.companyid = this._sessionStore.session.currentCompany.id;
-            return this._http.post(environment.SERVICE_BASE_URL + '/patient/addPatient', JSON.stringify(patient), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -196,11 +150,6 @@ export class PatientsService {
             requestData.user.dateOfBirth = requestData.user.dateOfBirth ? requestData.user.dateOfBirth.format('YYYY-MM-DD') : null;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
-            // requestData.user = _.extend(requestData.user, {
-            //     UserCompanies: [{
-            //         CompanyId: this._sessionStore.session.currentCompany.id
-            //     }]
-            // });
             requestData.user = _.omit(requestData.user, 'contact', 'address');
             return this._http.post(environment.SERVICE_BASE_URL + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
@@ -220,7 +169,21 @@ export class PatientsService {
 
     deletePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/patient/delete/' + patient.id, {
+            let requestData: any = patient.toJS();
+            requestData.isDeleted = 1;
+            requestData.user.contactInfo = requestData.user.contact;
+            requestData.user.addressInfo = requestData.user.address;
+            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData = _.extend(requestData, {
+                attorneyname: 'simon',
+                attorneyAddressInfo: {
+                    name: 'mumbai----'
+                },
+                attorneyContactInfo: {
+                    name: 'sergi----'
+                }
+            });
+            return this._http.post(environment.SERVICE_BASE_URL + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -235,25 +198,26 @@ export class PatientsService {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
-    assignPatientToMedicalProvider(currentPatientId: Number, caseId: Number, providerId: Number): Observable<Patient> {
-        let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/associatePatientWithMedicalCompany/' + currentPatientId + '/' + caseId + '/' + providerId, {
+     getDocumentsForPatientId(patientId: number): Observable<PatientDocument[]> {
+        let promise: Promise<PatientDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + patientId + '/patient', {
                 headers: this._headers
-            }).map(res => res.json())
-                .subscribe((data: any) => {
-                    let patient = null;
-                    patient = PatientAdapter.parseResponse(data);
-                    resolve(patient);
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return PatientDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
                 }, (error) => {
                     reject(error);
                 });
+
         });
-        return <Observable<Patient>>Observable.fromPromise(promise);
+        return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
-    
-    getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+
+     getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
         return `${environment.SERVICE_BASE_URL}/documentmanager/downloadfromnoproviderblob/${documentId}`;
     }
-
 }
-

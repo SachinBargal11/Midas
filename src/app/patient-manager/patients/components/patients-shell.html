@@ -1,55 +1,4 @@
-<section class="tabs-section" *ngIf="preferredUIViewId == 2">
-	<h3 class="with-border">Details of {{patientName}}
-		<a *ngIf="!sessionStore.isOnlyAttorneyRole()" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Add Case</span>
-    </a>
-		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Case List</span>
-    </a>
-	</h3>
-	<section class="faq-container" id="accordion">
-		<div class="accordion">
-			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent('viewall')" name="accordion" id="viewall"
-			 routerLink="viewall" class="accordion-toggle" />
-			<label for="viewall">View All</label>
-			<section *ngIf="currAccordion=='viewall'">
-				<p>
-					<router-outlet></router-outlet>
-				</p>
-			</section>
-		</div>
-		<div class="accordion">
-			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
-			 class="accordion-toggle" />
-			<label for="basic">Basic</label>
-			<section *ngIf="currAccordion=='basic'">
-				<p>
-					<router-outlet></router-outlet>
-				</p>
-			</section>
-		</div>
-		<div class="accordion">
-			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (click)="setContent('demographics')" name="accordion" id="demographics"
-			 routerLink="demographics" class="accordion-toggle" />
-			<label for="demographics">Demographics</label>
-			<section *ngIf="currAccordion=='demographics'">
-				<p>
-					<router-outlet></router-outlet>
-				</p>
-			</section>
-		</div>
-	</section>
-</section>
-
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">
-	<h3 class="with-border">Details of {{patientName}}
-		<a  *ngIf="!sessionStore.isOnlyAttorneyRole()" class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Add Case</span>
-    </a>
-		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Case List</span>
-    </a>
-	</h3>
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
@@ -95,27 +44,6 @@
 						</span>
 					</a>
 				</li> -->
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="attorney" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Attorney
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="referring-offices" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Referring Offices
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="balances" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Balances
-						</span>
-					</a>
-				</li>
 				<li class="nav-item">
 					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -123,13 +51,6 @@
 						</span>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="appointments" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Appointments
-						</span>
-					</a>
-				</li>-->
 			</ul>
 		</div>
 	</div>
@@ -143,3 +64,49 @@
 	<!--.tab-content-->
 </section>
 <!--.tabs-section-->
+
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 2">
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent('viewall')" name="accordion" id="viewall"
+			 routerLink="viewall" class="accordion-toggle" />
+			<label for="viewall">View All</label>
+			<section *ngIf="currAccordion=='viewall'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
+			 class="accordion-toggle" />
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (click)="setContent('demographics')" name="accordion"
+			 id="demographics" routerLink="demographics" class="accordion-toggle" />
+			<label for="demographics">Demographics</label>
+			<section *ngIf="currAccordion=='demographics'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (click)="setContent('documents')" name="accordion" id="documents"
+			 routerLink="documents" class="accordion-toggle" />
+			<label for="documents">Documents</label>
+			<section *ngIf="currAccordion=='documents'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
+</section>

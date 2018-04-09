@@ -18,10 +18,10 @@ export class EmployerService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
     getEmployer(employerId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
@@ -62,9 +62,9 @@ export class EmployerService {
         });
         return <Observable<Employer[]>>Observable.fromPromise(promise);
     }
-    getCurrentEmployer(CaseId: Number): Observable<Employer> {
+    getCurrentEmployer(caseId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/getByCaseId/' + CaseId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/getByCaseId/' + caseId, {
                 headers: this._headers
             })
                 .map(res => res.json())

@@ -19,17 +19,14 @@ import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
-import { LeaveEventEditorComponent } from '../medical-provider/calendar/components/leave-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
-import { DignosisComponent } from './components/dignosis/dignosis.component';
-import { ProcedureComponent } from './components/procedure/procedure.component';
-import { ReferralsComponent } from './components/referrals/referrals.component';
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
-import { AddMedicalProviderComponent } from '../account-setup/components/medical-provider-master/add-medical-provider';
+import { ProcedureComponent } from './components/procedure/procedure.component';
+import { ReferralsComponent } from './components/referrals/referrals.component';
+import { DiagnosisComponent } from './components/diagnosis/diagnosis.component';
 import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
-import { UnscheduledVisitDetailComponent } from '../commons/components/unscheduled-visit-detail/unscheduled-visit-detail.component'
 import { ClientVisitDetailComponent } from '../commons/components/client-visit-detail/client-visit-detail.component';
 
 import {
@@ -52,8 +49,8 @@ import {
   TabViewModule,
   LightboxModule,
   ListboxModule,
-  CarouselModule,
-  DropdownModule
+  DropdownModule,
+
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -85,9 +82,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TabViewModule,
     LightboxModule,
     ListboxModule,
-    CarouselModule,
     SignaturePadModule,
-    DropdownModule
+    DropdownModule,
+
   ],
   declarations: [
     LimitPipe,
@@ -97,7 +94,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-    DateTimeFormatPipe,    
+    DateTimeFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -106,17 +103,15 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
-    LeaveEventEditorComponent,
     DocumentUploadComponent,
     SignatureFieldComponent,
-    DignosisComponent,
     ProcedureComponent,
     ReferralsComponent,
-    AddMedicalProviderComponent,
+    DiagnosisComponent,
     VisitDetailComponent,
-    UnscheduledVisitDetailComponent,
     ClientVisitDetailComponent
   ],
+
   exports: [
     CommonModule,
     FormsModule,
@@ -151,24 +146,19 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SharedModule,
     ConfirmDialogModule,
     BsDropdownModule,
+    ShellComponent,
+    ScheduledEventEditorComponent,
+    DocumentUploadComponent,
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule,
-    ListboxModule,
-    CarouselModule,
-    ShellComponent,
-    ScheduledEventEditorComponent,
-    LeaveEventEditorComponent,
-    DocumentUploadComponent,
+    LightboxModule, ListboxModule,
     SignatureFieldComponent,
-    DignosisComponent,
     ProcedureComponent,
     ReferralsComponent,
-    AddMedicalProviderComponent,
+    DiagnosisComponent,
     VisitDetailComponent,
     DropdownModule,
-    UnscheduledVisitDetailComponent,
     ClientVisitDetailComponent
   ]
 })

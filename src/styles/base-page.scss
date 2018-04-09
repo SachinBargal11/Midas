@@ -147,34 +147,34 @@ body {
     // Primeng selection color changes
 
     .ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
-        background-color: blueviolet;
-        border-color: blueviolet;
+        background-color: #59c09d;
+        border-color: #59c09d;
     }
     .ui-listbox .ui-listbox-item.ui-state-highlight {
-        background-color: blueviolet;
+        background-color: #59c09d;
     }
     .ui-listbox .ui-listbox-item.ui-state-highlight .ui-chkbox {    
-        border: 1px solid blueviolet;
+        border: 1px solid #59c09d;
     }
     .ui-chkbox .ui-chkbox-box.ui-state-active {        
-        border: 1px solid blueviolet;
-        background-color: blueviolet
+        border: 1px solid #59c09d;
+        background-color: #59c09d
     }
     .ui-state-active,.ui-state-highlight {
-        background-color: blueviolet;
+        background-color: #59c09d;
     }
     .ui-button {
-        background-color: blueviolet;
+        background-color: #59c09d;
     }
     .ui-radiobutton .ui-radiobutton-box.ui-state-active {
-        border: blueviolet;
-        background-color: blueviolet;
+        border: #59c09d;
+        background-color: #59c09d;
     }
     .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
-        background-color: blueviolet;
+        background-color: #59c09d;
     }
     .ui-datepicker table.ui-datepicker-calendar td:not(.ui-state-disabled) a.ui-state-active {
-        background-color: blueviolet;
+        background-color: #59c09d;
     }
     
     //
@@ -239,9 +239,9 @@ body {
 }
 
 .site-header {
-    background-color: blueviolet;
+    background-color: #59c09d;
     .site-header-collapsed {
-        background: blueviolet;
+        background: #59c09d;
     }
 }
 // .site-header {
@@ -253,8 +253,8 @@ body {
 }
 
 .btn.btn-add {
-    background-color: blueviolet;
-    border-color: blueviolet;
+    background-color: #59c09d;
+    border-color: #59c09d;
     padding: .25rem .75rem;
 }
 

@@ -1,4 +1,4 @@
-# MIDAS Admin Portal
+# MIDAS Patient Portal
 
 The project is created using angular-cli & it is using Angular 2 with TypeScript.
 

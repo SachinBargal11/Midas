@@ -1,31 +1,6 @@
-<section *ngIf="preferredUIViewId == 2">
-	<section class="faq-container" id="accordion">
-		<div class="accordion">
-			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
-			 class="accordion-toggle" />
-			<label for="basic"> Basic </label>
-			<section *ngIf="currAccordion=='basic'">
-				<p>
-					<router-outlet></router-outlet>
-				</p>
-			</section>
-		</div>
-		<div class="accordion" *ngIf="roleType == 6">
-			<input type="radio" value="locations" [(ngModel)]="currAccordion" (click)="setContent('locations')" name="accordion" id="locations"
-			 routerLink="locations" class="accordion-toggle" />
-			<label for="locations"> Locations </label>
-			<section *ngIf="currAccordion=='locations'">
-				<p>
-					<router-outlet></router-outlet>
-				</p>
-			</section>
-		</div>
-	</section>
-</section>
-
 <!--<main-nav></main-nav>-->
 <!--<medical-provider-nav></medical-provider-nav>-->
-<section class="tabs-section" *ngIf="preferredUIViewId == 1">
+<section class="tabs-section">
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
@@ -50,10 +25,10 @@
 						</span>
 					</a>
 				</li>-->
-				<li class="nav-item doctorRole" id="doctorLocation" *ngIf="roleType == 6">
+				<li class="nav-item doctorRole" id="doctorLocation">
 					<a class="nav-link" routerLink="locations" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
-					Locations
+					Doctors Locations
 						</span>
 					</a>
 				</li>

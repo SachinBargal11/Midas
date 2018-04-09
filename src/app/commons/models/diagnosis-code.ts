@@ -5,8 +5,8 @@ import { DiagnosisType } from './diagnosis-type';
 
 const DiagnosisCodeRecord = Record({
     id: 0,
-    diagnosisCodeId: 0,
     diagnosisTypeId: 0,
+    diagnosisCodeId: 0,
     companyId: 0,
     company: null,
     diagnosisCodeText: '',
@@ -22,8 +22,8 @@ const DiagnosisCodeRecord = Record({
 export class DiagnosisCode extends DiagnosisCodeRecord {
 
     id: number;
-    diagnosisCodeId: number;
     diagnosisTypeId: number;
+    diagnosisCodeId: number;
     companyId: number;
     company: Company;
     diagnosisCodeText: string;

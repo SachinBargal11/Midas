@@ -17,10 +17,10 @@ export class EmployerService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
     getEmployer(employerId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {

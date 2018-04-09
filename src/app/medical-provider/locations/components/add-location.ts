@@ -18,7 +18,6 @@ import * as moment from 'moment';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import * as _ from 'underscore';
 
 @Component({
     selector: 'add-location',
@@ -72,27 +71,7 @@ export class AddLocationComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+                .subscribe(states => this.states = states);
     }
 
     selectState(event) {
@@ -102,8 +81,8 @@ export class AddLocationComponent implements OnInit {
     }
     loadCities(stateName) {
         this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.cities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });

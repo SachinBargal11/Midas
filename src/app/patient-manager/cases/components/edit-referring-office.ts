@@ -91,8 +91,8 @@ export class EditReferringOfficeComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-        this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
+        // this._locationsStore.getLocations()
+        //     .subscribe(locations => this.locations = locations);
         this._usersStore.getUsers()
             .subscribe((users) => {
                 this.users = users;

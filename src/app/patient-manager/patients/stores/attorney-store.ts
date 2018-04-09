@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Attorney } from '../models/attorney';
 import { AttorneyService } from '../services/attorney-services';
-import {List} from 'immutable';
-import {BehaviorSubject} from 'rxjs/Rx';
-import {SessionStore} from '../../../commons/stores/session-store';
+import { List } from 'immutable';
+import { BehaviorSubject } from 'rxjs/Rx';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
 export class AttorneyStore {
@@ -15,10 +15,10 @@ export class AttorneyStore {
 
     constructor(
         private _attorneyService: AttorneyService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }

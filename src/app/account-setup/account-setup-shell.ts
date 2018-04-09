@@ -14,7 +14,7 @@ export class AccountSetupShellComponent implements OnInit {
         private _sessionStore: SessionStore
     ) {
          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this._router.navigate(['/account-setup/account-setting/general-settings']); ;
+            this._router.navigate(['/account-setup/specialities']); ;
         });
 
     }

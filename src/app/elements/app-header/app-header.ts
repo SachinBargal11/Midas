@@ -1,16 +1,11 @@
-import { UserRole } from '../../commons/models/user-role';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { DialogModule } from 'primeng/primeng';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { UserSettingStore } from '../../commons/stores/user-setting-store';
-import { UserSetting } from '../../commons/models/user-setting';
-import { ProgressBarService } from '../../commons/services/progress-bar-service';
 import { Notification } from '../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
@@ -18,6 +13,10 @@ import { PushNotification } from '../../commons/models/push-notification';
 import { PushNotificationAdapter } from '../../commons/services/adapters/push-notification-adapter';
 import { PushNotificationStore } from '../../commons/stores/push-notification-store';
 import { environment } from '../../../environments/environment';
+import { PatientsStore } from '../../patient-manager/patients/stores/patients-store';
+import { Patient } from "../../patient-manager/patients/models/patient";
+import { PatientDocument } from "../../patient-manager/patients/models/patient-document";
+import { PatientsService } from "../../patient-manager/patients/services/patients-service";
 
 @Component({
     selector: 'app-header',
@@ -28,21 +27,13 @@ import { environment } from '../../../environments/environment';
 export class AppHeaderComponent implements OnInit {
     private _notificationServerUrl: string = `${environment.NOTIFICATION_SERVER_URL}`;
     messages: PushNotification[] = [];
-    userSetting: UserSetting;
-    attorneyRoleFlag = false;
+    
+    imageLink: SafeResourceUrl = '../../../assets/theme/img/avatar.png';
+
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
     menu_left_opened: boolean = false;
-
-    /* Dialog Visibilities */
-    settingsDialogVisible: boolean = false;
-    
-        addUserSettings: FormGroup;
-        addUserSettingsControls;
-        isSearchable: boolean = false;
-        isCalendarPublic: boolean = false;
-        isPublic: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -52,25 +43,17 @@ export class AppHeaderComponent implements OnInit {
 
     constructor(
         private _authenticationService: AuthenticationService,
-        private _notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
         private _router: Router,
-        private _fb: FormBuilder,
-        private _userSettingStore: UserSettingStore,
-        private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _pushNotificationStore: PushNotificationStore,
+        private _patientsStore: PatientsStore,
+        private _patientsService: PatientsService,
+        private _sanitizer: DomSanitizer,
         private _elRef: ElementRef
 
     ) {
-
-        this.addUserSettings = this._fb.group({
-            isPublic: [''],
-            isCalendarPublic: [''],
-            isSearchable: ['']
-        })
-        this.addUserSettingsControls = this.addUserSettings.controls;
-
         let accessToken;
         accessToken = this.sessionStore.session.accessToken.replace('bearer ', '');
         $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
@@ -89,7 +72,7 @@ export class AppHeaderComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment(currMessage.notificationTime)
                     });
-                    _notificationsStore.addNotification(notification);
+                    notificationsStore.addNotification(notification);
                 }
             })
         }
@@ -102,66 +85,27 @@ export class AppHeaderComponent implements OnInit {
                 'type': 'SUCCESS',
                 'createdAt': moment(message.notificationTime)
             });
-            _notificationsStore.addNotification(notification);
+            notificationsStore.addNotification(notification);
         }
 
         $.connection.hub.start().done(function () {
             console.log('Notification hub started');
         });
+
     }
 
     ngOnInit() {
-        let attorneyRolewithOther;
-        let attorneyRolewithoutOther;
-        let roles = this.sessionStore.session.user.roles;
-        if (roles) { 
-            let currentcompnayrole  = this.sessionStore.session.user.roles;
-            if (roles.length === 1) {
-                attorneyRolewithoutOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 6;
-                });
-            } else if (roles.length > 1) {
-                let count = 0;
-                let currentcompanyrole = 0;
-                _.forEach(roles, (currentRole) => {
-                   if(currentRole.companyId == this.sessionStore.session.currentCompany.id)
-                   {
-                      if(currentRole.roleType === 6)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                      if(currentRole.roleType === 1)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                   }
-                });
-                if(count > 1)
-                {
-                    attorneyRolewithOther = true;
-                }
-                else{
-                    if(currentcompanyrole == 6)
-                    {
-                        attorneyRolewithoutOther = true;
+        let result = this._patientsStore.getPatientById(this.sessionStore.session.user.id);
+        result.subscribe(
+            (patient: Patient) => {
+                _.forEach(patient.patientDocuments, (currentPatientDocument: PatientDocument) => {
+                    if (currentPatientDocument.document.documentType == 'profile') {
+                        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
                     }
-                    else{
-                        attorneyRolewithOther = true;
-                    }
-                }
-            }
-            if (attorneyRolewithoutOther) {
-                this.attorneyRoleFlag = true;
-            } else if (attorneyRolewithOther) {
-                this.attorneyRoleFlag = false;
-            } else {
-                this.attorneyRoleFlag = false;
-            }
-        }
+                })
+            });
+                    
     }
-
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {
             document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
@@ -194,6 +138,7 @@ export class AppHeaderComponent implements OnInit {
         document.getElementsByTagName('html')[0].style.overflow = 'auto';
     }
 
+
     logout() {
         this.sessionStore.logout();
         // this._router.navigate(['/account/login']);
@@ -204,7 +149,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
     showNotifications() {
-        this._notificationsStore.toggleVisibility();
+        this.notificationsStore.toggleVisibility();
         let isUnReadMessage =  _.find(AppHeaderComponent.prototype.messages, (currMessage: PushNotification) => {
             return currMessage.isRead == false;
         })
@@ -212,21 +157,12 @@ export class AppHeaderComponent implements OnInit {
                 this._pushNotificationStore.updateMessageStatus();
             }
     }
-
     showSettingsDialog() {
         this._router.navigate(['/account/settings']);
-        this.settingsDialogVisible = true;
-        // this._cd.detectChanges();
+
     }
     closeDialog() {
-        this.settingsDialogVisible = false;
+        // this.settingsDialogVisible = false;
     }
 
-    checkUncheck(event) {
-        if (event == false) {
-            this.isCalendarPublic = false;
-            this.isSearchable = false;
-        }
-
-    }
 }

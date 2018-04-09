@@ -1,4 +1,3 @@
-// import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,7 +7,6 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
-import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
@@ -20,8 +18,6 @@ import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
-import { Case } from '../../cases/models/case';
-import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'edit-insurance',
@@ -30,9 +26,9 @@ import { CasesStore } from '../../cases/stores/case-store';
 
 
 export class EditInsuranceComponent implements OnInit {
-    caseDetail: Case[];
-    referredToMe: boolean = false;
     insuranceMasters: InsuranceMaster[];
+    policyOwner: string;
+    insuranceType: string;
     insuranceMastersAdress: Address;
     insuranceMaster: InsuranceMaster;
     policyCellPhone: string;
@@ -49,87 +45,48 @@ export class EditInsuranceComponent implements OnInit {
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
-    caseId: number;
+    caseId;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
-    uploadedFiles: any[] = [];
-
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
     insuranceStartDate: Date;
     insuranceEndDate: Date;
     balanceInsuredAmount: string;
-    caseStatusId: number;
-    insuranceMasterId: number;
+    insuranceStartDateLabel: string;
+    insuranceEndDateLabel: string;
+    preferredCommunication: string;
 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+        public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe,
-        private _elRef: ElementRef,
-        private _casesStore: CasesStore
+        private _elRef: ElementRef
     ) {
+        // this.patientId = this.sessionStore.session.user.id;
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });// let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-            // caseResult.subscribe(
-            //     (cases: Case[]) => {
-            //         this.caseDetail = cases;
-            //         if (this.caseDetail.length > 0) {
-            //             let matchedCompany = null;
-            //             matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-            //                 return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-            //             })
-            //             if (matchedCompany) {
-            //                 this.referredToMe = true;
-            //             } else {
-            //                 this.referredToMe = false;
-            //             }
-            //         } else {
-            //             this.referredToMe = false;
-            //         }
-
-            //     },
-            //     (error) => {
-            //         this._router.navigate(['../'], { relativeTo: this._route });
-            //         this._progressBarService.hide();
-            //     },
-            //     () => {
-            //         this._progressBarService.hide();
-            //     });
         });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let result = this._insuranceStore.fetchInsuranceById(insuranceId);
             result.subscribe(
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
-
+                    this.policyOwner = insurance.policyOwnerLabel;
+                    this.insuranceType = insurance.insuranceTypeLabel;
                     this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
-                    this.insuranceMasterId = this.insurance.insuranceMasterId;
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
@@ -137,27 +94,43 @@ export class EditInsuranceComponent implements OnInit {
                     this.insuranceStartDate = this.insurance.insuranceStartDate
                         ? this.insurance.insuranceStartDate.toDate()
                         : null;
+                    this.insuranceStartDateLabel = this.insurance.insuranceStartDate.format('MMM Do YY');
+
                     this.insuranceEndDate = this.insurance.insuranceEndDate
                         ? this.insurance.insuranceEndDate.toDate()
                         : null;
-                    this.balanceInsuredAmount = this.insurance.balanceInsuredAmount;
+                    this.insuranceEndDateLabel = this.insurance.insuranceEndDate.format('MMM Do YY');
+                    this.preferredCommunication = insurance.preferredCommunicationLabel;
+                    // this.balanceInsuredAmount = this.insurance.balanceInsuredAmount;
+                    // this.selectedInsuranceCity = insurance.insuranceAddress.city;
+                    // this.selectedPolicyCity = insurance.policyAddress.city;
+                    // this.loadInsuranceCities(insurance.insuranceAddress.state);
+                    // this.loadPolicyCities(insurance.policyAddress.state);
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         });
+        // this._insuranceStore.getInsurancesMaster()
+        //     .subscribe(
+        //     (insuranceMasters) => {
+        //         this.insuranceMasters = insuranceMasters;
+        //         this.insuranceMasters.forEach(element => {
+        //             this.insuranceMastersAdress = element.Address
+        //         });
+        //     });
 
         this.insuranceform = this.fb.group({
             policyNo: ['', Validators.required],
             policyOwner: ['', Validators.required],
-            policyHoldersName: ['', Validators.required],
-            insuranceStartDate: [''],
-            insuranceEndDate: [''],
-            balanceInsuredAmount: [''],
+            policyHolderName: ['', Validators.required],
+            insuranceStartDate: ['', Validators.required],
+            insuranceEndDate: ['', Validators.required],
+            balanceInsuredAmount: ['', Validators.required],
             insuranceCompanyCode: [''],
             insuranceType: ['', Validators.required],
             insuranceMasterId: ['', Validators.required],
@@ -166,16 +139,13 @@ export class EditInsuranceComponent implements OnInit {
             policyAddress2: [''],
             policyState: [''],
             policyCity: [''],
-            policyZipCode: [''],
+            policyZipcode: [''],
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
             policyCellPhone: ['', [Validators.required]],
-            policyHomePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            policyWorkPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            policyHomePhone: [''],
+            policyWorkPhone: [''],
             policyFaxNo: [''],
-            policyOfficeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            policyAlternateEmail: ['', [AppValidators.emailValidator]],
-            policyPreferredCommunication: [''],
             address: [],
             address2: [],
             state: [],
@@ -184,76 +154,32 @@ export class EditInsuranceComponent implements OnInit {
             country: [],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required]],
-            homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            faxNo: [''],
-            alternateEmail: ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            preferredCommunication: ['']
+            homePhone: [''],
+            workPhone: [''],
+            faxNo: ['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
     }
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
+            .subscribe(states => this.states = states);
 
-            });
+        this._insuranceStore.getInsurancesMaster(this.caseId)
+            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
 
-        this._insuranceStore.getInsurancesMasterByCompanyId()
-            // .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-            .subscribe((insuranceMasters: InsuranceMaster[]) => {
-                let defaultLabel: any[] = [{
-                    label: '-Select Insurance Company-',
-                    value: '0'
-                }]
-                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
-                    return {
-                        label: `${currentInsuranceMaster.companyName}`,
-                        value: currentInsuranceMaster.id
-                    };
-                })
-                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+        // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
+
     }
 
     selectInsurance(event) {
-        let currentInsurance: number = parseInt(event.value);
+        let currentInsurance: number = parseInt(event.target.value);
         if (currentInsurance !== 0) {
             this.loadInsuranceMasterAddress(currentInsurance);
         } else {
             this.insuranceMastersAdress = null
         }
-    }
-    onUpload(event) {
 
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
@@ -261,9 +187,78 @@ export class EditInsuranceComponent implements OnInit {
             .subscribe(
             (insuranceMaster) => {
                 this.insuranceMaster = insuranceMaster;
-                this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[0]
+                this.insuranceMastersAdress = insuranceMaster.Address
             });
     }
+    //     selectAdjusterState(event) {
+    //      let currentState = event.target.value;
+    //     if (currentState === this.adjuster.adjusterAddress.state) {
+    //         this.loadCities(currentState);
+    //         this.selectedCity = this.adjuster.adjusterAddress.city;
+    //     } else {
+    //     this.loadCities(currentState);
+    //     this.selectedCity = '';
+    //     }
+    // }
+
+    // loadCities(stateName) {
+    //     this.isadjusterCitiesLoading = true;
+    //     if (stateName !== '') {
+    //         this._statesStore.getCitiesByStates(stateName)
+    //             .subscribe((cities) => { this.adjusterCities = cities; },
+    //             null,
+    //             () => { this.isadjusterCitiesLoading = false; });
+    //     } else {
+    //         this.adjusterCities = [];
+    //         this.isadjusterCitiesLoading = false;
+    //     }
+    // }
+
+    // selectPolicyState(event) {
+    //     let currentState = event.target.value;
+    //     if (currentState === this.insurance.policyAddress.state) {
+    //         this.loadPolicyCities(currentState);
+    //         this.selectedPolicyCity = this.insurance.policyAddress.city;
+    //     } else {
+    //     this.loadPolicyCities(currentState);
+    //     this.selectedPolicyCity = '';
+    //     }
+    // }
+    // loadPolicyCities(stateName) {
+    //     this.isPolicyCitiesLoading = true;
+    //     if ( stateName !== '') {
+    //     this._statesStore.getCitiesByStates(stateName)
+    //             .subscribe((cities) => { this.policyCities = cities; },
+    //             null,
+    //             () => { this.isPolicyCitiesLoading = false; });
+    //     } else {
+    //         this.policyCities = [];
+    //         this.isPolicyCitiesLoading = false;
+    //     }
+    // }
+    // selectInsuranceState(event) {
+    //     let currentState = event.target.value;
+    //     if (currentState === this.insurance.insuranceAddress.state) {
+    //         this.loadInsuranceCities(currentState);
+    //         this.selectedInsuranceCity = this.insurance.insuranceAddress.city;
+    //     } else {
+    //     this.loadInsuranceCities(currentState);
+    //     this.selectedInsuranceCity = '';
+    //     }
+    // }
+    // loadInsuranceCities(stateName) {
+    //     this.isInsuranceCitiesLoading = true;
+    //     if ( stateName !== '') {
+    //     this._statesStore.getCitiesByStates(stateName)
+    //             .subscribe((cities) => { this.insuranceCities = cities; },
+    //             null,
+    //             () => { this.isInsuranceCitiesLoading = false; });
+    //     } else {
+    //         this.insuranceCities = [];
+    //         this.isInsuranceCitiesLoading = false;
+    //     }
+    // }
+
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
@@ -271,7 +266,7 @@ export class EditInsuranceComponent implements OnInit {
         let insurance = new Insurance({
             id: this.insurance.id,
             caseId: this.caseId,
-            policyHoldersName: insuranceformValues.policyHoldersName,
+            policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNo,
             insuranceStartDate: insuranceformValues.insuranceStartDate ? moment(insuranceformValues.insuranceStartDate) : null,
@@ -287,10 +282,7 @@ export class EditInsuranceComponent implements OnInit {
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
                 workPhone: insuranceformValues.policyWorkPhone,
-                officeExtension: insuranceformValues.policyOfficeExtension,
-                alternateEmail: insuranceformValues.policyAlternateEmail,
-                preferredCommunication: insuranceformValues.policyPreferredCommunication,
-
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             policyAddress: new Address({
                 address1: insuranceformValues.policyAddress,
@@ -298,22 +290,26 @@ export class EditInsuranceComponent implements OnInit {
                 city: insuranceformValues.policyCity,
                 country: insuranceformValues.policyCountry,
                 state: insuranceformValues.policyState,
-                zipCode: insuranceformValues.policyZipCode
+                zipCode: insuranceformValues.policyZipcode
             }),
             insuranceContact: new Contact({
-                cellPhone: insuranceformValues.cellPhone ? insuranceformValues.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: insuranceformValues.email,
-                faxNo: insuranceformValues.faxNo ? insuranceformValues.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: insuranceformValues.homePhone,
-                workPhone: insuranceformValues.workPhone,
-                officeExtension: insuranceformValues.officeExtension,
-                alternateEmail: insuranceformValues.alternateEmail,
+                cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
+                emailAddress: insuranceformValues.policyEmail,
+                faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
+                homePhone: insuranceformValues.policyHomePhone,
+                workPhone: insuranceformValues.policyWorkPhone,
                 preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
+                // address1: insuranceformValues.address,
+                // address2: insuranceformValues.address2,
+                // city: insuranceformValues.city,
+                // country: insuranceformValues.country,
+                // state: insuranceformValues.state,
+                // zipCode: insuranceformValues.zipcode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._insuranceStore.updateInsurance(insurance);
         result.subscribe(
             (response) => {
@@ -322,24 +318,24 @@ export class EditInsuranceComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update insurance.';
+                let errString = 'Unable to update Insurance.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

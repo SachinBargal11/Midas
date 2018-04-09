@@ -4,13 +4,10 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { UsersStore } from '../stores/users-store';
 import { User } from '../../../commons/models/user';
 import * as _ from 'underscore';
-import { UserSetting } from '../../../commons/models/user-setting';
-import { UserSettingStore } from '../../../commons/stores/user-setting-store';
 
 @Component({
     selector: 'user-shell',
-    templateUrl: './users-shell.html',
-    styleUrls: ['../../../accordion.scss']
+    templateUrl: './users-shell.html'
 })
 
 export class UserShellComponent implements OnInit {
@@ -18,29 +15,19 @@ export class UserShellComponent implements OnInit {
     userRoleFlag: number;
     role;
     roleType;
-    userSetting: UserSetting;
-    preferredUIViewId: number;
-    currAccordion;
-    currAccordion1;
-    currAccordion2;
-    currAccordion3;
-    index: number;
-    routerLink: string;
 
     constructor(
         public _router: Router,
         public _route: ActivatedRoute,
         private _sessionStore: SessionStore,
-        private _usersStore: UsersStore,
-        public sessionStore: SessionStore,
-        private _userSettingStore: UserSettingStore
+        private _usersStore: UsersStore
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/medical-provider/users']);
         });
-        let href = window.location.href;
-        this.currAccordion = href.substr(href.lastIndexOf('/') + 1);
+
+
         this._route.params.subscribe((routeParams: any) => {
             let userId: number = parseInt(routeParams.userId);
             this.userRoleFlag = parseInt(routeParams.userRoleFlag);
@@ -52,11 +39,11 @@ export class UserShellComponent implements OnInit {
                         return currentRole.roleType;
                     });
                     this.role.forEach(roleType => {
-                        if (roleType === 6) {
+                        if (roleType === 3) {
                             this.roleType = roleType;
                         }
                     });
-                    if (this.roleType !== 6) {
+                    if (this.roleType !== 3) {
                         // document.getElementById('doctorInfo').style.display = 'none';
                         document.getElementById('doctorLocation').style.display = 'none';
                     }
@@ -73,23 +60,7 @@ export class UserShellComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._userSettingStore.getUserSettingByUserId(this.sessionStore.session.user.id, this.sessionStore.session.currentCompany.id)
-            .subscribe((userSetting) => {
-                this.userSetting = userSetting;
-                this.preferredUIViewId = userSetting.preferredUIViewId;
-            }
-            )
-    }
 
-    onTabOpen(e) {
-        this.index = e.index;
-    }
-
-    setContent(elem) {
-        // let value = e.target.value;
-        if (this.currAccordion == elem) {
-            this.currAccordion = '';
-        }
     }
 
 }

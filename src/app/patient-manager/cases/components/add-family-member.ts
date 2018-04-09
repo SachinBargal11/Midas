@@ -18,26 +18,26 @@ import { FamilyMemberStore } from '../stores/family-member-store';
     templateUrl: './add-family-member.html'
 })
 
-
 export class AddFamilyMemberComponent implements OnInit {
     isCitiesLoading = false;
+    patientId: number;
     caseId: number;
     familyMemberForm: FormGroup;
     familyMemberFormControls;
     isSaveProgress = false;
-
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-        private _progressBarService: ProgressBarService,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+        public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
         private _familyMemberStore: FamilyMemberStore,
         private _elRef: ElementRef
     ) {
+        this.patientId = this.sessionStore.session.user.id;
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
         });
@@ -51,11 +51,8 @@ export class AddFamilyMemberComponent implements OnInit {
             ethnicities: ['', Validators.required],
             gender: ['', Validators.required],
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            alternateEmail: ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            preferredCommunication: [''],
-            primaryContact: ['1']
+            workPhone: [''],
+            primaryContact: [1]
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -86,13 +83,9 @@ export class AddFamilyMemberComponent implements OnInit {
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
-            //officeExtension: familyMemberFormValues.officeExtension,
-            //alternateEmail: familyMemberFormValues.alternateEmail,
-            //preferredCommunication: familyMemberFormValues.preferredCommunication,
-            // primaryContact: parseInt(familyMemberFormValues.primaryContact)
-            primaryContact: familyMemberFormValues.primaryContact ? familyMemberFormValues.primaryContact == '1' : true ? familyMemberFormValues.primaryContact == '0' : false,
+            primaryContact: parseInt(familyMemberFormValues.primaryContact)
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._familyMemberStore.addFamilyMember(familyMember);
         result.subscribe(
             (response) => {
@@ -101,7 +94,7 @@ export class AddFamilyMemberComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
@@ -112,13 +105,13 @@ export class AddFamilyMemberComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

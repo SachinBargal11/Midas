@@ -8,17 +8,31 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> SSN
-                                            <!--<span class="color-red">*</span>-->
+                                            <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="demographicsformControls.userInfo.controls.ssn.touched && !demographicsformControls.userInfo.controls.ssn.valid">
                             <input [ngModel]="patientInfo.ssn" formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.userInfo.controls.ssn.valid">
                             <div class='error-list' *ngIf="demographicsformControls.userInfo.controls.ssn.touched && !demographicsformControls.userInfo.controls.ssn.valid">
                                 <ul>
-                                    <li *ngIf="demographicsformControls.userInfo.controls.ssn.hasError('required')">SSN is required.</li>
+                                    <li *ngIf="demographicsformControls.userInfo.controls.ssn.hasError('required')">First Name is required.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Weight (lbs)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Height (cms)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Date of First Treatment
                                         </label>
@@ -31,73 +45,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-lg-4">
-                        <label class="form-label"> Weight (lbs)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Height (cms)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>-->
-                </div>
-                <div class="row">
-                    <!--<div class="col-lg-4">
-                        <label class="form-label"> Date of First Treatment
-                                        </label>
-                        <div class="form-group">
-                            <div class='input-group date'>
-                                <p-calendar [ngModel]="dateOfFirstTreatment" formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
-                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
-                                    [showIcon]="true" icon="font-icon font-icon-calend">
-                                    </p-calendar>
-                            </div>
-                        </div>
-                    </div>-->
-                    <!--<div class="col-lg-4">
-                        <label class="form-label"> Races
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="demographicsformControls.userInfo.controls.races.touched && !demographicsformControls.userInfo.controls.races.valid">
-                        <select formControlName="races" type="text" class="form-control" placeholder="" [class.error]="demographicsformControls.userInfo.controls.races.touched && !demographicsformControls.userInfo.controls.races.valid">
-                            <option value="">-Select -</option>
-                            <option disabled>────────────────────</option>
-                            <option value="1">American Indian or Alaska Native</option>
-                            <option value="2">Asian</option>
-                            <option value="3">Black or African American</option>
-                            <option value="4">Native Hawaiian or Other Pacific Islander</option>
-                            <option value="5">White</option>
-                            <option value="6">Declined to specify</option>
-                        </select>
-                    <div class='error-list' *ngIf="demographicsformControls.userInfo.controls.races.touched && !demographicsformControls.userInfo.controls.races.valid">
-                        <ul>
-                            <li *ngIf="demographicsformControls.userInfo.controls.races.hasError('required')">Races is required.</li>
-                        </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Ethnicities
-                                <span class="color-red">*</span>
-                            </label>
-                <div class="form-group" [class.error]="demographicsformControls.userInfo.controls.ethnicities.touched && !demographicsformControls.userInfo.controls.ethnicities.valid">
-                    <select formControlName="ethnicities" type="text" class="form-control" placeholder="" [class.error]="demographicsformControls.userInfo.controls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
-                            <option value="">-Select -</option>
-                            <option disabled>────────────────────</option>
-                            <option value="1">Hispanic or Latino</option>
-                            <option value="2">Not Hispanic or Latino</option>
-                            <option value="3">Declined to specify</option>
-                        </select>
-                <div class='error-list' *ngIf="demographicsformControls.userInfo.controls.ethnicities.touched && !demographicsformControls.userInfo.controls.ethnicities.valid">
-                        <ul>
-                            <li *ngIf="demographicsformControls.userInfo.controls.ethnicities.hasError('required')">Ethnicities is required.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>-->
                 </div>
             </div>
         </section>
@@ -121,111 +68,6 @@
                                     <li *ngIf="demographicsformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
                                 </ul>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Fax No</label>
-                            <!--<input type="text" formControlName="faxNo" [ngModel]="faxNo" class="form-control" />-->
-                            <p-inputMask [(ngModel)]="faxNo" mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <!--<div class="form-group">
-                            <label class="form-label"> Home Phone No</label>
-                            <input [ngModel]="patientInfo.user.contact.homePhone" formControlName="homePhone" type="text" class="form-control" placeholder=""
-                            />
-                        </div>-->
-                        <div class="form-group" [class.error]="demographicsformControls.contact.controls.homePhone.touched && !demographicsformControls.contact.controls.homePhone.valid">
-                            <label class="form-label"> Home Phone No</label>
-                            <input [ngModel]="patientInfo.user.contact.homePhone" [class.error]="!demographicsformControls.contact.controls.homePhone.valid"
-                                formControlName="homePhone" type="text" class="form-control" placeholder="" />
-                            <div class='error-list' *ngIf="demographicsformControls.contact.controls.homePhone.touched && !demographicsformControls.contact.controls.homePhone.valid">
-                                <ul>
-                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('required')">Home Phone number is required.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('numberValidator')">Please enter only numbers.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('maxlength')">Home Phone should be maximum {{demographicsformControls.contact.controls.homePhone.errors.maxlength.requiredLength}}
-                                        numbers.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <!--<div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Work Phone No</label>
-                            <input [ngModel]="patientInfo.user.contact.workPhone" formControlName="workPhone" type="text" class="form-control" placeholder=""
-                            />
-                        </div>
-                    </div>-->
-                    <div class="col-lg-4">
-                        <div class="form-group" [class.error]="demographicsformControls.contact.controls.workPhone.touched && !demographicsformControls.contact.controls.workPhone.valid">
-                            <label class="form-label"> Work Phone No</label>
-                            <input [ngModel]="patientInfo.user.contact.workPhone" [class.error]="!demographicsformControls.contact.controls.workPhone.valid"
-                                formControlName="workPhone" type="text" class="form-control" placeholder="" />
-                            <div class='error-list' *ngIf="demographicsformControls.contact.controls.workPhone.touched && !demographicsformControls.contact.controls.workPhone.valid">
-                                <ul>
-                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('required')">Work Phone No number is required.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('maxlength')">Work Phone No should be maximum {{demographicsformControls.contact.controls.workPhone.errors.maxlength.requiredLength}}
-                                        numbers.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <!--<div class="form-group">
-                            <label class="form-label"> Office Extension</label>
-                            <input formControlName="officeExtension" [ngModel]="patientInfo.user.contact.officeExtension" type="text" class="form-control"
-                                placeholder="" />
-                        </div>-->
-                        <div class="form-group" [class.error]="demographicsformControls.contact.controls.officeExtension.touched && !demographicsformControls.contact.controls.officeExtension.valid">
-                            <label class="form-label">Office Extension</label>
-                            <input [ngModel]="patientInfo.user.contact.officeExtension" [class.error]="!demographicsformControls.contact.controls.officeExtension.valid"
-                                formControlName="officeExtension" type="text" class="form-control" placeholder="" />
-                            <div class='error-list' *ngIf="demographicsformControls.contact.controls.officeExtension.touched && !demographicsformControls.contact.controls.officeExtension.valid">
-                                <ul>
-                                    <li *ngIf="demographicsformControls.contact.controls.officeExtension.hasError('required')">Office extension number is required.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
-                                    <li *ngIf="demographicsformControls.contact.controls.officeExtension.hasError('maxlength')">Office extension should be maximum {{demographicsformControls.contact.controls.officeExtension.errors.maxlength.requiredLength}}
-                                        numbers.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Alternate E-Mail </label>
-                            <div class="form-group" [class.error]="demographicsformControls.contact.controls.alternateEmail.touched && !demographicsformControls.contact.controls.alternateEmail.valid">
-                                <input formControlName="alternateEmail" [ngModel]="patientInfo.user.contact.alternateEmail" [class.error]="!demographicsformControls.contact.controls.alternateEmail.valid"
-                                    class="form-control" type="text" placeholder="" />
-                                <div class='error-list' *ngIf="demographicsformControls.contact.controls.alternateEmail.touched && !demographicsformControls.contact.controls.alternateEmail.valid">
-                                    <ul>
-                                        <li *ngIf="demographicsformControls.contact.controls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Preferred Communication
-                                        </label>
-                            <select formControlName="preferredCommunication" [ngModel]="patientInfo.user.contact.preferredCommunication" type="text"
-                                class="form-control" placeholder="">
-                                        <option value="">-Select -</option>
-                                        <option disabled>────────────────────</option>
-                                        <option value="1">Cellphone</option>
-                                        <option value="2">Email</option>
-                                        <option value="3">Work Phone</option>
-                                        <option value="4">Post</option>
-                        </select>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -258,8 +100,62 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Home Phone No</label>
+                            <input [ngModel]="patientInfo.user.contact.homePhone" formControlName="homePhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
+                        <div class="form-group" [class.error]="demographicsformControls.contact.controls.homePhone.touched && !demographicsformControls.contact.controls.homePhone.valid">
+                            <label class="form-label"> Home Phone No</label>
+                            <input [ngModel]="patientInfo.user.contact.homePhone" [class.error]="!demographicsformControls.contact.controls.homePhone.valid"
+                                formControlName="homePhone" [ngModel]="patientInfo.user.contact.homePhone" type="text" class="form-control"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="demographicsformControls.contact.controls.homePhone.touched && !demographicsformControls.contact.controls.homePhone.valid">
+                                <ul>
+                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('required')">Home Phone number is required.</li>
+                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('numberValidator')">Please enter only numbers.</li>
+                                    <li *ngIf="demographicsformControls.contact.controls.homePhone.hasError('maxlength')">Home Phone should be maximum {{demographicsformControls.contact.controls.homePhone.errors.maxlength.requiredLength}}
+                                        numbers.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Work Phone No</label>
+                            <input [ngModel]="patientInfo.user.contact.workPhone" formControlName="workPhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
+                        <div class="form-group" [class.error]="demographicsformControls.contact.controls.workPhone.touched && !demographicsformControls.contact.controls.workPhone.valid">
+                            <label class="form-label"> Work Phone No</label>
+                            <input [ngModel]="patientInfo.user.contact.workPhone" [class.error]="!demographicsformControls.contact.controls.workPhone.valid"
+                                formControlName="workPhone" [ngModel]="patientInfo.user.contact.workPhone" type="text" class="form-control"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="demographicsformControls.contact.controls.workPhone.touched && !demographicsformControls.contact.controls.workPhone.valid">
+                                <ul>
+                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('required')">Work Phone No number is required.</li>
+                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
+                                    <li *ngIf="demographicsformControls.contact.controls.workPhone.hasError('maxlength')">Work Phone No should be maximum {{demographicsformControls.contact.controls.workPhone.errors.maxlength.requiredLength}}
+                                        numbers.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Fax No</label>
+                            <!--<input type="text" formControlName="faxNo" [ngModel]="faxNo" class="form-control" />-->
+                            <p-inputMask [(ngModel)]="faxNo" mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
+
         <section class="card">
             <header class="card-header card-header-lg">
                 Address Information
@@ -297,21 +193,21 @@
                         <label class="form-label"> State
                                         </label>
                         <!--<div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
-                            <select [ngModel]="patientInfo.user.address.state" formControlName="state" type="text" class="form-control" placeholder=""
-                                [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
+                            <select [ngModel]="patientInfo.user.address.state" formControlName="state" type="text" class="form-control"
+                                placeholder="" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                                 </select>
-                            <div class='error-list' *ngIf="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
-                                <ul>
-                                    <li *ngIf="demographicsformControls.address.controls.state.hasError('required')">State is required.</li>
-                                </ul>
-                            </div>
+                                <div class='error-list' *ngIf="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
+                                    <ul>
+                                        <li *ngIf="demographicsformControls.address.controls.state.hasError('required')">State is required.</li>
+                                    </ul>
+                                </div>
                         </div>-->
                         <div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
-                            <p-dropdown [options]="states" formControlName="state" [ngModel]="patientInfo.user.address.state" [style]="{'width':'100%'}"
+                            <p-dropdown [options]="states" [ngModel]="patientInfo.user.address.state" formControlName="state" [style]="{'width':'100%'}"
                                 filter="filter"></p-dropdown>
-                            <div class='error-list' *ngIf="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
+                            <div class='error-list' *ngIf="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.state.valid">
                                 <span class="color-red">State is required.</span>
                             </div>
                         </div>
@@ -386,9 +282,9 @@
         </section>
 
 
-        <button *ngIf="!referredToMe" [disabled]="!demographicsform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+        <button [disabled]="!demographicsform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
             <loader [visible]="isSavePatientProgress"></loader>
         </button>
-        <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
+        <!--<a [routerLink]="['/patient-manager/profile/viewall']" class="btn btn-secondary">Cancel</a>-->
     </form>
 </div>

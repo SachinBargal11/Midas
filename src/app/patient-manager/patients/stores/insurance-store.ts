@@ -16,9 +16,9 @@ export class InsuranceStore {
 
     constructor(
         private _insuranceService: InsuranceService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -52,9 +52,9 @@ export class InsuranceStore {
 //
 
 
-  getInsurancesMasterByCompanyId(): Observable<InsuranceMaster[]> {
+  getInsurancesMaster(caseId:number): Observable<InsuranceMaster[]> {
         let promise = new Promise((resolve, reject) => {
-            this._insuranceService.getInsurancesMasterByCompanyId().subscribe((insurancesMaster: InsuranceMaster[]) => {
+            this._insuranceService.getInsurancesMaster(caseId).subscribe((insurancesMaster: InsuranceMaster[]) => {
                 resolve(insurancesMaster);
             }, error => {
                 reject(error);
@@ -71,10 +71,11 @@ export class InsuranceStore {
 
     fetchInsuranceById(id: number): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
-            let matchedInsurance: Insurance = this.findInsuranceById(id);
-            if (matchedInsurance) {
-                resolve(matchedInsurance);
-            } else {
+            // let matchedInsurance: Insurance = this.findInsuranceById(id);
+            // if (matchedInsurance) {
+            //     resolve(matchedInsurance);
+            // } else 
+            {
                 this._insuranceService.getInsurance(id).subscribe((insurance: Insurance) => {
                     resolve(insurance);
                 }, error => {
@@ -85,7 +86,6 @@ export class InsuranceStore {
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
    
-
     addInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
             this._insuranceService.addInsurance(insurance).subscribe((insurance: Insurance) => {

@@ -16,10 +16,6 @@ import { Insurance } from '../../patients/models/insurance';
 import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
-import { CasesStore } from '../../cases/stores/case-store';
-import * as _ from 'underscore';
-import { Case } from '../models/case';
-
 @Component({
     selector: 'add-insurance',
     templateUrl: './add-insurance.html'
@@ -31,53 +27,47 @@ export class AddInsuranceComponent implements OnInit {
     insuranceMasters: InsuranceMaster[];
     insuranceMaster: InsuranceMaster;
     insuranceMastersAdress: Address;
-    eventStartAsDate: Date;
     policyCities: any[];
     insuranceCities: any[];
     caseId: number;
     selectedCity = 0;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
-    // msgs: Message[];
-    uploadedFiles: any[] = [];
-    caseStatusId: number;
+
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
-    caseViewedByOriginator = false;
-    patientId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+        public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
-        private _elRef: ElementRef,
-        private _casesStore : CasesStore
+        private _elRef: ElementRef
     ) {
-
-        this.eventStartAsDate = moment().toDate();
+        //  this.patientId = this.sessionStore.session.user.id;
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId);
+            this.caseId = parseInt(routeParams.caseId, 10);
         });
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {            
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this.MatchCase();
-        });
+        //  this._insuranceStore.getInsurancesMaster()
+        //     .subscribe(
+        //     (insuranceMasters) => {
+        //         this.insuranceMasters = insuranceMasters;
+        //         this.insuranceMasters.forEach(element => {
+        //             this.insuranceMastersAdress = element.Address
+        //         });
+        //     });
 
 
         this.insuranceform = this.fb.group({
             policyNumber: ['', Validators.required],
             policyOwner: ['', Validators.required],
-            policyHoldersName: ['', Validators.required],
-            insuranceStartDate: [''],
-            insuranceEndDate: [''],
-            balanceInsuredAmount: [''],
+            policyHolderName: ['', Validators.required],
             insuranceCompanyCode: [''],
             insuranceMasterId: ['', Validators.required],
             insuranceType: ['', Validators.required],
@@ -86,16 +76,13 @@ export class AddInsuranceComponent implements OnInit {
             policyAddress2: [''],
             policyState: [''],
             policyCity: [''],
-            policyZipCode: [''],
+            policyZipcode: [''],
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
             policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            policyHomePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            policyWorkPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            policyHomePhone: [''],
+            policyWorkPhone: [''],
             policyFaxNo: [''],
-            policyOfficeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            policyAlternateEmail: ['', [AppValidators.emailValidator]],
-            policyPreferredCommunication: [''],
             address: [''],
             address2: [''],
             state: [''],
@@ -104,65 +91,22 @@ export class AddInsuranceComponent implements OnInit {
             country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-            faxNo: [''],
-            alternateEmail: ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            preferredCommunication: ['']
+            homePhone: [''],
+            workPhone: [''],
+            faxNo: ['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
-
-        this._insuranceStore.getInsurancesMasterByCompanyId()
-            // .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-            .subscribe((insuranceMasters: InsuranceMaster[]) => {
-                let defaultLabel: any[] = [{
-                    label: '-Select Insurance Company-',
-                    value: ''
-                }]
-                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
-                    return {
-                        label: `${currentInsuranceMaster.companyName}`,
-                        value: currentInsuranceMaster.id
-                    };
-                })
-                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+            .subscribe(states => this.states = states);
+        this._insuranceStore.getInsurancesMaster(this.caseId)
+            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
     selectInsurance(event) {
-        // this.selectedInsurance = 0;
-        let currentInsurance: number = parseInt(event.value);
+        let currentInsurance: number = parseInt(event.target.value);
         this.loadInsuranceMasterAddress(currentInsurance);
     }
 
@@ -172,20 +116,12 @@ export class AddInsuranceComponent implements OnInit {
                 .subscribe(
                 (insuranceMaster) => {
                     this.insuranceMaster = insuranceMaster;
-                    this.insuranceMastersAdress = insuranceMaster.InsuranceAddress[0]
+                    this.insuranceMastersAdress = insuranceMaster.Address;
                 });
         } else {
             this.insuranceMaster = null;
             this.insuranceMastersAdress = null;
         }
-    }
-
-    onUpload(event) {
-
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
-
     }
 
     save() {
@@ -194,12 +130,9 @@ export class AddInsuranceComponent implements OnInit {
         let result;
         let insurance = new Insurance({
             caseId: this.caseId,
-            policyHoldersName: insuranceformValues.policyHoldersName,
+            policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNumber,
-            insuranceStartDate: insuranceformValues.insuranceStartDate ? moment(insuranceformValues.insuranceStartDate) : null,
-            insuranceEndDate: insuranceformValues.insuranceEndDate ? moment(insuranceformValues.insuranceEndDate) : null,
-            balanceInsuredAmount: insuranceformValues.balanceInsuredAmount,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             insuranceType: insuranceformValues.insuranceType,
@@ -209,11 +142,7 @@ export class AddInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone,
-                officeExtension: insuranceformValues.policyOfficeExtension,
-                alternateEmail: insuranceformValues.policyAlternateEmail,
-                preferredCommunication: insuranceformValues.policyPreferredCommunication,
-
+                workPhone: insuranceformValues.policyWorkPhone
             }),
             policyAddress: new Address({
                 address1: insuranceformValues.policyAddress,
@@ -224,14 +153,11 @@ export class AddInsuranceComponent implements OnInit {
                 zipCode: insuranceformValues.policyZipCode
             }),
             insuranceContact: new Contact({
-                cellPhone: insuranceformValues.cellPhone ? insuranceformValues.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: insuranceformValues.email,
-                faxNo: insuranceformValues.faxNo ? insuranceformValues.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: insuranceformValues.homePhone,
-                workPhone: insuranceformValues.workPhone,
-                officeExtension: insuranceformValues.officeExtension,
-                alternateEmail: insuranceformValues.alternateEmail,
-                preferredCommunication: insuranceformValues.preferredCommunication,
+                cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
+                emailAddress: insuranceformValues.policyEmail,
+                faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
+                homePhone: insuranceformValues.policyHomePhone,
+                workPhone: insuranceformValues.policyWorkPhone
             }),
             insuranceAddress: new Address({
                 address1: insuranceformValues.address,
@@ -242,7 +168,7 @@ export class AddInsuranceComponent implements OnInit {
                 zipCode: insuranceformValues.zipCode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._insuranceStore.addInsurance(insurance);
         result.subscribe(
             (response) => {
@@ -251,7 +177,7 @@ export class AddInsuranceComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
@@ -262,33 +188,13 @@ export class AddInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
-            });
-    }
-    MatchCase() {            
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-                this.caseStatusId = caseDetail.caseStatusId;
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

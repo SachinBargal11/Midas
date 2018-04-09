@@ -37,25 +37,6 @@ import { InsuranceMasterStore } from './stores/insurance-master-store';
 import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
-import { MedicalProviderListComponent } from './components/medical-provider-master/medical-provider-list';
-// import { MedicalProviderMasterService } from './services/medical-provider-master-service';
-// import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
-// import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
-import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
-// import { SearchPreferedProvidersComponent } from './components/medical-provider-master/search-preferred-providers';
-
-import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
-import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
-import { DocumentTypeComponent } from './components/account-setting/document-type';
-import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
-import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
-
-import { ProcedureCodeMasterService } from './services/procedure-code-master-service';
-import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
-import { DocumentTypeStore } from './stores/document-type-store';
-import { DocumentTypeService } from './services/document-type-service';
-
-// AccountSettingShellComponent
 @NgModule({
     imports: [
         CommonModule,
@@ -78,14 +59,7 @@ import { DocumentTypeService } from './services/document-type-service';
         AttorneyMasterListComponent,
         AddInsuranceMasterComponent,
         EditInsuranceMasterComponent,
-        InsuranceMasterListComponent,
-        MedicalProviderListComponent,
-        // AddMedicalProviderComponent,
-        // SearchPreferedProvidersComponent,
-        EditMedicalProviderComponent,
-        AccountSettingShellComponent,
-        AccountGeneralSettingComponent,
-        DocumentTypeComponent
+        InsuranceMasterListComponent
 
     ],
     providers: [
@@ -100,15 +74,7 @@ import { DocumentTypeService } from './services/document-type-service';
         AttorneyMasterService,
         AttorneyMasterStore,
         InsuranceMasterService,
-        InsuranceMasterStore,
-        // MedicalProviderMasterService,
-        // MedicalProviderMasterStore
-        RoomsStore, 
-        RoomsService, 
-        ProcedureCodeMasterService, 
-        ProcedureCodeMasterStore,
-        DocumentTypeStore,
-        DocumentTypeService
+        InsuranceMasterStore
     ]
 })
 export class AccountSetupModule { }

@@ -1,73 +1,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 col-lg-push-2 col-md-12">
-            <div *ngIf="doctorRoleFlag">
-                <!--<h3 class="with-border">User Settings</h3>-->
-                <form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
-                    <section class="box-typical">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-md-4"> User Profile:</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <p-checkbox formControlName="isPublic" binary="true" label="Public" [(ngModel)]="isPublic"></p-checkbox>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4"> Publish Calender</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <p-checkbox [disabled]="!isPublic" formControlName="isCalendarPublic" binary="true" label="Public" [(ngModel)]="isCalendarPublic"></p-checkbox>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4"> Is Searchable</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <p-checkbox [disabled]="!isPublic" formControlName="isSearchable" binary="true" label="Public" [(ngModel)]="isSearchable"></p-checkbox>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <div class="row" *ngIf="isCalendarPublic">
-                                <div class="col-md-4"> Preferred Time Slot</div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <select [disabled]="!isCalendarPublic" formControlName="timeSlot" [(ngModel)]="isTimeSlot" type="text" class="form-control">
-                            <option value="">-Select -</option>
-                            <option value="15">15 minutes</option>
-                            <option value="30">30 minutes</option>
-                            <option value="60">60 minutes</option>
-                            <option value="120">120 minutes</option>
-                        </select>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!--<p-footer>-->
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-success">
-                        Save
-                        <loader [visible]="isSaveProgress"></loader>
-                    </button>
-                                    <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel</button>
-                                </div>
-                            </div>
-                            <!--</p-footer>-->
-                            <br>
-                        </div>
-                    </section>
-                </form>
-            </div>
-            <div *ngIf="!doctorRoleFlag">
-                <!-- <h3> General Settings for Attorney </h3> -->
+                <!-- <h5> General Settings for Patient </h5> -->
                 <form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
                     <div class="row">
-                        <div class="col-md-4">Calender view prefference
-                            <!--<label class="form-label"> Calender view prefference
-                                            <span class="color-red">*</span>
-                                        </label>-->
+                        <div class="col-md-4">
+                            <label class="form-label"> Calender view prefference
+                                            <!-- <span class="color-red">*</span> -->
+                                        </label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -82,7 +22,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">Preferred UI View
+                        <div class="col-md-4">
+                            <label class="form-label"> Preferred UI View
+                                            <!-- <span class="color-red">*</span> -->
+                                        </label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -106,4 +49,3 @@
             </div>
         </div>
     </div>
-</div>

@@ -8,8 +8,6 @@ import { UserAdapter } from '../../../../medical-provider/users/services/adapter
 import { LocationDetailAdapter } from '../../../../medical-provider/locations/services/adapters/location-detail-adapter';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import { ReferralDocumentAdapter } from './referral-document-adapters';
-import { SpecialityAdapter } from '../../../../account-setup/services/adapters/speciality-adapter';
-import { TestsAdapter } from '../../../../medical-provider/rooms/services/adapters/tests-adapter';
 
 export class ReferralAdapter {
     static parseResponse(data: any): Referral {
@@ -32,8 +30,6 @@ export class ReferralAdapter {
                 referredToLocationId: data.referredToLocationId,
                 referredToDoctorId: data.referredToDoctorId,
                 referredToRoomId: data.referredToRoomId,
-                referredToSpecialtyId: data.referredToSpecialtyId,
-                referredToRoomTestId: data.referredToRoomTestId,
                 note: data.note,
                 referredByEmail: data.referredByEmail,
                 referredToEmail: data.referredToEmail,
@@ -47,11 +43,6 @@ export class ReferralAdapter {
                 referredToLocation: LocationDetailAdapter.parseResponse(data.referredToLocation),
                 referredToCompany: CompanyAdapter.parseResponse(data.referredToCompany),
                 referralDocument: referralDocuments,
-                referredToSpecialty: SpecialityAdapter.parseResponse(data.referredToSpecialty),
-                referredToRoomTest: TestsAdapter.parseResponse(data.referredToRoomTest),
-                firstName: data.firstName,
-                lastName: data.lastName,
-                cellPhone: data.cellPhone,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,

@@ -71,9 +71,7 @@ export class UsersService {
     }
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(environment.SERVICE_BASE_URL + '/Account/Get/' + accountId, {
-            //     headers: this._headers
-            // }).map(res => res.json())
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/Account/Get/' + accountId).map(res => res.json())
     //             .subscribe((data: any) => {
     //                 let users = (<Object[]>data.users).map((userData: any) => {
     //                     return UserAdapter.parseResponse(userData);
@@ -254,24 +252,6 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    getIsExistingUser(userName: string): Observable<any> {
-        let promise: Promise<any> = new Promise((resolve, reject) => {
-            let requestData = {
-                userName: userName
-            }
-            return this._http.post(environment.SERVICE_BASE_URL + '/User/checkIsExistingUser', JSON.stringify(requestData), {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((userData: any) => {
-                    // let parsedUser: User[] = null;
-                    // parsedUser = UserAdapter.parseResponse(userData);
-                    // resolve(parsedUser);
-                    resolve(userData);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<any>>Observable.fromPromise(promise);
 
-    }
 }
+

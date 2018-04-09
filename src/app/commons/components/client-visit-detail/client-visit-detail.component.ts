@@ -1,4 +1,3 @@
-import { UnscheduledVisit } from '../../../patient-manager/patient-visit/models/unscheduled-visit';
 
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -100,8 +99,8 @@ export class ClientVisitDetailComponent implements OnInit {
         });
         this.clientVisitDetailFormControls = this.clientVisitDetailForm.controls;
 
-        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = this.sessionStore.session.user.id;
             this._progressBarService.show();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(

@@ -83,7 +83,6 @@ export class Accident extends AccidentRecord {
         super(props);
     }
 
-
     get patientTypeLabel(): string {
         return Accident.getPatientTypeLabel(this.patientTypeId);
     }

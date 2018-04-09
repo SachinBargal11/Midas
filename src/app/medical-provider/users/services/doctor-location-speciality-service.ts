@@ -104,9 +104,7 @@ export class DoctorLocationSpecialityService {
 
     // getDoctorLocationSpecialities(): Observable<DoctorLocationSpeciality[]> {
     //     let promise: Promise<DoctorLocationSpeciality[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(environment.SERVICE_BASE_URL + '/DoctorLocationSchedule/getall', {
-            //     headers: this._headers
-            // }).map(res => res.json())
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/DoctorLocationSchedule/getall').map(res => res.json())
     //             .subscribe((schedulesData: Array<Object>) => {
     //                 let parsedData: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
     //                     return DoctorLocationSpecialityAdapter.parseResponse(schedulesData);

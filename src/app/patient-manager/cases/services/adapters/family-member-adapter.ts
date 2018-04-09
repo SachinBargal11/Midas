@@ -26,8 +26,7 @@ export class FamilyMemberAdapter {
                 ethnicitiesId: data.ethnicitesId,
                 cellPhone: data.cellPhone,
                 workPhone: data.workPhone,
-                // primaryContact: data.primaryContact ? true : false
-                primaryContact: data.primaryContact == true ? '1' : data.primaryContact == false ? '0' : null,
+                primaryContact: data.primaryContact ? true : false
             });
         }
         return familyMember;

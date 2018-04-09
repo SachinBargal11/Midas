@@ -1,13 +1,12 @@
 import { Record } from 'immutable';
-import { Company } from './company';
 import { UserRole } from '../../commons/models/user-role';
 import { User } from '../../commons/models/user';
 import { AccountStatus } from '../../commons/models/enums/account-status';
 import { SubscriptionPlan } from '../../commons/models/enums/subscription-plan';
-import * as moment from 'moment';
+import { Company } from './company';
 
 const AccountRecord = Record({
-    companies: null,
+      companies: null,
     user: null,
     role: null,
     accountStatus: AccountStatus.IN_ACTIVE,
@@ -15,7 +14,7 @@ const AccountRecord = Record({
     accessToken: '',
     tokenExpiresAt: null,
     tokenResponse: null,
-    type: 'attorney',
+    type: 'patient',
     originalResponse: null
 });
 

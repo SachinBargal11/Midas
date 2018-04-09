@@ -1,10 +1,8 @@
-import { Company } from '../../models/company';
 import { Account } from '../../models/account';
-import { UserAdapter } from '../../../medical-provider/users/services/adapters/user-adapter';
+import { UserAdapter } from '../../../commons/services/adapters/user-adapter';
 import { CompanyAdapter } from './company-adapter';
+import { Company } from '../../models/company';
 import * as moment from 'moment';
-import * as _ from 'underscore';
-
 
 export class AccountAdapter {
 
@@ -13,17 +11,14 @@ export class AccountAdapter {
 
         let account = null;
         let companies: Company[] = [];
-
         if (accountData) {
+
             if (accountData.usercompanies) {
-                let allCompanies: Company[] = [];
                 for (let company of accountData.usercompanies) {
-                    allCompanies.push(CompanyAdapter.parseResponse(company.company));
+                    companies.push(CompanyAdapter.parseResponse(company.company));
                 }
-                companies = _.filter(allCompanies, (currCompany: Company) => {
-                    return currCompany.companyType == 2;
-                })
             }
+
             account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
                 companies: companies,
@@ -45,6 +40,7 @@ export class AccountAdapter {
                     companies.push(CompanyAdapter.parseResponse(company));
                 }
             }
+
             account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
                 companies: companies,

@@ -9,27 +9,19 @@ import { ConsentAdapter } from './consent-adapter';
 import { CaseDocumentAdapter } from './case-document-adapters';
 import { Referral } from '../../models/referral';
 import { ReferralAdapter } from './referral-adapter';
-import { CaseCompanyMapping } from '../../models/caseCompanyMapping';
-import { CaseCompanyMappingAdapter } from './caseCompanyMapping-adapters';
 
 export class CaseAdapter {
     static parseResponse(data: any): Case {
 
         let patient_case = null;
-        // let companies: Company[] = [];
-        let caseCompanyMapping: CaseCompanyMapping[] = [];
+        let companies: Company[] = [];
         let companyCaseConsentApproval: Consent[] = [];
         let caseCompanyConsentDocument: CaseDocument[] = [];
         let referral: Referral[] = [];
         if (data) {
-            // if (data.caseCompanyMapping) {
-            //     for (let company of data.caseCompanyMapping) {
-            //         companies.push(CompanyAdapter.parseResponse(company.company));
-            //     }
-            // }
             if (data.caseCompanyMapping) {
-                for (let caseMapping of data.caseCompanyMapping) {
-                    caseCompanyMapping.push(CaseCompanyMappingAdapter.parseResponse(caseMapping));
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
                 }
             }
             if (data.caseCompanyConsentDocument) {
@@ -46,48 +38,31 @@ export class CaseAdapter {
             //     for (let referral of data.referral) {
             //         referral.push(ReferralAdapter.parseResponse(referral));
             //     }
-            // }       
+            // }
             patient_case = new Case({
-
                 id: data.id,
                 patientId: data.patientId,
-                patient: PatientAdapter.parseResponse(data.patient2),
+                patient: PatientAdapter.parseResponse(data.patient),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
-                caseCompanyMapping: caseCompanyMapping,
-                // companies: companies,
+                companies: companies,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
-                companyCaseConsentApproval: companyCaseConsentApproval,
+                companyCaseConsentApproval:companyCaseConsentApproval,
                 // referral:referral,
-                referral: data.referral,
+                referral:data.referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
-                // transportation: data.transportation ? true : false,
-                // transportation: data.transportation == true ? '1' : data.transportation == false ? '0' : null,
+                transportation: data.transportation ? true : false,
                 caseStatusId: data.caseStatusId,
-                attorneyId: data.attorneyId,
+                // attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
                 isDeleted: data.isDeleted ? true : false,
-                createByUserID: data.createByUserID,
+                createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                claimFileNumber: data.claimFileNumber,
-                createdByCompanyId: data.createdByCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
-                attorneyProviderId: data.attorneyProviderId,
-                attorneyProviderName: data.attorneyProviderName,
-                medicalProviderId: data.medicalProviderId,
-                medicalProviderName: data.medicalProviderName,
-                orignatorCompanyId: data.orignatorCompanyId,
-                orignatorCompanyName: data.orignatorCompanyName,
-                caseSource: data.caseSource,
-                orignatorCaseSource: data.orignatorCaseSource,
-                currentCompanyId: data.currentCompanyId,
-                patientName: data.patientName,
-                medicare: data.medicare,
-                medicaid: data.medicaid,
-                ssdisabililtyIncome: data.ssdisabililtyIncome
+                medicalProviderId:data.medicalProviderId,
+                attorneyProviderId:data.attorneyProviderId
             });
         }
         return patient_case;
@@ -95,20 +70,14 @@ export class CaseAdapter {
 
     static parseCaseComapnyResponse(data: any): Case {
         let patient_case = null;
-        // let companies: Company[] = [];
-        let caseCompanyMapping: CaseCompanyMapping[] = [];
+        let companies: Company[] = [];
         let companyCaseConsentApproval: Consent[] = [];
         let referral: Referral[] = [];
         let caseCompanyConsentDocument: CaseDocument[] = [];
         if (data) {
-            // if (data.caseCompanyMapping) {
-            //     for (let company of data.caseCompanyMapping) {
-            //         companies.push(CompanyAdapter.parseResponse(company.company));
-            //     }
-            // }
             if (data.caseCompanyMapping) {
-                for (let caseMapping of data.caseCompanyMapping) {
-                    caseCompanyMapping.push(CaseCompanyMappingAdapter.parseResponse(caseMapping));
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
                 }
             }
             if (data.caseCompanyConsentDocument) {
@@ -135,38 +104,23 @@ export class CaseAdapter {
                 }),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
-                // companies: companies,
-                caseCompanyMapping: caseCompanyMapping,
+                companies: companies,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
                 caseStatusId: data.caseStatusId,
-                attorneyId: data.attorneyId,
+                // attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval: companyCaseConsentApproval,
-                referral: data.referral,
+                referral:data.referral,
                 isDeleted: data.isDeleted ? true : false,
-                createByUserID: data.createByUserID,
+                createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                claimFileNumber: data.claimFileNumber,
-                createdByCompanyId: data.createdByCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
-                attorneyProviderId: data.attorneyProviderId,
-                attorneyProviderName: data.attorneyProviderName,
-                medicalProviderId: data.medicalProviderId,
-                medicalProviderName: data.medicalProviderName,
-                orignatorCompanyId: data.orignatorCompanyId,
-                orignatorCompanyName: data.orignatorCompanyName,
-                caseSource: data.caseSource,
-                orignatorCaseSource: data.orignatorCaseSource,
-                currentCompanyId: data.currentCompanyId,
-                patientName: data.patientName,
-                medicare: data.medicare,
-                medicaid: data.medicaid,
-                ssdisabililtyIncome: data.ssdisabililtyIncome
+                medicalProviderId:data.medicalProviderId,
+                attorneyProviderId:data.attorneyProviderId
             });
         }
         return patient_case;

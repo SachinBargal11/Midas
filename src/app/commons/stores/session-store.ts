@@ -1,15 +1,14 @@
-import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { User } from '../models/user';
 import { Session } from '../models/session';
-import { Company } from '../../account/models/company';
 import { Account } from '../../account/models/account';
 import { AccountAdapter } from '../../account/services/adapters/account-adapter';
 import * as _ from 'underscore';
-import { UserRole } from "../models/user-role";
+import { Company } from '../../account/models/company';
+import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 import { environment } from '../../../environments/environment';
 import { Http, Headers, RequestOptionsArgs } from '@angular/http';
 import { ConfigService } from '../../config-service';
@@ -24,6 +23,7 @@ export class SessionStore {
     private _identityScope: string = `${environment.IDENTITY_SCOPE}`;
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
     @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
+
 
     private _session: Session = new Session();
 
@@ -43,14 +43,10 @@ export class SessionStore {
     }
 
     authenticate() {
-
         let promise = new Promise((resolve, reject) => {
-
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
-            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
-            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
 
-            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
+            if (storedAccount) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -90,43 +86,19 @@ export class SessionStore {
 
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
-            this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
-                let accessToken = 'bearer ' + data.access_token;
-                let tokenExpiresAt = moment().add(data.expires_in - 10, 'seconds');
-                // let tokenExpiresAt = moment().add(3600, 'seconds');
-                this._authenticationService.authenticate(userId, password, forceLogin, accessToken, tokenExpiresAt).subscribe((account: Account) => {
-                    if (!forceLogin) {
-                        window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
-                    } else {
-                        this._populateSession(account);
-                    }
-                    resolve(this._session);
-                }, (error) => {
-                    reject(error);
-                });
+            this._authenticationService.authenticate(userId, password, forceLogin, null, null).subscribe((account: Account) => {
+                if (!forceLogin) {
+                    window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
+                } else {
+                    this._populateSession(account);
+                }
+                resolve(this._session);
             }, (error) => {
                 reject(error);
             });
-
         });
         return Observable.from(promise);
     }
-    // login(userId, password, forceLogin) {
-    //     let promise = new Promise((resolve, reject) => {
-    //             let accessToken = '';
-    //             this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
-    //                 if (!forceLogin) {
-    //                     window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
-    //                 } else {
-    //                     this._populateSession(account);
-    //                 }
-    //                 resolve(this._session);
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
-    //     });
-    //     return Observable.from(promise);
-    // }
 
     logout() {
         let tokenResponse = this.session.tokenResponse;
@@ -190,7 +162,6 @@ export class SessionStore {
 
     private _resetSession() {
         this.session.account = null;
-        this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }
 
@@ -201,57 +172,6 @@ export class SessionStore {
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
     }
-
-    isOnlyAttorneyRole() {
-        let isOnlyAttorneyRole: boolean = false;
-        let roles: UserRole[] = [];
-        roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
-        if (roles) {
-            if (roles.length === 1) {
-                let attorneyRoleOnly = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 6;
-                });
-                if (attorneyRoleOnly) {
-                    isOnlyAttorneyRole = true;
-                } else {
-                    isOnlyAttorneyRole = false;
-                }
-            } else {
-                let count = 0;
-                let currentcompanyrole = 0;
-                _.forEach(roles, (currentRole) => {
-                   if(currentRole.companyId == this.session.currentCompany.id)
-                   {
-                      if(currentRole.roleType === 6)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                      if(currentRole.roleType === 1)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                   }
-                });
-                if(count > 1)
-                {
-                    isOnlyAttorneyRole = false;
-                }
-                else{
-                    if(currentcompanyrole == 6)
-                    {
-                        isOnlyAttorneyRole = true;
-                    }
-                    else{
-                        isOnlyAttorneyRole = false;
-                    }
-                }
-            }
-        }
-        return isOnlyAttorneyRole;
-    }
-
 
     getToken() {
         var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
@@ -298,7 +218,6 @@ export class SessionStore {
                             environment.IDENTITY_SERVER_URL = config.identityServerUrl;
                             environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
                             environment.HOME_URL = config.home_url;
-                            environment.APP_URL = config.app_url;
                             environment.IDENTITY_SCOPE = config.identity_scope;
                             environment.CLIENT_ID = config.client_id;
                             resolve(environment);
@@ -321,28 +240,28 @@ export class SessionStore {
                                                             .subscribe((accountData) => {
                                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
                                                                 this._populateSession(account);
-                                                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                                                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
                                                                 resolve(account);
                                                             }, error => {
-                                                                reject(error);
                                                                 this._logoutIdentity(result);
+                                                                reject(error);
                                                             });
                                                     });
-                                                    // window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                                                    // window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
                                                     return Observable.fromPromise(promise);
                                                 } else {
                                                     this._populateTokenSession(result);
                                                 }
                                                 resolve(userInfo);
                                             }, error => {
-                                                reject(error);
                                                 this._logoutIdentity(result);
+                                                reject(error);
                                             });
                                         });
                                         resolve(metadata);
                                     }, error => {
-                                        reject(error);
                                         this._logoutIdentity(result);
+                                        reject(error);
                                     });
                             });
                         }, (error: any) => {
@@ -358,7 +277,6 @@ export class SessionStore {
                             environment.IDENTITY_SERVER_URL = config.identityServerUrl;
                             environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
                             environment.HOME_URL = config.home_url;
-                            environment.APP_URL = config.app_url;
                             environment.IDENTITY_SCOPE = config.identity_scope;
                             environment.CLIENT_ID = config.client_id;
                             resolve(environment);
@@ -369,12 +287,12 @@ export class SessionStore {
                                 let storedAccountData: any = JSON.parse(storedAccount);
                                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                                 let now = moment();
-                                if (account.type == 'attorney' && account.tokenExpiresAt > now) {
+                                if (account.type == 'patient' && account.tokenExpiresAt > now) {
                                     this._populateSession(account)
                                     if (window.location.hash != '' && window.location.hash != '#/404' && window.location.hash != '#/') {
                                         window.location.assign(window.location.href);
                                     } else {
-                                        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                                        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
                                     }
                                 } else {
                                     window.localStorage.clear();
@@ -390,24 +308,6 @@ export class SessionStore {
                 });
             }
         } else {
-            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
-            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
-            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
-            if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
-                let storedAccountData: any = JSON.parse(storedAccount);
-                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
-                let now = moment();
-                if (account.type == 'attorney' && account.tokenExpiresAt > now) {
-                    this._populateSession(account)
-                        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
-                } else {
-                    window.localStorage.clear();
-                    this.session.account = null;
-                }
-            } else {
-                window.localStorage.clear();
-                this.session.account = null;
-            }
             console.log('Register page');
         }
     }
@@ -423,14 +323,14 @@ export class SessionStore {
                 let account: Account = AccountAdapter.parseStoredData(accountData);
                 this._populateSession(account);
                 resolve(this._session);
-                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
             }
             else {
                 reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
                 this._logoutIdentity(result);
             }
         });
-        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
         return Observable.from(promise);
     }
 
@@ -451,34 +351,6 @@ export class SessionStore {
         window.location.assign(url);
     }
 
-    refreshToken() {
-        var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
-        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
-        var response_type = "id_token token";
-        var scope: string = `${environment.IDENTITY_SCOPE}`;
-        var client_id: string = `${environment.CLIENT_ID}`;
-
-        let storedState: any = window.localStorage.getItem("state");
-        let storedNonce: any = window.localStorage.getItem("nonce");
-        var state = storedState;
-        var nonce = storedNonce;
-        localStorage["state"] = state;
-        localStorage["nonce"] = nonce;
-        // window.localStorage.setItem(this.__state__, state);
-        // window.localStorage.setItem(this.__nonce__, nonce);
-
-        var url =
-            authorizationUrl + "?" +
-            "client_id=" + encodeURI(client_id) + "&" +
-            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
-            "response_type=" + encodeURI(response_type) + "&" +
-            "scope=" + encodeURI(scope) + "&" +
-            "state=" + encodeURI(state) + "&" +
-            "nonce=" + encodeURI(nonce);
-        url;
-        window.location.assign(url);
-    }
-
     rand() {
         return (Date.now() + "" + Math.random()).replace(".", "");
     }
@@ -490,6 +362,44 @@ export class SessionStore {
         return this._http.get(url, {
             headers: headers
         }).map(res => res.json());
+    }
+
+    refreshToken() {
+        new Promise((resolve, reject) => {
+            this._http.get('../../../assets/config.json').map(res => res.json())
+                .subscribe((config: any) => {
+                    environment.SERVICE_BASE_URL = config.baseUrl;
+                    environment.IDENTITY_SERVER_URL = config.identityServerUrl;
+                    environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
+                    environment.HOME_URL = config.home_url;
+                    environment.IDENTITY_SCOPE = config.identity_scope;
+                    environment.CLIENT_ID = config.client_id;
+                    resolve(environment);
+                    let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+                    let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+                    let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+                    if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
+                        let storedAccountData: any = JSON.parse(storedAccount);
+                        let account: Account = AccountAdapter.parseStoredData(storedAccountData);
+                        let now = moment();
+                        if (account.type == 'patient' && account.tokenExpiresAt > now) {
+                            this._populateSession(account)
+                            if (window.location.hash != '' && window.location.hash != '#/404' && window.location.hash != '#/') {
+                                window.location.assign(window.location.href);
+                            } else {
+                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
+                            }
+                        } else {
+                            window.localStorage.clear();
+                            this.getToken();
+                        }
+                    } else {
+                        this.getToken();
+                    }
+                }, (error: any) => {
+                    reject(new Error('UNABLE_TO_LOAD_CONFIG'));
+                });
+        });
     }
 }
 export function tokenServiceFactory(config: SessionStore) {

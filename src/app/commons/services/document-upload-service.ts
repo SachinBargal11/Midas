@@ -9,23 +9,22 @@ import { environment } from '../../../environments/environment';
 import { States } from '../models/states';
 import { Cities } from '../models/cities';
 import * as moment from 'moment';
-import { DocumentTypeAdapter } from '../../account-setup/services/adapters/document-type-adapter';
-import { DocumentType } from '../../account-setup/models/document-type';
 import { SessionStore } from '../../commons/stores/session-store';
-
+import { DocumentTypeAdapter } from '../services/adapters/document-type-adapter'
+import { DocumentType } from '../models/document-type';
 @Injectable()
 export class DocumentUploadService {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
-
-    constructor(
-        private _http: Http,
-        private _sessionStore: SessionStore
-    ) {
-        this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
-    }
+    
+        constructor(
+            private _http: Http,
+            private _sessionStore: SessionStore
+        ) {
+            this._headers.append('Content-Type', 'application/json');
+            this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        }
 
     uploadScanDocument(dwObject: any, url: string, fileName: string) {
         let promise: Promise<Document[]> = new Promise((resolve, reject) => {
@@ -53,9 +52,7 @@ export class DocumentUploadService {
 
     uploadSignedDocument(url: string, signatureData: any): Promise<Document> {
         let promise: Promise<Document> = new Promise((resolve, reject) => {
-            return this._http.post(url, signatureData, {
-                headers: this._headers
-            })
+            return this._http.post(url, signatureData)
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let document: Document = DocumentAdapter.parseResponse(data);
@@ -67,12 +64,12 @@ export class DocumentUploadService {
         return promise;
     }
 
+  
     getDocumentObjectType(companyId: Number, currentId: number): Observable<DocumentType[]> {
         let promise: Promise<DocumentType[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId, {
                 headers: this._headers
             })
-                // return this._http.get(environment.SERVICE_BASE_URL + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     // let documentType: DocumentType[] = null;

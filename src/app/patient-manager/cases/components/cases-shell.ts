@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PatientsStore } from '../../patients/stores/patients-store';
-import { CasesStore } from '../../cases/stores/case-store';
-import { ProgressBarService } from '../../../commons/services/progress-bar-service';
-import { Patient } from '../../patients/models/patient';
-import { Case } from '../models/case';
-import * as _ from 'underscore';
-import { SessionStore } from '../../../commons/stores/session-store';
-import { CaseCompanyMapping } from '../models/caseCompanyMapping';
+import { Router } from '@angular/router';
 import { UserSetting } from '../../../commons/models/user-setting';
 import { UserSettingStore } from '../../../commons/stores/user-setting-store';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'cases-shell',
@@ -18,16 +11,6 @@ import { UserSettingStore } from '../../../commons/stores/user-setting-store';
 })
 
 export class CaseShellComponent implements OnInit {
-    patientId: number;
-    caseId: number;
-    patientName: string;
-    caseStatus: string;
-    caseEditableLabel: boolean = false;
-    caseType: string;
-    patient: Patient;
-    caseDetail: Case;
-    userSetting: UserSetting;
-    preferredUIViewId: number;
 
     currAccordion;
     currAccordion1;
@@ -35,91 +18,36 @@ export class CaseShellComponent implements OnInit {
     currAccordion3;
     index: number;
     routerLink: string;
+    userSetting: UserSetting;
+    preferredUIViewId: number;
+    userId: number = this.sessionStore.session.user.id;
 
     constructor(
         public router: Router,
-        private _patientStore: PatientsStore,
-        private _casesStore: CasesStore,
-        public _route: ActivatedRoute,
-        private _progressBarService: ProgressBarService,
-        private _router: Router,
+        private _userSettingStore: UserSettingStore,
         public sessionStore: SessionStore,
-        private _userSettingStore: UserSettingStore
+
     ) {
         let href = window.location.href;
         this.currAccordion = href.substr(href.lastIndexOf('/') + 1);
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
-
-        this._route.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseDetail = caseDetail;
-                    this.caseStatus = caseDetail.caseStatusLabel;
-                    this.caseType = caseDetail.caseTypeLabel;
-                    if (this.caseDetail.caseStatusId != 2) {
-                        //    _.forEach(this.caseDetail.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-                        //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === sessionStore.session.currentCompany.id)) {
-                        //         this.caseEditableLabel = true;
-                        //     }else{
-                        //         this.caseEditableLabel = false;
-                        //     }
-                        // });
-                        if (caseDetail.orignatorCompanyId == sessionStore.session.currentCompany.id) {
-                            this.caseEditableLabel = true;
-                        }
-                        else {
-                            this.caseEditableLabel = false;
-                        }
-                    } else {
-                        this.caseEditableLabel = false
-                    }
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
 
     }
 
     ngOnInit() {
-        this._userSettingStore.getUserSettingByUserId(this.sessionStore.session.user.id, this.sessionStore.session.currentCompany.id)
+        this._userSettingStore.getPatientPersonalSettingByPatientId(this.userId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
                 this.preferredUIViewId = userSetting.preferredUIViewId;
             }
             )
     }
-
-     onTabOpen(e) {
+    onTabOpen(e) {
         this.index = e.index;
     }
 
-     setContent(elem) {
+    setContent(elem) {
         // let value = e.target.value;
-        if(this.currAccordion == elem) {
+        if (this.currAccordion == elem) {
             this.currAccordion = '';
         }
     }

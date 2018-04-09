@@ -6,8 +6,8 @@ import { SpecialityRoutes } from './components/speciality/speciality-routes';
 import { AdjusterRoutes } from './components/AdjusterMaster/adjuster-routes';
 import { AttorneyRoutes } from './components/AttorneyMaster/attorney-routes';
 import { InsuranceMasterRoutes } from './components/insurance-master/insurance-master-routes';
-import { MedicalProviderRoutes } from './components/medical-provider-master/medical-provider-routes';
-import { AccountSettingShellRoutes } from './components/account-setting/account-setting-routes';
+// import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
+
 
 let AccountSetupRoutes: Routes = [
     {
@@ -15,14 +15,10 @@ let AccountSetupRoutes: Routes = [
         component: AccountSetupShellComponent,
         canActivate: [ValidateActiveSession],
         children: [
-            ...AccountSettingShellRoutes,
             ...SpecialityRoutes,
             ...AdjusterRoutes,
             ...AttorneyRoutes,
-            ...InsuranceMasterRoutes,
-            ...MedicalProviderRoutes,
-
-
+            ...InsuranceMasterRoutes
 
         ],
         data: {

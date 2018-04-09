@@ -48,7 +48,7 @@ export class CalendarComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _scheduledEventStore: ScheduledEventStore,
         private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+        // private _progressBarService: ProgressBarService,
         private _confirmationService: ConfirmationService
     ) {
         this.calendarForm = this._fb.group({
@@ -75,7 +75,7 @@ export class CalendarComponent implements OnInit {
     }
 
     loadEvents() {
-        this._progressBarService.show();
+        // this._progressBarService.show();
         this._scheduledEventStore.getEvents()
             .subscribe(
             (events: ScheduledEvent[]) => {
@@ -94,10 +94,10 @@ export class CalendarComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
@@ -154,11 +154,11 @@ export class CalendarComponent implements OnInit {
                         'type': 'ERROR',
                         'createdAt': moment()
                     });
-                    this._progressBarService.hide();
+                    // this._progressBarService.hide();
                     this._notificationsStore.addNotification(notification);
                 },
                 () => {
-                    this._progressBarService.hide();
+                    // this._progressBarService.hide();
                 });
         }
         // new
@@ -183,11 +183,11 @@ export class CalendarComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                     });
             } else {
                 let result = this._scheduledEventStore.addEvent(updatedEvent);
@@ -209,11 +209,11 @@ export class CalendarComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                     });
             }
 

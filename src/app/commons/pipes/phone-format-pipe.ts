@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PhoneFormatPipe implements PipeTransform {
     transform(value) {
-        if (!value) { return ''; }
+      if (!value) { return ''; }
 
         value = String(value);
         let inputValue = value.replace(/\-/g, '');

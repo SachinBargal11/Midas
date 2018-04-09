@@ -1,32 +1,8 @@
-<h3 class="with-border">Client Visits</h3>
-<!--<section class="card">
-    <div class="card-block">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
-            <option value="0"> -- Select Location -- </option>
-            <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
-        </select>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0"></option>
-             <optgroup label="Select Attorney">
-                     <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
-             </optgroup>
-        </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>-->
-<p-schedule *ngIf="defaultView" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
+<h3 class="with-border">Patient Visits</h3>
+<p-schedule *ngIf="events && defaultView" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
-<!-- <p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
+<p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
     <p-footer>
         <button [disabled]="isSaveProgress" type="button" class="btn btn-primary" (click)="cancelSeries()">
             Cancel Series
@@ -39,221 +15,132 @@
         </button>
         <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
     </p-footer>
-</p-confirmDialog> -->
+</p-confirmDialog>
 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Visit Type<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
-            <select [disabled]="isVisitTypeDisabled" [(ngModel)]="selectedVisitType" type="text" class="form-control" placeholder="">
-            <!--<option value="">-Select -</option>-->
-            <option value="1">Client Visit</option>
-            <option value="2">IME Visit</option>
-            <!--<option value="3">EUO Visit</option>-->
-        </select>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div *ngIf="selectedVisitType =='1'">
-            <div class="col-md-2"><label class="form-label">Location<span class="color-red">*</span></label></div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
-                    <option value="0"> -- Select Location -- </option>
-                    <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
-                    </select>
+    <form [formGroup]="addNewPatientForm">
+        <section class="card" *ngIf="isAddNewPatient">
+            <header class="card-header card-header-lg">
+                Patient's Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="addNewPatientFormControls.firstName.touched && !addNewPatientFormControls.firstName.valid">
+                            <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!addNewPatientFormControls.firstName.valid">
+                            <div class='error-list' *ngIf="addNewPatientFormControls.firstName.touched && !addNewPatientFormControls.firstName.valid">
+                                <ul>
+                                    <li *ngIf="addNewPatientFormControls.firstName.hasError('required')">First Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="addNewPatientFormControls.lastName.touched && !addNewPatientFormControls.lastName.valid">
+                            <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!addNewPatientFormControls.lastName.valid">
+                            <div class='error-list' *ngIf="addNewPatientFormControls.lastName.touched && !addNewPatientFormControls.lastName.valid">
+                                <ul>
+                                    <li *ngIf="addNewPatientFormControls.lastName.hasError('required')">Last Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="addNewPatientFormControls.email.touched && !addNewPatientFormControls.email.valid">
+                            <input type="email" formControlName="email" [class.error]="!addNewPatientFormControls.email.valid" class="form-control" type="text"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="addNewPatientFormControls.email.touched && !addNewPatientFormControls.email.valid">
+                                <ul>
+                                    <li *ngIf="addNewPatientFormControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="addNewPatientFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid"
+                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="addNewPatientFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="addNewPatientFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <button [disabled]="!addNewPatientForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
+                        Save
+                        <loader [visible]="isSaveProgress"></loader>
+                    </button>
+                            <button type="button" class="btn btn-secondary" (click)="cancelAddingNewPatient()">Cancel</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div class="col-md-2"><label class="form-label">Attorney<span class="color-red">*</span></label></div>
-                <div class="col-lg-3">
+        </section>
+    </form>
+    <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
+        <div *ngIf="selectedVisit">
+            <div class="row" *ngIf="!selectedVisit.id">
+                <div class="col-md-2"><label class="form-label">Patient</label></div>
+                <div class="col-md-4">
                     <div class="form-group">
-                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0"></option>
-                        <optgroup label="Select Attorney">
-                        <option data-type="1" [attr.data-userId]="currentUserLocationSchedule.userLocationSchedule.user.id" *ngFor="let currentUserLocationSchedule of userLocationSchedules" [value]="currentUserLocationSchedule.userLocationSchedule.user.id" [selected]="currentUserLocationSchedule.userLocationSchedule.user.id === selectedAttorneyId ? true : null">{{currentUserLocationSchedule.userLocationSchedule.user.displayName}}</option>
-                        </optgroup>
-                        </select>
-                    </div>
-                    <!--<div *ngIf="selectedMode == 0" style="color:red;">Select specialty</div>-->
+                        {{patientName}} </div>
                 </div>
             </div>
+
+            <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
         </div>
-    </div>
-    <div *ngIf="selectedVisitType =='1'">
-        <form [formGroup]="addNewPatientForm" (ngSubmit)="saveNewPatient()">
-            <section class="card" *ngIf="isAddNewPatient">
-                <header class="card-header card-header-lg">
-                    Patient's Information
-                </header>
-                <div class="card-block">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label class="form-label"> First Name
-                                            <span class="color-red">*</span>
-                                        </label>
-                            <div class="form-group" [class.error]="addNewPatientFormControls.firstName.touched && !addNewPatientFormControls.firstName.valid">
-                                <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!addNewPatientFormControls.firstName.valid">
-                                <div class='error-list' *ngIf="addNewPatientFormControls.firstName.touched && !addNewPatientFormControls.firstName.valid">
-                                    <ul>
-                                        <li *ngIf="addNewPatientFormControls.firstName.hasError('required')">First Name is required.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label"> Last Name
-                                            <span class="color-red">*</span>
-                                        </label>
-                            <div class="form-group" [class.error]="addNewPatientFormControls.lastName.touched && !addNewPatientFormControls.lastName.valid">
-                                <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!addNewPatientFormControls.lastName.valid">
-                                <div class='error-list' *ngIf="addNewPatientFormControls.lastName.touched && !addNewPatientFormControls.lastName.valid">
-                                    <ul>
-                                        <li *ngIf="addNewPatientFormControls.lastName.hasError('required')">Last Name is required.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> E-Mail
-                                            <span class="color-red">*</span>
-                                        </label>
-                            <div class="form-group" [class.error]="addNewPatientFormControls.email.touched && !addNewPatientFormControls.email.valid">
-                                <input type="email" formControlName="email" [class.error]="!addNewPatientFormControls.email.valid" class="form-control" type="text"
-                                    placeholder="" />
-                                <div class='error-list' *ngIf="addNewPatientFormControls.email.touched && !addNewPatientFormControls.email.valid">
-                                    <ul>
-                                        <li *ngIf="addNewPatientFormControls.email.hasError('required')">Email is required.</li>
-                                        <li *ngIf="addNewPatientFormControls.email.hasError('emailValidator')">Email is invalid.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Cellphone
-                                            <span class="color-red">*</span>
-                                        </label>
-                            <div class="form-group" [class.error]="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid">
-                                <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid"
-                                    placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                                <div class='error-list' *ngIf="addNewPatientFormControls.cellPhone.touched && !addNewPatientFormControls.cellPhone.valid">
-                                    <ul>
-                                        <li *ngIf="addNewPatientFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
-                                        <li *ngIf="addNewPatientFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <button [disabled]="!addNewPatientForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
+        <p-footer *ngIf="selectedVisit">
+            <div class="row">
+                <div class="col-md-4">
+                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
                         Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-                                <button type="button" class="btn btn-secondary" (click)="cancelAddingNewPatient()">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </form>
-        <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
-            <div *ngIf="selectedVisit">
-                <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
-                    <div class="col-md-2"><label class="form-label">Client<span class="color-red">*</span></label></div>
-                    <div class="col-md-4">
-                        <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                            <p-dropdown [options]="patientsWithOpenCase" formControlName="patientId" [(ngModel)]="idPatient" (onChange)="selectPatient($event)"
-                                [style]="{'width':'100%'}" filter="filter"></p-dropdown>
-                            <div class='error-list' *ngIf="patientScheduleFormControls.patientId.dirty && idPatient==''">
-                                <span class="color-red">Patient is required.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2"><label class="form-label">Case No<span class="color-red">*</span></label></div>
-                    <div class="col-md-4">
-                        <div class="form-group" [class.error]="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
-                            <select formControlName="caseId" [ngModel]="caseId" class="select2-arrow form-control">
-                        <option value=""> -- Select Case -- </option>
-                        <option *ngFor="let case of cases" [value]="case.id">{{case.id}}</option>                                       
-                    </select>
-                            <div class='error-list' *ngIf="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
-                                <ul>
-                                    <li *ngIf="patientScheduleFormControls.caseId.hasError('required')">Please select any case number.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="!isGoingOutOffice">
-                    <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
-                </div>
-                <div class="row" *ngIf="!isGoingOutOffice">
-                    <div class="col-md-2"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
-                    <div class="col-md-4">
-                        <div class="form-group" [class.error]="patientScheduleFormControls.notes && patientScheduleFormControls.notes.touched && !patientScheduleFormControls.notes.valid">
-                            <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
-                            <div class='error-list' *ngIf="patientScheduleFormControls.notes && patientScheduleFormControls.notes.touched && !patientScheduleFormControls.notes.valid">
-                                <ul>
-                                    <li *ngIf="patientScheduleFormControls.notes.hasError('required')">Please enter Agenda.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
                 </div>
             </div>
-            <br>
-            <p-footer *ngIf="selectedVisit">
-                <div class="row">
-                    <div class="col-md-4">
-                        <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
-                        Save
-                        <loader [visible]="isSaveProgress"></loader>
-                    </button>
-                        <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
-                        <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
-                    </div>
-                </div>
-            </p-footer>
-        </form>
-    </div>
-    <div *ngIf="selectedVisit && selectedVisitType =='2'">
-        <br>
-        <ime-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
-    </div>
-    <div *ngIf="selectedVisit && selectedVisitType =='3'">
-        <br>
-        <eo-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
-    </div>
+        </p-footer>
+    </form>
 </p-dialog>
 
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+<p-dialog [minWidth]="500" [width]="1200" [height]="400" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
-
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
-                        <div *ngIf="selectedVisit.agenda" class="col-md-6">
-                            <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
-                                <textarea [ngModel]="selectedVisit.agenda" formControlName="notes" class="form-control" rows="3"></textarea>
-                                <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
-                                    <ul>
-                                        <li *ngIf="patientVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
-                                    </ul>
-                                </div>
+                        <div class="col-md-1"><label class="form-label">Notes</label></div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{selectedVisit.notes}}
+                                    </label>
                             </div>
                         </div>
-                        <div *ngIf="selectedVisit.notes" class="col-md-6">
+                        <!--<div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                        <div class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
@@ -261,40 +148,40 @@
                                         <li *ngIf="patientVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                            </div>-->
                     </div>
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
+                        <div class="col-md-1"><label class="form-label">Status</label></div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
-                        <option value="2">Complete</option>
-                        <option value="4">No Show</option>
-                                </select>
+                                <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                                </label>
                             </div>
                         </div>
+                        <!--<div class="col-md-6">
+                            <div class="form-group">
+                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
+                                    <option value="2">Complete</option>
+                                    <option value="4">No Show</option>
+                                </select>
+                            </div>
+                        </div>-->
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
+                    <!--<div class="row">
+                        <div class="col-md-6">
                             <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                <loader [visible]="isSaveProgress"></loader>
+                                <loader [visible]="isSaveProgress"></loader>
                             </button>
                             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
                         </div>
-                    </div>
+                    </div>-->
                 </form>
             </p-tabPanel>
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
-                <!--<app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>-->
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
-                        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
-                            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
-                            <loader [visible]="isDeleteProgress"></loader>
-                        </a>
                         <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
                             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
                         </a>
@@ -306,7 +193,7 @@
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
                     </div>
                 </div>
-                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
                     [globalFilter]="gb" [responsive]="true" #dt>
                     <header> List</header>
                     <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
@@ -322,28 +209,26 @@
                             {{ document.documentType }}
                         </ng-template>
                     </p-column>
-                    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true"  [filter]="true" styleClass="inbound-column">
+                    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
                         <!--<ng-template let-document="rowData.document" pTemplate="body">
                             {{ document.createDate | dateTimeFormat }}
                         </ng-template>-->
                     </p-column>
                 </p-dataTable>
-
                 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
                     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-                    <div *ngIf="selectedVisit.isPatientVisitType">
-                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
-                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
-                    </div>
-                    <div *ngIf="selectedVisit.isImeVisitType">
-                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="4" [objectId]="selectedVisit.id"
-                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
-                    </div>
-                    <div *ngIf="selectedVisit.isEoVisitType">
-                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="5" [objectId]="selectedVisit.id"
-                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
-                    </div>
+                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
+            </p-tabPanel>
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
+            </p-tabPanel>
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-diagnosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-diagnosis>
+            </p-tabPanel>
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
         </p-tabView>
     </div>

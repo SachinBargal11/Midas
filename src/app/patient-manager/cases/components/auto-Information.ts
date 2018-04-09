@@ -33,20 +33,16 @@ export class AutoInformationInfoComponent implements OnInit {
     isSaveProgress = false;
     autoInformation: AutoInformation;
     title: string;
-    isrelativesVehicle: boolean = false;
-    ishelpinDamageResolved: boolean = false;
-    isvehicleDrivable: boolean = false;
-    istitletoVehicle: boolean = false;
+    isrelativesVehicle = '';
+    ishelpinDamageResolved = '';
+    isvehicleDrivable = '';
+    istitletoVehicle = '';
     titletoVehicle: false;
     relativeVehicle: false;
     vehicleResolveDamage: false;
     vehicleDriveable: false;
     vehicleClientHaveTitle: false;
     defendantAutoInformation: DefendantAutoInformation;
-    caseStatusId: number;
-    caseViewedByOriginator: boolean = false;
-    patientId : number;
-    
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -60,23 +56,19 @@ export class AutoInformationInfoComponent implements OnInit {
         private _casesStore: CasesStore,
         private _autoInformationStore: AutoInformationStore,
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10); 
-        });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-            this.MatchCase();
 
             let result = this._autoInformationStore.getByCaseId(this.caseId);
             result.subscribe(
                 (autoInformation: AutoInformation) => {
                     this.autoInformation = autoInformation;
-                    this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
-                    this.isrelativesVehicle = this.autoInformation.relativeVehicle;
-                    this.ishelpinDamageResolved = this.autoInformation.vehicleResolveDamage;
-                    this.isvehicleDrivable = this.autoInformation.vehicleDriveable;
-                    this.istitletoVehicle = this.autoInformation.vehicleClientHaveTitle;
+                    //this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
+                    this.isrelativesVehicle = String(this.autoInformation.relativeVehicle) == 'true' ? 'Yes' : 'No';
+                    this.ishelpinDamageResolved = String(this.autoInformation.vehicleResolveDamage) == 'true' ? 'Yes' : 'No';
+                    this.isvehicleDrivable = String(this.autoInformation.vehicleDriveable) == 'true' ? 'Yes' : 'No';
+                    this.istitletoVehicle = String(this.autoInformation.vehicleClientHaveTitle) == 'true' ? 'Yes' : 'No';
                 },
                 (error) => {
                     this._router.navigate(['../../']);
@@ -98,21 +90,9 @@ export class AutoInformationInfoComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+
+
         });
-
-        let caseResult = this._casesStore.fetchCaseById(this.caseId);
-            caseResult.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-
         this.autoInfoform = this.fb.group({
             txtPlate: ['', Validators.required],
             txtModelYear: ['', Validators.required],
@@ -131,7 +111,7 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleDrivable: [''],
             txtEstimatedDamage: [''],
             titletoVehicle: [''],
-            txtDefendantPlate: ['', Validators.required ],
+            txtDefendantPlate: [''],
             defendantState: [''],
             txtDefendantModelYear: [''],
             txtDefendantOwnerName: [''],
@@ -139,7 +119,7 @@ export class AutoInformationInfoComponent implements OnInit {
             defendantInsuranceCompany: [''],
             txtDefendantPolicy: [''],
             txtDefendantClaim: [''],
-            txtModel: ['', Validators.required],
+            txtModel: [''],
             relModel: [''],
             txtDefendantModel: [''],
             txtOwnerName: [''],
@@ -151,27 +131,7 @@ export class AutoInformationInfoComponent implements OnInit {
     }
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
 
     save() {
@@ -189,7 +149,7 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleOwnerName: formValues.txtOwnerName,
             vehicleOperatorName: formValues.txtOperatorName,
             vehicleInsuranceCompanyName: formValues.insuranceCompany,
-            vehiclePolicyNumber: formValues.txtPolicy,
+            vehiclePolicyNumber: formValues.txtPlate,
             vehicleClaimNumber: formValues.txtClaim,
             vehicleLocation: formValues.txtVehicalLocated,
             vehicleDamageDiscription: formValues.txtVehicalDesc,
@@ -200,11 +160,7 @@ export class AutoInformationInfoComponent implements OnInit {
             relativeVehicleLocation: '',
             vehicleClientHaveTitle: parseInt(formValues.titletoVehicle),
             relativeVehicleOwner: formValues.relOwnerName,
-            relativeVehicleMakeModel: formValues.relModel,
-            relativeVehicleMakeYear: formValues.relModelYear,
-            relativeVehicleOwnerName: formValues.relOwnerName,
-            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
-            relativeVehiclePolicyNumber: formValues.relPolicy
+
         });
 
         let defendantAutoInfoform = new DefendantAutoInformation({
@@ -232,8 +188,7 @@ export class AutoInformationInfoComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/patient-manager/cases']);
-                this._notificationsService.success('Success!', 'Auto Information Added successfully');
+                this._router.navigate(['/patient-manager/cases']);
             },
             (error) => {
                 let errString = 'Unable to add Auto Information.';
@@ -249,26 +204,6 @@ export class AutoInformationInfoComponent implements OnInit {
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
-            });
-    }
-    MatchCase() {            
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-                this.caseStatusId = caseDetail.caseStatusId;
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
                 this._progressBarService.hide();
             });
     }

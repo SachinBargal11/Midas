@@ -12,15 +12,13 @@ import * as RRule from 'rrule';
 
 
 export class ScheduledEventEditorComponent implements OnChanges {
-    transportProviderId: number = 0;
-    referredBy: string = '';
+
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
-    duration: number;
-    isAllDay: boolean = false;
+    isAllDay: boolean;
     repeatType: string = '7';
-    
+
     setTimeSlot: string = '12:00 AM';
     setEndTimeSlot: string = '12:00 AM';
     timeSlots: any[] = [
@@ -114,10 +112,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
         if (value) {
             this._selectedEvent = value;
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            // this.isAllDay = this._selectedEvent.isAllDay;
-
+            this.isAllDay = this._selectedEvent.isAllDay;
+            
             var startTimeString = this._selectedEvent.eventStartAsDate.toLocaleTimeString();
             let startTimeArray = startTimeString.split(':');
             this.setTimeSlot = startTimeArray[0]+':'+startTimeArray[1]+' '+startTimeArray[2].slice(3);
@@ -205,7 +202,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
             this.eventEndAsDate = null;
-            // this.isAllDay = false;
+            this.isAllDay = false;
         }
     }
 
@@ -218,13 +215,11 @@ export class ScheduledEventEditorComponent implements OnChanges {
     ) {
         this.scheduledEventEditorForm = this._fb.group({
             name: ['', Validators.required],
-            contactPerson: [''],
             eventStartDate: ['', Validators.required],
             eventStartTime: ['', Validators.required],
-            // duration: ['', Validators.required],
             eventEndDate: ['', Validators.required],
             eventEndTime: ['', Validators.required],
-            // isAllDay: [],
+            isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
                 end: [],
@@ -259,9 +254,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 recur_weekday_offset: [],
                 recur_monthday: [],
                 recur_weekday: []
-            }),
-            transportProviderId: [''],
-            referredBy: ['']
+            })
         });
         this.scheduledEventEditorFormControls = this.scheduledEventEditorForm.controls;
         this.scheduledEventEditorForm.valueChanges.subscribe(() => {
@@ -387,6 +380,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 break;
 
         }
+
         let startDate = moment(this.eventStartAsDate).format('YYYY-MM-DD');
         let startDateTime = new Date(startDate + ' ' + scheduledEventEditorFormValues.eventStartTime) ;
         let endDate = moment(this.eventEndAsDate).format('YYYY-MM-DD');
@@ -395,11 +389,10 @@ export class ScheduledEventEditorComponent implements OnChanges {
             name: scheduledEventEditorFormValues.name,
             eventStart: moment(startDateTime),
             eventEnd: moment(endDateTime),
-            // eventStart: moment(this.eventStartAsDate),
-            // eventEnd: moment(this.eventEndAsDate),
-            // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
-            recurrenceRule: recurrenceRule ? recurrenceRule : null,
-            transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
+            // eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
+            // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate),
+            isAllDay: scheduledEventEditorFormValues.isAllDay,
+            recurrenceRule: recurrenceRule ? recurrenceRule : null
         }));
     }
 

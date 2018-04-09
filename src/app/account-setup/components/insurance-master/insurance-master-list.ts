@@ -52,6 +52,9 @@ export class InsuranceMasterListComponent implements OnInit {
         this._insuranceMasterStore.getAllInsuranceMasters()
             .subscribe(insuranceMasters => {
                 this.insuranceMasters = insuranceMasters.reverse();
+                // this.datasource = attorneys.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -83,7 +86,7 @@ export class InsuranceMasterListComponent implements OnInit {
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Insurance master deleted successfully!',
+                            'title': 'Insurance Master deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
@@ -92,7 +95,7 @@ export class InsuranceMasterListComponent implements OnInit {
                         this.selectedInsuranceMasters = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete insurance master';
+                        let errString = 'Unable to delete Insurance Master';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -112,12 +115,12 @@ export class InsuranceMasterListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select insurance master to delete',
+                'title': 'select Insurance Master to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select insurance master to delete');
+            this._notificationsService.error('Oh No!', 'select Insurance Master to delete');
         }
 
     }

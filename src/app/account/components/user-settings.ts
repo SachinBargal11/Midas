@@ -27,19 +27,15 @@ export class UserSettingsComponent implements OnInit {
     userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
-
+  
     /* Dialog Visibilities */
     settingsDialogVisible: boolean = false;
 
     addUserSettings: FormGroup;
     addUserSettingsControls;
-    isSearchable: boolean = false;
-    isCalendarPublic: boolean = false;
-    isPublic: boolean = false;
-    isTimeSlot = 30;
     calendarViewId = 1;
     preferredUIViewId = 1;
-
+    isSaveProgress = false;
     constructor(
         private _authenticationService: AuthenticationService,
         private _notificationsStore: NotificationsStore,
@@ -51,13 +47,8 @@ export class UserSettingsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
 
-    ) {
-
+    ) {       
         this.addUserSettings = this._fb.group({
-            isPublic: [''],
-            isCalendarPublic: [''],
-            isSearchable: [''],
-            timeSlot: [''],
             calendarViewId: [''],
             preferredUIViewId: [''],
         })
@@ -66,38 +57,11 @@ export class UserSettingsComponent implements OnInit {
     }
 
     ngOnInit() {
-        let doctorRolewithOther;
-        let doctorRolewithoutOther;
-        let roles = this.sessionStore.session.user.roles;
-        if (roles) {
-            if (roles.length === 1) {
-                doctorRolewithoutOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
-                });
-            } else if (roles.length > 1) {
-                doctorRolewithOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
-                });
-            }
-            if (doctorRolewithoutOther) {
-                this.doctorRoleFlag = true;
-            } else if (doctorRolewithOther) {
-                this.doctorRoleFlag = false;
-            } else {
-                this.doctorRoleFlag = false;
-            }
-        }
-
-        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+        this._userSettingStore.getPatientPersonalSettingByPatientId(this.userId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
-                this.isPublic = userSetting.isPublic;
-                this.isCalendarPublic = userSetting.isCalendarPublic;
-                this.isSearchable = userSetting.isSearchable;
-                this.isTimeSlot = userSetting.SlotDuration;
-                this.calendarViewId = userSetting.calendarViewId;
-                this.preferredUIViewId = userSetting.preferredUIViewId;
-
+                this.calendarViewId = userSetting.calendarViewId;  
+                this.preferredUIViewId = userSetting.preferredUIViewId;       
             },
             (error) => { },
             () => {
@@ -109,39 +73,21 @@ export class UserSettingsComponent implements OnInit {
         this._notificationsStore.toggleVisibility();
     }
 
-    // showSettingsDialog() {
-    //     this.settingsDialogVisible = true;
-    // }
-
-    // closeDialog() {
-    //     this.settingsDialogVisible = false;
-    // }
-
-    checkUncheck(event) {
-        if (event == false) {
-            this.isCalendarPublic = false;
-            this.isSearchable = false;
-        }
-
-    }
 
     saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
         let userSetting = new UserSetting(
             {
-                userId: this.userId,
-                companyId: this.companyId,
-                isPublic: this.isPublic,
-                isCalendarPublic: this.isCalendarPublic,
-                isSearchable: this.isSearchable,
-                SlotDuration: this.isTimeSlot,
-                calendarViewId: this.calendarViewId,
-                preferredUIViewId: this.preferredUIViewId,
+                patientId: this.userId,
+                preferredModeOfCommunication:null,
+                isPushNotificationEnabled:null,
+                calendarViewId:this.calendarViewId,
+                preferredUIViewId:this.preferredUIViewId
             }
         )
         this._progressBarService.show();
-        result = this._userSettingStore.saveUserSetting(userSetting);
+        result = this._userSettingStore.savePatientPersonalSetting(userSetting);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -151,7 +97,7 @@ export class UserSettingsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'User setting saved successfully!');
-                this._router.navigate(['/dashboard']);
+                this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 let errString = 'Unable to save user setting.';
@@ -159,7 +105,7 @@ export class UserSettingsComponent implements OnInit {
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
-                });
+                });  
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
@@ -170,8 +116,8 @@ export class UserSettingsComponent implements OnInit {
 
     }
 
-    goBack(): void {
-        this._router.navigate(['/dashboard']);
-
+     goBack(): void {
+        this._router.navigate(['/patient-manager/profile/viewall']);
+        
     }
 }

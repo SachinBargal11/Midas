@@ -15,12 +15,15 @@ export class UserSettingsShellComponent implements OnInit {
     preferredUIViewId: number;
     currAccordion;
     test: boolean = true;
+    userId: number = this.sessionStore.session.user.id;
+
     constructor(
 
         public _router: Router,
         public _route: ActivatedRoute,
         private _sessionStore: SessionStore,
-        private _userSettingStore: UserSettingStore
+        private _userSettingStore: UserSettingStore,
+        public sessionStore: SessionStore,
 
     ) {
         let href = window.location.href;
@@ -31,7 +34,7 @@ export class UserSettingsShellComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._userSettingStore.getUserSettingByUserId(this._sessionStore.session.user.id, this._sessionStore.session.currentCompany.id)
+        this._userSettingStore.getPatientPersonalSettingByPatientId(this.userId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
                 this.preferredUIViewId = userSetting.preferredUIViewId;
@@ -41,10 +44,8 @@ export class UserSettingsShellComponent implements OnInit {
         });
     }
     setContent(elem) {
-        // let value = e.target.value;
         if (this.currAccordion == elem) {
             this.currAccordion = '';
         }
     }
-
 }

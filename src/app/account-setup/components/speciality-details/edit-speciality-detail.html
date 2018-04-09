@@ -3,7 +3,7 @@
     <form [formGroup]="specialityDetailForm" (ngSubmit)="saveSpecialityDetail()">
         <div class="row">
             <div class="col-lg-4">
-                <label class="form-label"> Specialty
+                <label class="form-label"> Speciality
                             <span class="color-red">*</span>
                         </label>
                 <div class="form-group">
@@ -14,14 +14,8 @@
                 <label class="form-label"> Is Initial Evaluation?
                             <span class="color-red">*</span> </label>
                 <div class="form-group">
-                    <label class="form-check-label">
-                        <input type="radio" value="1" name="isInitialEvaluation" formControlName="isInitialEvaluation" [ngModel]="specialityDetail.isInitialEvaluation"> Yes
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" value="0" name="isInitialEvaluation" formControlName="isInitialEvaluation" [ngModel]="specialityDetail.isInitialEvaluation"> No
-                    </label>
-                    <!--<p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
-                    <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>-->
+                    <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                    <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -29,14 +23,8 @@
                             <span class="color-red">*</span>
                         </label>
                 <div class="form-group">
-                    <label class="form-check-label">
-                        <input type="radio" value="1" name="allowMultipleVisit" formControlName="allowMultipleVisit" [ngModel]="specialityDetail.allowmultipleVisit"> Yes
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" value="0" name="allowMultipleVisit" formControlName="allowMultipleVisit" [ngModel]="specialityDetail.allowmultipleVisit"> No
-                    </label>
-                    <!--<p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
-                    <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>-->
+                    <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                    <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -44,14 +32,8 @@
                             <span class="color-red">*</span>
                         </label>
                 <div class="form-group">
-                    <label class="form-check-label">
-                        <input type="radio" value="1" name="include1500" formControlName="include1500" [ngModel]="specialityDetail.include1500"> Yes
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" value="0" name="include1500" formControlName="include1500" [ngModel]="specialityDetail.include1500"> No
-                    </label>
-                    <!--<p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [ngModel]="specialityDetail.include1500"></p-radioButton>
-                    <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>-->
+                    <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                    <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -68,17 +50,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="col-lg-4">
-                <div class="form-group" [class.error]="!specialityDetailFormControls.mandatoryProcCode.valid">
-                    <p-checkbox name="mandatoryProcCode" label="Show Procedure Codes for Speciality" formControlName="mandatoryProcCode" [(ngModel)]="mandatoryProcCode"
-                        binary="true"></p-checkbox>
-                    <div class='error-list' *ngIf="!specialityDetailFormControls.mandatoryProcCode.valid">
-                        <ul>
-                            <li *ngIf="specialityDetailFormControls.mandatoryProcCode.hasError('required')">Must Show Procedure Codes</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>-->
         </div>
 
         <div class="row">
@@ -97,11 +68,11 @@
                                 <div class="form-group" [class.error]="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
                                     <textarea rows="2" formControlName="initialCodes" [ngModel]="specialityDetail.InitialCode" [class.error]="!specialityDetailFormControls.initialCodes.valid"
                                         class="form-control"></textarea>
-                                    <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
-                                        <ul>
-                                            <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
-                                        </ul>
-                                    </div>
+                                        <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                                            <ul>
+                                                <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
+                                            </ul>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -165,11 +136,11 @@
                                 <div class="form-group" [class.error]="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
                                     <textarea rows="2" formControlName="reevalCodes" [ngModel]="specialityDetail.ReEvalCode" [class.error]="!specialityDetailFormControls.reevalCodes.valid"
                                         class="form-control"></textarea>
-                                    <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
-                                        <ul>
-                                            <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
-                                        </ul>
-                                    </div>
+                                        <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                                            <ul>
+                                                <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
+                                            </ul>
+                                        </div>
                                 </div>
                             </div>
                         </div>

@@ -1,19 +1,17 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http } from '@angular/http';
+import { HttpModule } from '@angular/http';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
 import { SignalRModule } from 'ng2-signalr';
 import { SignalRConfiguration } from 'ng2-signalr';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { ConfigService, configServiceFactory } from './config-service';
-import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-
 import { NoContentComponent } from './no-content-component';
-
 import { AppRoutingModule } from './app.routes';
 import { CommonsModule } from './commons/commons-module';
 import { DashboardModule } from './dashboard/dashboard-module';
@@ -23,29 +21,22 @@ import { AuthenticationService } from './account/services/authentication-service
 import { SessionStore, tokenServiceFactory } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
-import { ConfirmationService } from 'primeng/primeng';
-
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
-import { ValidateAttorneySession } from './commons/guards/validate-attorney-session';
-import { ValidateInActiveAttorneySession } from './commons/guards/validate-inactiveattorney-session';
-
-import { RegistrationService } from './account/services/registration-service';
-import { CompanyStore } from './account/stores/company-store';
-
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
+import { PatientManagerModule } from './patient-manager/patient-manager-module';
 import { ScannerService } from './commons/services/scanner-service';
-import { InsuranceMasterTypeStore } from './commons/stores/insurance-master-type-store';
-import { InsuranceMasterTypeService } from './commons/services/insurance-master-type-service';
-import { DocumentUploadService } from './commons/services/document-upload-service';
-import { DiagnosisService } from './commons/services/diagnosis-service';
-import { DiagnosisStore } from './commons/stores/diagnosis-store';
-import { ProcedureStore } from './commons/stores/procedure-store';
-import { ProcedureService } from './commons/services/procedure-service';
-
+import { ConfirmationService } from 'primeng/primeng';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DateFormatPipe } from './commons/pipes/date-format-pipe';
+import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DoctorsStore } from './medical-provider/users/stores/doctors-store';
 import { DoctorsService } from './medical-provider/users/services/doctors-service';
+import { DocumentUploadService } from './commons/services/document-upload-service';
+import { ScheduleStore } from './medical-provider/locations/stores/schedule-store';
+import { ScheduleService } from './medical-provider/locations/services/schedule-service';
 
 import { SpecialityStore } from './account-setup/stores/speciality-store';
 import { SpecialityService } from './account-setup/services/speciality-service';
@@ -53,29 +44,17 @@ import { SpecialityService } from './account-setup/services/speciality-service';
 import { UsersService } from './medical-provider/users/services/users-service';
 import { UsersStore } from './medical-provider/users/stores/users-store';
 
-import { LocationsStore } from './medical-provider/locations/stores/locations-store';
-import { LocationsService } from './medical-provider/locations/services/locations-service';
-
-import { ScheduleStore } from './medical-provider/locations/stores/schedule-store';
-import { ScheduleService } from './medical-provider/locations/services/schedule-service';
-
-import { SimpleNotificationsModule } from 'angular2-notifications';
-import { NotificationsService } from 'angular2-notifications';
-
-import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
-import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
-import { DateFormatPipe } from './commons/pipes/date-format-pipe';
-
 import { UserSettingStore } from './commons/stores/user-setting-store';
 import { UserSettingService } from './commons/services/user-setting-service';
 import { PushNotificationStore } from './commons/stores/push-notification-store';
 import { PushNotificationService } from './commons/services/push-notification-service';
 
-import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
-import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
-
-import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-// import { MomentModule } from 'angular2-moment'; 
+import { LocationsStore } from './medical-provider/locations/stores/locations-store';
+import { LocationsService } from './medical-provider/locations/services/locations-service';
+import { ProcedureStore } from './commons/stores/procedure-store';
+import { ProcedureService } from './commons/services/procedure-service';
+import { DiagnosisService } from './commons/services/diagnosis-service';
+import { DiagnosisStore } from './commons/stores/diagnosis-store';
 
 // v2.0.0
 export function createConfig(): SignalRConfiguration {
@@ -104,14 +83,13 @@ export function createConfig(): SignalRConfiguration {
     ReactiveFormsModule,
     CommonsModule,
     AppRoutingModule,
-    AmChartsModule,
+    PatientManagerModule,
     DashboardModule,
     SimpleNotificationsModule,
     EventModule,
     // SignalRModule.forRoot(createConfig)
     SignalRModule,
     NgIdleKeepaliveModule.forRoot()
-    // MomentModule,
   ],
   providers: [
     {
@@ -130,46 +108,35 @@ export function createConfig(): SignalRConfiguration {
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,
     ValidateInActiveSession,
+    NotificationsService,
     FormBuilder,
     SessionStore,
-    CompanyStore,
-    RegistrationService,
     AuthenticationService,
     NotificationsStore,
     StateService,
     StatesStore,
-    ScannerService,
-    DocumentUploadService,
-    DoctorsStore,
-    DoctorsService,
     ProgressBarService,
+    ScannerService,
     ConfirmationService,
-    SpecialityStore,
+    DateFormatPipe,
+    PhoneFormatPipe,
+    FaxNoFormatPipe,
+    DoctorsStore,
+    DoctorsService, DocumentUploadService, ScheduleService,
+    ScheduleStore, SpecialityStore,
     SpecialityService,
     UsersService,
     UsersStore,
     LocationsStore,
     LocationsService,
-    ScheduleService,
-    ScheduleStore,
-    NotificationsService,
-    PhoneFormatPipe,
-    FaxNoFormatPipe,
-    DateFormatPipe,
-    ValidateAttorneySession,
-    ValidateInActiveAttorneySession,
+    ProcedureStore,
+    ProcedureService,
     DiagnosisService,
     DiagnosisStore,
-    ProcedureService,
-    ProcedureStore,
     UserSettingStore,
     UserSettingService,
     PushNotificationStore,
-    PushNotificationService,
-    InsuranceMasterTypeStore,
-    InsuranceMasterTypeService,
-    MedicalProviderMasterService,
-    MedicalProviderMasterStore
+    PushNotificationService
   ],
   bootstrap: [AppComponent]
 })

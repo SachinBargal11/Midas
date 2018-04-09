@@ -19,9 +19,6 @@ import { Notification } from '../../../commons/models/notification';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
-import { Case } from '../../cases/models/case';
-import { CasesStore } from '../../cases/stores/case-store';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'demographics',
@@ -31,8 +28,6 @@ import { Observable } from 'rxjs/Rx';
 export class DemographicsComponent implements OnInit {
     emergencyContactCellPhone: string;
     emergencyContactPerson: string;
-    caseDetail: Case[];
-    referredToMe: boolean = false;
     cellPhone: string;
     faxNo: string;
     patientId: number;
@@ -57,70 +52,55 @@ export class DemographicsComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+        public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _faxNoFormatPipe: FaxNoFormatPipe,
-        private _casesStore: CasesStore
+        private _faxNoFormatPipe: FaxNoFormatPipe
     ) {
-        this._route.parent.params.subscribe((params: any) => {
-            this.patientId = parseInt(params.patientId, 10);
-            this._progressBarService.show();
-            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-            let result = this._patientsStore.fetchPatientById(this.patientId);
-            Observable.forkJoin([caseResult, result])
-                .subscribe(
-                (results) => {
-                    this.caseDetail = results[0];
-                    if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                                this.referredToMe = true;
-                            } else {
-                                this.referredToMe = false;
-                            }
-                        })
-                    } else {
-                        this.referredToMe = false;
-                    }
-                    this.patientInfo = results[1];
-                    this.emergencyContactPerson = this.patientInfo.emergencyContactName;
-                    this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
-                    this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
-                    this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
-                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
-                        ? this.patientInfo.dateOfFirstTreatment.toDate()
-                        : null;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
+        // this._route.parent.params.subscribe((params: any) => {
+        //     this.patientId = parseInt(params.patientId, 10);
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
+        let result = this._patientsStore.getPatientById(this.patientId);
+        result.subscribe(
+            (patient: Patient) => {
+                this.patientInfo = patient;
+                this.emergencyContactPerson = this.patientInfo.emergencyContactName;
+                this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
+                this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
+                this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
+                this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
+                    ? this.patientInfo.dateOfFirstTreatment.toDate()
+                    : null;
+                // if (this.patientInfo.user.address.state) {
+                //     this.loadCities(this.patientInfo.user.address.state);
+                // }
+            },
+            (error) => {
+                // this._router.navigate(['/patient-manager/profile/viewall']);
+                this.progressBarService.hide();
+            },
+            () => {
+                this.progressBarService.hide();
+            });
+
+        // });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: [''],
-                // weight: [''],
-                // height: [''],
-                dateOfFirstTreatment: [''],
-                // races: ['', Validators.required],
-                // ethnicities: ['', Validators.required],
+                ssn: ['', Validators.required],
+                weight: [''],
+                height: [''],
+                dateOfFirstTreatment: ['']
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required]],
                 homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 faxNo: [''],
-                alternateEmail: ['', AppValidators.emailValidator],
-                officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-                preferredCommunication: [''],
                 emergencyContactPerson: [''],
                 emergencyContactCellPhone: ['']
             }),
@@ -169,25 +149,20 @@ export class DemographicsComponent implements OnInit {
         let existingPatientJS = this.patientInfo.toJS();
         let patient = new Patient(_.extend(existingPatientJS, {
             ssn: demographicsFormValues.userInfo.ssn,
-            // weight: parseInt(demographicsFormValues.userInfo.weight, 10),
-            // height: parseInt(demographicsFormValues.userInfo.height, 10),
+            weight: parseInt(demographicsFormValues.userInfo.weight, 10),
+            height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
-            //raceId: demographicsFormValues.userInfo.races,
-            //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
+            updateByUserId: this.sessionStore.session.account.user.id,
             emergencyContactName: demographicsFormValues.contact.emergencyContactPerson,
             emergencyContactPhone: demographicsFormValues.contact.emergencyContactCellPhone,
-            updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
-                updateByUserId: this._sessionStore.session.account.user.id,
+                updateByUserId: this.sessionStore.session.account.user.id,
                 contact: new Contact(_.extend(existingPatientJS.user.contact, {
                     cellPhone: demographicsFormValues.contact.cellPhone ? demographicsFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
-                    officeExtension: demographicsFormValues.contact.officeExtension,
-                    alternateEmail: demographicsFormValues.contact.alternateEmail,
-                    preferredCommunication: demographicsFormValues.contact.preferredCommunication,
-                    updateByUserId: this._sessionStore.session.account.user.id
+                    updateByUserId: this.sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {
                     address1: demographicsFormValues.address.address1,
@@ -196,38 +171,38 @@ export class DemographicsComponent implements OnInit {
                     country: demographicsFormValues.address.country,
                     state: demographicsFormValues.address.state,
                     zipCode: demographicsFormValues.address.zipCode,
-                    updateByUserId: this._sessionStore.session.account.user.id
+                    updateByUserId: this.sessionStore.session.account.user.id
                 }))
             }))
         }));
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._patientsStore.updatePatient(patient);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Client updated successfully',
+                    'title': 'Patient updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success', 'Client updated successfully');
-                // this._router.navigate(['/patient-manager/patients']);
+                this.notificationsStore.addNotification(notification); 
+                this._notificationsService.success('Success', 'Patient updated successfully!');
+                // this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
-                let errString = 'Unable to update Client.';
+                let errString = 'Unable to update patient.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 

@@ -1,4 +1,4 @@
-import { Tests } from '../../models/tests';
+import {Tests} from '../../models/tests';
 
 
 export class TestsAdapter {
@@ -7,9 +7,8 @@ export class TestsAdapter {
         let tests = null;
         if (testsData) {
             tests = new Tests({
-                id: testsData.id,
-                name: testsData.name,
-                color: testsData.colorCode
+                    id: testsData.id,
+                    name: testsData.name
             });
         }
         return tests;

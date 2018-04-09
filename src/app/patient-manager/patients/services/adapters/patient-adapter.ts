@@ -1,7 +1,5 @@
 import { Patient } from '../../models/patient';
-import { Company } from '../../../../account/models/company';
-import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
-import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
+import { UserAdapter } from '../../../../commons/services/adapters/user-adapter';
 import * as moment from 'moment';
 import { PatientDocumentAdapter } from './patient-document-adapter';
 import { PatientDocument } from '../../models/patient-document';
@@ -10,30 +8,27 @@ export class PatientAdapter {
     static parseResponse(data: any): Patient {
 
         let patient: Patient = null;
-        let companies: Company[] = [];
+        let companyId: number = 0;
         let LanguagePreferenceMappings: any[] = [];
         let SocialMediaMappings: any[] = [];
-
         let patientDocuments: PatientDocument[] = [];
         if (data) {
-            if (data.patientLanguagePreferenceMappings) {
+
+             if (data.patientLanguagePreferenceMappings) {
                 for (let language of data.patientLanguagePreferenceMappings) {
                     LanguagePreferenceMappings.push(language);
                 }
-            }
+             }
 
-            if (data.patientSocialMediaMappings) {
+             if (data.patientSocialMediaMappings) {
                 for (let socialMedia of data.patientSocialMediaMappings) {
                     SocialMediaMappings.push(socialMedia);
                 }
-            }
+             }
 
-            if (data.user) {
-                if (data.user.userCompanies) {
-                    for (let company of data.user.userCompanies) {
-                        // companies.push(CompanyAdapter.parseResponse(company));
-                        companies.push(company);
-                    }
+            if (data.user.userCompanies) {
+                for (let company of data.user.userCompanies) {
+                    companyId = company.companyId;
                 }
             }
             if (data.patientDocuments) {
@@ -50,8 +45,7 @@ export class PatientAdapter {
                 maritalStatusId: data.maritalStatusId,
                 dateOfFirstTreatment: data.dateOfFirstTreatment ? moment(data.dateOfFirstTreatment) : null,
                 user: UserAdapter.parseResponse(data.user),
-                companyId: data.companyId,
-                companies: companies,
+                companyId: companyId,
                 patientDocuments: patientDocuments,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
@@ -62,13 +56,11 @@ export class PatientAdapter {
                 emergencyContactName: data.emergencyContactName,
                 emergencyContactPhone: data.emergencyContactPhone,
                 spouseName: data.spouseName,
-                patientLanguagePreferenceMappings: LanguagePreferenceMappings,
+                patientLanguagePreferenceMappings:LanguagePreferenceMappings,
                 languagePreferenceOther: data.languagePreferenceOther,
-                patientSocialMediaMappings: SocialMediaMappings,
-                addedByCompanyId: data.addedByCompanyId,
+                patientSocialMediaMappings:SocialMediaMappings
             });
         }
         return patient;
     }
 }
-

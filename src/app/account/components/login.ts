@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loginFormControls;
     isLoginInProgress;
-    doctorRole = false;
     options = {
         timeOut: 50000,
         showProgressBar: false,
@@ -26,7 +25,7 @@ export class LoginComponent implements OnInit {
     };
     constructor(
         private fb: FormBuilder,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _authenticationService: AuthenticationService,
         private _router: Router
@@ -50,35 +49,25 @@ export class LoginComponent implements OnInit {
         return false;
     }
 
-    login() {     
+    login() {
         let result;
         this.isLoginInProgress = true;
         let forceLogin = true;
-
         if (this.checkSecuredLogin(this.loginForm.value.email)) {
             forceLogin = false;
         }
         if (this.loginForm.value.chkOTP) {
             forceLogin = true;
         }
-        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
+        result = this.sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
 
         result.subscribe(
             (session: Session) => {
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/account/security-check']);
                 } else {
-                    // session.user.roles.forEach(role => {
-                    //     if (role.roleType === 3) {
-                    //         this.doctorRole = true;
-                    //     }
-                    // });
-                    // if (this.doctorRole) {
-                    // this._router.navigate(['/doctor-manager/doctor-appointment']);
-                    // this._router.navigate(['/patient-manager']);
-                    // } else {
-                        this._router.navigate(['/dashboard']);
-                    // }
+                    this._router.navigate(['/patient-manager/profile/viewall']);
+                    // this._router.navigate(['/dashboard']);
                 }
             },
             (error: Error) => {
@@ -88,6 +77,7 @@ export class LoginComponent implements OnInit {
             },
             () => {
                 this.isLoginInProgress = false;
+                this._router.navigate(['/patient-manager/profile/viewall']);
             });
     }
 }

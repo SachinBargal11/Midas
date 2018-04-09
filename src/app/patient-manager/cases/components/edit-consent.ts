@@ -175,7 +175,7 @@ export class EditConsentComponent implements OnInit {
         this.msgs = [];
         let notification = new Notification({
 
-            'title': 'File uploaded!',
+            'title': 'File Uploaded!',
             'type': 'SUCCESS',
             'createdAt': moment()
         });

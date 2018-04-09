@@ -10,7 +10,7 @@ import { NotificationsStore } from '../../stores/notifications-store';
 export class NotificationComponent implements OnInit {
 
     constructor(
-        public notificationsStore: NotificationsStore
+       public notificationsStore: NotificationsStore
     ) {
 
     }

@@ -1,4 +1,3 @@
-import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
@@ -22,7 +21,9 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { Observable } from 'rxjs/Rx';
+import { VisitDocument } from '../../patient-visit/models/visit-document';
+import { Document } from '../../../commons/models/document';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'patient-visit-doctor-list',
@@ -30,18 +31,6 @@ import { Observable } from 'rxjs/Rx';
 })
 
 export class PatientVisitListDoctorComponent implements OnInit {
-    allVisits: {
-        id: number,
-        eventStart: any,
-        locationName: string,
-        visitType: string,
-        doctorName: string,
-        specialityName: string,
-        visitStatusLabel: string,
-        isPatientVisitType: boolean,
-        isUnscheduledVisitType: boolean,
-        medicalProviderName: string
-    }[] = [];
     selectedVisits: PatientVisit[] = [];
     selectedDoctorsVisits: PatientVisit[] = [];
     selectedRoomsVisits: PatientVisit[] = [];
@@ -67,16 +56,11 @@ export class PatientVisitListDoctorComponent implements OnInit {
     selectedVisit: PatientVisit;
     visitInfo = 'Visit Info';
     visitDialogVisible = false;
-    addVisitDialogVisible = false;
-    unscheduledDialogVisible = false;
-    unscheduledVisitDialogVisible = false;
-    case: Case;
-    routeFromCase: true;
-    unscheduledVisits: UnscheduledVisit[];
-    unscheduledVisit: UnscheduledVisit;
-    visit: any[] = [];
-    selectedUnscheduledVisit: UnscheduledVisit[] = [];
-    patientVisitId: number;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
+    documents: VisitDocument[] = [];
+    visitUploadDocumentUrl: string;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(
         private _fb: FormBuilder,
@@ -91,26 +75,17 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
-        public sessionStore: SessionStore
+        public sessionStore: SessionStore,
+        private _patientVisitsStore: PatientVisitsStore,
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-        });
-        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this._progressBarService.show();
-            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
-            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
-
-            Observable.forkJoin([fetchPatient, fetchCaseDetail])
-                .subscribe(
-                (results) => {
-                    this.patient = results[0];
-                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
-                    this.case = results[1];
-                    this.caseStatusId = this.case.caseStatusId;
-                    this.visitInfo = `${this.visitInfo} - Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
-
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -121,48 +96,29 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 });
         });
 
-        // this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.caseId = parseInt(routeParams.caseId, 10);
-        //     this._progressBarService.show();
-        //     let result = this._casesStore.fetchCaseById(this.caseId);
-        //     result.subscribe(
-        //         (caseDetail: Case) => {
-        //             this.case = caseDetail;
-        //             this.caseStatusId = caseDetail.caseStatusId;
-        //         },
-        //         (error) => {
-        //             this._router.navigate(['../'], { relativeTo: this._route });
-        //             this._progressBarService.hide();
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
-        // });
 
         // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId, 10);
-        //     this._progressBarService.show();
-        //     this._patientStore.fetchPatientById(this.patientId)
-        //         .subscribe(
-        //         (patient: Patient) => {
-        //             this.patient = patient;
-        //             this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
-        //         },
-        //         (error) => {
-        //             this._router.navigate(['../'], { relativeTo: this._route });
-        //             this._progressBarService.hide();
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
+            this.patientId = this.sessionStore.session.user.id;
+            this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    // this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                    this.patientName = patient.user.displayName;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         // });
-
     }
 
     ngOnInit() {
-        this.loadVisits();
-        // this.loadPatientVisits();
-        // this.loadUnscheduledVisits();
+        this.loadPatientVisits();
     }
 
     loadPatientVisits() {
@@ -175,7 +131,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
 
                 // this.visits = matchingVisits.reverse();
                 let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null && currentVisit.specialtyId != null;
+                    return currentVisit.doctor != null && currentVisit.specialty != null;
                 });
                 this.doctorsVisits = matchingDoctorVisits.reverse();
 
@@ -192,87 +148,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-    loadUnscheduledVisits() {
-        this._progressBarService.show();
-        this._patientVisitStore.getUnscheduledVisitsByCaseId(this.caseId)
-            .subscribe((unscheduledVisits: UnscheduledVisit[]) => {
-                this.unscheduledVisits = unscheduledVisits;
-            })
-    }
-
-    loadVisits() {
-        let patientVisits = this._patientVisitStore.getPatientVisitsByCaseId(this.caseId);
-        let unscheduleVisits = this._patientVisitStore.getUnscheduledVisitsByCaseId(this.caseId);
-        Observable.forkJoin([patientVisits, unscheduleVisits])
-            .subscribe((results: any[]) => {
-                let patientVisitDetails = results[0];
-                let matchingVisits: PatientVisit[] = _.filter(patientVisitDetails, (currentVisit: PatientVisit) => {
-                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-                });
-
-                this.visits = matchingVisits.reverse();
-                let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null && currentVisit.specialtyId != null;
-                });
-                let doctorsVisits = matchingDoctorVisits.reverse();
-                let unscheduledVisits = results[1];
-
-                let mappedAllVisits: {
-                    id: number,
-                    eventStart: any,
-                    locationName: string,
-                    visitType: string,
-                    doctorName: string,
-                    specialityName: string,
-                    visitStatusLabel: string,
-                    isPatientVisitType: boolean,
-                    isUnscheduledVisitType: boolean,
-                    medicalProviderName: string
-                }[] = [];
-                _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
-                    mappedAllVisits.push({
-                        id: currDoctorVisit.id,
-                        eventStart: currDoctorVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a'),
-                        locationName: currDoctorVisit.location.name,
-                        visitType: 'Patient Visit',
-                        doctorName: currDoctorVisit.doctor.user.displayName,
-                        specialityName: currDoctorVisit.specialty.displayName,
-                        visitStatusLabel: currDoctorVisit.visitStatusLabel,
-                        isPatientVisitType: true,
-                        isUnscheduledVisitType: false,
-                        medicalProviderName: null
-                    })
-                })
-                _.forEach(unscheduledVisits, (currDoctorVisit: UnscheduledVisit) => {
-                    if (currDoctorVisit.specialtyId != null) {
-                        mappedAllVisits.push({
-                            id: currDoctorVisit.id,
-                            eventStart: currDoctorVisit.eventStart.format('MMMM Do YYYY'),
-                            locationName: currDoctorVisit.locationName,
-                            visitType: 'Unscheduled Visit',
-                            doctorName: currDoctorVisit.doctorName,
-                            specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
-                            visitStatusLabel: currDoctorVisit.status,
-                            isPatientVisitType: false,
-                            isUnscheduledVisitType: true,
-                            medicalProviderName: currDoctorVisit.medicalProviderName
-                        })
-                    }
-                })
-                this.allVisits = mappedAllVisits;
-
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-
-    }
-
-
     loadPatientVisitsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -296,28 +171,59 @@ export class PatientVisitListDoctorComponent implements OnInit {
             });
     }
 
-    showDialog(visit: any) {
+   showDialog(visitId: number) {
+        this.fetchPatientVisit(visitId);
+        this.selectedVisitId = visitId;
+    }
 
-        if (visit.isPatientVisitType) {
-            this.fetchPatientVisit(visit.id);
-            this.selectedVisitId = visit.id;
-            this.visitDialogVisible = true;
-        } else if (visit.isUnscheduledVisitType) {
-            this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
-                .subscribe((visit: UnscheduledVisit) => {
-                    this.unscheduledVisit = visit;
-                    this.unscheduledDialogVisible = true;
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
                 });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
+            }
+        });
+        this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please select document Type');
+        }
+        else {
+            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
         }
     }
 
-    addVisitDialog() {
-        this.addVisitDialogVisible = true;
+    getDocuments() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+            .subscribe(document => {
+                this.documents = document;
+            },
+
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
-    closeAddVisitDialog() {
-        this.addVisitDialogVisible = false;
-    }
+
     handleVisitDialogHide() {
         this.selectedVisitId = null;
     }
@@ -325,24 +231,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
-        this.unscheduledDialogVisible = false;
-        this.unscheduledDialogVisible = false;
     }
-
-    unscheduledVisitDialog() {
-        this.caseId;
-        this.patientId;
-        this.unscheduledVisitDialogVisible = true;
-    }
-
-    closeDialog() {
-        this.unscheduledVisitDialogVisible = false;
-    }
-
-    refreshEvents(event) {
-        this.loadVisits();
-    }
-
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {

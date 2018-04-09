@@ -1,5 +1,4 @@
-import { CaseDocumentAdapter } from './adapters/case-document-adapters';
-import { CaseDocument } from '../models/case-document';
+import { CaseAdapter } from './adapters/case-adapter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
@@ -9,9 +8,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Consent } from '../models/consent';
+import { Case } from '../models/case';
 import { ConsentAdapter } from './adapters/consent-adapter';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
-
 
 @Injectable()
 export class ConsentService {
@@ -83,7 +82,6 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-
     getDoctorCaseConsentApproval(Id: Number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/get/' + Id, {
@@ -128,48 +126,75 @@ export class ConsentService {
     }
 
 
-    getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
-        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+    getConsetForm(CaseId: number, companyId: number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
             // return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId, {
+            //changed on 11-4-2017
+            // return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
+            //documentmanager/get/86/consent
+
+            //changedapi on 13-4-2017 at 1pm
+            return this._http.get(environment.SERVICE_BASE_URL + '/case/GetConsentList/' + CaseId, {
                 headers: this._headers
             }).map(res => res.json())
-                //documentmanager/get/86/consent
-                .subscribe((data: Array<any>) => {
+                .subscribe((data: any) => {
                     let consent = null;
-                    // if (data.length) {
+                    // consent = ConsentAdapter.parseResponse(data);
+                    // resolve(data);
                     consent = ConsentAdapter.parseResponse(data);
-                    resolve(data);
-                    // } else {
-                    //     reject(new Error('NOT_FOUND'));
-                    // }
+                    resolve(consent);
+
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Consent[]>>Observable.fromPromise(promise);
+        return <Observable<Case>>Observable.fromPromise(promise);
     }
 
-    deleteConsentform(caseDocument: CaseDocument, companyId: number): Observable<CaseDocument> {
+    deleteConsent(caseDetail: Consent, companyId: number): Observable<Consent> {
         let promise = new Promise((resolve, reject) => {
             // return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
-            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + companyId, {
-                //  return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + caseDocument.document.originalResponse.companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDetail.id + '/' + caseDetail.documentId + '/' + companyId, {
 
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
-                    let parsedCase: CaseDocument = null;
-                    parsedCase = CaseDocumentAdapter.parseResponse(data);
+                    let parsedCase: Consent = null;
+                    parsedCase = ConsentAdapter.parseResponse(data);
                     // deleteUploadConsentform(caseDetail);
                     resolve(parsedCase);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<CaseDocument>>Observable.from(promise);
+        return <Observable<Consent>>Observable.from(promise);
+    }
+    deleteCompanyConsent(caseDetail: Case, companyId: number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = caseDetail.toJS();
+            let caseId = requestData.id;
+            let documentId: number = 0;
+            let companyId: number = 0;
+            requestData.caseCompanyConsentDocument.forEach(element => {
+                documentId = element.document.originalResponse.midasDocumentId;
+                companyId = element.document.originalResponse.companyId;
+            });
+            requestData.caseCompanyConsentDocument
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseId + '/' + documentId + '/' + companyId, {
+
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCase: Case = null;
+                    parsedCase = CaseAdapter.parseResponse(data);
+                    resolve(parsedCase);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case>>Observable.from(promise);
     }
 
     deleteUploadConsentform(caseDetail: Consent): Observable<Consent> {
@@ -189,14 +214,33 @@ export class ConsentService {
         return <Observable<Consent>>Observable.from(promise);
     }
 
-   downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+    getcompany(CaseId: Number): Observable<ConsentAdapter> {
+        let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getCaseCompanies/' + CaseId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    if (data.length) {
+                        resolve(data);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<ConsentAdapter>>Observable.fromPromise(promise);
+    }
+
+    downloadConsentForm(documentId: Number, companyId: Number): Observable<Consent[]> {
         let thefile = {};
-        let companyId = this._sessionStore.session.currentCompany.id;
+        //   let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
                 .get(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
-                headers: this._headers
-            })
+                    headers: this._headers
+                })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -205,7 +249,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        window.location.assign(environment.SERVICE_BASE_URL +'/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })
@@ -221,15 +265,14 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-    getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
-        return `${environment.SERVICE_BASE_URL}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
-    }
 
-    downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {
+    downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
+                .get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId, {
+                    headers: this._headers
+                })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -238,7 +281,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId);
+                        window.location.assign(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId);
                         // return res.arrayBuffer();
                     }
                 })
@@ -251,5 +294,9 @@ export class ConsentService {
                 () => console.log('Completed file download.'));
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
+    getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
+        return `${environment.SERVICE_BASE_URL}/CompanyCaseConsentApproval/download/${caseId}/${companyId}`;
     }
 }

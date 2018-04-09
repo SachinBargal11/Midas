@@ -14,7 +14,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { DocumentType } from '../../../account-setup/models/document-type';
+import { DocumentType } from '../../../commons/models/document-type';
 
 @Component({
   selector: 'app-document-upload',
@@ -34,10 +34,10 @@ export class DocumentUploadComponent implements OnInit {
   scannedFileName: string = '';
   digitalForm: FormGroup;
   cosentFormUrl: SafeResourceUrl;
-  // currentId: number = 0;
-  documentTypes: DocumentType[];
-  companyId: number = this._sessionStore.session.currentCompany.id;
   documentType: string = '';
+  companyId: number = this._sessionStore.session.currentCompany.id;
+  documentTypes: DocumentType[];
+  isDocumentSelected: boolean;
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -48,18 +48,18 @@ export class DocumentUploadComponent implements OnInit {
   @Input() url: string;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
-  @Input() currentId: number;
-  @Input() objectId: number;
-  @Input() isConsentDocumentOn: boolean = false;
+
 
 
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
 
+  @Input() changeCompneyConsenturl: string;
+  @Input() isConsentDocumentOn: boolean = false;
+  @Input() currentId: number;
+  @Input() objectId: number;
+  @Input() providerId: number;
   @Input() isdownloadTemplate: boolean = false;
-  @Output() download: EventEmitter<Document> = new EventEmitter();
-  @Input() inputCaseId: number;
-  isDocumentSelected: boolean;
 
   constructor(
     private _fb: FormBuilder,
@@ -70,7 +70,6 @@ export class DocumentUploadComponent implements OnInit {
     private _progressBarService: ProgressBarService,
     private _consentService: ConsentService,
     private _sessionStore: SessionStore,
-
   ) {
     this._updateScannerContainerId();
     this.digitalForm = this._fb.group({
@@ -82,8 +81,10 @@ export class DocumentUploadComponent implements OnInit {
   ngOnInit() {
     this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
-      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
+      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
+
+
   }
 
   ngOnDestroy() {
@@ -98,6 +99,7 @@ export class DocumentUploadComponent implements OnInit {
 
   onDocumentModelChange(value) {
     if (value == '3') {
+      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
       _.defer(() => {
         this.beResponsive();
         this.setOptions();
@@ -155,31 +157,24 @@ export class DocumentUploadComponent implements OnInit {
       let param: string;
       if (this.currentId == 2) {
         if (this.isConsentDocumentOn) {
-          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
         } else {
-          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
         }
       } else if (this.currentId == 3) {
-        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
       } else if (this.currentId == 1) {
-        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      } else if (this.currentId == 4) {
-        param = '{"ObjectType":"imeVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      } else if (this.currentId == 5) {
-        param = '{"ObjectType":"euoVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      } else if (this.currentId == 6) {
-        param = '{"ObjectType":"attorneyVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      } else if (this.currentId == 7) {
-        param = '{"ObjectType":"unscheduleVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
       }
       event.xhr.setRequestHeader("inputjson", param);
       event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
     }
     else {
-      this.uploadError.emit(new Error('Please select document type'));
+      this.uploadError.emit(new Error('Please select document Type'));
       this.isDocumentSelected = false;
     }
   }
+
 
   onFilesUploadComplete(event) {
     let responseDocuments: any = JSON.parse(event.xhr.responseText);
@@ -187,10 +182,9 @@ export class DocumentUploadComponent implements OnInit {
       return DocumentAdapter.parseResponse(document);
     });
     this.uploadComplete.emit(documents);
-
   }
 
-  onFilesUploadError(event) {
+ onFilesUploadError(event) {
     if (this.isDocumentSelected) {
       this.uploadError.emit(new Error('Unable to upload selected files.'));
     }
@@ -272,9 +266,6 @@ export class DocumentUploadComponent implements OnInit {
       () => {
         // this._progressBarService.hide();
       });
-  }
-  downloadTemplate() {
-    this.download.emit();
   }
 }
 export interface TwainSource {

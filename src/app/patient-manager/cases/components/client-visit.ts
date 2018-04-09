@@ -20,6 +20,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { Observable } from 'rxjs/Rx';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'client-visit-list',
@@ -68,27 +69,17 @@ export class ClientVisitListComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
-
+        public sessionStore: SessionStore,
 
     ) {
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-        });
-        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            // this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this._progressBarService.show();
-            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
-            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
-
-            Observable.forkJoin([fetchPatient, fetchCaseDetail])
-                .subscribe(
-                (results) => {
-                    this.patient = results[0];
-                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
-                    this.case = results[1];
-                    this.caseStatusId = this.case.caseStatusId;
-                    this.visitInfo = `${this.visitInfo} - Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
-
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -98,6 +89,26 @@ export class ClientVisitListComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+
+
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = this.sessionStore.session.user.id;
+            this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    // this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                    this.patientName = patient.user.displayName;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        // });
     }
 
     ngOnInit() {
@@ -134,28 +145,6 @@ export class ClientVisitListComponent implements OnInit {
             }
         }, 250);
     }
-
-    // doctorName(doctorId: number) {
-
-    //     this._doctorsStore.fetchDoctorById(doctorId)
-    //         .subscribe(doctor => {
-    //             this.doctor = doctor;
-    //             this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-
-    //         });
-
-    // }
-    // return this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-
-    // roomName(roomId: number) {
-
-    //     this._roomsStore.fetchRoomById(roomId)
-    //         .subscribe(room => {
-    //             this.room = room;
-    //             this.currentRoomName = room.roomTest.name;
-    //         });
-
-    // }
 
     showDialog(visit: any) {
         this._patientVisitStore.getPatientVisitDetailById(visit.id)
@@ -229,8 +218,8 @@ export class ClientVisitListComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select visit to delete');
         }
     }
-    bill() {
-        this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
-    }
+    // bill() {
+    //     this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
+    // }
 
 }

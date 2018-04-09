@@ -1,5 +1,5 @@
 <h3 class="with-border">{{title}}</h3>
-<div *ngIf="currentEmployer && caseStatusId === 1">
+<div *ngIf="currentEmployer">
     <form [formGroup]="employerform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
@@ -8,7 +8,7 @@
             <div class="card-block">
 
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Occupation/Job Title
                                             <span class="color-red">*</span>
                                         </label>
@@ -21,8 +21,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> Occupation/Job Title
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.jobTitle}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Employer Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -35,64 +43,98 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> Employer Name
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.empName}}
+                            </label>
+                        </div>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
-                        <label class="form-label">Choose Salary Type                                          
+                        <label class="form-label">Salary Type                                          
                                         </label>
-                        <div class="form-group">
+                        <label> {{hourOrYearly}}
+                                        </label>
+                        <!-- <div class="form-group">
                             <p-radioButton formControlName="salaryType" name="salaryType" value="1" label="Hourly" [(ngModel)]="hourOrYearly"></p-radioButton>
                             <p-radioButton formControlName="salaryType" name="salaryType" value="0" label="Yearly" [(ngModel)]="hourOrYearly"></p-radioButton>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Salary
                                                                                    </label>
                         <div class="form-group">
                             <input formControlName="txtSalary" [ngModel]="currentEmployer.salary" type="text" class="form-control" placeholder="">
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> Salary
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.salary}}
+                            </label>
+                        </div>
                     </div>
                     <div class="col-lg-4">
                         <label class="form-label">Any Loss of earnings,due to accident related injuries?                                          
                                         </label>
-                        <div class="form-group">
+                        <label> {{lossOfEarnings}}</label>
+                        <!-- <div class="form-group">
                             <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="1" label="Yes" [(ngModel)]="lossOfEarnings"></p-radioButton>
                             <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="0" label="No" [(ngModel)]="lossOfEarnings"></p-radioButton>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Date(s) out of work                                            
                                         </label>
                         <div class="form-group">
                             <input type="text" formControlName="txtDatesOutWork" [ngModel]="currentEmployer.datesOutOfWork" class="form-control" type="text"
                                 placeholder="" />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> Date(s) out of work 
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.datesOutOfWork}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label">How many hours do you normally work per week?                                       
                                         </label>
                         <div class="form-group">
                             <input type="text" formControlName="txtHoursPerWeek" [ngModel]="currentEmployer.hoursPerWeek" class="form-control" type="text"
                                 placeholder="" />
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> How many hours do you normally work per week?
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.hoursPerWeek}}
+                            </label>
+                        </div>
                     </div>
                     <div class="col-lg-4">
                         <label class="form-label">Did accident occur in course of employment?                                       
                                         </label>
-                        <div class="form-group">
+                        <label> {{accidentAtEmployment}}</label>
+                        <!-- <div class="form-group">
                             <div class="form-group">
                                 <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="1" label="Yes" [(ngModel)]="accidentAtEmployment"></p-radioButton>
                                 <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="0" label="No" [(ngModel)]="accidentAtEmployment"></p-radioButton>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-
-
             </div>
         </section>
 
@@ -203,7 +245,7 @@
             </header>
             <div class="card-block">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> E-Mail
                                             <span class="color-red">*</span>
                                         </label>
@@ -217,14 +259,22 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">E-Mail
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.contact.emailAddress}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Cellphone
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
-                            <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid"
-                                placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                            <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid"
+                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                             <div class='error-list' *ngIf="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
                                 <ul>
                                     <li *ngIf="employerformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
@@ -232,18 +282,33 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Cellphone
+                            </label>
+                        <div class="form-group">
+                            <label> {{cellPhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Fax No</label>
                             <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Fax No
+                            </label>
+                        <div class="form-group">
+                            <label> {{faxNo}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Address1
-                                     <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.address.touched && !employerformControls.address.valid">
                             <input formControlName="address" [ngModel]="currentEmployer.address.address1" type="text" class="form-control" placeholder=""
@@ -254,9 +319,17 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Address1
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.address1}}
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Address2
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.address2.touched && !employerformControls.address2.valid">
@@ -268,12 +341,19 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Address2
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.address2}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> State
-                                            <!--<span class="color-red">*</span>-->
                                         </label>
-                        <!--<div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                        <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                             <select formControlName="state" [ngModel]="currentEmployer.address.state" type="text" class="form-control" placeholder=""
                                 [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                                 <option value="">-Select State-</option>
@@ -284,19 +364,21 @@
                                     <li *ngIf="employerformControls.state.hasError('required')">State is required.</li>
                                 </ul>
                             </div>
-                        </div>-->
-                        <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
-                            <p-dropdown [options]="states" formControlName="state"  [ngModel]="currentEmployer.address.state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
-                            <div class='error-list' *ngIf="employerformControls.state.touched && !employerformControls.state.valid">
-                                <span class="color-red">State is required.</span>
-                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">State
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.state}}
+                            </label>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
 
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> City
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
@@ -306,6 +388,14 @@
                                     <li *ngIf="employerformControls.city.hasError('required')">City is required.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">City
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.city}}
+                            </label>
                         </div>
                     </div>
                     <!--<div class="col-lg-3">
@@ -327,9 +417,8 @@
                         <loader [visible]="isCitiesLoading"></loader>
                     </div>-->
 
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Zip code
-                                            <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
                             <input formControlName="zipcode" [ngModel]="currentEmployer.address.zipCode" type="text" class="form-control" placeholder=""
@@ -340,246 +429,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <label class="form-label"> Country
-                                            <!--<span class="color-red">*</span>-->
-                                        </label>
-                        <div class="form-group" [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
-                            <!--<input formControlName="country" [ngModel]="currentEmployer.address.country" type="text" class="form-control" placeholder="" 
-                            [class.error]="!employerformControls.country.valid">-->
-                            <select formControlName="country" type="text" [ngModel]="currentEmployer.address.country" class="form-control" placeholder=""
-                                [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
-                                        <option value="">-Select -</option>
-                                        <option disabled>────────────────────</option>
-                                        <option value="US">United States</option>
-                                    </select>
-                            <div class='error-list' *ngIf="employerformControls.country.touched && !employerformControls.country.valid">
-                                <ul>
-                                    <li *ngIf="employerformControls.country.hasError('required')">Country is required.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
-
-        <div *ngIf="school">
-            <section class="card">
-                <header class="card-header card-header-lg">
-                    School Information
-                </header>
-                <div class="card-block">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Name of School
-                                    <span class="color-red">*</span>
-                            </label>
-                            <div class="form-group" [class.error]="employerformControls.txtSchoolName.touched && !employerformControls.txtSchoolName.valid">
-                                <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" [class.error]="!employerformControls.txtSchoolName.valid"
-                                    class="form-control" type="text" placeholder="" />
-                                <div class='error-list' *ngIf="employerformControls.txtSchoolName.touched && !employerformControls.txtSchoolName.valid">
-                                    <ul>
-                                        <li *ngIf="employerformControls.txtSchoolName.hasError('required')">Name of School is required.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!--</label>
-                            <div class="form-group">
-                                <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" class="form-control" type="text" placeholder=""
-                                />
-                            </div>-->
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Grade
-                                           
-                                        </label>
-                            <div class="form-group">
-                                <input type="text" formControlName="txtGrade" class="form-control" [ngModel]="grade" type="text" placeholder="" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">Any Loss of time from school?
-                                          
-                                        </label>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="1" label="Yes" [(ngModel)]="lossOfTime"></p-radioButton>
-                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="0" label="No" [(ngModel)]="lossOfTime"></p-radioButton>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Date(s) out of school
-                                           
-                                        </label>
-                            <div class="form-group">
-                                <input type="text" formControlName="txtDateOutofSchool" [ngModel]="datesOutOfSchool" class="form-control" type="text" placeholder=""
-                                />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-        </div>
-        <!--button-->
-        <button *ngIf="!referredToMe" [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
-                    <loader [visible]="isSaveEmployerProgress"></loader>
-                </button>
-        <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
-                </button>-->
-        <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
-        <!--button-->
-
-    </form>
-</div>
-
-<div *ngIf="currentEmployer  && caseStatusId === 2">
-    <form [formGroup]="employerform" (ngSubmit)="save()">
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Employment Information
-            </header>
-            <div class="card-block">
-
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label"> Occupation/Job Title
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.jobTitle}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Employer Name
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.empName}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label">Salary Type                                          
-                                        </label>
-                        <label> {{hourOrYearly}}
-                                        </label>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Salary
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.salary}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Any Loss of earnings,due to accident related injuries?                                          
-                                        </label>
-                        <label> {{lossOfEarnings}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label"> Date(s) out of work 
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.datesOutOfWork}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> How many hours do you normally work per week?
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.hoursPerWeek}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Did accident occur in course of employment?                                       
-                                        </label>
-                        <label> {{accidentAtEmployment}}</label>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Contact And Address Information
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label">E-Mail
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.contact.emailAddress}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Cellphone
-                            </label>
-                        <div class="form-group">
-                            <label> {{cellPhone}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Fax No
-                            </label>
-                        <div class="form-group">
-                            <label> {{faxNo}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label">Address1
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.address.address1}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Address2
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.address.address2}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">State
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.address.state}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label">City
-                            </label>
-                        <div class="form-group">
-                            <label> {{currentEmployer.address.city}}
-                            </label>
-                        </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label">Zip code
                             </label>
@@ -588,6 +438,7 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="col-lg-4">
                         <label class="form-label"> Country
                                         </label>
@@ -609,6 +460,15 @@
                 </header>
                 <div class="card-block">
                     <div class="row">
+                        <!--<div class="col-lg-4">
+                            <label class="form-label"> Name of School
+                                          
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" class="form-control" type="text" placeholder=""
+                                />
+                            </div>
+                        </div>-->
                         <div class="col-lg-4">
                             <label class="form-label">Name of School
                             </label>
@@ -617,6 +477,14 @@
                             </label>
                             </div>
                         </div>
+                        <!--<div class="col-lg-4">
+                            <label class="form-label"> Grade
+                                           
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtGrade" class="form-control" [ngModel]="grade" type="text" placeholder="" />
+                            </div>
+                        </div>-->
                         <div class="col-lg-4">
                             <label class="form-label">Grade
                             </label>
@@ -625,6 +493,7 @@
                             </label>
                             </div>
                         </div>
+
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
@@ -632,7 +501,22 @@
                                         </label>
                             <label> {{lossOfTime}}
                                         </label>
+                            <!-- <div class="form-group">
+                                <div class="form-group">
+                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="1" label="Yes" [(ngModel)]="lossOfTime"></p-radioButton>
+                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="0" label="No" [(ngModel)]="lossOfTime"></p-radioButton>
+                                </div>
+                            </div> -->
                         </div>
+                        <!--<div class="col-lg-4">
+                            <label class="form-label"> Date(s) out of school
+                                           
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtDateOutofSchool" [ngModel]="datesOutOfSchool" class="form-control" type="text" placeholder=""
+                                />
+                            </div>
+                        </div>-->
                         <div class="col-lg-4">
                             <label class="form-label">Date(s) out of school
                             </label>
@@ -646,6 +530,14 @@
                 </div>
             </section>
         </div>
-        <a *ngIf="caseStatusId === 2" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+        <!--button-->
+        <!--<button *ngIf="!referredToMe" [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveEmployerProgress"></loader>
+                </button>-->
+        <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
+                </button>-->
+        <a [routerLink]="['/patient-manager/cases']" class="btn btn-secondary">Cancel</a>
+        <!--button-->
+
     </form>
 </div>

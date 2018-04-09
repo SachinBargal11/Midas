@@ -27,6 +27,7 @@ export class InsuranceMasterStore {
     }
 
     getAllInsuranceMasters(): Observable<InsuranceMaster[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._insuranceMasterService.getAllInsuranceMasters().subscribe((insuranceMaster: InsuranceMaster[]) => {
                 this._insuranceMaster.next(List(insuranceMaster));

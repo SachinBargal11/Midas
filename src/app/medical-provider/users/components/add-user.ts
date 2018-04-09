@@ -36,7 +36,6 @@ export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedRole: any[] = ['1'];
-    isCalendarPublic: boolean = false;
     // selectedRole: any[] = [];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
@@ -48,11 +47,11 @@ export class AddUserComponent implements OnInit {
     isCitiesLoading = false;
     doctorRole = false;
     doctorFlag: boolean = false;
-    attorneyRole = false;
+
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
-        private _fb: FormBuilder,
+        private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
@@ -84,24 +83,24 @@ export class AddUserComponent implements OnInit {
             });
 
 
-        this.userform = this._fb.group({
-            userInfo: this._fb.group({
+        this.userform = this.fb.group({
+            userInfo: this.fb.group({
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
                 role: ['', [Validators.required]]
             }),
-            //doctor: this._fb.group(this.initDoctorModel()),
-            contact: this._fb.group({
+            doctor: this.fb.group(this.initDoctorModel()),
+            contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail: ['', [AppValidators.emailValidator]],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
-            address: this._fb.group({
+            address: this.fb.group({
                 address1: [''],
                 address2: [''],
                 city: [''],
@@ -116,27 +115,7 @@ export class AddUserComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
 
     onSelectedRoleChange(roleValues: any) {
@@ -163,8 +142,7 @@ export class AddUserComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required],
-            isCalendarPublic: ['']
+            speciality: ['2', Validators.required]
         };
         return model;
     }
@@ -186,13 +164,11 @@ export class AddUserComponent implements OnInit {
                 this.doctorRole = true;
             }
         });
-
         if (!this.doctorRole) {
-            debugger;
             let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
-                userType: UserType.ATTORNEY,
+                userType: UserType.STAFF,
                 roles: roles,
                 userName: userFormValues.contact.email,
                 contact: new Contact({
@@ -232,7 +208,7 @@ export class AddUserComponent implements OnInit {
                 // title: 'Dr',
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
-                isCalendarPublic: userFormValues.doctor.isCalendarPublic,
+
                 user: new User({
                     firstName: userFormValues.userInfo.firstname,
                     lastName: userFormValues.userInfo.lastname,
@@ -278,7 +254,7 @@ export class AddUserComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
-                let errString = 'Unable to add user.';
+                let errString = 'Unable to add User.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

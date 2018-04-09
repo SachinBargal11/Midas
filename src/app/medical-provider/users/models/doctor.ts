@@ -16,7 +16,6 @@ const DoctorRecord = Record({
     user: null,
     doctorSpecialities: null,
     doctorLocationSchedules: null,
-    isCalendarPublic: false,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -37,7 +36,6 @@ export class Doctor extends DoctorRecord {
     user: User;
     doctorSpecialities: DoctorSpeciality[];
     doctorLocationSchedules: DoctorLocationSchedule[]; 
-    isCalendarPublic: boolean;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

@@ -4,7 +4,6 @@ import * as moment from 'moment';
 const TestsRecord = Record({
     id: 0,
     name: '',
-    color: '',
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -16,7 +15,6 @@ export class Tests extends TestsRecord {
 
     id: number;
     name: string;
-    color: string;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

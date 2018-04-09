@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.24",
+    "version": "1.0.0-beta.25",
     "name": "web-ui"
   },
   "apps": [
@@ -26,21 +26,17 @@
         "../node_modules/primeng/resources/themes/bootstrap/theme.css",
         "./assets/theme/css/main.source.css",
         "../node_modules/fullcalendar/dist/fullcalendar.css",
-        "styles/styles.scss"         
+        "styles/fonts.css",
+        "styles/styles.scss",
+        "styles/style.css"        
       ],
       "scripts": [
         "./assets/tether.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
         "../node_modules/moment/min/moment.min.js",
-        "../node_modules/moment-timezone/builds/moment-timezone.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.js",
         "./Resources/dynamsoft.webtwain.initiate.js",
-        "./Resources/dynamsoft.webtwain.config.js",
-        "../node_modules/amcharts/dist/amcharts/amcharts.js",
-        "../node_modules/amcharts/dist/amcharts/serial.js",
-        "../node_modules/amcharts/dist/amcharts/pie.js",
-        "../node_modules/amcharts/dist/amcharts/themes/light.js",
-        "../node_modules/amcharts/dist/amcharts/plugins/export/export.min.js"
+        "./Resources/dynamsoft.webtwain.config.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

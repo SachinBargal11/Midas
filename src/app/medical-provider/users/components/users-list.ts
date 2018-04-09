@@ -135,12 +135,12 @@ export class UsersListComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'Select users to delete',
+                'title': 'select users to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select users to delete');
+            this._notificationsService.error('Oh No!', 'select users to delete');
         }
     }
     onRowSelect(user) {

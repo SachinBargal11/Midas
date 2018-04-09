@@ -11,11 +11,8 @@ import { UpdateUserComponent } from './components/update-user';
 import { LocationsComponent } from './components/locations';
 import { BillingComponent } from './components/Billing';
 import { DoctorLocationScheduleShellComponent } from './components/doctor-location-schedule-shell';
-import { UserLocationScheduleShellComponent } from './components/user-location-schedule-shell';
 import { DoctorLocationScheduleComponent } from './components/doctor-location-schedule';
-import { UserLocationScheduleComponent } from './components/user-location-schedule';
 import { AddDoctorLocationComponent } from './components/add-doctor-location';
-import { AddUserLocationComponent } from './components/add-user-location';
 import { AddDoctorLocationSpecialityComponent } from './components/add-doctor-location-speciality';
 import { ShellComponent } from '../../commons/shell-component';
 
@@ -108,7 +105,7 @@ export const UsersRoutes: Routes = [
                             },
                             {
                                 path: 'add',
-                                component: AddUserLocationComponent,
+                                component: AddDoctorLocationComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'Add Location'
@@ -116,7 +113,7 @@ export const UsersRoutes: Routes = [
                             },
                             {
                                 path: ':scheduleId',
-                                component: UserLocationScheduleShellComponent,
+                                component: DoctorLocationScheduleShellComponent,
                                 data: {
                                     breadcrumb: 'root'
                                 },
@@ -128,7 +125,7 @@ export const UsersRoutes: Routes = [
                                     },
                                     {
                                         path: 'schedule',
-                                        component: UserLocationScheduleComponent,
+                                        component: DoctorLocationScheduleComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'Schedule'

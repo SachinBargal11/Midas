@@ -124,41 +124,40 @@ export class AccidentService {
         });
         return <Observable<Accident>>Observable.from(promise);
     }
-    
+
     // Prior Accident/Injuries service
-        getPriorAccidentByCaseId(caseId: Number): Observable<PriorAccident[]> {
-            let promise: Promise<PriorAccident[]> = new Promise((resolve, reject) => {
-                return this._http.get(this._url + '/PatientPriorAccidentInjury/getByCaseId/' + caseId, {
-                    headers: this._headers
-                }).map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let parsedData = (<Object[]>data).map((data: any) => {
-                        return PriorAccidentAdapter.parseResponse(data);
-                    });
+    getPriorAccidentByCaseId(caseId: Number): Observable<PriorAccident[]> {
+        let promise: Promise<PriorAccident[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientPriorAccidentInjury/getByCaseId/' + caseId, {
+                headers: this._headers
+            }).map(res => res.json())
+            .subscribe((data: Array<Object>) => {
+                let parsedData = (<Object[]>data).map((data: any) => {
+                    return PriorAccidentAdapter.parseResponse(data);
+                });
+                resolve(parsedData);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PriorAccident[]>>Observable.fromPromise(promise);
+    }
+    savePriorAccident(priorAccident: PriorAccident): Observable<PriorAccident> {
+        let promise: Promise<PriorAccident> = new Promise((resolve, reject) => {
+            let requestData: any = priorAccident.toJS();
+            return this._http.post(this._url + '/PatientPriorAccidentInjury/save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedData: PriorAccident = null;
+                    parsedData = PriorAccidentAdapter.parseResponse(data);
                     resolve(parsedData);
-                    }, (error) => {
-                        reject(error);
-                    });
-    
-            });
-            return <Observable<PriorAccident[]>>Observable.fromPromise(promise);
-        }
-        savePriorAccident(priorAccident: PriorAccident): Observable<PriorAccident> {
-            let promise: Promise<PriorAccident> = new Promise((resolve, reject) => {
-                let requestData: any = priorAccident.toJS();
-                return this._http.post(this._url + '/PatientPriorAccidentInjury/save', JSON.stringify(requestData), {
-                    headers: this._headers
-                })
-                    .map(res => res.json())
-                    .subscribe((data: any) => {
-                        let parsedData: PriorAccident = null;
-                        parsedData = PriorAccidentAdapter.parseResponse(data);
-                        resolve(parsedData);
-                    }, (error) => {
-                        reject(error);
-                    });
-            });
-            return <Observable<PriorAccident>>Observable.fromPromise(promise);
-        }
-    
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PriorAccident>>Observable.fromPromise(promise);
+    }
 }

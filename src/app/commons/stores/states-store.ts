@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { States } from '../models/states';
-import { Cities } from '../models/cities';
-import { StateService } from '../services/state-service';
-import { SessionStore } from './session-store';
-import { List } from 'immutable';
-import { BehaviorSubject } from 'rxjs/Rx';
+import {States} from '../models/states';
+import {Cities} from '../models/cities';
+import {StateService} from '../services/state-service';
+import {SessionStore} from './session-store';
+import {List} from 'immutable';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 
 @Injectable()
@@ -18,9 +18,9 @@ export class StatesStore {
 
     constructor(
         private _statesService: StateService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -39,9 +39,6 @@ export class StatesStore {
 
     getStates(): Observable<States[]> {
         let promise = new Promise((resolve, reject) => {
-            // if (this.states) {
-            //     resolve(this.states);
-            // }
             this._statesService.getStates().subscribe((states: States[]) => {
                 this._states.next(List(states));
                 resolve(states);
@@ -51,13 +48,6 @@ export class StatesStore {
         });
         return <Observable<States[]>>Observable.fromPromise(promise);
     }
-
-    fetchCitiesByState(stateName: string){
-        let cities = this._cities.getValue();
-        let index = cities.findIndex((currentCity: Cities) => currentCity.statecode === stateName);
-        return cities.get(index);
-    }
-
     getStatesByCities(cityName: string): Observable<States[]> {
         let promise = new Promise((resolve, reject) => {
             this._statesService.getStatesByCities(cityName).subscribe((states: States[]) => {

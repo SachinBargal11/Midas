@@ -44,7 +44,7 @@ export class ScheduledEventService {
                 recurrenceRule: event.recurrenceRule ? event.recurrenceRule.toString() : '',
                 recurrenceException: ''
             });
-            requestData = _.omit(requestData, 'transportProviderId');
+
             return this._http.post(this._url, JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -70,7 +70,6 @@ export class ScheduledEventService {
                     return datum.format('YYYYMMDDThhmmss') + 'Z';
                 }).join(',')
             });
-            requestData = _.omit(requestData, 'transportProviderId');
 
             return this._http.put(`${this._url}/${event.id}`, JSON.stringify(requestData), {
                 headers: this._headers

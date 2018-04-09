@@ -17,10 +17,10 @@ export class FamilyMemberService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
     getFamilyMember(familyMemberId: Number): Observable<FamilyMember> {
         let promise: Promise<FamilyMember> = new Promise((resolve, reject) => {

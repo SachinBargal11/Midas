@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -64,16 +65,16 @@ export class CaseEmployerComponent implements OnInit {
     txtGrade = '';
     islossTimeofSchool: boolean = false;
     txtDateOutofSchool = '';
-    hourOrYearly = false;
-    lossOfEarnings = false;
-    accidentAtEmployment = false;
+    hourOrYearly = '';
+    lossOfEarnings = '';
+    accidentAtEmployment = '';
     school: School;
     id = 0;
-    lossOfTime = false;
+    lossOfTime = '';
     nameOfSchool = '';
     grade = '';
     datesOutOfSchool = '';
-    caseStatusId: number;
+
 
     constructor(
         private fb: FormBuilder,
@@ -103,22 +104,23 @@ export class CaseEmployerComponent implements OnInit {
             result.subscribe(
                 (employer: Employer) => {
                     this.employer = employer;
-                    this.hourOrYearly = this.employer.hourOrYearly;
-                    this.lossOfEarnings = this.employer.lossOfEarnings;
-                    this.accidentAtEmployment = this.employer.accidentAtEmployment;
+                    this.hourOrYearly = String(this.employer.hourOrYearly) == '1' ? 'Hourly' : 'Yearly';    
+                    this.lossOfEarnings = String(this.employer.lossOfEarnings) == '1' ? 'Yes' : 'No';
+                    this.accidentAtEmployment = String(this.employer.accidentAtEmployment) == '1' ? 'Yes' : 'No';
                     this.currentEmployer = this.employer;
                     //this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
-                    this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
-                    if (this.currentEmployer.id) {
+                    // this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
+                    this.title = 'Employment/School Info';
+                    // if (this.currentEmployer.id) {
                         this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                         this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
 
-                    } else {
-                        this.currentEmployer = new Employer({
-                            address: new Address({}),
-                            contact: new Contact({})
-                        });
-                    }
+                    // } else {
+                    //     this.currentEmployer = new Employer({
+                    //         address: new Address({}),
+                    //         contact: new Contact({})
+                    //     });
+                    // }
 
                 },
                 (error) => {
@@ -134,7 +136,7 @@ export class CaseEmployerComponent implements OnInit {
                 (school: School) => {
                     this.school = school;
                     this.id = this.school.id;
-                    this.lossOfTime = this.school.lossOfTime;
+                    this.lossOfTime = String(this.school.lossOfTime) == '1' ? 'Yes' : 'No';
                     this.datesOutOfSchool = this.school.datesOutOfSchool;
                     this.nameOfSchool = this.school.nameOfSchool;
                     this.grade = this.school.grade;
@@ -147,45 +149,36 @@ export class CaseEmployerComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-
-                let caseResult = this._casesStore.fetchCaseById(this.caseId);
-            caseResult.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
         });
 
-        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        caseResult.subscribe(
-            (cases: Case[]) => {
-                this.caseDetail = cases;
-                if (this.caseDetail.length > 0) {
-                    this.caseDetail[0].referral.forEach(element => {
-                        if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                            this.referredToMe = true;
-                        } else {
-                            this.referredToMe = false;
-                        }
-                    })
-                } else {
-                    this.referredToMe = false;
-                }
 
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+
+        // let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        // caseResult.subscribe(
+        //     (cases: Case[]) => {
+        //         this.caseDetail = cases;
+        //         if (this.caseDetail.length > 0) {
+        //             let matchedCompany = null;
+        //             matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+        //                 return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+        //             })
+        //             if (matchedCompany) {
+        //                 this.referredToMe = true;
+        //             } else {
+        //                 this.referredToMe = false;
+        //             }
+        //         } else {
+        //             this.referredToMe = false;
+        //         }
+
+        //     },
+        //     (error) => {
+        //         this._router.navigate(['../'], { relativeTo: this._route });
+        //         this._progressBarService.hide();
+        //     },
+        //     () => {
+        //         this._progressBarService.hide();
+        //     });
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
             employerName: ['', Validators.required],
@@ -210,7 +203,7 @@ export class CaseEmployerComponent implements OnInit {
             isAccidentAtEmployment: [''],
             txtDatesOutWork: [''],
             txtHoursPerWeek: [''],
-            txtSchoolName: ['', Validators.required],
+            txtSchoolName: [''],
             txtGrade: [''],
             islossTimeofSchool: [''],
             txtDateOutofSchool: [''],
@@ -221,27 +214,7 @@ export class CaseEmployerComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
 
     save() {
@@ -305,8 +278,7 @@ export class CaseEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    // this._router.navigate(['/patient-manager/cases']);
-                    this._notificationsService.success('Success!', 'Employer updated successfully');
+                    this._router.navigate(['/patient-manager/patients']);
                 },
                 (error) => {
                     let errString = 'Unable to update employer.';
@@ -337,8 +309,7 @@ export class CaseEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    // this._router.navigate(['/patient-manager/cases']);
-                    this._notificationsService.success('Success!', 'Employer added successfully');
+                    this._router.navigate(['/patient-manager/patients']);
                 },
                 (error) => {
                     let errString = 'Unable to add employer.';

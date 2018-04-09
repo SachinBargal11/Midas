@@ -2,16 +2,17 @@
     <div class="mobile-menu-left-overlay" (click)="hideLeftMobileMenu()"></div>
     <nav class="side-menu side-menu-compact">
         <ul class="side-menu-list">
-            <li *ngIf="doctorFlag" [routerLinkActive]="['opened']">
-                <a [routerLink]="['/patient-manager/appointments']">
-                    <i class="fa fa-hospital-o"></i>
-                    <span class="lbl">Appointment</span>
+            <li [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patient-manager/profile']">
+                    <!--<a [routerLink]="['/patient-manager/viewall']">-->
+                    <i class="fa fa-user"></i>
+                    <span class="lbl">Profile</span>
                 </a>
             </li>
             <li [routerLinkActive]="['opened']">
-                <a [routerLink]="['/patient-manager/patients']">
-                    <i class="fa fa-users"></i>
-                    <span class="lbl">Clients</span>
+                <a [routerLink]="['/patient-manager/consent']">
+                    <i class="fa fa-file-text"></i>
+                    <span class="lbl">Consent</span>
                 </a>
             </li>
             <li [routerLinkActive]="['opened']">
@@ -26,18 +27,6 @@
                     <span class="lbl">Schedule</span>
                 </a>
             </li>
-            <!--<li [routerLinkActive]="['opened']">
-                <a *ngIf="!sessionStore.isOnlyAttorneyRole()" [routerLink]="['/patient-manager/referrals/pending-referrals']">
-                    <i class="fa fa-retweet"></i>
-                    <span class="lbl">Referrals</span>
-                </a>
-                <a *ngIf="sessionStore.isOnlyAttorneyRole()" [routerLink]="['/patient-manager/referrals/inbound-referrals']">
-                    <i class="fa fa-retweet"></i>
-                    <span class="lbl">Referrals</span>
-                </a>
-            </li>-->
-
         </ul>
-
     </nav>
 </section>

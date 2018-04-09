@@ -24,8 +24,7 @@ export class PushNotificationService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        // this._headers.append('access_token', this._sessionStore.session.accessToken.replace('bearer ', ''));
-        this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('access_token', this._sessionStore.session.accessToken.replace('bearer ', ''));
     }
 
     loadNotifictionHub(accessToken) {
@@ -101,7 +100,7 @@ export class PushNotificationService {
     }
     getAllGroupEventsByGroupId(): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEventsByGroupID?groupid=5', {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEventsByGroupID?groupid=3', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -118,7 +117,7 @@ export class PushNotificationService {
     }
     getAllGroupEvents(): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEvents?applicationName=Midas&groupname=Attorney', {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEvents?applicationName=Midas&groupname=Patient', {
                 headers: this._headers
             })
                 .map(res => res.json())

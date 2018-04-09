@@ -152,7 +152,7 @@ export class AddDoctorLocationSpecialityComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Specialty added successfully!',
+                    'title': 'Speciality added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -160,7 +160,7 @@ export class AddDoctorLocationSpecialityComponent implements OnInit {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add specialty.';
+                let errString = 'Unable to add speciality.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

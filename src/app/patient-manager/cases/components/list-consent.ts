@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { ConsentStore } from '../stores/consent-store';
-import { CasesStore } from '../stores/case-store';
 import { Consent } from '../models/consent';
-import { Case } from '../models/case';
-import { CaseDocument } from '../models/case-document';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -15,6 +12,9 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { environment } from '../../../../environments/environment';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Case } from '../models/case';
+import { CaseDocument } from '../models/case-document';
 @Component({
     selector: 'list-consent',
     templateUrl: './list-consent.html'
@@ -22,39 +22,43 @@ import { environment } from '../../../../environments/environment';
 
 export class ConsentListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    selectedConsentList: CaseDocument[] = [];
+    selectedConsentList: Consent[] = [];
     Consent: Consent[];
-    caseConsentDocuments: CaseDocument[];
+    Case: Case;
     caseId: number;
     datasource: Consent[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
     companyId: number;
+    caseConsentDocuments: CaseDocument[];
+    
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
         private _ConsentStore: ConsentStore,
-        private _casesStore: CasesStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
+        private _casesStore: CasesStore,
+
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this.companyId = this._sessionStore.session.currentCompany.id;
         });
     }
 
     ngOnInit() {
         this.loadConsentForm();
     }
+
     loadConsentForm() {
         this._progressBarService.show();
+       
         this._casesStore.getDocumentForCaseId(this.caseId)
-            .subscribe((caseDocument: Case) => {
 
+            .subscribe((caseDocument: Case) => {
                 this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
 
             },
@@ -65,23 +69,6 @@ export class ConsentListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-    // loadConsentForm() {
-    //     this._progressBarService.show();
-    //     this._ConsentStore.getConsetForm(this.caseId, this.companyId)
-    //         .subscribe(Consent => {
-    //             this.Consent = Consent.reverse();
-    //             // this.datasource = referringOffices.reverse();
-    //             // this.totalRecords = this.datasource.length;
-    //             // this.referringOffices = this.datasource.slice(0, 10);
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
     loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -100,7 +87,7 @@ export class ConsentListComponent implements OnInit {
                     this.selectedConsentList.forEach(currentCaseDocument => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        let result = this._ConsentStore.deleteConsent(currentCaseDocument, this.companyId)
+                        let result = this._ConsentStore.deleteConsetForm(currentCaseDocument, this.companyId)
                         // let result = this._casesStore.deleteDocument(currentCaseDocument)
                         result.subscribe(
                             (response) => {
@@ -145,11 +132,10 @@ export class ConsentListComponent implements OnInit {
         }
     }
 
+
     DownloadPdf(documentId) {
         this._progressBarService.show();
-        //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-
-        this._progressBarService.show();
+          this._progressBarService.show();
         this._ConsentStore.downloadConsentForm(this.caseId, documentId)
             .subscribe(
             (response) => {

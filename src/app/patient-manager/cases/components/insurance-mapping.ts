@@ -21,7 +21,7 @@ import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'insurance-mapping',
@@ -41,13 +41,12 @@ export class InsuranceMappingComponent implements OnInit {
     selectedInsurance: string[] = [];
     adjusters: Adjuster[] = [];
     isDeleteProgress: boolean = false;
-    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceMappingStore: InsuranceMappingStore,
         private _casesStore: CasesStore,
         private _insuranceStore: InsuranceStore,
@@ -58,23 +57,11 @@ export class InsuranceMappingComponent implements OnInit {
         private confirmationService: ConfirmationService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId);
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                  () => {
-                    this._progressBarService.hide();
-                });
-            
+
         });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId, 10);
+            this.patientId = this.sessionStore.session.user.id;
             this._progressBarService.show();
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
@@ -122,61 +109,61 @@ export class InsuranceMappingComponent implements OnInit {
     deleteInsurance() {
         if (this.selectedInsurances !== undefined) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-            this.selectedInsurances.forEach(currentInsurance => {
-                let mappings = [];
-                let insurance: any[] = this.selectedInsurances;
-                insurance.forEach(currentInsurance => {
-                    mappings.push({
-                        patientInsuranceInfo: {
-                            'id': parseInt(currentInsurance.id, 10)
-                        },
-                        adjusterMaster: {
-                            // 'id': parseInt(adjuster)
-                        }
-                    });
-                });
-                let insuranceMapping = new InsuranceMapping({
-                    caseId: this.caseId,
-                    mappings: mappings
-                });
-                this._progressBarService.show();
-                this.isDeleteProgress = true;
-                let result;
-                result = this._insuranceMappingStore.deleteInsuranceMapping(insuranceMapping);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Insurance deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedInsurances.forEach(currentInsurance => {
+                        let mappings = [];
+                        let insurance: any[] = this.selectedInsurances;
+                        insurance.forEach(currentInsurance => {
+                            mappings.push({
+                                patientInsuranceInfo: {
+                                    'id': parseInt(currentInsurance.id, 10)
+                                },
+                                adjusterMaster: {
+                                    // 'id': parseInt(adjuster)
+                                }
+                            });
                         });
-                        // this.loadPatients();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedInsurances = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete insurance ';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
+                        let insuranceMapping = new InsuranceMapping({
+                            caseId: this.caseId,
+                            mappings: mappings
                         });
-                        this.selectedInsurances = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        let result;
+                        result = this._insuranceMappingStore.deleteInsuranceMapping(insuranceMapping);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Insurance deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                // this.loadPatients();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedInsurances = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete insurance ';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedInsurances = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
                     });
-            });
-            }
+                }
             });
         } else {
             let notification = new Notification({

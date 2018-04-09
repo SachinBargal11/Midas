@@ -1,5 +1,5 @@
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { Component, OnInit, Output, EventEmitter, ElementRef, Input, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validator, Validators, } from '@angular/forms';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -9,11 +9,11 @@ import { Message } from 'primeng/primeng'
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-//import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { ConsentStore } from '../stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ConsentService } from '../services/consent-service';
 import { Consent } from '../models/consent';
+import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
@@ -23,7 +23,9 @@ import { CaseDocument } from '../models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { LazyLoadEvent } from 'primeng/primeng';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
@@ -38,11 +40,8 @@ export class AddConsentComponent implements OnInit {
     uploadedFile = "";
     currentId: number;
     UploadedFileName: string;
-    //document: VisitDocument;
-    signedDocumentPostRequestData: any = {};
-    signedDocumentUploadUrl: string = '';
     url;
-    doctors: any[];
+    companies: any[];
     isdoctorsLoading = false;
     isSaveProgress = false;
     states: any[];
@@ -55,33 +54,31 @@ export class AddConsentComponent implements OnInit {
     patientId: number;
     caseId: number;
     doctroId: number;
-    selectedDoctor = 0;
+    selectedcompany = 0;
     isPassChangeInProgress;
     companyId: number;
     fileName: string;
     fileUploaded: string;
     document: Consent[] = [];
-    dialogVisible: boolean = false;
     currentCaseId: number;
     documents: CaseDocument[] = [];
+    currentCompany: number;
+    selectedCompany: number;
+    selectedConsentList: Consent[] = [];
     Consent: Consent[];
-    caseConsentDocuments: CaseDocument[];
+    Case: Case;
     datasource: Consent[];
     totalRecords: number;
-    isDeleteProgress: boolean = false;
-    selectedConsentList: CaseDocument[] = [];
-    caseDetail: Case;
-    @Input() inputCaseId: number;
-    caseStatusId: number;
+    signedDocumentPostRequestData: any = {};
+    signedDocumentUploadUrl: string = '';
+    changeCompneyConsenturl: SafeResourceUrl;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
-    caseViewedByOriginator : boolean = false;
 
     constructor(
         private fb: FormBuilder,
-        private service: ConsentService,
         private _router: Router,
-        public sessionStore: SessionStore,
+        private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
         private _consentStore: ConsentStore,
         private _notificationsStore: NotificationsStore,
@@ -90,83 +87,59 @@ export class AddConsentComponent implements OnInit {
         private http: Http,
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
-        private confirmationService: ConfirmationService,
-
+        private _sanitizer: DomSanitizer,
+        private _consentService: ConsentService,
+        public notificationsStore: NotificationsStore,
 
     ) {
-        this.consentForm = this.fb.group({
-            // doctor: ['', Validators.required]
-            // ,uploadedFiles: ['', Validators.required]
-        });
-        this.consentformControls = this.consentForm.controls;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
+            this.consentForm = this.fb.group({
+                company: ['', Validators.required]
+                // ,uploadedFiles: ['', Validators.required]
+            });
+            this.consentformControls = this.consentForm.controls;
+        })
     }
+
 
     ngOnInit() {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            if (routeParams.caseId) {
-                this.caseId = parseInt(routeParams.caseId, 10);
-            } else {
-                this.caseId = this.inputCaseId;
-            }
-            this.MatchCase();
-            // let companyId: number = this.sessionStore.session.currentCompany.id;
-            this.companyId = this.sessionStore.session.currentCompany.id;
-            // this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
-            this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
-            this.url = `${this._url}/documentmanager/uploadtoblob`;
-            // this.signedDocumentUploadUrl = `${this._url}/documentmanager/uploadtoblob`;
-            this.signedDocumentPostRequestData = {
-                companyId: this.companyId,
-                caseId: this.caseId
-            };
-
-        });
-
-        this.dialogVisible = true;
-        let today = new Date();
-        let currentDate = today.getDate();
-        this.maxDate = new Date();
-        this.maxDate.setDate(currentDate);
-        if (!this.inputCaseId) {
-            this.loadConsentForm();
-            this.getOpenClosed();
-        }
+        this._consentStore.getCompany(this.caseId)
+            .subscribe((company) => {
+                this.companies = company,
+                    this.selectedCompany = this.companies[0].id,
+                    this.url = `${this._url}/documentmanager/uploadtoblob`;
+                this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+                this.signedDocumentPostRequestData = {
+                    companyId: this.selectedCompany,
+                    caseId: this.caseId
+                };
+            });
+        this.loadConsentForm();
     }
 
-    getOpenClosed() {
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {
-                this.caseDetail = caseDetail;
-                this.caseStatusId = caseDetail.caseStatusId;
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+    selectcompany(event) {
+        // this.selectedcompany = 0;
+        this.currentCompany = parseInt(event.target.value);
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
+        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+        this.signedDocumentPostRequestData = {
+            companyId: this.currentCompany,
+            caseId: this.caseId
+        };
+        this.changeCompneyConsenturl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.caseId, this.currentCompany, false));
+
+        //this.documentUploadComponent.ngOnInit();
+        // this.documentUploadComponent.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.caseId, this.currentCompany, false));
 
     }
 
     loadConsentForm() {
-
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
-                this.caseConsentDocuments = _.filter(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
-                    return currentCaseCompanyConsentDocument.document.originalResponse.companyId === this.companyId;
-                });
-
-                // _.forEach(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
-                //     if (currentCaseCompanyConsentDocument.document.originalResponse.companyId === this.companyId) {
-                //         this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
-                //         this.caseConsentDocuments.push(currentCaseCompanyConsentDocument);
-                //     }
-                // });
-
+                this.documents = caseDocument.caseCompanyConsentDocument;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -175,10 +148,18 @@ export class AddConsentComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-    showDialog(currentCaseId: number) {
+    loadConsentFormLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if (this.datasource) {
+                this.Consent = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
+    showDialog() {
         this.addConsentDialogVisible = true;
-        this.selectedCaseId = currentCaseId;
+        this.caseId = this.caseId;
+        this.companyId = this.selectedCompany;
+        // this.companyId = this._sessionStore.session.currentCompany.id;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -189,82 +170,21 @@ export class AddConsentComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', currentDocument.message);
-                this.addConsentDialogVisible = false;
-            }
-            else {
+            } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
-                    'title': 'Consent uploaded successfully!',
+                    'title': 'Consent uploaded successfully',
                     'type': 'SUCCESS',
-                    'createdAt': moment()
+                    'createdAt': moment(),
+
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.loadConsentForm();
                 this.addConsentDialogVisible = false;
             }
-            this.loadConsentForm();
         });
-    }
-
-    documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-    }
-
-
-    deleteConsentForm() {
-        if (this.selectedConsentList.length > 0) {
-            this.confirmationService.confirm({
-                message: 'Do you want to delete this record?',
-                header: 'Delete Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
-                    this.selectedConsentList.forEach(currentCaseDocument => {
-                        this.isDeleteProgress = true;
-                        this._progressBarService.show();
-                        let result = this._consentStore.deleteConsent(currentCaseDocument, this.companyId)
-                        // let result = this._casesStore.deleteDocument(currentCaseDocument)
-                        result.subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'Record deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
-
-                                });
-                                this.loadConsentForm();
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedConsentList = [];
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete record';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedConsentList = [];
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this.isDeleteProgress = false;
-                                this._progressBarService.hide();
-                            });
-                    });
-                }
-            });
-        } else {
-            let notification = new Notification({
-                'title': 'Select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
-        }
     }
 
     signedDocumentUploadComplete(document: Document) {
@@ -275,7 +195,7 @@ export class AddConsentComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and consent data already exists.');
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
         }
         else {
             let notification = new Notification({
@@ -300,35 +220,13 @@ export class AddConsentComponent implements OnInit {
         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
 
-
-    downloadPdf(documentId) {
-        this._progressBarService.show();
-        this._consentStore.downloadConsentForm(this.caseId, documentId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                //  this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to download');
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this._progressBarService.hide();
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    downloadTemplate() {
+    downloadPdf(document) {
         this._progressBarService.show();
-        this._consentStore.downloadTemplate(this.caseId, this.companyId)
+        this._consentStore.downloadConsentForm(document.midasDocumentId,document.companyId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -351,26 +249,31 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
-    MatchCase() {            
+
+    downloadTemplate(event) {
         this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-                this.caseStatusId = caseDetail.caseStatusId;
+        this._consentStore.downloadTemplate(this.caseId, this.selectedCompany)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
             },
             (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
                 this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
             },
             () => {
                 this._progressBarService.hide();
             });
+        this._progressBarService.hide();
     }
+
 }
-
-

@@ -11,9 +11,9 @@ import { ValidateInActiveSession } from '../commons/guards/validate-inactive-ses
 import { ChangePasswordComponent } from './components/change-password';
 import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
-import { RegisterCompanyComponent } from './components/register-company';
 import { AccountActivationComponent } from './components/account-activation';
 import { SecurityCheckComponent } from './components/security-check';
+import { PatientsShellRoutes } from './patient-routes';
 import { UserSettingsComponent } from './components/user-settings';
 import { NotificationSubscriptionComponent } from './components/notification-subscription';
 import { UserSettingsShellComponent } from './components/user-settings-shell';
@@ -48,14 +48,6 @@ let accountRoutes: Routes = [
                 canActivate: [ValidateInActiveSession],
                 data: {
                     breadcrumb: 'Security Check'
-                }
-            },
-            {
-                path: 'register-company',
-                component: RegisterCompanyComponent,
-                canActivate: [ValidateInActiveSession],
-                data: {
-                    breadcrumb: 'Register'
                 }
             },
             {
@@ -111,7 +103,8 @@ let accountRoutes: Routes = [
                         }
                     }
                 ]
-            }
+            },
+            ...PatientsShellRoutes
         ]
     }
 

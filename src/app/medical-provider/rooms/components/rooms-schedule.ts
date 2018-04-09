@@ -221,7 +221,7 @@ export class RoomsScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to update schedule.';
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -262,7 +262,7 @@ export class RoomsScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to add schedule.';
+                let errString = 'Unable to add Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -296,7 +296,7 @@ export class RoomsScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to update schedule.';
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

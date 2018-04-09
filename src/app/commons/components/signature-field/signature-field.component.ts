@@ -55,6 +55,7 @@ export class SignatureFieldComponent implements ControlValueAccessor {
   }
 
   public ngAfterViewInit(): void {
+  
     this.signaturePad.clear();
   }
 
