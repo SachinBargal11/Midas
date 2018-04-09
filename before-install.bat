@@ -1,2 +1,2 @@
-:\inetpub\website\dev-gb-midasattorneyapi.qwinix.io
+C:\inetpub\website\dev-gb-midasattorneyapi.qwinix.io
 del * /S /Q
