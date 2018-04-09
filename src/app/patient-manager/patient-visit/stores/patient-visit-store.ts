@@ -615,6 +615,18 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsUnAssignedByCompanyId(companyId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitsUnAssignedByCompanyId().subscribe((patientVisits: PatientVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByCompanyIdDoctorId(): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getPatientVisitsByCompanyDoctorId().subscribe((patientVisits: PatientVisit[]) => {

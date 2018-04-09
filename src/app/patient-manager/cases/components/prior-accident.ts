@@ -246,6 +246,5 @@ export class PriorAccidentComponent implements OnInit {
                 this._progressBarService.hide();
             });
         }
-
 }
 
