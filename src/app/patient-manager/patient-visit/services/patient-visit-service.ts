@@ -18,8 +18,8 @@ import { Consent } from '../../cases/models/consent';
 import { ImeVisitAdapter } from './adapters/ime-visit-adapter';
 import { EoVisitAdapter } from './adapters/eo-visit-adapter';
 import { EoVisit } from '../models/eo-visit';
-import { AttorneyVisitAdapter } from './adapters/Attorney-visit-adapter';
-import { AttorneyVisit } from '../models/Attorney-visit';
+import { AttorneyVisitAdapter } from './adapters/attorney-visit-adapter';
+import { AttorneyVisit } from '../models/attorney-visit';
 
 @Injectable()
 export class PatientVisitService {
