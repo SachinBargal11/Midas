@@ -44,6 +44,8 @@ export class AutoInformationInfoComponent implements OnInit {
     vehicleClientHaveTitle: false;
     defendantAutoInformation: DefendantAutoInformation;
     caseStatusId: number;
+    caseViewedByOriginator: boolean = false;
+    patientId : number;
     
     constructor(
         private fb: FormBuilder,
@@ -58,9 +60,13 @@ export class AutoInformationInfoComponent implements OnInit {
         private _casesStore: CasesStore,
         private _autoInformationStore: AutoInformationStore,
     ) {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = parseInt(routeParams.patientId, 10); 
+        });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
+            this.MatchCase();
 
             let result = this._autoInformationStore.getByCaseId(this.caseId);
             result.subscribe(
@@ -243,6 +249,26 @@ export class AutoInformationInfoComponent implements OnInit {
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
+    }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
                 this._progressBarService.hide();
             });
     }

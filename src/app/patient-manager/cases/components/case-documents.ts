@@ -20,6 +20,7 @@ import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'case-documents',
@@ -41,6 +42,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     caseStatusId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         private _router: Router,
@@ -52,11 +54,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _scannerService: ScannerService,
         private confirmationService: ConfirmationService,
+        private sessionStore : SessionStore
 
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
             // this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
+            this.MatchCase();
             this.url = `${this._url}/documentmanager/uploadtoblob`;
             // documentmanager/uploadtoblob?inputjson={"ObjectType":"visit","DocumentType":"reval","CompanyId":"16",%20"ObjectId":"60"}
         });
@@ -214,6 +218,26 @@ export class CaseDocumentsUploadComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select record to delete');
         }
+    }
+    MatchCase() {            
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {                    
+                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
+                    this.caseViewedByOriginator = false;
+                } else {
+                    this.caseViewedByOriginator = true;
+                }
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 }
 
