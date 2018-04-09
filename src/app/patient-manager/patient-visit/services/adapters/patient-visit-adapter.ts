@@ -34,7 +34,7 @@ export class PatientVisitAdapter {
                 caseId: data.caseId,
                 patientId: data.patientId,
                 patient: PatientAdapter.parseResponse(data.patient),
-                // locationId: data.locationId,
+                locationId: data.locationId,
                 location: data.location ? LocationAdapter.parseResponse(data.location) : null,
                 roomId: data.roomId,
                 room: data.room ? RoomsAdapter.parseResponse(data.room) : null,

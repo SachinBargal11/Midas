@@ -21,12 +21,12 @@ import { ViewAllComponent } from './components/view-all';
 import { DoctorAppointmentComponent } from '../../doctor-manager/components/doctor-appointment';
 
 export const PatientsShellRoutes: Routes = [
-    {
+   /* {
         path: '',
         pathMatch: 'full',
         redirectTo: 'appointments',
         canActivate: [ValidateAttorneySession, ValidateActiveSession]
-    },
+    },*/
     {
         path: '',
         pathMatch: 'full',
