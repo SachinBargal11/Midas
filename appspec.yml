@@ -2,7 +2,7 @@ version: 0.0
 os: windows
 files:
   - source: \
-    destination: C:\inetpub\website\dev-gb-midaspatientapi.qwinix.io\
+    destination: C:\inetpub\website\qa-gb-midaspatientapi.qwinix.io\
 files:
   - source: .
-    destination: C:\inetpub\website\dev-gb-midaspatientapi.qwinix.io\
+    destination: C:\inetpub\website\qa-gb-midaspatientapi.qwinix.io\
