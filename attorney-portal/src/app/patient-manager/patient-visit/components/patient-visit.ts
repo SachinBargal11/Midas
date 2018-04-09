@@ -221,7 +221,7 @@ export class PatientVisitComponent implements OnInit {
             // isAddNewPatient: [''],
             // isGoingOutOffice: [''],
             // isProcedureCode: [''],
-            contactPerson: [''],
+            //contactPerson: [''],
             notes: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
@@ -1134,7 +1134,7 @@ export class PatientVisitComponent implements OnInit {
             notes: patientScheduleFormValues.notes,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,
-            contactPerson: patientScheduleFormValues.contactPerson,
+            contactPerson: '',
             subject: updatedEvent.name,
             companyid: this.sessionStore.session.currentCompany.id,
             attorneyId: attrID,
