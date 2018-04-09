@@ -3,7 +3,7 @@
     "AUTHORIZATION_SERVER_URL": "https://dev-gb-identityserver.qwinix.io/core",
     "CLIENT_ID": "MidasPortal",
     "MEDICAL_PROVIDER_URI": "http://dev-gb-medicalprovider.qwinix.io/",
-    "PATIENT_PORTAL_URI": "http://gb-patient.qwinix.io/",
+    "PATIENT_PORTAL_URI": "http://dev-gb-patient.qwinix.io/",
     "ATTORNEY_PORTAL_URI": "http://dev-gb-attorney.qwinix.io/",
     "ANCILLARY_PORTAL_URI": "http://gb-ancillary.qwinix.io/"
 }
