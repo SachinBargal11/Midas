@@ -39,6 +39,19 @@ export class PatientVisitAdapter {
                     caseReferralDocument.push(ReferralDocumentAdapter.parseResponse(referralDocument));
                 }
             }
+            debugger;
+            if(data.calendarEvent != null)
+            {
+                let unassigned;
+                if(data.calendarEvent.unAssigned != null && data.calendarEvent.unAssigned != undefined)
+                {
+                    unassigned =  data.calendarEvent.unAssigned;
+                }
+                else
+                {
+                    unassigned = false;
+                }
+                
             patientVisit = new PatientVisit({
                 id: data.id,
                 calendarEventId: data.calendarEventId,
@@ -74,9 +87,51 @@ export class PatientVisitAdapter {
                 visitTimeStatus: data.VisitTimeStatus,
                 visitUpdateStatus: data.VisitUpdateStatus,
                 originalResponse: data,
-                referralDocument: caseReferralDocument
+                referralDocument: caseReferralDocument,
+                unAssigned: unassigned
             });
         }
+        else{               
+            patientVisit = new PatientVisit({
+                id: data.id,
+                calendarEventId: data.calendarEventId,
+                case: CaseAdapter.parseResponse(data.case),
+                caseId: data.caseId,
+                patientId: data.patientId,
+                patient: PatientAdapter.parseResponse(data.patient),
+                locationId: data.locationId,
+                location: data.location ? LocationAdapter.parseResponse(data.location) : null,
+                roomId: data.roomId,
+                room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
+                doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
+                doctorId: data.doctorId,
+                specialty: data.specialty ? SpecialityAdapter.parseResponse(data.specialty) : null,
+                specialtyId: data.specialtyId,
+                eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
+                eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
+                notes: data.notes,
+                visitStatusId: data.visitStatusId,
+                visitType: data.visitType,
+                calendarEvent: data.calendarEvent ? ScheduledEventAdapter.parseResponse(data.calendarEvent) : null,
+                patientVisitDiagnosisCodes: diagnosisCodes,
+                patientVisitProcedureCodes: procedureCodes,
+                isOutOfOffice: data.isOutOfOffice ? true : false,
+                leaveStartDate: data.leaveStartDate,
+                leaveEndDate: data.leaveEndDate,
+                ancillaryProviderId: data.ancillaryProviderId,
+                isDeleted: data.isDeleted ? true : false,
+                createByUserID: data.createbyuserID,
+                createDate: data.createDate ? moment.utc(data.createDate) : null,
+                updateByUserID: data.updateByUserID,
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                visitTimeStatus: data.VisitTimeStatus,
+                visitUpdateStatus: data.VisitUpdateStatus,
+                originalResponse: data,
+                referralDocument: caseReferralDocument,
+                unAssigned: false
+            });
+        }
+    }
 
         return patientVisit;
     }

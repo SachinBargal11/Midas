@@ -475,25 +475,8 @@ export class AccidentInfoComponent implements OnInit {
         }
     }
 
-    MatchCase() {            
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {                    
-                    if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
-                        this.caseViewedByOriginator = false;
-                    } else {
-                        this.caseViewedByOriginator = true;
-                    }
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+    MatchCase() {                  
+        this.caseViewedByOriginator = this._casesStore.MatchCase(this.caseId);            
     }
 }
 
