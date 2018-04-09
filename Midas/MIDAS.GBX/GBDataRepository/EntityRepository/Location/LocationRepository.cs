@@ -513,6 +513,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get All Locations BY Company & User id
+        public override Object GetByCompanyAndUserId(int CompanyId, int userId)
+        {
+            List<BO.Location> lstLocations = new List<BO.Location>();
+
+            if (_context.UserCompanies.Any(p => p.CompanyID == CompanyId && p.UserID == userId
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
+            {
+                var locations = _context.Locations.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.id);
+
+                var locationDB = _context.UserLocationSchedules.Include("Company").Where(p => p.UserID == userId && locations.Contains(p.LocationID)
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .Select(p2 => p2.Location);
+
+                if (locationDB == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                foreach (Location item in locationDB)
+                {
+                    lstLocations.Add(Convert<BO.Location, Location>(item));
+                }
+            }
+
+
+            return lstLocations;
+        }
+        #endregion
+
         #region Get By Company ID
         public override object GetByCompanyId(int companyId)
         {
