@@ -6,6 +6,3 @@ files:
 files:
   - source: .
     destination: C:\inetpub\website\qa-gb-midasattorneyapi.qwinix.io\
-hooks:
-   BeforeInstall:
-     - location: before-install.bat
