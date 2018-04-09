@@ -847,6 +847,26 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsUnAssignedByCompanyId(): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/getUnAssignedByCompanyId/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByCompanyDoctorId(): Observable<PatientVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let doctorId = this._sessionStore.session.user.id;
