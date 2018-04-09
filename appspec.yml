@@ -6,7 +6,3 @@ files:
 files:
   - source: .
     destination: C:\inetpub\website\qa-gb-midasapi.qwinix.io\
-hooks:
-   BeforeInstall:
-     - location: before-install.bat
-       runas: administrator
