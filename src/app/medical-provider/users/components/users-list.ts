@@ -103,6 +103,7 @@ export class UsersListComponent implements OnInit {
                     this.isDeleteProgress = true;
                     this._progressBarService.show();
                     let result;                    
+                    debugger;
                     if (currentUser.userRole != 'Doctor') {
                         if(currentUser.userRole.match("Doctor"))
                         {

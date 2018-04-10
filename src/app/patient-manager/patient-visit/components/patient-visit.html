@@ -482,7 +482,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="selectedVisit.referralDocument.length > 0">
+                    
+                    <div class="row" *ngIf="selectedVisit.referralDocument != null">
+                            <div *ngIf="selectedVisit.referralDocument.length > 0">
                             <div class="col-md-1"><label class="form-label">Referred Document</label></div>
                             <div class="col-md-6">
                               <div class="form-group">
@@ -491,6 +493,7 @@
                                   </span>
                               </div>
                             </div>
+                        </div>
                           </div>
                     <div class="row">
                         <div class="col-md-4">
