@@ -59,6 +59,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("location")]
         public Location Location { get; set; }
+
+        [JsonProperty("VisitTimeStatus")]
+        public bool? VisitTimeStatus { get; set; }
+
+        [JsonProperty("VisitUpdateStatus")]
+        public bool? VisitUpdateStatus { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 
     public class AttorneyVisitDashboard : GbObject
@@ -103,6 +112,15 @@ namespace MIDAS.GBX.BusinessObjects
         public CalendarEvent CalendarEvent { get; set; }
 
         [JsonProperty("patientName")]
-        public string PatientName { get; set; }        
+        public string PatientName { get; set; }
+
+        [JsonProperty("VisitTimeStatus")]
+        public bool? VisitTimeStatus { get; set; }
+
+        [JsonProperty("VisitUpdateStatus")]
+        public bool? VisitUpdateStatus { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 }

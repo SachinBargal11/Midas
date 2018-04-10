@@ -142,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             string username = "";
             if (userid != null)
             {
-                var user = _context.Users.Where(q => q.CreateByUserID == userid).FirstOrDefault();
+                var user = _context.Users.Where(q => q.id == userid).FirstOrDefault();
                 if (user != null)
                 {
                     username = user.FirstName + ' ' + user.MiddleName + ' ' + user.LastName;

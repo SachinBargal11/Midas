@@ -102,14 +102,14 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         // DELETE: api/Organizations/id={organizationId}
 
-        [HttpDelete]
+        [HttpPost]
         [Route("Delete")]
         public HttpResponseMessage Delete([FromBody]UserLocationSchedule User)
         {
-            return requestHandler.DeleteGbObject(Request, User);
+            return requestHandler.DeleteObj(Request, User);
         }
 
-        [HttpDelete]
+        //[HttpDelete]
         [HttpPost]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
@@ -117,6 +117,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpPost]
+        [Route("DeleteAllAppointmentsandUserLocationSchedule")]
+        public HttpResponseMessage DeleteAllAppointmentsandUserLocationSchedule([FromBody]UserLocationSchedule User)
+        {
+            return requestHandler.DeleteAllAppointmentsandUserLocationSchedule(Request, User);
+        }
 
         // Unique Name Validation
 

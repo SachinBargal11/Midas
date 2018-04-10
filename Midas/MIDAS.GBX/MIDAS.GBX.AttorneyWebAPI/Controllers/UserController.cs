@@ -125,6 +125,20 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.LoginWithUserName(Request, user);
         }
 
+        [HttpGet]
+        [Route("disassociateUserWithCompany/{userId}/{CompanyId}")]
+        public HttpResponseMessage DisassociateUserWithCompany(int userId, int CompanyId)
+        {
+            return requestHandler.DisassociateUserWithCompany(Request, userId, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("disassociateUserWithCompanyandAppointment/{userId}/{CompanyId}")]
+        public HttpResponseMessage DisassociateUserWithCompanyandAppointment(int userId, int CompanyId)
+        {
+            return requestHandler.DisassociateUserWithCompanyandAppointment(Request, userId, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

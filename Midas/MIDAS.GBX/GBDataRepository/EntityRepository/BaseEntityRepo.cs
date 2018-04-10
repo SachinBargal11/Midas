@@ -1275,6 +1275,16 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object DisassociateUserWithCompany(int UserId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object DisassociateUserWithCompanyandAppointment(int UserId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

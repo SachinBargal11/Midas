@@ -2107,5 +2107,164 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
 
         #endregion
+
+
+        #region DisassociateUserWithCompany
+        public override object DisassociateUserWithCompany(int UserId, int CompanyId)
+        {
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var user = _context.Users.Where(p => p.id == UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this User.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Include("User.AddressInfo")
+                                                    .Include("User.ContactInfo")
+                                                    .Where(p => p.UserID == UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .ToList();
+            bool isUcdelete = false;
+
+            DateTime currentDate = DateTime.Now;
+            var patientVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                         .Include("Location")
+                                         .Where(p => p.AttorneyId == UserId && p.CalendarEvent.EventStart >= currentDate && p.CalendarEvent.Unassigned == false
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .ToList();
+
+            if (patientVisit != null)
+            {
+                if (patientVisit.Count > 0)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Future appointments already schedule, Are you sure you want to cancel all the appointments asscoited to this location", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            if (userCompany != null)
+            {
+               
+
+                var UserCompanies = _context.UserCompanies.Where(p => p.UserID == UserId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (UserCompanies != null)
+                {
+                    UserCompanies.IsDeleted = true;
+                    _context.SaveChanges();
+                }
+
+                var UserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == UserId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+                if (UserCompanyRoles != null && UserCompanyRoles.Count > 0)
+                {
+                    foreach (var item in UserCompanyRoles)
+                    {
+                        var UserCompanyRolesdelete = _context.UserCompanyRoles.Where(p => p.id == item.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                        if (UserCompanyRolesdelete != null)
+                        {
+                            UserCompanyRolesdelete.IsDeleted = true;
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+            }
+            string strmessage = "";
+
+            if (isUcdelete == true)
+            {
+                strmessage = "The user with Id " + UserId + " is diassociated from company Id " + CompanyId + " and user is deleted.";
+            }
+            else
+            {
+                strmessage = "The user with Id " + UserId + " is diassociated from company Id " + CompanyId + ".";
+            }
+
+            return new { message = strmessage };
+        }
+        #endregion
+
+        #region DisassociateUserWithCompanyAppointment
+        public override object DisassociateUserWithCompanyandAppointment(int UserId, int CompanyId)
+        {
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var user = _context.Users.Where(p => p.id == UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this User.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Include("User.AddressInfo")
+                                                    .Include("User.ContactInfo")
+                                                    .Where(p => p.UserID == UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .ToList();
+            bool isUcdelete = false;
+
+            // Deleting the Doctor Appointments
+            DateTime currentDate = DateTime.Now.Date;
+            var acc = _context.AttorneyVisits.Include("CalendarEvent").Where(p => p.AttorneyId == UserId && p.CalendarEvent.EventStart >= currentDate && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AttorneyVisit>();
+            foreach (AttorneyVisit pv in acc)
+            {
+                if (pv != null)
+                {
+                    pv.CalendarEvent.Unassigned = true;
+                    pv.CalendarEvent.UpdateByUserID = 0;
+                    pv.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                }
+
+                //pv.IsDeleted = true;
+                pv.UpdateByUserID = 0;
+                pv.UpdateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+            }
+
+            if (userCompany != null)
+            {
+                var UserCompanies = _context.UserCompanies.Where(p => p.UserID == UserId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (UserCompanies != null)
+                {
+                    UserCompanies.IsDeleted = true;
+                    _context.SaveChanges();
+                }
+
+                var UserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == UserId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+                if (UserCompanyRoles != null && UserCompanyRoles.Count > 0)
+                {
+                    foreach (var item in UserCompanyRoles)
+                    {
+                        var UserCompanyRolesdelete = _context.UserCompanyRoles.Where(p => p.id == item.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                        if (UserCompanyRolesdelete != null)
+                        {
+                            UserCompanyRolesdelete.IsDeleted = true;
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            string strmessage = "";
+
+            if (isUcdelete == true)
+            {
+                strmessage = "The user with Id " + UserId + " is diassociated from company Id " + CompanyId + " and user is deleted.";
+            }
+            else
+            {
+                strmessage = "The user with Id " + UserId + " is diassociated from company Id " + CompanyId + ".";
+            }
+
+            return new { message = strmessage };
+        }
+        #endregion
     }
 }

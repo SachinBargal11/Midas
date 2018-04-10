@@ -64,6 +64,52 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 AttorneyVisitBO.CreateByUserID = AttorneyVisitDB.CreateByUserID;
                 AttorneyVisitBO.UpdateByUserID = AttorneyVisitDB.UpdateByUserID;
 
+                if (AttorneyVisitDB.VisitStatusId == 1)
+                {
+                    AttorneyVisitBO.VisitUpdateStatus = true;
+                }
+                else
+                {
+                    if (AttorneyVisitDB.UpdateDate.Value.Date < DateTime.Now.Date)
+                    {
+                        AttorneyVisitBO.VisitUpdateStatus = false;
+                    }
+                    else
+                    {
+                        AttorneyVisitBO.VisitUpdateStatus = true;
+                    }
+
+                }
+
+
+
+                if (AttorneyVisitDB.CalendarEvent != null)
+                {
+                    if (AttorneyVisitDB.CalendarEvent.EventStart > DateTime.UtcNow)
+                    {
+                        AttorneyVisitBO.VisitTimeStatus = false;
+
+                    }
+                    else
+                    {
+                        if (AttorneyVisitDB.VisitStatusId == 4)
+                        {
+                            AttorneyVisitBO.VisitTimeStatus = false;
+
+                        }
+                        else
+                        {
+                            AttorneyVisitBO.VisitTimeStatus = true;
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    AttorneyVisitBO.VisitTimeStatus = true;
+                }
+
                 if (AttorneyVisitDB.Patient != null)
                 {
                     BO.Patient PatientBO = new BO.Patient();
@@ -127,6 +173,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         boLocation = cmp.Convert<BO.Location, Location>(AttorneyVisitDB.Location);
                         AttorneyVisitBO.Location = boLocation;
+                    }
+                }
+
+                if (AttorneyVisitDB.User != null)
+                {
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(AttorneyVisitDB.User);
+                        AttorneyVisitBO.User = boUser;
                     }
                 }
 
@@ -460,6 +516,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
                                                                           .Include("Company")
+                                                                          .Include("User")
                                                                           .Where(p => p.CompanyId == CompanyId
                                                                                 && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -514,6 +571,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
                                                                           .Include("Company")
+                                                                          .Include("User")
                                                                           .Where(p => p.PatientId == PatientId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                           .ToList<AttorneyVisit>();
@@ -540,6 +598,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
                                                                           .Include("Company")
+                                                                          .Include("User")
                                                                           .Where(p => p.Id == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                           .FirstOrDefault<AttorneyVisit>();
@@ -566,6 +625,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
                                                                           .Include("Company")
+                                                                          .Include("User")
                                                                           .Where(p => p.CaseId == caseId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                           .ToList<AttorneyVisit>();
@@ -590,6 +650,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var attorneyVisit = _context.AttorneyVisits.Include("CalendarEvent").Include("Location").Include("Location.Company")
                                                        .Include("Patient")
                                                        .Include("Patient.User")
+                                                       .Include("User")
                                                        .Where(p => p.CompanyId == CompanyId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 

@@ -135,7 +135,6 @@ F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\obj\Debug\MIDAS.GBX.WebAPI.Tests.csprojResolveAssemblyReference.cache
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\obj\Debug\MIDAS.GBX.WebAPI.Tests.dll
 F:\Midas-develop\Midas-develop-api-1\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\obj\Debug\MIDAS.GBX.WebAPI.Tests.pdb
-F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Microsoft.WindowsAzure.Storage.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\ApplicationInsights.config
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\roslyn\csc.exe
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -224,6 +223,7 @@ F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\De
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Microsoft.IdentityModel.Protocol.Extensions.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\IdentityModel.pdb
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Microsoft.WindowsAzure.Storage.pdb
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Microsoft.WindowsAzure.Storage.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Aspose.Words.xml
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\Ical.Net.Collections.pdb
 F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\bin\Debug\antlr.runtime.pdb

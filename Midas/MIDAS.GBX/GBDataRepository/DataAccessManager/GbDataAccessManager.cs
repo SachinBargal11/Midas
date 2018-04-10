@@ -5425,6 +5425,48 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+
+        public Object DisassociateUserWithCompany(int UserId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.DisassociateUserWithCompany(UserId, CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+
+        public Object DisassociateUserWithCompanyandAppointment(int UserId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.DisassociateUserWithCompanyandAppointment(UserId, CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
     }
 }
 

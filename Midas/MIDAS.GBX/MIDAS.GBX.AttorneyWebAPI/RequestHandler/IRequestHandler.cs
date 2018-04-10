@@ -159,5 +159,9 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage AssociateUserToLocations(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByUserId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByCompanyAndUserId(HttpRequestMessage request, int companyId, int userId);
+        HttpResponseMessage DisassociateUserWithCompany(HttpRequestMessage request, int UserId, int CompanyId);
+        HttpResponseMessage DisassociateUserWithCompanyandAppointment(HttpRequestMessage request, int UserId, int CompanyId);
+        HttpResponseMessage DeleteAllAppointmentsandUserLocationSchedule(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage DeleteObj(HttpRequestMessage request, T gbObject);
     }
 }

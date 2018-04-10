@@ -2258,5 +2258,69 @@ namespace MIDAS.GBX.AttorneyWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage DisassociateUserWithCompany(HttpRequestMessage request, int UserId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DisassociateUserWithCompany(UserId, CompanyId);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage DisassociateUserWithCompanyandAppointment(HttpRequestMessage request, int UserId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DisassociateUserWithCompanyandAppointment(UserId, CompanyId);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteAllAppointmentsandUserLocationSchedule(HttpRequestMessage request, T gbObject)
+        {
+            var res = dataAccessManager.DeleteAllAppointmentsandUserLocationSchedule(gbObject);
+            if (res != null)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+
+        public HttpResponseMessage DeleteObj(HttpRequestMessage request, T gbObject)
+        {
+            var res = dataAccessManager.DeleteObj(gbObject);
+            if (res != null)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
     }
 }

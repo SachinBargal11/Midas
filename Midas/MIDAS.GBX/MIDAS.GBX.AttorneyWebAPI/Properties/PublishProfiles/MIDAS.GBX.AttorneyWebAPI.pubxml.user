@@ -12,7 +12,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="appspec.yml">
-      <publishTime>04/02/2018 11:03:57</publishTime>
+      <publishTime>04/09/2018 13:39:46</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>11/01/2017 05:18:14</publishTime>
@@ -78,7 +78,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="before-install.bat">
-      <publishTime>04/02/2018 11:03:57</publishTime>
+      <publishTime>04/09/2018 13:40:42</publishTime>
     </File>
     <File Include="bin/antlr.runtime.dll">
       <publishTime>05/02/2017 16:51:36</publishTime>
@@ -282,19 +282,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/23/2017 15:48:04</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.AttorneyWebAPI.dll">
-      <publishTime>04/09/2018 11:48:54</publishTime>
+      <publishTime>04/10/2018 09:51:07</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.BusinessObjects.dll">
-      <publishTime>04/09/2018 11:48:34</publishTime>
+      <publishTime>04/10/2018 09:50:45</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.Common.dll">
-      <publishTime>04/09/2018 11:42:41</publishTime>
+      <publishTime>04/09/2018 19:43:53</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>04/09/2018 11:48:40</publishTime>
+      <publishTime>04/10/2018 09:50:53</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
-      <publishTime>04/09/2018 11:42:58</publishTime>
+      <publishTime>04/09/2018 14:01:45</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>06/13/2016 23:06:14</publishTime>

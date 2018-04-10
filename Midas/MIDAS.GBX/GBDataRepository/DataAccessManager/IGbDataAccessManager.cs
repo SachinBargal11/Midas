@@ -249,5 +249,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByUserId(int UserId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetUnAssignedByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyAndUserId(int companyId, int userId);
+        Object DisassociateUserWithCompany(int UserId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object DisassociateUserWithCompanyandAppointment(int UserId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }
