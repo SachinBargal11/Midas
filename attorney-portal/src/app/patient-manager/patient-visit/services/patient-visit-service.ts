@@ -551,6 +551,22 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+    deleteVisitDocument(visitId:number, documentId:number ): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/delete/' + visitId + '/' + documentId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCaseDocument: VisitDocument = null;
+                    parsedCaseDocument = VisitDocumentAdapter.parseResponse(data);
+                    resolve(parsedCaseDocument);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let thefile = {};
         let companyId = this._sessionStore.session.currentCompany.id;

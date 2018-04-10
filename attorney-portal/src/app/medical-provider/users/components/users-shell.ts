@@ -52,11 +52,11 @@ export class UserShellComponent implements OnInit {
                         return currentRole.roleType;
                     });
                     this.role.forEach(roleType => {
-                        if (roleType === 3) {
+                        if (roleType === 6) {
                             this.roleType = roleType;
                         }
                     });
-                    if (this.roleType !== 3) {
+                    if (this.roleType !== 6) {
                         // document.getElementById('doctorInfo').style.display = 'none';
                         document.getElementById('doctorLocation').style.display = 'none';
                     }

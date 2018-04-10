@@ -421,6 +421,17 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+    deleteVisitDocument(visitId: number, documentId: number): Observable<PatientVisit> {        
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteVisitDocument(visitId, documentId).subscribe((caseDetail: PatientVisit) => {                
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.downloadDocumentForm(visitId, documentId).subscribe((consent: Consent[]) => {

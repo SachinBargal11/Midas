@@ -1,10 +1,10 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">Cases for {{patientName}}
-        <a class="pull-right btn btn-danger btn-sm" (click)="deleteCases()" *ngIf="!sessionStore.isOnlyAttorneyRole()">
+        <!--<a class="pull-right btn btn-danger btn-sm" (click)="deleteCases()"  *ngIf="!sessionStore.isOnlyAttorneyRole()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Cases</span>
             <loader [visible]="isDeleteProgress"></loader>
-        </a>
+        </a>-->
         <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']" *ngIf="!sessionStore.isOnlyAttorneyRole()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Case</span>
     </a>

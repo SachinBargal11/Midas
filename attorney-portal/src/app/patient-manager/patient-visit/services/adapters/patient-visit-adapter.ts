@@ -12,6 +12,7 @@ import { PatientAdapter } from '../../../../patient-manager/patients/services/ad
 // import { Procedure } from '../../../../commons/models/procedure';
 // import { DiagnosisCodeAdapter } from '../../../../commons/services/adapters/diagnosis-code-adapter';
 // import { ProcedureAdapter } from '../../../../commons/services/adapters/procedure-adapter';
+import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
 
 export class PatientVisitAdapter {
     static parseResponse(data: any): PatientVisit {
@@ -40,6 +41,8 @@ export class PatientVisitAdapter {
                 room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
                 doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
                 doctorId: data.doctorId,
+                user: data.user ? UserAdapter.parseResponse(data.user) : null,
+                userId: data.attorneyId,
                 specialty: data.specialty ? SpecialityAdapter.parseResponse(data.specialty) : null,
                 specialtyId: data.specialtyId,
                 eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
@@ -64,10 +67,12 @@ export class PatientVisitAdapter {
                 // agenda: data.agenda,
                 name: data.subject,
                 contactPerson:data.contactPerson,
+                visitTimeStatus: data.VisitTimeStatus,
+                visitUpdateStatus: data.VisitUpdateStatus,
                 originalResponse: data
             });
         }
-
+        debugger;
         return patientVisit;
     }
 }

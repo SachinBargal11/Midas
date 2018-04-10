@@ -100,7 +100,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
             caseStatusId: ['1', Validators.required],
-            providerId: [''],
+            providerId: ['',Validators.required],
             caseSource: [''],
             claimNumber: [''],
             medicare: [''],
