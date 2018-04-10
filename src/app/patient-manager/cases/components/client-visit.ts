@@ -109,6 +109,7 @@ export class ClientVisitListComponent implements OnInit {
         this._patientVisitStore.getClientVisitsByCaseId(this.caseId)
             .subscribe((visits: PatientVisit[]) => {
                 this.visits = visits.reverse();
+                debugger;
                 // let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
                 //     return currentVisit.doctor != null;
                 // });

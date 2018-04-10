@@ -14,6 +14,7 @@ import { Location } from '../../../medical-provider/locations/models/location';
 import { Patient } from '../../../patient-manager/patients/models/patient';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { Procedure } from '../../../commons/models/procedure';
+import { User } from '../../../commons/models/user';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -28,6 +29,8 @@ const PatientVisitRecord = Record({
     roomId: null,
     doctor: null,
     doctorId: null,
+    user: null,
+    userId: null,
     specialty: null,
     specialtyId: null,
     eventStart: null,
@@ -53,14 +56,15 @@ const PatientVisitRecord = Record({
     companyid: 0,
     attorneyId: 0,
     isPatientVisitType: true,
-    originalResponse: null
+    originalResponse: null,
+    addedByCompanyId: null,
+    visitTimeStatus: false,
+    visitUpdateStatus: false,
 
 });
 
 
 export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
-
-
     id: number;
     calendarEventId: number;
     location: Location;
@@ -73,6 +77,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     roomId: number;
     doctor: Doctor;
     doctorId: number;
+    user: User;
+    userId: number;
     specialtyId: number;
     specialty: Speciality;
     eventStart: moment.Moment;
@@ -99,6 +105,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     attorneyId: number;
     isPatientVisitType: boolean;
     originalResponse: any;
+    addedByCompanyId: number;
+    visitTimeStatus: boolean;
+    visitUpdateStatus: boolean;
 
     constructor(props) {
         super(props);

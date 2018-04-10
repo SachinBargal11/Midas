@@ -117,7 +117,24 @@ export class ClientVisitDetailComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-        })
+        });
+
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    debugger;
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
     }
 
     ngOnInit() {
@@ -230,7 +247,7 @@ export class ClientVisitDetailComponent implements OnInit {
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: clientVisitDetailFormValues.notes,
-            visitStatusId: this.routeFrom == 2 ? this.selectedVisit.visitStatusId : parseInt(clientVisitDetailFormValues.visitStatusId),
+            visitStatusId: parseInt(clientVisitDetailFormValues.visitStatusId) ,
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
@@ -261,7 +278,7 @@ export class ClientVisitDetailComponent implements OnInit {
         this.closePatientVisitDialog();
     }
 
-    deleteDocument() {
+    deleteDocuments() {
         if (this.selectedDocumentList.length > 0) {
             // this.confirmationService.confirm({
             //     message: 'Do you want to delete this record?',
@@ -315,4 +332,43 @@ export class ClientVisitDetailComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
+
+    deleteDocument(currentdocument: any) {             
+        // this.confirmationService.confirm({
+        //    message: 'Do you want to delete this record?',
+        //    header: 'Delete Confirmation',
+        //    icon: 'fa fa-trash',
+        //    accept: () => {            
+                this._progressBarService.show();
+                this.isDeleteProgress = true;
+                this._patientVisitStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.getDocuments();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDocumentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedDocumentList = [];
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                    });            
+                }
 }

@@ -11,7 +11,8 @@ const LocationRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    companyId: 0,
 });
 
 export class Location extends LocationRecord {
@@ -24,6 +25,7 @@ export class Location extends LocationRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    companyId: number;
 
     constructor(props) {
         super(props);
