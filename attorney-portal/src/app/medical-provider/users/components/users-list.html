@@ -1,11 +1,11 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">Users
-        <a class="btn btn-danger btn-sm pull-right" (click)="deleteUser()">
+        <!--<a class="btn btn-danger btn-sm pull-right" (click)="deleteUser()">
             <i class="fa fa-trash-o fa-1x"></i>
             <span class="hidden-md-down">Delete Selected Users</span>
             <loader [visible]="isDeleteProgress"></loader>
-        </a>
+        </a>-->
         <a class="pull-right btn btn-primary btn-sm btn-inline" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i> 
     <span class="hidden-md-down">Add User</span></a>
     </h3>
@@ -36,6 +36,7 @@
         <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <button type="button"  pButton (click)="deleteUser(user)"  icon="fa-trash-o"></button>
         </ng-template>
     </p-column>
 </p-dataTable>

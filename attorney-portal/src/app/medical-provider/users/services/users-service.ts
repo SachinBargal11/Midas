@@ -274,4 +274,34 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
+
+    disassociateUserWithCompany(userId: number, companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/User/disassociateUserWithCompany/' + companyId + '/' +  userId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    disassociateUserWithCompanyandAppointment(userId: number, companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/User/disassociateUserWithCompanyandAppointment/' + companyId + '/' +  userId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }

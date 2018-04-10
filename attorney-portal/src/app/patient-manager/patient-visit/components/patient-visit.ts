@@ -1352,7 +1352,7 @@ export class PatientVisitComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    deleteDocument() {
+    deleteDocuments() {
         if (this.selectedDocumentList.length > 0) {
             // this.confirmationService.confirm({
             //     message: 'Do you want to delete this record?',
@@ -1406,6 +1406,45 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
+
+    deleteDocument(currentdocument: any) {             
+        // this.confirmationService.confirm({
+        //    message: 'Do you want to delete this record?',
+        //    header: 'Delete Confirmation',
+        //    icon: 'fa fa-trash',
+        //    accept: () => {            
+                this._progressBarService.show();
+                this.isDeleteProgress = true;
+                this._patientVisitsStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.getDocuments();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDocumentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedDocumentList = [];
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                    });            
+                }
 
     addNewPatient() {
         if (!this.isAddNewPatient) {

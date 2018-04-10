@@ -150,4 +150,28 @@ export class UsersStore {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+    disassociateUserWithCompany(userId: number, companyId: number): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.disassociateUserWithCompany(userId, companyId)
+                .subscribe((data:any) => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
+
+    disassociateUserWithCompanyandAppointment(userId: number, companyId: number): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.disassociateUserWithCompanyandAppointment(userId, companyId)
+                .subscribe((data:any) => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
+
 }

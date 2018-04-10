@@ -137,4 +137,106 @@ export class LocationsComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select location to delete');
         }
     }
+
+
+    deleteLocation(currentLocation:UserLocationSchedule) {
+        //if (this.selectedDoctors !== undefined) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+
+           // this.selectedDoctors.forEach(currentDoctor => {
+                this.isDeleteProgress = true;
+                this._progressBarService.show();
+                let result;
+                result = this._userLocationScheduleStore.deleteUserLocationSchedule(currentLocation);
+                result.subscribe(
+                    (response) => {
+
+                        if(response.errorLevel == 2)
+                        {
+                            this.confirmationService.confirm({
+                                message: 'Future Appointments has been scheduled, Are you sure you want to cancel all the appointments',
+                                header: 'Delete Confirmation',
+                                icon: 'fa fa-trash',
+                                accept: () => {
+                                    let result1;
+                                    result1 = this._userLocationScheduleStore.deleteAppointmentsUserLocationSchedule(currentLocation);
+                                    result1.subscribe(
+                                        (response) => {
+                                            let notification = new Notification({
+                                                'title': 'Location deleted successfully!',
+                                                'type': 'SUCCESS',
+                                                'createdAt': moment()
+                                            });
+                                            this.loadLocations();
+                                            this._notificationsStore.addNotification(notification);
+                                            this.selectedLocations = undefined;
+                                        },
+                                        (error) => {
+                                            let errString = 'Unable to delete location ';
+                                            let notification = new Notification({
+                                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                                'type': 'ERROR',
+                                                'createdAt': moment()
+                                            });
+                                            this.isDeleteProgress = false;
+                                            this._progressBarService.hide();
+                                            this._notificationsStore.addNotification(notification);
+                                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                                            
+                                        },
+                                        () => {
+                                            this.isDeleteProgress = false;
+                                            this._progressBarService.hide();
+                                        });
+
+                                }});
+                        }
+                        else
+                        {
+                            let notification = new Notification({
+                                'title': 'Location deleted successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                            this.loadLocations();
+                            this._notificationsStore.addNotification(notification);
+                            this.selectedLocations = undefined;
+                        }                                              
+                        // this.users.splice(this.users.indexOf(currentUser), 1);
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete location ';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.isDeleteProgress = false;
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));                         
+                        
+                    },
+                    () => {
+                        this.isDeleteProgress = false;
+                        this._progressBarService.hide();
+                    });
+            //});
+            }
+            });
+      /*  }
+        else {
+            let notification = new Notification({
+                'title': 'Select doctor to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Select doctor to delete');
+        }*/
+    }
 }

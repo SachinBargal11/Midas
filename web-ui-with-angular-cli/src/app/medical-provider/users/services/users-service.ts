@@ -288,7 +288,7 @@ export class UsersService {
 
     disassociateDoctorWithCompanyandAppointment(doctorId: number, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/doctor/disassociateDoctorWithCompanyandAppointment/' + companyId + '/' +  doctorId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/User/disassociateDoctorWithCompanyandAppointment/' + companyId + '/' +  doctorId, {
                 headers: this._headers
             })
                 .map(res => res.json())

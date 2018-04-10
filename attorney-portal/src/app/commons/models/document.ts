@@ -13,7 +13,9 @@ const DocumentRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    originalResponse: null
+    originalResponse: null,
+    createdCompanyName: '',
+    createdUserName: '',
 });
 
 export class Document extends DocumentRecord {
@@ -30,6 +32,8 @@ export class Document extends DocumentRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     originalResponse: any;
+    createdCompanyName: string;
+    createdUserName: string;
 
     constructor(props) {
         super(props);
@@ -38,7 +42,13 @@ export class Document extends DocumentRecord {
     get formattedCreateDate(): string {
         return Document.getFormattedCreateDate(this.createDate);
     }
+    get formattedCreateDateOnly(): string {
+        return Document.getFormattedCreateDateOnly(this.createDate);
+    }
     static getFormattedCreateDate(date: moment.Moment): string {
         return date.format('MMMM Do YYYY,h:mm:ss a')
+    }
+    static getFormattedCreateDateOnly(date: moment.Moment): string {
+        return date.format('MMMM Do YYYY')
     }
 }

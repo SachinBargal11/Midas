@@ -9,12 +9,12 @@ export const environment = {
    SERVICE_BASE_URL: 'http://localhost:53438/midasattorneyapi',
   //SERVICE_BASE_URL: 'http://gb-attorneywebapi.qwinix.io/midasattorneyapi',
   IDENTITY_SERVER_URL: 'https://localhost:44300/',
-  NOTIFICATION_SERVER_URL: 'http://qa-gb-notificationmanager.qwinix.io',
+  NOTIFICATION_SERVER_URL: 'http://dev-gb-notificationmanager.qwinix.io',
   HOME_URL: 'http://localhost:4203',
   APP_URL: 'http://localhost:4203',
   
   IDENTITY_SCOPE: "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
   // CLIENT_ID: 'MidasPortal',                  //staging production
   // CLIENT_ID: 'MidasPortalDev',               //staging dev
-  CLIENT_ID: 'MidasAPIClientLocal',                //local
+  CLIENT_ID: 'MidasPortalLocal',                //local
 };
