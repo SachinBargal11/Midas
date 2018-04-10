@@ -943,8 +943,7 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-    loadAllVisitsByCompanyId() {       
-        debugger;
+    loadAllVisitsByCompanyId() {               
         this.events = [];
         this._progressBarService.show();                  
         if(this.sessionStore.isOnlyDoctorRole() || this.showmyappointments)
@@ -990,7 +989,28 @@ export class PatientVisitComponent implements OnInit {
             },
             () => {
                 this._progressBarService.hide();
-            });    
+            });
+            
+            this._patientVisitsStore.getPatientVisitsUnAssignedByCompanyId(this.companyId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                debugger;
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);                
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
         }        
     }
 
@@ -1624,10 +1644,13 @@ export class PatientVisitComponent implements OnInit {
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper); 
         this.visitStatusIdC = 0; 
         this.visitStatusIdR = 0;
+        debugger;
         if(patientVisit.roomId != null)      
         {
             this.getReadingDoctorsByCompanyLocationTestId(patientVisit.locationId, patientVisit.roomId);
         }        
+        if(patientVisit.unAssigned != true)
+        {
         if (eventInstance.isInPast) {
             if(patientVisit.roomId != null)
             { this.selectedOption = 2;}             
@@ -1731,6 +1754,22 @@ export class PatientVisitComponent implements OnInit {
                 this.loadAllProceduresForRoomTest(this.selectedTestId);
             }*/
         }
+    }
+    else
+    {
+        this.isVisitTypeDisabled = true;
+        patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+            calendarEvent: scheduledEventForInstance,
+            case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+            doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                user: new User(_.extend(patientVisit.doctor.user.toJS()))
+            })) : null,
+            room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+            patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                user: new User(_.extend(patientVisit.patient.user.toJS()))
+            })) : null
+        }))
+    }
         return patientVisit;
     }
 
@@ -1877,6 +1916,8 @@ export class PatientVisitComponent implements OnInit {
         }        
 
 
+        if(patientVisit.unAssigned != true)
+        {
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
@@ -1886,8 +1927,7 @@ export class PatientVisitComponent implements OnInit {
             {
                 this.visitDialogVisible = true;                        
             }            
-        } else {
-            
+        } else {           
                 if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
                     this.confirmEditingEventOccurance();
                 } else {
@@ -1900,6 +1940,22 @@ export class PatientVisitComponent implements OnInit {
                         this.eventDialogVisible = false;                        
                     }
                 }                      
+            }
+        }
+        else
+        {
+            if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
+                this.confirmEditingEventOccurance();
+            } else {
+                if(!patientVisit.isUnscheduledVisitType)
+                {
+                    this.eventDialogVisible = true;                        
+                }
+                else
+                {
+                    this.eventDialogVisible = false;                        
+                }
+            }
         }
     }
 
@@ -2435,6 +2491,14 @@ export class PatientVisitComponent implements OnInit {
                         this._progressBarService.hide();
                     });
             } else {
+                debugger;
+                if(this.selectedVisit.unAssigned == true)
+                {
+                    if(this.selectedOption == null)
+                    {
+                        this._notificationsService.error('Oh No!','Please select the specality/room to reassign');
+                    }
+                }
                 let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
                 result.subscribe(
                     (response) => {

@@ -22,7 +22,8 @@ const ScheduledEventRecord = Record({
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, //Moment
-    updateDate: null //Moment
+    updateDate: null, //Moment
+    unAssigned: 0
 });
 
 export class ScheduledEvent extends ScheduledEventRecord {
@@ -44,6 +45,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    unAssigned: boolean;
 
     constructor(props) {
         super(props);

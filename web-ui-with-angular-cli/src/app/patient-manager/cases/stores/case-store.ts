@@ -282,43 +282,25 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-    MatchReferal(patientId: number) {       
-        let referredToMe: boolean = false;     
-        let caseResult = this.getOpenCaseForPatient(patientId);
-        let result = this._patientStore.getPatientById(patientId);
-        Observable.forkJoin([caseResult, result])
-            .subscribe(
-            (results) => {
-                 let caseDetails = results[0];
-                 if (caseDetails.length > 0) {
-                     let matchedCompany = null;
-                     matchedCompany = _.find(caseDetails[0].referral, (currentReferral: PendingReferral) => {
-                         return currentReferral.toCompanyId == this._sessionStore.session.currentCompany.id
-                     })
-                     if (matchedCompany) {
-                         referredToMe = true;
-                     } else {
-                         referredToMe = false;
-                     }
-                 } else {
-                     referredToMe = false;
-                } 
-                                                         
-                // if(result[0].companyId == this._sessionStore.session.currentCompany.id)
-                //     {
-                //         referredToMe = false;
-                //     }
-                //     else{                        
-                //         referredToMe = true;
-                //     }      
+    MatchCase(caseId: number) {       
+        let caseOriginator: boolean = false;             
+        let result = this.fetchCaseById(caseId);
+        result.subscribe(
+            (caseDetail: Case) => {   
+                debugger;                 
+                if (caseDetail.orignatorCompanyId != this._sessionStore.session.currentCompany.id) {
+                    caseOriginator = false;
+                } else {
+                    caseOriginator = true;
+                }                
             },
             (error) => {
-                return referredToMe;
+                return caseOriginator;
             },
             () => {
-                return referredToMe;
-            });    
+                return caseOriginator;                
+            });
 
-            return referredToMe;
+            return caseOriginator;
     }    
 }

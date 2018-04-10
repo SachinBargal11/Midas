@@ -194,7 +194,7 @@ export class UnscheduledVisitComponent implements OnInit {
         if (this.idPatient && this.caseId) {
             if(this.id == undefined || this.id == 0)
             {
-                this.unscheduledForm.controls["speciality"].disable();
+                //this.unscheduledForm.controls["speciality"].disable();
                 let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
                 let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 

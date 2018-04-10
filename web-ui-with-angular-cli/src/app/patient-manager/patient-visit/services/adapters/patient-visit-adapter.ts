@@ -39,6 +39,7 @@ export class PatientVisitAdapter {
                     caseReferralDocument.push(ReferralDocumentAdapter.parseResponse(referralDocument));
                 }
             }
+            debugger;
             patientVisit = new PatientVisit({
                 id: data.id,
                 calendarEventId: data.calendarEventId,
@@ -74,7 +75,8 @@ export class PatientVisitAdapter {
                 visitTimeStatus: data.VisitTimeStatus,
                 visitUpdateStatus: data.VisitUpdateStatus,
                 originalResponse: data,
-                referralDocument: caseReferralDocument
+                referralDocument: caseReferralDocument,
+                unAssigned: data.calendarEvent.unAssigned != undefined ? data.calendarEvent.unAssigned : false
             });
         }
 
