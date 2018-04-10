@@ -55,6 +55,7 @@ const PatientVisitRecord = Record({
     visitUpdateStatus: false,
     referralDocument: null,
     referralId:0,
+    unAssigned:false
 });
 
 export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
@@ -97,6 +98,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     visitUpdateStatus: boolean;
     referralDocument: ReferralDocument[];
     referralId: number;
+    unAssigned: boolean;
     
 
     constructor(props) {
@@ -164,8 +166,12 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         return visitInfo;
     }
 
-    get eventColor(): string {
-        if (this.room && this.roomId) {
+    get eventColor(): string {        
+        if(this.unAssigned != undefined && this.unAssigned != null && this.unAssigned == true)
+        {
+            return '#f4473a';
+        }
+        else if (this.room && this.roomId) {
             return this.room.roomTest.color;
         } else if (this.doctor && this.doctorId) {
             return this.specialty ? this.specialty.color : '';
