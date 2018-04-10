@@ -208,5 +208,21 @@ export class UserLocationScheduleStore {
         return <Observable<UserLocationSchedule>>Observable.from(promise);
     }
 
+    deleteAppointmentsUserLocationSchedule(userLocationSchedule: UserLocationSchedule) {
+        let userLocationSchedules = this._userLocationSchedules.getValue();
+        let index = userLocationSchedules.findIndex((currentUserLocationSchedule: UserLocationSchedule) =>
+            currentUserLocationSchedule.id === userLocationSchedule.id);
+        let promise = new Promise((resolve, reject) => {
+            this._userLocationScheduleService.deleteAppointmentsUserLocationSchedule(userLocationSchedule)
+                .subscribe((userLocationSchedule: UserLocationSchedule) => {
+                    this._userLocationSchedules.next(userLocationSchedules.delete(index));
+                    resolve(userLocationSchedule);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<UserLocationSchedule>>Observable.from(promise);
+    }
+
 
 }

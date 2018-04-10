@@ -8,8 +8,9 @@ export class LocationAdapter {
             name: locationData.name,
             locationType: locationData.locationType,
             isDeleted: locationData.isDeleted ? true : false,
-
+            companyId: locationData.companyId
         });
+        debugger;
         return location;
     }
 

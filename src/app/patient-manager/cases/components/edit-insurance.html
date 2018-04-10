@@ -65,7 +65,8 @@
                             <div class="form-group" [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid">
                                 <div class='input-group date'>
                                     <p-calendar formControlName="insuranceStartDate" [ngModel]="insuranceStartDate" [readonlyInput]="true" dateFormat="M d, yy"
-                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid"
+                                        [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                                        [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid"
                                         showAnim="slideDown" [showIcon]="true" hourFormat="12" placeholder="Insurance Start Date"
                                         icon="font-icon font-icon-calend">
                                     </p-calendar>
@@ -85,8 +86,8 @@
                             </label>
                             <div class="form-group" [class.error]="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid">
                                 <div class='input-group date'>
-                                    <p-calendar formControlName="insuranceEndDate" [ngModel]="insuranceEndDate" [readonlyInput]="true" dateFormat="M d, yy" [monthNavigator]="true"
-                                        [yearNavigator]="true" yearRange="1920:2050" [class.error]="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid"
+                                    <p-calendar formControlName="insuranceEndDate" [ngModel]="insuranceEndDate" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
+                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" [class.error]="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid"
                                         showAnim="slideDown" [showIcon]="true" hourFormat="12" placeholder="Insurance End Date"
                                         icon="font-icon font-icon-calend">
                                     </p-calendar>
@@ -161,6 +162,11 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Home Phone No</label>
+                            <input formControlName="policyHomePhone" [ngModel]="insurance.policyContact.homePhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.policyHomePhone.touched && !insuranceformControls.policyHomePhone.valid">
                             <label class="form-label"> Home Phone No</label>
                             <input [class.error]="!insuranceformControls.policyHomePhone.valid" formControlName="policyHomePhone" [ngModel]="insurance.policyContact.homePhone"
@@ -177,6 +183,11 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Work Phone No</label>
+                            <input formControlName="policyWorkPhone" [ngModel]="insurance.policyContact.workPhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.policyWorkPhone.touched && !insuranceformControls.policyWorkPhone.valid">
                             <label class="form-label">Work Phone No</label>
                             <input [class.error]="!insuranceformControls.policyWorkPhone.valid" formControlName="policyWorkPhone" [ngModel]="insurance.policyContact.workPhone"
@@ -193,6 +204,10 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        <!--<div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="policyOfficeExtension" [ngModel]="insurance.policyContact.officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.policyOfficeExtension.touched && !insuranceformControls.policyOfficeExtension.valid">
                             <label class="form-label">Office Extension</label>
                             <input [class.error]="!insuranceformControls.policyOfficeExtension.valid" formControlName="policyOfficeExtension" [ngModel]="insurance.policyContact.officeExtension"
@@ -277,7 +292,6 @@
                     </div>
                     <div class="col-lg-4">
                         <label class="form-label"> State
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <!--<div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                             <select formControlName="policyState" [ngModel]="insurance.policyAddress.state" type="text" class="form-control" placeholder=""
@@ -292,7 +306,7 @@
                             </div>
                         </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
-                            <p-dropdown [options]="states" formControlName="policyState" [ngModel]="insurance.policyAddress.state" [style]="{'width':'100%'}"
+                            <p-dropdown [options]="states" [ngModel]="insurance.policyAddress.state" formControlName="policyState" [style]="{'width':'100%'}"
                                 filter="filter"></p-dropdown>
                             <div class='error-list' *ngIf="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                                 <span class="color-red">State is required.</span>
@@ -314,25 +328,8 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-lg-3">
-                    <label class="form-label"> City
-                            </label>
-                    <div class="form-group" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                        <select formControlName="policyCity" [ngModel]="selectedPolicyCity" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                            <option value="">-Select City-</option>
-                            <option *ngFor="let city of policyCities" value="{{city.citytext}}">{{city.citytext}}</option>
-                        </select>
-                        <div class='error-list' *ngIf="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.policyCity.hasError('required')">City is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-1 m-t-lg"><loader [visible]="isPolicyCitiesLoading"></loader></div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Zip code
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
                             <input formControlName="policyZipCode" [ngModel]="insurance.policyAddress.zipCode" type="text" class="form-control" placeholder=""
@@ -346,11 +343,8 @@
                     </div>
                     <div class="col-lg-4">
                         <label class="form-label"> Country
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
-                            <!--<input formControlName="policyCountry" [ngModel]="insurance.policyAddress.country" type="text" class="form-control" placeholder=""
-                                [class.error]="!insuranceformControls.policyCountry.valid">-->
                             <select formControlName="policyCountry" type="text" [ngModel]="insurance.policyAddress.country" class="form-control" placeholder=""
                                 [class.error]="insurance.policyAddress.country.touched && !insurance.policyAddress.country.valid">
                                         <option value="">-Select -</option>
@@ -390,8 +384,8 @@
                             </div>
                         </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                            <p-dropdown [options]="insuranceMasters" [(ngModel)]="insuranceMasterId" formControlName="insuranceMasterId" (onChange)="selectInsurance($event)"
-                                [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <p-dropdown [options]="insuranceMasters" [(ngModel)]="insuranceMasterId" formControlName="insuranceMasterId" (onChange)="selectInsurance($event)" [style]="{'width':'100%'}"
+                                filter="filter"></p-dropdown>
                             <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
                                 <span class="color-red">Insurance Master is required.</span>
                             </div>
@@ -469,14 +463,23 @@
                 Insurance Contact
             </header>
             <div class="card-block">
+            <div class="row" *ngIf="showAdjusterList">
+              <div class="col-lg-4">
+                <label class="form-label">Select Contact Person</label>
+                 <div class="form-group">
+                   <p-dropdown [options]="adjusterMastersList" formControlName="adjusterMasterId"  (onChange)="loadInsuranceAdjusterInfoByID($event)" [ngModel]="adjusterMasterId" [style]="{'width':'100%'}"
+                     filter="filter"></p-dropdown>
+                 </div>
+             </div>
+            </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label">Contact Person
                                 <span class="color-red">*</span>
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
-                            <input type="text" formControlName="contactPerson" [ngModel]="insurance.contactPerson" [class.error]="!insuranceformControls.contactPerson.valid"
-                                class="form-control" type="text" placeholder="" />
+                            <input type="text" formControlName="contactPerson" [ngModel]="insuranceContactPerson" [class.error]="!insuranceformControls.contactPerson.valid"
+                                class="form-control" type="text" placeholder="" [readonly]="insuranceisReadOnly" />
                             <div class='error-list' *ngIf="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
                                 <ul>
                                     <li *ngIf="insuranceformControls.contactPerson.hasError('required')">Contact Person is required.</li>
@@ -489,8 +492,8 @@
                                 <span class="color-red">*</span>
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.email.touched && !insuranceformControls.email.valid">
-                            <input type="email" formControlName="email" [ngModel]="insurance.insuranceContact.emailAddress" [class.error]="!insuranceformControls.email.valid"
-                                class="form-control" type="text" placeholder="" />
+                            <input type="email" formControlName="email" [ngModel]="insuranceContact.emailAddress" [class.error]="!insuranceformControls.email.valid"
+                                class="form-control" type="text" placeholder="" [readonly]="insuranceisReadOnly" />
                             <div class='error-list' *ngIf="insuranceformControls.email.touched && !insuranceformControls.email.valid">
                                 <ul>
                                     <li *ngIf="insuranceformControls.email.hasError('required')">Email is required.</li>
@@ -505,7 +508,7 @@
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
                             <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [ngModel]="insuranceCellPhone" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid"
-                                placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                                placeholder="+1 999-999-9999" styleClass="form-control" [readonly]="insuranceisReadOnly"></p-inputMask>
                             <div class='error-list' *ngIf="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
                                 <ul>
                                     <li *ngIf="insuranceformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
@@ -517,9 +520,14 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Home Phone No</label>
+                            <input formControlName="homePhone" [ngModel]="insurance.insuranceContact.homePhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.homePhone.touched && !insuranceformControls.homePhone.valid">
                             <label class="form-label"> Home Phone No</label>
-                            <input [class.error]="!insuranceformControls.homePhone.valid" formControlName="homePhone" [ngModel]="insurance.insuranceContact.homePhone"
+                            <input [class.error]="!insuranceformControls.homePhone.valid" formControlName="homePhone" [ngModel]="insuranceContact.homePhone"
                                 type="text" class="form-control" placeholder="" />
                             <div class='error-list' *ngIf="insuranceformControls.homePhone.touched && !insuranceformControls.homePhone.valid">
                                 <ul>
@@ -533,9 +541,14 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        <!--<div class="form-group">
+                            <label class="form-label"> Work Phone No</label>
+                            <input formControlName="workPhone" [ngModel]="insurance.insuranceContact.workPhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.workPhone.touched && !insuranceformControls.workPhone.valid">
                             <label class="form-label">Work Phone No</label>
-                            <input [class.error]="!insuranceformControls.workPhone.valid" formControlName="workPhone" [ngModel]="insurance.insuranceContact.workPhone"
+                            <input [class.error]="!insuranceformControls.workPhone.valid" formControlName="workPhone" [ngModel]="insuranceContact.workPhone"
                                 type="text" class="form-control" placeholder="" />
                             <div class='error-list' *ngIf="insuranceformControls.workPhone.touched && !insuranceformControls.workPhone.valid">
                                 <ul>
@@ -551,7 +564,7 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Fax No</label>
-                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insurance.insuranceContact.faxNo" placeholder="9-999-999 9999"
+                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insuranceFaxNo" placeholder="9-999-999 9999"
                                 styleClass="form-control"></p-inputMask>
                         </div>
                     </div>
@@ -559,13 +572,12 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <!--<div class="form-group">
-                            <label class="form-label"> Office Extension</label>
-                            <input formControlName="officeExtension" type="text" [ngModel]="insurance.insuranceContact.officeExtension" class="form-control"
-                                placeholder="" />
-                        </div>-->
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="officeExtension" type="text" [ngModel]="insurance.insuranceContact.officeExtension" class="form-control" placeholder="" />
+                    </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.officeExtension.touched && !insuranceformControls.officeExtension.valid">
                             <label class="form-label">Office Extension</label>
-                            <input [class.error]="!insuranceformControls.officeExtension.valid" formControlName="officeExtension" [ngModel]="insurance.insuranceContact.officeExtension"
+                            <input [class.error]="!insuranceformControls.officeExtension.valid" formControlName="officeExtension" [ngModel]="insuranceContact.officeExtension"
                                 type="text" class="form-control" placeholder="" />
                             <div class='error-list' *ngIf="insuranceformControls.officeExtension.touched && !insuranceformControls.officeExtension.valid">
                                 <ul>
@@ -582,7 +594,7 @@
                         <div class="form-group">
                             <label class="form-label"> Alternate E-Mail </label>
                             <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
-                                <input formControlName="alternateEmail" [ngModel]="insurance.insuranceContact.alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid"
+                                <input formControlName="alternateEmail" [ngModel]="insuranceContact.alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid"
                                     class="form-control" type="text" placeholder="" />
                                 <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
                                     <ul>
@@ -596,7 +608,7 @@
                         <div class="form-group">
                             <label class="form-label"> Preferred Communication
                                         </label>
-                            <select formControlName="preferredCommunication" [ngModel]="insurance.insuranceContact.preferredCommunication" type="text"
+                            <select formControlName="preferredCommunication" [ngModel]="insuranceContact.preferredCommunication" type="text"
                                 class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
@@ -615,6 +627,15 @@
                 Insurance Address
             </header>
             <div class="card-block">
+                    <div class="row" *ngIf="showinsuranceAddressList">
+                            <div class="col-lg-4">
+                                    <label class="form-label">Select insurance address</label>
+                                    <div class="form-group">
+                                            <p-dropdown [options]="insuranceMastersAddressDisplay" formControlName="insuranceMasterAddressId"  (onChange)="insuranceAddressChange($event)" [ngModel]="insuranceMasterAddressId" [style]="{'width':'100%'}"
+                                            filter="filter"></p-dropdown>
+                                    </div>
+                            </div>
+                    </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Address1
@@ -751,7 +772,7 @@
                 </div>
             </div>
         </section>
-        <button *ngIf="!referredToMe" [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <button *ngIf="caseViewedByOriginator" [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
     </button>
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
@@ -1079,6 +1100,15 @@
             Insurance Address
         </header>
         <div class="card-block">
+                <div class="row" *ngIf="showinsuranceAddressList">
+                        <div class="col-lg-4">
+                                <label class="form-label">Select insurance address</label>
+                                <div class="form-group">
+                                        <p-dropdown [options]="insuranceMastersAddressDisplay" formControlName="insuranceMasterAddressId"  (onChange)="insuranceAddressChange($event)" [ngModel]="insuranceMasterAddressId" [style]="{'width':'100%'}"
+                                        filter="filter"></p-dropdown>
+                                </div>
+                        </div>
+                </div>
             <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Address1

@@ -228,7 +228,23 @@ export class UserLocationScheduleService {
 
     deleteUserLocationSchedule(userLocationSchedule: UserLocationSchedule): Observable<UserLocationSchedule> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.post(environment.SERVICE_BASE_URL + '/UserLocationSchedule/Delete/' + userLocationSchedule.id, {
+            return this._http.post(environment.SERVICE_BASE_URL + '/UserLocationSchedule/Delete/', JSON.stringify(userLocationSchedule), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((schedule) => {
+                    resolve(schedule);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UserLocationSchedule>>Observable.from(promise);
+    }
+
+
+    deleteAppointmentsUserLocationSchedule(userLocationSchedule: UserLocationSchedule): Observable<UserLocationSchedule> {        
+        let promise = new Promise((resolve, reject) => {
+            return this._http.post(environment.SERVICE_BASE_URL + '/UserLocationSchedule/DeleteAllAppointmentsandUserLocationSchedule',  JSON.stringify(userLocationSchedule), {
                 headers: this._headers
             })
                 .map(res => res.json())
