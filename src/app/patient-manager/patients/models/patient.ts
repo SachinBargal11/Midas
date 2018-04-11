@@ -4,7 +4,7 @@ import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { Company } from '../../../account/models/company';
 import { MaritalStatus } from './enums/marital-status';
-import { PatientDocument } from './patient-document';
+// import { PatientDocument } from './patient-document';
 import { PreferredLanguage } from './enums/preferred-language';
 import { SocialMedia } from './enums/social-media';
 
@@ -26,13 +26,11 @@ const PatientRecord = Record({
     patientLanguagePreferenceMappings:[],
     languagePreferenceOther: '',
     patientSocialMediaMappings:[],
-    patientDocuments: [],
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null,
-    addedByCompanyId: 0
+    updateDate: null
 });
 
 export class Patient extends PatientRecord {
@@ -54,13 +52,12 @@ export class Patient extends PatientRecord {
     languagePreferenceOther: '';
     patientSocialMediaMappings:any[];
     companies: Company[];
-    patientDocuments: PatientDocument[];
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-    addedByCompanyId: number;
+
     constructor(props) {
         super(props);
     }

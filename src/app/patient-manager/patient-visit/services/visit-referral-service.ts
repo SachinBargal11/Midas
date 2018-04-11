@@ -50,9 +50,9 @@ export class VisitReferralService {
 
     getPendingReferralByPatientVisitId(patientVisitId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getByPatientVisitId/' + patientVisitId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getByPatientVisitId/' + patientVisitId , {
                 headers: this._headers
-            } ).map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);
@@ -83,9 +83,9 @@ export class VisitReferralService {
 
     getPendingReferralByDoctorId(doctorId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getByDoctorId/' + doctorId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getByDoctorId/' + doctorId , {
                 headers: this._headers
-            } ).map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);
@@ -99,9 +99,9 @@ export class VisitReferralService {
     }
     getPendingReferralBySpecialityId(specialityId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getBySpecialityId/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getBySpecialityId/' + specialityId , {
                 headers: this._headers
-            } ).map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);

@@ -20,6 +20,7 @@ import { CaseDocument } from '../../cases/models/case-document';
 import { Document } from '../../../commons/models/document';
 import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { ConsentStore } from '../../cases/stores/consent-store';
+
 @Component({
     selector: 'company-cases',
     templateUrl: './company-cases-list.html'
@@ -43,9 +44,6 @@ export class CompanyCasesComponent implements OnInit {
     caseId: number;
     companyId: number;
     selectedCaseId: number;
-    signedDocumentUploadUrl: string;
-    signedDocumentPostRequestData: any;
-    isElectronicSignatureOn: boolean = false;
 
     constructor(
         public _route: ActivatedRoute,
@@ -57,14 +55,11 @@ export class CompanyCasesComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
         private _consentStore: ConsentStore,
-
     ) {
+
         this.companyId = this.sessionStore.session.currentCompany.id;
         // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
         this.url = `${this._url}/documentmanager/uploadtoblob`;
-        this.companyId = this.sessionStore.session.currentCompany.id;
-        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
-
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadCasesCheckingDoctor();
 
@@ -105,6 +100,7 @@ export class CompanyCasesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+        this._progressBarService.hide();
     }
 
     isCurrentUser(userId): boolean {
@@ -117,11 +113,17 @@ export class CompanyCasesComponent implements OnInit {
         return isCurrentUser;
     }
 
-    // downloadConsent(caseDocuments: CaseDocument[]) {
-    //     caseDocuments.forEach(caseDocument => {
-    //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+    // isCreatedByCompany(): boolean {
+    //     debugger;
+    //     let isCreatedByCompany: boolean = false;
+    //     _.forEach(this.cases, (currentCase: Case) => {
+    //         if (currentCase.createdByCompanyId === this.companyId) {
+    //             isCreatedByCompany = true;
+    //         }
     //     });
+    //     return isCreatedByCompany;
     // }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
@@ -151,7 +153,6 @@ export class CompanyCasesComponent implements OnInit {
             this._progressBarService.hide();
         });
     }
-
 
     consentAvailable(case1: Case) {
         if (case1.companyCaseConsentApproval.length > 0) {
@@ -196,8 +197,6 @@ export class CompanyCasesComponent implements OnInit {
         } else {
             return this.referralRecived = '';
         }
-
-
     }
 
     loadCasesByCompanyAndDoctorId() {
@@ -224,6 +223,7 @@ export class CompanyCasesComponent implements OnInit {
             }
         }, 250);
     }
+
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({
@@ -268,94 +268,18 @@ export class CompanyCasesComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select case to delete',
+                'title': 'select case to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select case to delete');
+            this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
     showDialog(currentCaseId: number) {
-        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
-        this.signedDocumentPostRequestData = {
-            companyId: this.companyId,
-            caseId: this.selectedCaseId
-        };
     }
-
-    getDocuments() {
-        this._progressBarService.show();
-        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
-            .subscribe(document => {
-                this.documents = document;
-            },
-
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    deleteDocument() {
-        if (this.selectedDocumentList.length > 0) {
-            this.confirmationService.confirm({
-                message: 'Do you want to delete this record?',
-                header: 'Delete Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
-
-                    this.selectedDocumentList.forEach(currentCase => {
-                        this._progressBarService.show();
-                        this.isDeleteProgress = true;
-                        this._casesStore.deleteDocument(currentCase)
-                            .subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'Record deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
-
-                                });
-                                this.getDocuments();
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedDocumentList = [];
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete record';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedDocumentList = [];
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                            });
-                    });
-                }
-            });
-        } else {
-            let notification = new Notification({
-                'title': 'Select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
-        }
-    }
-
 
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
@@ -366,60 +290,38 @@ export class CompanyCasesComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and consent data already exists');
-            }
-            else {
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
-                    'title': 'Consent uploaded successfully!',
-                    'type': 'SUCCESS',
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
-                this.addConsentDialogVisible = false;
-                this.loadCases();
             }
-
         });
+        // this.getDocuments();
     }
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    signedDocumentUploadComplete(document: Document) {
-        if (document.status == 'Failed') {
-            let notification = new Notification({
-                'title': document.message + '  ' + document.documentName,
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and consent data already exists.');
-        }
-        else {
-            let notification = new Notification({
-                'title': 'Consent uploaded successfully!',
-                'type': 'SUCCESS',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this.addConsentDialogVisible = false;
-            this.loadCases();
-        }
+    // getDocuments() {
+    //     this._progressBarService.show();
+    //     this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+    //         .subscribe(document => {
+    //             this.documents = document;
+    //         },
 
-    }
-
-    signedDocumentUploadError(error: Error) {
-        let errString = 'Not able to signed document.';
-        let notification = new Notification({
-            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-            'type': 'ERROR',
-            'createdAt': moment()
-        });
-        this._notificationsStore.addNotification(notification);
-        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    }
+    //         (error) => {
+    //             this._progressBarService.hide();
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    // }
 
     downloadTemplate(caseId) {
         this._progressBarService.show();
@@ -445,5 +347,59 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
         this._progressBarService.hide();
+    }
+    deleteDocument() {
+        if (this.selectedDocumentList.length > 0) {
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+
+                    this.selectedDocumentList.forEach(currentCase => {
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        this._casesStore.deleteDocument(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                // this.getDocuments();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedDocumentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedDocumentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
+                    });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
     }
 }

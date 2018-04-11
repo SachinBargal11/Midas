@@ -126,12 +126,12 @@ export class LocationComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'Select locations to delete',
+                'title': 'select locations to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select locations to delete');
+            this._notificationsService.error('Oh No!', 'select locations to delete');
         }
     }
 

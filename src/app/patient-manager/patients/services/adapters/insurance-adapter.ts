@@ -11,13 +11,10 @@ export class InsuranceAdapter {
         if (data) {
             insurance = new Insurance({
                 id: data.id,
-                caseId: data.caseId,
+                patientId: data.patientId,
                 policyNo: data.policyNo,
                 policyOwnerId: data.policyOwnerId,
                 policyHoldersName: data.policyHoldersName,
-                insuranceStartDate: data.insuranceStartDate ? moment(data.insuranceStartDate) : null,
-                insuranceEndDate: data.insuranceEndDate ? moment(data.insuranceEndDate) : null,
-                balanceInsuredAmount: data.balanceInsuredAmount,
                 contactPerson: data.contactPerson,
                 insuranceType: data.insuranceTypeId,
                 insuranceMasterId: data.insuranceMasterId,

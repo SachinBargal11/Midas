@@ -9,8 +9,6 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ReferralStore } from '../../cases/stores/referral-store';
-import { Referral } from '../../cases/models/referral';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Speciality } from '../../../account-setup/models/speciality';
@@ -19,6 +17,10 @@ import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
+import { InboundOutboundList } from '../models/inbound-outbound-referral';
+import { PendingReferralStore } from '../stores/pending-referrals-stores';
+import { ConsentStore } from '../../cases/stores/consent-store';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'outbound-referrals',
@@ -30,31 +32,43 @@ export class OutboundReferralsComponent implements OnInit {
     consentRecived: string = '';
     consentNotRecived: string = '';
     searchMode: number = 1;
-    referrals: Referral[];
-    referredUsers: Referral[];
-    referredMedicalOffices: Referral[];
-    referredRooms: Referral[];
-    referralsOutsideMidas: Referral[];
-    selectedReferrals: Referral[] = [];
+    referrals: InboundOutboundList[];
+    referredUsers: InboundOutboundList[];
+    referredMedicalOffices: InboundOutboundList[];
+    referredRooms: InboundOutboundList[];
+    referralsOutsideMidas: InboundOutboundList[];
+    selectedReferrals: InboundOutboundList[] = [];
     referredDoctors: Doctor[];
     refferedRooms: Room[];
     filters: SelectItem[];
     doctorRoleOnly = null;
+    selectedCaseId: number;
+    companyId: number;
+    url;
+    addConsentDialogVisible: boolean = false;
+    currentCaseId: number;
+    signedDocumentUploadUrl: string;
+    signedDocumentPostRequestData: any;
+    isElectronicSignatureOn: boolean = false;
 
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
-        private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private _pendingReferralStore: PendingReferralStore,
+        private _consentStore: ConsentStore,
     ) {
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
     }
 
-    ngOnInit() {
+    checkSessions() {
         let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
@@ -65,8 +79,18 @@ export class OutboundReferralsComponent implements OnInit {
         }
         this.loadReferralsCheckingDoctor();
     }
+
+    ngOnInit() {
+        this.checkSessions();
+    }
+
+    testData: any[] = [
+        {
+            displayName: "AB69852", caseId: "50", toCompanyname: "citimall", toLocationname: "",
+            forSpecialty: "AC"
+        }];
+
     loadReferralsCheckingDoctor() {
-        // let doctorRoleOnly = null;        
         if (this.doctorRoleOnly) {
             this.loadReferralsForDoctor();
         } else {
@@ -76,42 +100,9 @@ export class OutboundReferralsComponent implements OnInit {
 
     loadReferrals() {
         this._progressBarService.show();
-        // this._referralStore.getReferralsByCaseId(this.caseId)
-        this._referralStore.getReferralsByReferringCompanyId()
-            .subscribe((referrals: Referral[]) => {
-                // this.referrals = referrals.reverse();
-                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.referredToDoctor ? currentReferral : null;
-                });
-                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredUsers = matchingUserReferrals.reverse();
-
-                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.room ? currentReferral : null;
-                });
-                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredRooms = matchingRoomReferrals.reverse();
-
-                let referralsOutsideMidas: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.firstName && currentReferral.lastName ? currentReferral : null;
-                });
-                let matchingReferralsOutsideMidas = _.reject(referralsOutsideMidas, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referralsOutsideMidas = matchingReferralsOutsideMidas.reverse();
-
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals, matchingReferralsOutsideMidas);
-                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-                    return currentUserAndRoomReferral.id;
-                });
-                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-                });
-                this.referredMedicalOffices = matchingMedicalOffices.reverse();
+        this._pendingReferralStore.getReferralsByReferringCompanyId()
+            .subscribe((referrals: InboundOutboundList[]) => {
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -120,36 +111,12 @@ export class OutboundReferralsComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
     loadReferralsForDoctor() {
         this._progressBarService.show();
-        // this._referralStore.getReferralsByCaseId(this.caseId)
-        this._referralStore.getReferralsByReferringUserId()
-            .subscribe((referrals: Referral[]) => {
-                // this.referrals = referrals.reverse();
-                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.referredToDoctor ? currentReferral : null;
-                });
-                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredUsers = matchingUserReferrals.reverse();
-
-                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.room ? currentReferral : null;
-                });
-                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredRooms = matchingRoomReferrals.reverse();
-
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
-                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-                    return currentUserAndRoomReferral.id;
-                });
-                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-                });
-                this.referredMedicalOffices = matchingMedicalOffices.reverse();
+        this._pendingReferralStore.getReferralsByReferringUserId()
+            .subscribe((referrals: InboundOutboundList[]) => {
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -158,41 +125,41 @@ export class OutboundReferralsComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-    filter(event) {
-        let currentSearchId = parseInt(event.target.value);
-        if (currentSearchId === 1) {
-            this.searchMode = 1;
-        } else if (currentSearchId === 2) {
-            this.searchMode = 2;
-        } else if (currentSearchId === 3) {
-            this.searchMode = 3;
-        } else if (currentSearchId === 4) {
-            this.searchMode = 4;
-        }
-    }
+
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this._progressBarService.show();
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
+            this._progressBarService.hide();
         });
     }
-    // consentAvailable(referral: Referral) {
-    //     if (referral.case.companyCaseConsentApproval.length > 0) {
-    //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-    //             return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
-    //         });
-    //         if (consentAvailable) {
-    //             return this.consentRecived = 'Yes';
-    //         } else {
-    //             return this.consentRecived = 'No';
-    //         }
-    //     } else {
-    //         return this.consentRecived = 'No';
-    //     }
-    // }
-    consentAvailable(referral: Referral) {
+    consentAvailable(referral: InboundOutboundList) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
@@ -217,4 +184,104 @@ export class OutboundReferralsComponent implements OnInit {
         }
         return specialityString;
     }
+    showDialog(currentCaseId) {
+     
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+        this.signedDocumentPostRequestData = {
+            companyId: this.companyId,
+            caseId: this.selectedCaseId
+        };
+    }
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            }
+            else {
+                let notification = new Notification({
+                    'title': 'Consent Uploaded Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+
+            }
+            this.addConsentDialogVisible = false;
+            this.checkSessions();
+        });
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+
+        }
+        this.addConsentDialogVisible = false;
+        this.checkSessions();
+    }
+
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    }
+
+    // downloadTemplate() {    
+    //     this._progressBarService.show();
+    //     this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+    //         .subscribe(
+    //         (response) => {
+    //             // this.document = document
+    //             //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+    //         },
+    //         (error) => {
+    //             let errString = 'Unable to download';
+    //             let notification = new Notification({
+    //                 'messages': 'Unable to download',
+    //                 'type': 'ERROR',
+    //                 'createdAt': moment()
+    //             });
+    //             //this._notificationsStore.addNotification(notification);
+    //             this._progressBarService.hide();
+    //             this._notificationsService.error('Oh No!', 'Unable to download');
+
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    //     this._progressBarService.hide();
+    // }
+
 }

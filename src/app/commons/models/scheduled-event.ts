@@ -14,7 +14,7 @@ const ScheduledEventRecord = Record({
     description: '',
     recurrenceId: null,
     recurrenceRule: null,
-    recurrenceException: null,
+    recurrenceException: [],
     isAllDay: false,
     isCancelled: false,
     transportProviderId: 0,
@@ -70,9 +70,9 @@ export class ScheduledEvent extends ScheduledEventRecord {
     }
 
     isSeriesStartedInBefore(thisDay: moment.Moment): boolean {
-        return this.recurrenceRule ? moment(this.recurrenceRule.options.dtstart).isBefore(thisDay, 'day') : null;
+        return moment(this.recurrenceRule.options.dtstart).isBefore(thisDay, 'day');
     }
-    
+
     get isSeriesStartedInPast(): boolean {
         return moment(this.recurrenceRule.options.dtstart).isBefore(moment());
     }

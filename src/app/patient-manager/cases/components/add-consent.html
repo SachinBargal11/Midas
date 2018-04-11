@@ -1,50 +1,52 @@
 <div *ngIf="!inputCaseId">
-<p-confirmDialog width="425"></p-confirmDialog>
-<div class="input-group" *ngIf="caseStatusId === 1">   
-    <h3 class="with-border">Consents
-        <a *ngIf="caseViewedByOriginator" class="pull-right btn btn-danger btn-sm" (click)="deleteConsentForm()">
-            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Consent Form</span>
+    <p-confirmDialog width="425"></p-confirmDialog>
+    <div class="input-group" *ngIf="caseStatusId === 1">
+        <h3 class="with-border">Consents
+            <a class="pull-right btn btn-danger btn-sm" (click)="deleteConsentForm()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Consent form</span>
             <loader [visible]="isDeleteProgress"></loader>
         </a>
-        <a *ngIf="caseViewedByOriginator" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+            <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Consent Form</span>
          </a>
-    </h3>
-</div>
-<div class="ui-widget-header row">
-    <div class="col-lg-4 input-group">
-        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+        </h3>
     </div>
-</div>
+    <div class="ui-widget-header row">
+        <div class="col-lg-4 input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+        </div>
+    </div>
 
 
-<p-dataTable [value]="caseConsentDocuments" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true">
-    <header> List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
-    <p-column header="File Name">
-        <ng-template let-document="rowData" pTemplate="body">
-            <a (click)="downloadPdf(document.document.originalResponse.midasDocumentId)">
-                <u>{{document.document.originalResponse.documentName}}</u>
-            </a>
-        </ng-template>
-    </p-column>
-    <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
-    <!--<p-column styleClass="actions-cell" header="Actions">
+    <p-dataTable [value]="caseConsentDocuments" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3"
+        [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true">
+        <header> List</header>
+        <p-column selectionMode="multiple"></p-column>
+        <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
+        <p-column header="File Name">
+            <ng-template let-document="rowData" pTemplate="body">
+                <a (click)="downloadPdf(document.document.originalResponse.midasDocumentId)">
+                    <u>{{document.document.originalResponse.documentName}}</u>
+                </a>
+            </ng-template>
+        </p-column>
+        <p-column field="createDate" header="Document Type" [sortable]="true">
+        </p-column>
+        <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
+        <!--<p-column styleClass="actions-cell" header="Actions">
     <ng-template let-ListConsents="rowData" pTemplate="body">
         <a routerLink="edit/{{ListConsents.id}}"><i class="glyphicon glyphicon-edit"></i></a>
     </ng-template>
 </p-column>-->
-</p-dataTable>
+    </p-dataTable>
 
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
-     <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
+    <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+        [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+        <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
+        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
             [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
             (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
             (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)"></app-document-upload>
-</p-dialog>
+    </p-dialog>
 </div>

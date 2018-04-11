@@ -1,4 +1,4 @@
-<form [formGroup]="settingForm">
+<form [formGroup]="settingForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-md-4">
             <label class="form-label"> Generate Token 
@@ -8,7 +8,7 @@
     <span class="hidden-md-down">Generate Token</span></a>
         </div>
         <div class="col-md-4">
-            <p-dialog header="Generate 6-Digit token for Attorney Company" [(visible)]="display" [width]="350">
+            <p-dialog header="Generate 6-Digit token for Ancillary Provider" [(visible)]="display" [width]="350">
                 1.If you want to generate/share a six-digit valid token click on generate token button.<br>
                 2.Share this generated token with other medical provider in order to get add to their company.<br>
             </p-dialog>

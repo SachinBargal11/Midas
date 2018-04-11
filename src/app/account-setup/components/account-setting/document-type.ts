@@ -110,7 +110,7 @@ export class DocumentTypeComponent implements OnInit {
                 // this._router.navigate(['../'], { relativeTo: this._route });
                 this._notificationsService.success('Success!', 'Document type added successfully');
                 this.loadDocumentForObjectType(this.companyId, this.currentId)
-                this.documentList = '';    
+                this.documentList = '';
             },
             (error) => {
                 let errString = 'Unable to add document type.';
@@ -139,37 +139,37 @@ export class DocumentTypeComponent implements OnInit {
                 icon: 'fa fa-trash',
                 accept: () => {
                     // this.selectedDocuments.forEach(currentDocumentType => {
-                        this.isDeleteProgress = true;
-                        this._progressBarService.show();
-                        // let result;
-                         this._documentTypeStore.deleteDocument(this.selectedDocuments)
+                    this.isDeleteProgress = true;
+                    this._progressBarService.show();
+                    // let result;
+                    this._documentTypeStore.deleteDocument(this.selectedDocuments)
                         .subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'Document type deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
-                                });
-                                this.loadDocumentForObjectType(this.companyId, this.currentId);
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedDocuments;
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete document Type';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedDocuments ;
-                                this._progressBarService.hide();
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Document Type deleted successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
                             });
+                            this.loadDocumentForObjectType(this.companyId, this.currentId);
+                            this._notificationsStore.addNotification(notification);
+                            this.selectedDocuments;
+                        },
+                        (error) => {
+                            let errString = 'Unable to delete Document Type';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.selectedDocuments;
+                            this._progressBarService.hide();
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                        },
+                        () => {
+                            this._progressBarService.hide();
+                            this.isDeleteProgress = false;
+                        });
                 }
             });
         } else {

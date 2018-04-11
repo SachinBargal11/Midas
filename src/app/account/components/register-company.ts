@@ -49,13 +49,11 @@ export class RegisterCompanyComponent implements OnInit {
             lastName: ['', Validators.required],
             taxId: ['', [Validators.required, Validators.maxLength(10)]],
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            companyType: ['2', Validators.required],
+            companyType: ['6', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             subscriptionPlan: ['1', Validators.required]
         });
-
         this.userformControls = this.registercompanyform.controls;
-
     }
 
     ngOnInit() {
@@ -75,7 +73,7 @@ export class RegisterCompanyComponent implements OnInit {
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: UserType.ATTORNEY,
+                userType: UserType.ANCILLARY,
                 contact: new Contact({
                     cellPhone: registercompanyformValues.phoneNo.replace(/\-/g, ''),
                     emailAddress: registercompanyformValues.email
@@ -86,7 +84,7 @@ export class RegisterCompanyComponent implements OnInit {
                 roleType: 'Admin',
                 status: 'active'
             }),
-            subscriptionPlan: parseInt(registercompanyformValues.subscriptionPlan)
+            subscriptionPlan: registercompanyformValues.subscriptionPlan ? parseInt(registercompanyformValues.subscriptionPlan) : null
         });
         result = this._registrationService.registerCompany(company);
         result.subscribe(
@@ -99,7 +97,7 @@ export class RegisterCompanyComponent implements OnInit {
             },
             (error) => {
                 this.isRegistrationInProgress = false;
-                let errString = 'Unable to register user.';
+                let errString = 'Unable to Register User.';
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {

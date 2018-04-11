@@ -20,7 +20,7 @@ let MedicalProviderRoutes: Routes = [
             ...ReportsRoutes
         ],
         data: {
-            breadcrumb: 'Office Manager'
+            breadcrumb: 'Medical Provider'
         }
     }
 ];

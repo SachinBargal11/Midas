@@ -1,29 +1,4 @@
-<section *ngIf="preferredUIViewId == 2">
-    <section class="faq-container" id="accordion">
-        <div class="accordion">
-            <input type="radio" value="general-settings" [(ngModel)]="currAccordion" (click)="setContent('general-settings')" name="accordion"
-                id="general-settings" routerLink="general-settings" class="accordion-toggle" />
-            <label for="general-settings">General Settings</label>
-            <section *ngIf="currAccordion=='general-settings'">
-                <p>
-                    <router-outlet></router-outlet>
-                </p>
-            </section>
-        </div>
-        <div class="accordion">
-            <input type="radio" value="document-types" [(ngModel)]="currAccordion" (click)="setContent('document-types')" name="accordion"
-                id="document-types" routerLink="document-types" class="accordion-toggle" />
-            <label for="document-types">Document Types</label>
-            <section *ngIf="currAccordion=='document-types'">
-                <p>
-                    <router-outlet></router-outlet>
-                </p>
-            </section>
-        </div>
-    </section>
-</section>
-
-<section class="tabs-section" *ngIf="preferredUIViewId == 1">
+<section class="tabs-section">
     <div class="tabs-section-nav">
         <div class="tbl">
             <ul class="nav" role="tablist">
@@ -34,13 +9,20 @@
 						</span>
                     </a>
                 </li>
+                <!--<li class="nav-item">
+                    <a class="nav-link" routerLink="procedure-codes" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+                        <span class="nav-link-in">
+					Procedure Codes
+						</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="document-types" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
                         <span class="nav-link-in">
 					Document Types 
 						</span>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>

@@ -7,8 +7,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../commons/utils/AppValidators';
 import { AuthenticationService } from '../services/authentication-service';
-import { environment } from '../../../environments/environment';
 
+import { environment } from '../../../environments/environment';
 @Component({
     selector: 'reset-password',
     templateUrl: './reset-password.html'

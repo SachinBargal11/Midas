@@ -14,15 +14,21 @@ export class PendingReferralListAdapter {
     static parseResponse(data: any): PendingReferralList {
 
         let pendingReferralList: PendingReferralList = null;
+        let visitReferralProcedureCodes: VisitReferralProcedureCode[] = [];
         if (data) {
+            if (data.pendingReferralProcedureCodes) {
+                for (let pendingReferralProcedureCode of data.pendingReferralProcedureCodes) {
+                    visitReferralProcedureCodes.push(VisitReferralProcedureCodeAdapter.parseResponse(pendingReferralProcedureCode));
+                }
+            }
             pendingReferralList = new PendingReferralList({
-                id: 0,
+                id: data.id,
                 patientVisitId: data.patientVisitId,
                 fromCompanyId: data.fromCompanyId,
                 fromLocationId: data.fromLocationId,
                 fromDoctorId: data.fromDoctorId,
                 forSpecialtyId: data.forSpecialtyId,
-                forRoomId:data.forRoomId,
+                forRoomId: data.forRoomId,
                 forRoomTestId: data.forRoomTestId,
                 dismissedBy: data.dismissedBy,
                 caseId: data.caseId,
@@ -34,8 +40,9 @@ export class PendingReferralListAdapter {
                 room: data.room,
                 patientFirstName: data.patientFirstName,
                 patientLastName: data.patientLastName,
-                roomTest:TestsAdapter.parseResponse(data.roomTest),
-                pendingReferralProcedureCode: VisitReferralProcedureCodeAdapter.parseResponse(data.pendingReferralProcedureCode),
+                roomTest: TestsAdapter.parseResponse(data.roomTest),
+                // pendingReferralProcedureCode: VisitReferralProcedureCodeAdapter.parseResponse(data.pendingReferralProcedureCode),
+                pendingReferralProcedureCode: visitReferralProcedureCodes,
                 speciality: SpecialityAdapter.parseResponse(data.specialty),
                 invitationID: 0,
                 isDeleted: data.isDeleted ? true : false,

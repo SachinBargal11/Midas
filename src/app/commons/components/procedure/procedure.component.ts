@@ -20,6 +20,8 @@ export class ProcedureComponent implements OnInit {
   procedures: Procedure[];
   selectedProcedures: Procedure[];
   selectedProceduresToDelete: Procedure[];
+  selectedValue = 1;
+  disableSaveDelete = false;
 
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
@@ -31,7 +33,6 @@ export class ProcedureComponent implements OnInit {
     private _progressBarService: ProgressBarService,
     private _procedureStore: ProcedureStore,
     public sessionStore: SessionStore
-    
   ) {
     // this.procedureForm = this.fb.group({
     //   dignosisCode: ['', Validators.required]
@@ -39,72 +40,85 @@ export class ProcedureComponent implements OnInit {
   }
 
   ngOnInit() {
-  //   if (this.selectedVisit.specialtyId) {
-  //     this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
-  //   } else if (this.selectedVisit.roomId) {
-  //     this.loadProceduresForRoomTest(this.selectedVisit.roomId);
-  //   }
-  //   this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
-  // }
+    if (this.selectedVisit.specialtyId) {
+      this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
+    } else if (this.selectedVisit.roomId) {
+      this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
+    }
+    this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
 
-  // loadProceduresForSpeciality(specialityId: number) {
-  //   this._progressBarService.show();
-  //   let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
-  //   result.subscribe(
-  //     (procedures: Procedure[]) => {
-  //       // this.procedures = procedures;
-  //       let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
-  //         return currentProcedure.id;
-  //       });
-  //       let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
-  //         return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-  //       });
-  //       this.procedures = procedureDetails;
-  //     },
-  //     (error) => {
-  //       this._progressBarService.hide();
-  //     },
-  //     () => {
-  //       this._progressBarService.hide();
-  //     });
-  // }
-
-  // loadProceduresForRoomTest(roomTestId: number) {
-  //   this._progressBarService.show();
-  //   let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
-  //   result.subscribe(
-  //     (procedures: Procedure[]) => {
-  //       // this.procedures = procedures;
-  //       let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
-  //         return currentProcedure.id;
-  //       });
-  //       let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
-  //         return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-  //       });
-  //       this.procedures = procedureDetails;
-  //     },
-  //     (error) => {
-  //       this._progressBarService.hide();
-  //     },
-  //     () => {
-  //       this._progressBarService.hide();
-  //     });
-  // }
-
-  // saveProcedures() {
-  //   this.save.emit(this.selectedProcedures);
-  // }
-
-  // deleteProcedureCode() {
-  //   let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
-  //     return currentProcedure.id;
-  //   });
-  //   let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedure: Procedure) => {
-  //     return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-  //   });
-
-  //   this.selectedProcedures = procedureCodeDetails;
-  // }
-
+    this.checkVisitForCompany();
   }
+
+  checkVisitForCompany() {
+    if (this.selectedVisit.originalResponse.location.company.id == this.sessionStore.session.currentCompany.id) {
+      this.disableSaveDelete = false;
+    } else {
+      this.disableSaveDelete = true;
+    }
+  }
+
+  loadProceduresForSpeciality(specialityId: number) {
+    // this._progressBarService.show();
+    let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+    result.subscribe(
+      (procedures: Procedure[]) => {
+        // this.procedures = procedures;
+        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+          return currentProcedure.id;
+        });
+        let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+          return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+        });
+        this.procedures = procedureDetails;
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
+
+  loadProceduresForRoomTest(roomTestId: number) {
+    // this._progressBarService.show();
+    let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+    result.subscribe(
+      (procedures: Procedure[]) => {
+        // this.procedures = procedures;
+        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+          return currentProcedure.id;
+        });
+        let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+          return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+        });
+        this.procedures = procedureDetails;
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
+
+  saveProcedures() {
+    this.save.emit(this.selectedProcedures);
+  }
+
+  deleteProcedureCode() {
+    let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
+      return currentProcedure.id;
+    });
+    let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedure: Procedure) => {
+      return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+    });
+
+    this.selectedProcedures = procedureCodeDetails;
+  }
+
+  // calculate(value, procedureAmt) {
+  //   this.total = value * procedureAmt;
+  // }
+
 }

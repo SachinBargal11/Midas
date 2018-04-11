@@ -9,13 +9,10 @@ import { InsuranceMaster } from './insurance-master';
 
 const InsuranceRecord = Record({
     id: 0,
-    caseId: 0,
+    patientId: 0,
     policyNo: '',
     policyOwnerId: 0,
     policyHoldersName: '',
-    insuranceStartDate: moment(),
-    insuranceEndDate: moment(),
-    balanceInsuredAmount: '',
     contactPerson: '',
     insuranceMasterId: 0,
     insuranceMaster: null,
@@ -32,13 +29,10 @@ const InsuranceRecord = Record({
 export class Insurance extends InsuranceRecord {
 
     id: number;
-    caseId: number;
+    patientId: number;
     policyNo: string;
     policyOwnerId: number;
     policyHoldersName: string;
-    insuranceStartDate: moment.Moment;
-    insuranceEndDate: moment.Moment;
-    balanceInsuredAmount: string;
     contactPerson: string;
     insuranceMasterId: number;
     insuranceMaster: InsuranceMaster;

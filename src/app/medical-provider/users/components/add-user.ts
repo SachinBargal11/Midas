@@ -48,7 +48,7 @@ export class AddUserComponent implements OnInit {
     isCitiesLoading = false;
     doctorRole = false;
     doctorFlag: boolean = false;
-    attorneyRole = false;
+
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
@@ -90,14 +90,14 @@ export class AddUserComponent implements OnInit {
                 lastname: ['', Validators.required],
                 role: ['', [Validators.required]]
             }),
-            //doctor: this._fb.group(this.initDoctorModel()),
+            doctor: this._fb.group(this.initDoctorModel()),
             contact: this._fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail: ['', [AppValidators.emailValidator]],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -116,27 +116,7 @@ export class AddUserComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
 
     onSelectedRoleChange(roleValues: any) {
@@ -186,13 +166,11 @@ export class AddUserComponent implements OnInit {
                 this.doctorRole = true;
             }
         });
-
         if (!this.doctorRole) {
-            debugger;
             let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
-                userType: UserType.ATTORNEY,
+                userType: UserType.STAFF,
                 roles: roles,
                 userName: userFormValues.contact.email,
                 contact: new Contact({
@@ -278,7 +256,7 @@ export class AddUserComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
-                let errString = 'Unable to add user.';
+                let errString = 'Unable to add User.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

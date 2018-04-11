@@ -12,19 +12,10 @@ export class AppValidators {
         }
     }
     static mobileNoValidator(control: FormControl) {
-        // let regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        let regEx = /^\(?([+1]{2})\)?[-. ]?([0-9]{3})?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        let regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (control.value && !regEx.test(control.value)) {
             return { mobileNoValidator: true };
         }
-    }
-
-    static numberValidator(control: FormControl) {
-            var re = /^([0-9]+)$/g;
-            // var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;
-            if (control.value && !re.test(control.value)) {
-                 return { numberValidator: true };
-            }
     }
 
     static passwordValidator(control: FormControl) {

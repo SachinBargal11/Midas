@@ -52,12 +52,11 @@ export class MedicalProviderMasterStore {
         });
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
-
-
-    getAllPreferredMedicalProviders(): Observable<MedicalProviderMaster[]> {
+       getMedicalProviders(): Observable<MedicalProviderMaster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.getAllPreferredMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+            this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+                // this._medicalProviderMaster.next(List(Provider));
                 resolve(Provider);
             }, error => {
                 reject(error);
@@ -66,10 +65,10 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
     }
 
-     getMedicalProviders(): Observable<MedicalProviderMaster[]> {
+    getPreferredProviders(): Observable<any[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+            this._medicalProviderMasterService.getPreferredProviders(companyId).subscribe((Provider: any[]) => {
                 // this._medicalProviderMaster.next(List(Provider));
                 resolve(Provider);
             }, error => {
@@ -83,18 +82,6 @@ export class MedicalProviderMasterStore {
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.addMedicalProvider(signUp).subscribe((any) => {
                 this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
-                resolve(any);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<any>>Observable.from(promise);
-    }
-
-    searchMedicalProvider(searchDetails: any): Observable<any> {
-        let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.searchMedicalProvider(searchDetails).subscribe((any) => {
-                // this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
                 resolve(any);
             }, error => {
                 reject(error);
@@ -137,7 +124,7 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster>>Observable.from(promise);
     }
 
-     generateToken(): Observable<any> {
+        generateToken(): Observable<any> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.generateToken(companyId).subscribe((data: any) => {
@@ -174,7 +161,7 @@ export class MedicalProviderMasterStore {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-  deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
+    deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
         let providers = this._medicalProviderMaster.getValue();
         let index = providers.findIndex((currentMedicalProvider: MedicalProviderMaster) => currentMedicalProvider.id === medicalProviderMaster.id);
         let promise = new Promise((resolve, reject) => {

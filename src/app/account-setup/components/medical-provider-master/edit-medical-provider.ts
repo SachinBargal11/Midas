@@ -79,6 +79,7 @@ export class EditMedicalProviderComponent implements OnInit {
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]]
+
         });
 
         this.providerformControls = this.providerform.controls;
@@ -103,7 +104,6 @@ export class EditMedicalProviderComponent implements OnInit {
                     id: this.medicalProviderMaster.signup.company.id,
                     name: this.providerform.value.companyName,
                     companyType: this.providerform.value.companyType
-
                 },
                 user: {
                     id: this.medicalProviderMaster.signup.user.id,
@@ -130,11 +130,11 @@ export class EditMedicalProviderComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success!', 'Medical provider has been updated successfully!.');
+                this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update user.';
+                let errString = 'Unable to update User.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

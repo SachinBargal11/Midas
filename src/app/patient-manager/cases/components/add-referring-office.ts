@@ -106,7 +106,7 @@ export class AddReferringOfficeComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Referring office added successfully!',
+                    'title': 'Referring Office added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -114,7 +114,7 @@ export class AddReferringOfficeComponent implements OnInit {
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add referring office.';
+                let errString = 'Unable to add Referring Office.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

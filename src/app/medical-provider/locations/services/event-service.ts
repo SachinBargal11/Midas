@@ -13,12 +13,15 @@ export class EventService {
     private _url: string = 'http://localhost:3004/data';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getEvent(eventId: Number): Observable<MyEvent> {
         let promise: Promise<MyEvent> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + eventId).map(res => res.json())
+            return this._http.get(this._url + '?id=' + eventId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -35,7 +38,9 @@ export class EventService {
 
     getEvents(): Observable<MyEvent[]> {
         let promise: Promise<MyEvent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url)
+            return this._http.get(this._url, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     resolve(data);
@@ -76,7 +81,9 @@ export class EventService {
     }
     deleteEvent(event: MyEvent): Observable<MyEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${event.id}`)
+            return this._http.delete(`${this._url}/${event.id}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     resolve(data);

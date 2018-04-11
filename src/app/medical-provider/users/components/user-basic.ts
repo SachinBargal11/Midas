@@ -50,7 +50,6 @@ export class UserBasicComponent implements OnInit {
     doctor: Doctor;
     doctorDetail: Doctor;
     doctorRole = false;
-    attorneyRole = false;
     address = new Address({});
     contact = new Contact({});
     options = {
@@ -165,14 +164,14 @@ export class UserBasicComponent implements OnInit {
                 lastName: ['', Validators.required],
                 role: ['', Validators.required]
             }),
-            // doctor: this.fb.group(this.initDoctorModel()),
+            doctor: this.fb.group(this.initDoctorModel()),
             contact: this.fb.group({
                 emailAddress: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail: ['', [AppValidators.emailValidator]],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -191,29 +190,8 @@ export class UserBasicComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
-
     onSelectedRoleChange(roleValues: any) {
         const doctorCtrl = this.userformControls.doctor;
         if (_.contains(roleValues, '3')) {
@@ -269,7 +247,7 @@ export class UserBasicComponent implements OnInit {
                 id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
-                userType: UserType.ATTORNEY,
+                userType: UserType.STAFF,
                 roles: roles,
                 userName: this.user.userName,
                 contact: new Contact({
@@ -282,7 +260,7 @@ export class UserBasicComponent implements OnInit {
                     officeExtension: userFormValues.contact.officeExtension,
                     alternateEmail: userFormValues.contact.alternateEmail,
                     preferredCommunication: userFormValues.contact.preferredCommunication,
-
+                   
 
                 }),
                 address: new Address({

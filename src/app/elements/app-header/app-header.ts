@@ -29,20 +29,11 @@ export class AppHeaderComponent implements OnInit {
     private _notificationServerUrl: string = `${environment.NOTIFICATION_SERVER_URL}`;
     messages: PushNotification[] = [];
     userSetting: UserSetting;
-    attorneyRoleFlag = false;
+    doctorRoleFlag = false;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
     menu_left_opened: boolean = false;
-
-    /* Dialog Visibilities */
-    settingsDialogVisible: boolean = false;
-    
-        addUserSettings: FormGroup;
-        addUserSettingsControls;
-        isSearchable: boolean = false;
-        isCalendarPublic: boolean = false;
-        isPublic: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -63,14 +54,6 @@ export class AppHeaderComponent implements OnInit {
         private _elRef: ElementRef
 
     ) {
-
-        this.addUserSettings = this._fb.group({
-            isPublic: [''],
-            isCalendarPublic: [''],
-            isSearchable: ['']
-        })
-        this.addUserSettingsControls = this.addUserSettings.controls;
-
         let accessToken;
         accessToken = this.sessionStore.session.accessToken.replace('bearer ', '');
         $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
@@ -111,57 +94,28 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let attorneyRolewithOther;
-        let attorneyRolewithoutOther;
+        let doctorRolewithOther;
+        let doctorRolewithoutOther;
         let roles = this.sessionStore.session.user.roles;
-        if (roles) { 
-            let currentcompnayrole  = this.sessionStore.session.user.roles;
+        if (roles) {
             if (roles.length === 1) {
-                attorneyRolewithoutOther = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 6;
+                doctorRolewithoutOther = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
                 });
             } else if (roles.length > 1) {
-                let count = 0;
-                let currentcompanyrole = 0;
-                _.forEach(roles, (currentRole) => {
-                   if(currentRole.companyId == this.sessionStore.session.currentCompany.id)
-                   {
-                      if(currentRole.roleType === 6)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                      if(currentRole.roleType === 1)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                   }
+                doctorRolewithOther = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
                 });
-                if(count > 1)
-                {
-                    attorneyRolewithOther = true;
-                }
-                else{
-                    if(currentcompanyrole == 6)
-                    {
-                        attorneyRolewithoutOther = true;
-                    }
-                    else{
-                        attorneyRolewithOther = true;
-                    }
-                }
             }
-            if (attorneyRolewithoutOther) {
-                this.attorneyRoleFlag = true;
-            } else if (attorneyRolewithOther) {
-                this.attorneyRoleFlag = false;
+            if (doctorRolewithoutOther) {
+                this.doctorRoleFlag = true;
+            } else if (doctorRolewithOther) {
+                this.doctorRoleFlag = false;
             } else {
-                this.attorneyRoleFlag = false;
+                this.doctorRoleFlag = false;
             }
         }
     }
-
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {
             document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
@@ -215,18 +169,6 @@ export class AppHeaderComponent implements OnInit {
 
     showSettingsDialog() {
         this._router.navigate(['/account/settings']);
-        this.settingsDialogVisible = true;
-        // this._cd.detectChanges();
-    }
-    closeDialog() {
-        this.settingsDialogVisible = false;
-    }
-
-    checkUncheck(event) {
-        if (event == false) {
-            this.isCalendarPublic = false;
-            this.isSearchable = false;
-        }
 
     }
 }

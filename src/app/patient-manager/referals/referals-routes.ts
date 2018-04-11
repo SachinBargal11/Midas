@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
-import { ValidateAttorneySession } from '../../commons/guards/validate-attorney-session';
-import { ValidateInActiveAttorneySession } from '../../commons/guards/validate-inactiveattorney-session';
+import { ValidateDoctorSession } from '../../commons/guards/validate-doctor-session';
+import { ValidateInActiveDoctorSession } from '../../commons/guards/validate-inactivedoctor-session';
 import { ShellComponent } from '../../commons/shell-component';
 import { ReferralsShellComponent } from './components/referrals-shell';
 import { InboundReferralsComponent } from './components/inbound-referrals';
@@ -26,14 +26,14 @@ export const ReferralsShellRoutes: Routes = [
             //     path: '',
             //     redirectTo: 'pending-referrals',
             //     pathMatch: 'full',
-            //     // canActivate: [ValidateInActiveAttorneySession]
-            //     canDeactivate: [ValidateAttorneySession]
+            //     // canActivate: [ValidateInActiveDoctorSession]
+            //     canDeactivate: [ValidateDoctorSession]
             // },
             // {
             //     path: '',
             //     redirectTo: 'inbound-referrals',
             //     pathMatch: 'full',
-            //     // canActivate: [ValidateAttorneySession]
+            //     // canActivate: [ValidateDoctorSession]
             // },
             {
                 path: 'inbound-referrals',
@@ -55,7 +55,7 @@ export const ReferralsShellRoutes: Routes = [
                 path: 'pending-referrals',
                 component: PendingReferralsComponent,
                 canActivate: [ValidateActiveSession],
-                // canDeactivate: [ValidateAttorneySession],
+                // canDeactivate: [ValidateDoctorSession],
                 data: {
                     breadcrumb: 'Pending Referrals'
                 }

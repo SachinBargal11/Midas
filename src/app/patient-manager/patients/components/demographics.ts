@@ -22,6 +22,7 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Observable } from 'rxjs/Rx';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'demographics',
@@ -29,8 +30,6 @@ import { Observable } from 'rxjs/Rx';
 })
 
 export class DemographicsComponent implements OnInit {
-    emergencyContactCellPhone: string;
-    emergencyContactPerson: string;
     caseDetail: Case[];
     referredToMe: boolean = false;
     cellPhone: string;
@@ -77,19 +76,19 @@ export class DemographicsComponent implements OnInit {
                 (results) => {
                     this.caseDetail = results[0];
                     if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                                this.referredToMe = true;
-                            } else {
-                                this.referredToMe = false;
-                            }
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
                         })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
                     } else {
                         this.referredToMe = false;
                     }
                     this.patientInfo = results[1];
-                    this.emergencyContactPerson = this.patientInfo.emergencyContactName;
-                    this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
@@ -106,23 +105,21 @@ export class DemographicsComponent implements OnInit {
         });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: [''],
-                // weight: [''],
-                // height: [''],
+                ssn: ['', Validators.required],
+                weight: [''],
+                height: [''],
                 dateOfFirstTreatment: [''],
                 // races: ['', Validators.required],
                 // ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
-                cellPhone: ['', [Validators.required]],
-                homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
-                workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                homePhone: [''],
+                workPhone: [''],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
-                officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-                preferredCommunication: [''],
-                emergencyContactPerson: [''],
-                emergencyContactCellPhone: ['']
+                officeExtension: [''],
+                preferredCommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -139,27 +136,7 @@ export class DemographicsComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            // .subscribe(states => this.states = states);
-            .subscribe(states =>
-            // this.states = states);
-            {
-                let defaultLabel: any[] = [{
-                    label: '-Select State-',
-                    value: ''
-                }]
-                let allStates = _.map(states, (currentState: any) => {
-                    return {
-                        label: `${currentState.statetext}`,
-                        value: currentState.statetext
-                    };
-                })
-                this.states = _.union(defaultLabel, allStates);
-            },
-            (error) => {
-            },
-            () => {
-
-            });
+            .subscribe(states => this.states = states);
     }
 
     savePatient() {
@@ -169,13 +146,11 @@ export class DemographicsComponent implements OnInit {
         let existingPatientJS = this.patientInfo.toJS();
         let patient = new Patient(_.extend(existingPatientJS, {
             ssn: demographicsFormValues.userInfo.ssn,
-            // weight: parseInt(demographicsFormValues.userInfo.weight, 10),
-            // height: parseInt(demographicsFormValues.userInfo.height, 10),
+            weight: parseInt(demographicsFormValues.userInfo.weight, 10),
+            height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             //raceId: demographicsFormValues.userInfo.races,
             //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
-            emergencyContactName: demographicsFormValues.contact.emergencyContactPerson,
-            emergencyContactPhone: demographicsFormValues.contact.emergencyContactCellPhone,
             updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,
@@ -205,16 +180,15 @@ export class DemographicsComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Client updated successfully',
+                    'title': 'Patient updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success', 'Client updated successfully');
-                // this._router.navigate(['/patient-manager/patients']);
+                this._router.navigate(['/patient-manager/patients']);
             },
             (error) => {
-                let errString = 'Unable to update Client.';
+                let errString = 'Unable to update patient.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

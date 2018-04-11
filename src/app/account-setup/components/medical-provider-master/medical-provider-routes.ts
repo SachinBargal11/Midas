@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../../commons/guards/validate-active-session';
 import { MedicalProviderListComponent } from './medical-provider-list';
 import { ShellComponent } from '../../../commons/shell-component';
-// import { SearchPreferedProvidersComponent } from './search-preferred-providers';
+import { AddMedicalProviderComponent } from './add-medical-provider';
 import { EditMedicalProviderComponent } from './edit-medical-provider';
 
 export const MedicalProviderRoutes: Routes = [
@@ -29,14 +29,14 @@ export const MedicalProviderRoutes: Routes = [
             breadcrumb: 'Medical Provider List'
         },
         children: [
-            // {
-            //     path: 'search',
-            //     component: SearchPreferedProvidersComponent,
-            //     canActivate: [ValidateActiveSession],
-            //     data: {
-            //         breadcrumb: 'Search Doctors'
-            //     }
-            // },
+            {
+                path: 'add',
+                component: AddMedicalProviderComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Add Medical Provider'
+                }
+            },
             {
                 path: 'edit/:id',
                 component: EditMedicalProviderComponent,

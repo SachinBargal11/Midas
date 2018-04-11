@@ -99,16 +99,16 @@ export class PatientsStore {
 
     fetchPatientById(id: number): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
-            // let matchedPatient: Patient = this.findPatientById(id);
-            // if (matchedPatient) {
-            //     resolve(matchedPatient);
-            // } else {
+            let matchedPatient: Patient = this.findPatientById(id);
+            if (matchedPatient) {
+                resolve(matchedPatient);
+            } else {
                 this._patientsService.getPatient(id).subscribe((patient: Patient) => {
                     resolve(patient);
                 }, error => {
                     reject(error);
                 });
-            // }
+            }
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
@@ -194,9 +194,10 @@ export class PatientsStore {
         this._selectedPatients.next(selectedPatients.delete(index));
     }
 
-    assignPatientToMedicalProvider(id: number, caseId: number, providerId: number): Observable<Patient> {
+    assignPatientToAttorney(id: number,caseId:number,attorneyId: number): Observable<Patient> {      
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.assignPatientToMedicalProvider(id, caseId, providerId).subscribe((patient: Patient) => {
+            this._patientsService.assignPatientToAttorney(id,caseId, attorneyId).subscribe((patient: Patient) => {
+                // this._attorneyMaster.next(List(allattorney));
                 resolve(patient);
             }, error => {
                 reject(error);

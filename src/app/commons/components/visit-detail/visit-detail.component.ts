@@ -58,6 +58,8 @@ export class VisitDetailComponent implements OnInit {
     isDeleteProgress = false;
     caseStatusId: number;
 
+    readingDoctors: Doctor[];
+    readingDoctor: number;
     visitDetailForm: FormGroup;
     visitDetailFormControls;
     visitInfo = 'Visit Info';
@@ -65,16 +67,18 @@ export class VisitDetailComponent implements OnInit {
     visitUploadDocumentUrl: string;
     documents: VisitDocument[] = [];
     selectedDocumentList = [];
+    disableSaveDelete = false;
+    visitId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
-    visitId: number;
-    @Input() routeFrom: number;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
     @Input() selectedVisit: PatientVisit;
+    @Input() routeFrom: number;
     //   @Input() selectedVisitId: number;
     @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    // @Output() saveComplete: EventEmitter<PatientVisit> = new EventEmitter();
     constructor(
         private _fb: FormBuilder,
         private _router: Router,
@@ -93,33 +97,29 @@ export class VisitDetailComponent implements OnInit {
     ) {
         this.visitDetailForm = this._fb.group({
             notes: ['', Validators.required],
-            visitStatusId: ['']
+            visitStatusId: [''],
+            readingDoctor: ['']
         });
         this.visitDetailFormControls = this.visitDetailForm.controls;
     }
 
     ngOnInit() {
-        // this.fetchPatientVisit(this.selectedVisitId);
-        this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisitId + '/visit';
+        this.readingDoctor = this.selectedVisit.doctorId != null ? this.selectedVisit.doctorId : 0;
+        this.getReadingDoctorsByCompanyId();
+        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
         this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
         this.getDocuments();
+
+        this.checkVisitForCompany();
     }
 
-    //    fetchPatientVisit(visitId: number) {
-    //         // this._progressBarService.show();
-    //         this._patientVisitStore.fetchPatientVisitById(visitId)
-    //             .subscribe((visit: PatientVisit) => {
-    //                 this.selectedVisit = visit;
-    //             },
-    //             (error) => {
-    //                 // this._progressBarService.hide();
-    //             },
-    //             () => {
-    //                 // this._progressBarService.hide();
-    //             });
-    //     }
-
+    checkVisitForCompany() {
+        if (this.selectedVisit.originalResponse.location.company.id == this.sessionStore.session.currentCompany.id) {
+            this.disableSaveDelete = false;
+        } else {
+            this.disableSaveDelete = true;
+        }
+    }
     handleVisitDialogHide() {
         this.selectedVisit = null;
     }
@@ -144,6 +144,53 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
+    }
+    getReadingDoctorsByCompanyId() {
+        // this._progressBarService.show();
+        this._doctorsStore.getReadingDoctorsByCompanyId()
+            .subscribe((readingDoctors: Doctor[]) => {
+                let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
+                    return currentDoctor.user == null;
+                })
+                this.readingDoctors = doctorDetails;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
+    }
+
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -170,52 +217,20 @@ export class VisitDetailComponent implements OnInit {
         this.getDocuments();
     }
 
-      documentUploadError(error: Error) {
-        if (error.message == 'Please select document type') {
-            this._notificationsService.error('Oh No!', 'Please Select document type');
-        }
-        else {
-            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-        }
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    showDialog(currentCaseId: number) {
-        this.addConsentDialogVisible = true;
-        this.selectedCaseId = currentCaseId;
-    }
-
-     downloadPdf(documentId) {
-        this._progressBarService.show();
-        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                //  this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to download');
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this._progressBarService.hide();
-    }
 
     saveVisit() {
         let visitDetailFormValues = this.visitDetailForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: visitDetailFormValues.notes,
-            visitStatusId: visitDetailFormValues.visitStatusId
+            visitStatusId: parseInt(visitDetailFormValues.visitStatusId),
+            doctorId: parseInt(visitDetailFormValues.readingDoctor)
         }));
+        this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
@@ -225,6 +240,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                // this.uploadComplete.emit(documents);
             },
             (error) => {
                 let errString = 'Unable to update event!';
@@ -242,6 +258,111 @@ export class VisitDetailComponent implements OnInit {
         this.closePatientVisitDialog();
     }
 
+    saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
+        let visitDetailFormValues = this.visitDetailForm.value;
+        let updatedVisit: PatientVisit;
+        let diagnosisCodes = [];
+        inputDiagnosisCodes.forEach(currentDiagnosisCode => {
+            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+        });
+
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitDiagnosisCodes: diagnosisCodes
+        }));
+        this._progressBarService.show();
+        let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Diagnosis codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save diagnosis codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.closePatientVisitDialog();
+    }
+
+    saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
+        let visitDetailFormValues = this.visitDetailForm.value;
+        let updatedVisit: PatientVisit;
+        let procedureCodes = [];
+        inputProcedureCodes.forEach(currentProcedureCode => {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        });
+
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitProcedureCodes: procedureCodes
+        }));
+        this._progressBarService.show();
+        let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Procedure codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save procedure codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.closePatientVisitDialog();
+    }
+
+    saveReferral(inputVisitReferrals: VisitReferral[]) {
+        let result;
+        let visitDetailFormValues = this.visitDetailForm.value;
+        result = this._visitReferralStore.saveVisitReferral(inputVisitReferrals);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Referral saved successfully.',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save Referral.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        // this.closePatientVisitDialog();
+    }
+
     deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
             // this.confirmationService.confirm({
@@ -257,7 +378,7 @@ export class VisitDetailComponent implements OnInit {
                     .subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Record deleted successfully!',
+                            'title': 'record deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
 
@@ -288,12 +409,12 @@ export class VisitDetailComponent implements OnInit {
             // });
         } else {
             let notification = new Notification({
-                'title': 'Select record to delete',
+                'title': 'select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
+            this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
 

@@ -85,10 +85,10 @@ export class EditSpecialityDetailsComponent {
                     this.specialityDetail = specialityDetail;
                     if (this.specialityDetail.id) {
                         this.specialityDetailJS = this.specialityDetail.toJS();
-                        this.title = 'Edit Specialty Detail';
+                        this.title = 'Edit Speciality Detail';
                         // this.mandatoryProcCode = this.specialityDetail.mandatoryProcCode;
                     } else {
-                        this.title = 'Add Specialty Detail';
+                        this.title = 'Add Speciality Detail';
                         this.specialityDetailJS = new SpecialityDetail({});
                     }
                 },
@@ -164,7 +164,7 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (response: SpecialityDetail) => {
                     let notification = new Notification({
-                        'title': 'Specialty details updated successfully!',
+                        'title': 'Speciality Details updated successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -173,7 +173,7 @@ export class EditSpecialityDetailsComponent {
                     this._router.navigate(['/account-setup/specialities']);
                 },
                 (error) => {
-                    let errString = 'Unable to update specialty details.';
+                    let errString = 'Unable to update Speciality Details.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -193,7 +193,7 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (response: SpecialityDetail) => {
                     let notification = new Notification({
-                        'title': 'Specialty details added successfully!',
+                        'title': 'Speciality Details added successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -202,7 +202,7 @@ export class EditSpecialityDetailsComponent {
                     this._router.navigate(['/account-setup/specialities']);
                 },
                 (error) => {
-                    let errString = 'Unable to add specialty details.';
+                    let errString = 'Unable to add Speciality Details.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',

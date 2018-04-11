@@ -42,10 +42,9 @@ import { MedicalProviderListComponent } from './components/medical-provider-mast
 // import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
 // import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
 import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
-// import { SearchPreferedProvidersComponent } from './components/medical-provider-master/search-preferred-providers';
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
-import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
+import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
 import { DocumentTypeComponent } from './components/account-setting/document-type';
 import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
 import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
@@ -54,6 +53,18 @@ import { ProcedureCodeMasterService } from './services/procedure-code-master-ser
 import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
 import { DocumentTypeStore } from './stores/document-type-store';
 import { DocumentTypeService } from './services/document-type-service';
+
+import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
+
+import { GeneralSettingStore } from './stores/general-settings-store';
+import { GeneralSettingService } from './services/general-settings-service';
+import { AncillaryListComponent } from './components/ancillary-master/ancillary-master-list';
+import { AddAncillaryComponent } from './components/ancillary-master/add-ancillary-master';
+import { EditAncillaryComponent } from './components/ancillary-master/edit-ancillary-master';
+
+import { AncillaryMasterStore } from './stores/ancillary-store';
+import { AncillaryMasterService } from './services/ancillary-service';
+
 
 // AccountSettingShellComponent
 @NgModule({
@@ -81,11 +92,11 @@ import { DocumentTypeService } from './services/document-type-service';
         InsuranceMasterListComponent,
         MedicalProviderListComponent,
         // AddMedicalProviderComponent,
-        // SearchPreferedProvidersComponent,
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
-        AccountGeneralSettingComponent,
-        DocumentTypeComponent
+        ProcedureCodeComponent,
+        DocumentTypeComponent,
+        AccountGeneralSettingComponent, AncillaryListComponent, AddAncillaryComponent, EditAncillaryComponent
 
     ],
     providers: [
@@ -103,12 +114,13 @@ import { DocumentTypeService } from './services/document-type-service';
         InsuranceMasterStore,
         // MedicalProviderMasterService,
         // MedicalProviderMasterStore
-        RoomsStore, 
-        RoomsService, 
-        ProcedureCodeMasterService, 
+        RoomsStore,
+        RoomsService,
+        ProcedureCodeMasterService,
         ProcedureCodeMasterStore,
         DocumentTypeStore,
-        DocumentTypeService
+        DocumentTypeService,
+        GeneralSettingStore, GeneralSettingService, AncillaryMasterStore, AncillaryMasterService
     ]
 })
 export class AccountSetupModule { }

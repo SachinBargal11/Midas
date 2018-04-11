@@ -13,11 +13,8 @@ import { UserStatisticsComponent } from './components/user-statistics';
 import { UsersListComponent } from './components/users-list';
 import { UserShellComponent } from './components/users-shell';
 import { DoctorLocationScheduleComponent } from './components/doctor-location-schedule';
-import { UserLocationScheduleComponent } from './components/user-location-schedule';
 import { DoctorLocationScheduleShellComponent } from './components/doctor-location-schedule-shell';
-import { UserLocationScheduleShellComponent } from './components/user-location-schedule-shell';
 import { AddDoctorLocationComponent } from './components/add-doctor-location';
-import { AddUserLocationComponent } from './components/add-user-location';
 import { AddDoctorLocationSpecialityComponent } from './components/add-doctor-location-speciality';
 
 import { DoctorLocationScheduleService } from './services/doctor-location-schedule-service';
@@ -26,8 +23,6 @@ import { DoctorLocationsService } from './services/doctor-locations-service';
 import { DoctorLocationsStore } from './stores/doctor-locations-store';
 import { DoctorLocationSpecialityService } from './services/doctor-location-speciality-service';
 import { DoctorLocationSpecialityStore } from './stores/doctor-location-speciality-store';
-import { UserLocationScheduleService } from './services/user-location-schedule-service';
-import { UserLocationScheduleStore } from './stores/user-location-schedule-store';
 
 @NgModule({
   imports: [
@@ -47,11 +42,8 @@ import { UserLocationScheduleStore } from './stores/user-location-schedule-store
     UsersListComponent,
     UserShellComponent,
     DoctorLocationScheduleShellComponent,
-    UserLocationScheduleShellComponent,
     DoctorLocationScheduleComponent,
-    UserLocationScheduleComponent,
     AddDoctorLocationComponent,
-    AddUserLocationComponent,
     AddDoctorLocationSpecialityComponent
   ],
   providers: [
@@ -60,9 +52,7 @@ import { UserLocationScheduleStore } from './stores/user-location-schedule-store
     DoctorLocationsService,
     DoctorLocationsStore,
     DoctorLocationSpecialityService,
-    DoctorLocationSpecialityStore,
-    UserLocationScheduleService,
-    UserLocationScheduleStore
+    DoctorLocationSpecialityStore
   ]
 })
 export class UsersModule { }

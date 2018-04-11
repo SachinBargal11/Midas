@@ -15,7 +15,7 @@ const AccountRecord = Record({
     accessToken: '',
     tokenExpiresAt: null,
     tokenResponse: null,
-    type: 'attorney',
+    type: 'ancillary',
     originalResponse: null
 });
 

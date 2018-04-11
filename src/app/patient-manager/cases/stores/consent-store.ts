@@ -171,4 +171,15 @@ export class ConsentStore {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
+    // downloadConsentTemplate(company: any, patientDetail: any): Observable<Consent[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._consentFormService.downloadConsentTemplate(company, patientDetail).subscribe((consent: Consent[]) => {
+    //             this._consent.next(List(consent));
+    //             resolve(consent);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Consent[]>>Observable.fromPromise(promise);
+    // }
 }

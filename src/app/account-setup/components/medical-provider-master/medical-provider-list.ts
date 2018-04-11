@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -20,7 +19,6 @@ import { Account } from '../../../account/models/account';
 })
 
 export class MedicalProviderListComponent implements OnInit {
-    displayToken: boolean = false;
     currentProviderId: number = 0;
     selectedProviders: MedicalProviderMaster[] = [];
     providers: MedicalProviderMaster[];
@@ -30,13 +28,6 @@ export class MedicalProviderListComponent implements OnInit {
     companyId: number;
     patientId: number;
     isDeleteProgress: boolean = false;
-    displayValidation: boolean = false;
-    otp: string;
-    medicalProviderName: string;
-    medicalProviderAddress: string;
-    validateOtpResponse: any;
-    addMedicalProviderByToken: FormGroup;
-    addMedicalProviderByTokenControls;
 
     constructor(
         private _router: Router,
@@ -48,13 +39,8 @@ export class MedicalProviderListComponent implements OnInit {
         private _sessionStore: SessionStore,
         private confirmationService: ConfirmationService,
         private _elRef: ElementRef,
-        private fb: FormBuilder,
 
     ) {
-        this.addMedicalProviderByToken = this.fb.group({
-            token: ['', Validators.required],
-        })
-        this.addMedicalProviderByTokenControls = this.addMedicalProviderByToken.controls
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadAllProviders();
@@ -66,94 +52,6 @@ export class MedicalProviderListComponent implements OnInit {
         // this.loadAllProviders();
         this.loadMedicalProviders();
     }
-
-    showDialog() {
-        this.generateToken();
-        this.displayToken = true;
-    }
-
-    showValidation() {
-        this.validateOtpResponse = null;
-        this.displayValidation = true;
-        this.addMedicalProviderByToken.reset();
-    }
-
-    closeDialog() {
-        this.displayValidation = false;
-        this.validateOtpResponse = null;
-    }
-
-    generateToken() {
-        this._progressBarService.show();
-        this._medicalProviderMasterStore.generateToken()
-            .subscribe((data: any) => {
-                this.otp = data.otp;
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    validateGeneratedToken() {
-        this._progressBarService.show();
-        this._medicalProviderMasterStore.validateToken(this.addMedicalProviderByToken.value.token)
-            .subscribe((data: any) => {
-                this.validateOtpResponse = data;
-                this.medicalProviderName = this.validateOtpResponse.company.name;
-                this.medicalProviderAddress = this.validateOtpResponse.company.location[0].name + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
-                    // this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
-                    this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.zipCode
-            },
-            (error) => {
-                let errString = 'Invalid token.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this.closeDialog();
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    associateMedicalProvider() {
-        this._medicalProviderMasterStore.associateValidateTokenWithCompany(this.addMedicalProviderByToken.value.token)
-            .subscribe((data: any) => {
-                let notification = new Notification({
-                    'title': 'Medical provider added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                // this.loadAllProviders();
-                this.loadMedicalProviders();
-                this._notificationsStore.addNotification(notification);
-                this.closeDialog()
-            },
-            (error) => {
-                let errString = 'Unable to associate medical provider.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
     loadAllProviders() {
         this._progressBarService.show();
         this._medicalProviderMasterStore.getAllProviders()
@@ -211,7 +109,7 @@ export class MedicalProviderListComponent implements OnInit {
                     this.currentProviderId = 0;
                 },
                 (error) => {
-                    let errString = 'Unable to assign provider.';
+                    let errString = 'Unable to assign Provider.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -249,7 +147,7 @@ export class MedicalProviderListComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Medical provider deleted successfully!',
+                                    'title': 'Medical Provider deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
                                 });
@@ -259,7 +157,7 @@ export class MedicalProviderListComponent implements OnInit {
                                 this.selectedProviders = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete medical provider';
+                                let errString = 'Unable to delete Medical Provider';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',

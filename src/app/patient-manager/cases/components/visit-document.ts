@@ -115,7 +115,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Record deleted successfully!',
+                                    'title': 'record deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -146,12 +146,12 @@ export class VisitDocumentsUploadComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select record to delete',
+                'title': 'select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
+            this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
 }

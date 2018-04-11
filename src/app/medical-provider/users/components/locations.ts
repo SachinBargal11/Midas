@@ -8,8 +8,8 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import { UserLocationSchedule } from '../../users/models/user-location-schedule';
-import { UserLocationScheduleStore } from '../../users/stores/user-location-schedule-store';
+import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
+import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 
@@ -20,10 +20,10 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 
 export class LocationsComponent implements OnInit {
-    locations: UserLocationSchedule[];
-    selectedLocations: UserLocationSchedule[];
+    locations: DoctorLocationSchedule[];
+    selectedLocations: DoctorLocationSchedule[];
     userId: number;
-    datasource: UserLocationSchedule[];
+    datasource: DoctorLocationSchedule[];
     totalRecords: number;
     isDeleteProgress:boolean = false;
 
@@ -31,7 +31,7 @@ export class LocationsComponent implements OnInit {
         public _route: ActivatedRoute,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        private _userLocationScheduleStore: UserLocationScheduleStore,
+        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
         public _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService,
@@ -51,7 +51,7 @@ export class LocationsComponent implements OnInit {
 
     loadLocations() {
         this._progressBarService.show();
-        this._userLocationScheduleStore.getUserLocationScheduleByUserId(this.userId)
+        this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorId(this.userId)
             .subscribe(
             (data) => {
                 this.locations = data.reverse();
@@ -94,7 +94,7 @@ export class LocationsComponent implements OnInit {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
-                result = this._userLocationScheduleStore.deleteUserLocationSchedule(currentLocation);
+                result = this._doctorLocationScheduleStore.deleteDoctorLocationSchedule(currentLocation);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
@@ -129,114 +129,12 @@ export class LocationsComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'Select location to delete',
+                'title': 'select location to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select location to delete');
+            this._notificationsService.error('Oh No!', 'select location to delete');
         }
-    }
-
-
-    deleteLocation(currentLocation:UserLocationSchedule) {
-        //if (this.selectedDoctors !== undefined) {
-            this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-
-           // this.selectedDoctors.forEach(currentDoctor => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._userLocationScheduleStore.deleteUserLocationSchedule(currentLocation);
-                result.subscribe(
-                    (response) => {
-
-                        if(response.errorLevel == 2)
-                        {
-                            this.confirmationService.confirm({
-                                message: 'Future Appointments has been scheduled, Are you sure you want to cancel all the appointments',
-                                header: 'Delete Confirmation',
-                                icon: 'fa fa-trash',
-                                accept: () => {
-                                    let result1;
-                                    result1 = this._userLocationScheduleStore.deleteAppointmentsUserLocationSchedule(currentLocation);
-                                    result1.subscribe(
-                                        (response) => {
-                                            let notification = new Notification({
-                                                'title': 'Location deleted successfully!',
-                                                'type': 'SUCCESS',
-                                                'createdAt': moment()
-                                            });
-                                            this.loadLocations();
-                                            this._notificationsStore.addNotification(notification);
-                                            this.selectedLocations = undefined;
-                                        },
-                                        (error) => {
-                                            let errString = 'Unable to delete location ';
-                                            let notification = new Notification({
-                                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                                'type': 'ERROR',
-                                                'createdAt': moment()
-                                            });
-                                            this.isDeleteProgress = false;
-                                            this._progressBarService.hide();
-                                            this._notificationsStore.addNotification(notification);
-                                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                                            
-                                        },
-                                        () => {
-                                            this.isDeleteProgress = false;
-                                            this._progressBarService.hide();
-                                        });
-
-                                }});
-                        }
-                        else
-                        {
-                            let notification = new Notification({
-                                'title': 'Location deleted successfully!',
-                                'type': 'SUCCESS',
-                                'createdAt': moment()
-                            });
-                            this.loadLocations();
-                            this._notificationsStore.addNotification(notification);
-                            this.selectedLocations = undefined;
-                        }                                              
-                        // this.users.splice(this.users.indexOf(currentUser), 1);
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete location ';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));                         
-                        
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
-                    });
-            //});
-            }
-            });
-      /*  }
-        else {
-            let notification = new Notification({
-                'title': 'Select doctor to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select doctor to delete');
-        }*/
     }
 }

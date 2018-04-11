@@ -13,6 +13,7 @@ import { Schedule } from '../models/schedule';
 export class LocationsStore {
 
     private _locations: BehaviorSubject<List<LocationDetails>> = new BehaviorSubject(List([]));
+    private _companyLocations: BehaviorSubject<List<LocationDetails>> = new BehaviorSubject(List([]));
 
     constructor(
         private _locationsService: LocationsService,
@@ -27,6 +28,10 @@ export class LocationsStore {
         return this._locations.asObservable();
     }
 
+    get companyLocations() {
+        return this._companyLocations.asObservable();
+    }
+
     getLocations(): Observable<LocationDetails[]> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.getLocations().subscribe((locations: LocationDetails[]) => {
@@ -39,7 +44,19 @@ export class LocationsStore {
         return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
     }
 
-       getAllLocationAndTheirCompany(): Observable<LocationDetails[]> {
+    getLocationsByCompanyId(companyId: number): Observable<LocationDetails[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.getLocationsByCompanyId(companyId).subscribe((locations: LocationDetails[]) => {
+                this._companyLocations.next(List(locations));
+                resolve(locations);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
+    getAllLocationAndTheirCompany(): Observable<LocationDetails[]> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.getAllLocationAndTheirCompany().subscribe((locations: LocationDetails[]) => {
                 this._locations.next(List(locations));
@@ -87,6 +104,7 @@ export class LocationsStore {
 
     resetStore() {
         this._locations.next(this._locations.getValue().clear());
+        this._companyLocations.next(this._companyLocations.getValue().clear());
     }
 
     addLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
@@ -152,19 +170,7 @@ export class LocationsStore {
     getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<LocationDetails[]> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.getLocationsByCompanyDoctorId(companyId,doctorId).subscribe((locations: LocationDetails[]) => {
-                this._locations.next(List(locations));
-                resolve(locations);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
-    }
-
-    getLocationsByCompanyUserId(companyId: number, userId: number): Observable<LocationDetails[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._locationsService.getLocationsByCompanyUserId(companyId,userId).subscribe((locations: LocationDetails[]) => {
-                this._locations.next(List(locations));
+                this._companyLocations.next(List(locations));
                 resolve(locations);
             }, error => {
                 reject(error);

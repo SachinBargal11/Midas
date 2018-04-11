@@ -5,13 +5,13 @@
 
 export const environment = {
   production: false,
-  // SERVICE_BASE_URL: 'http://attorneyapi.codearray.tk/midasattorneyapi'
-   SERVICE_BASE_URL: 'http://localhost:53438/midasattorneyapi',
-  //SERVICE_BASE_URL: 'http://gb-attorneywebapi.qwinix.io/midasattorneyapi',
+  // SERVICE_BASE_URL: 'http://ancillaryapi.codearray.tk/midasancillaryapi',
+  // SERVICE_BASE_URL: 'http://gb-ancillarywebapi.qwinix.io/midasancillaryapi',
+  SERVICE_BASE_URL: 'http://localhost:51995/midasancillaryapi',
   IDENTITY_SERVER_URL: 'https://localhost:44300/',
   NOTIFICATION_SERVER_URL: 'http://dev-gb-notificationmanager.qwinix.io',
-  HOME_URL: 'http://localhost:4203',
-  APP_URL: 'http://localhost:4203',
+  HOME_URL: 'http://localhost:4200',
+  APP_URL: 'http://localhost:4204',
   
   IDENTITY_SCOPE: "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
   // CLIENT_ID: 'MidasPortal',                  //staging production

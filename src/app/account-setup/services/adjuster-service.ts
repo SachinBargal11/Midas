@@ -15,10 +15,7 @@ export class AdjusterMasterService {
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
-    constructor(
-        private _http: Http,
-        private _sessionStore: SessionStore
-    ) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
         this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }

@@ -74,7 +74,7 @@ export class AccountActivationComponent implements OnInit {
                                 else if (this.companyMaster.Signup.company.companyStatusTypeId == 2) {
                                     this.isUser = true;
                                 }
-                                // else if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
+                                // else if (this.companyMaster.Signup.company.companyStatusTypeId == 3) {
                                 //     this._router.navigate(['/account/login']);
                                 // }
                             },
@@ -95,7 +95,6 @@ export class AccountActivationComponent implements OnInit {
                 },
                 () => {
                 });
-            // this.companyId = 16;
 
             // if (this.companyId > 0) {
             //     this.companyId = 56;
@@ -226,7 +225,7 @@ export class AccountActivationComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        // this._router.navigate(['/account/login']);
-        window.location.assign(environment.HOME_URL);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
     }
 }

@@ -56,7 +56,7 @@ export class PendingReferralList extends PendingReferralListRecord {
     patientFirstName: string;
     patientLastName: string;
     roomTest: Tests;
-    pendingReferralProcedureCode: VisitReferralProcedureCode;
+    pendingReferralProcedureCode: VisitReferralProcedureCode[];
     speciality: Speciality;
     invitationID: number;
     isDeleted: boolean;

@@ -62,7 +62,7 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    getAllPreferredMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
+       getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
         let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
                 headers: this._headers
@@ -81,17 +81,17 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
     }
 
-    getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
-        let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
+    getPreferredProviders(companyId: Number): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/getPrefProviderByAncillaryCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let provider = (<Object[]>data).map((data: any) => {
-                        return MedicalProviderMasterAdapter.parseResponse(data);
-                    });
-                    resolve(provider);
+                    // let provider = (<Object[]>data).map((data: any) => {
+                    //     return MedicalProviderMasterAdapter.parseResponse(data);
+                    // });
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });
@@ -116,22 +116,6 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    searchMedicalProvider(requestData: any): Observable<any[]> {
-        let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-            return this._http.post(environment.SERVICE_BASE_URL + '/search/getMedicalProviders', JSON.stringify(requestData), {
-                headers: this._headers
-            })
-                .map(res => res.json()).subscribe((data) => {
-                    resolve(data);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<any[]>>Observable.fromPromise(promise);
-    }
-
     updateMedicalProvider(requestData: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -148,7 +132,25 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    generateToken(companyId: Number): Observable<any> {
+    
+    getMedicalProviderById(providerId: Number): Observable<MedicalProviderMaster> {
+        let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
+            // return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let provider = null;
+                    provider = MedicalProviderMasterAdapter.parseResponse(data);
+                    resolve(provider);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
+    }
+
+generateToken(companyId: Number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/OTPCompanyMapping/GenerateOTPForCompany/' + companyId, {
                 headers: this._headers
@@ -193,7 +195,7 @@ export class MedicalProviderMasterService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-   deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
+    deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/OTPCompanyMapping/deletePreferredCompany/' + medicalProviderMaster.prefMedProviderId + '/' + companyId, {
@@ -209,21 +211,6 @@ export class MedicalProviderMasterService {
         });
         return <Observable<MedicalProviderMaster>>Observable.from(promise);
     }
+    
 
-    getMedicalProviderById(providerId: Number): Observable<MedicalProviderMaster> {
-        let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            // return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
-            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((data: any) => {
-                    let provider = null;
-                    provider = MedicalProviderMasterAdapter.parseResponse(data);
-                    resolve(provider);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
-    }
 }

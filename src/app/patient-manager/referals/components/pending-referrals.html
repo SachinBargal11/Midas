@@ -3,23 +3,25 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
-    </div>
 </div>
-<p-dataTable [value]="pendingReferralList" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true">
+</div>
+<p-dataTable [value]="pendingReferralList" [(selection)]="selectedReferrals" (onRowSelect)="getMedicalProviderDoctorRoom($event)"
+    [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true">
     <header>Pending Referrals List</header>
     <p-headerColumnGroup>
         <p-row>
-            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column selectionMode="single"></p-column>
             <p-column header="Patient Name" styleClass="inbound-column"></p-column>
+            <p-column header="Pending Referral Id" styleClass="inbound-column"></p-column>
             <p-column [style]="{'width':'50px'}" header="Case Id" styleClass="inbound-column"></p-column>
             <p-column [style]="{'width':'90px'}" header="Speciality" styleClass="inbound-column"></p-column>
             <p-column header="Doctor" styleClass="inbound-column-span"></p-column>
             <p-column header="Procedure" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
-    <p-column selectionMode="multiple"></p-column>
+    <p-column selectionMode="single"></p-column>
     <p-column field="displayPatientName"></p-column>
+    <p-column field="id"></p-column>
     <p-column field="caseId"></p-column>
     <p-column>
         <ng-template let-pReferral="rowData" pTemplate="body">
@@ -29,7 +31,13 @@
     </p-column>
     <!--<p-column *ngIf="roomTest" field="roomTest.name"></p-column>-->
     <p-column field="displayDoctorName"></p-column>
-    <p-column field="pendingReferralProcedureCode.procedureCode.procedureCodeDesc"></p-column>
+    <p-column>
+        <ng-template let-referralProcedure="rowData " pTemplate="body">
+            <div *ngFor="let currentReferralProc of referralProcedure.pendingReferralProcedureCode ">
+                {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
+            </div>
+        </ng-template>
+    </p-column>
 
 </p-dataTable><br>
 <div class="row">
@@ -39,16 +47,16 @@
         </label>
         <div class="form-group">
             <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0">-select-</option>
-             <optgroup label="Select MedicalProvider-Doctor">
+                        <option value="0">-Select-</option>
+             <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
                      <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
                          {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
              </optgroup>
-             <optgroup label="Select MedicalProvider-Room">
+             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
                     <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
                         {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
              </optgroup>
-              <optgroup label="Select MedicalProvider">
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
                      <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
                          {{currentPreferredMedicalProvider.name}}</option>
              </optgroup>
@@ -57,12 +65,15 @@
     </div>
     <div class="col-lg-8 m-t-lg">
         <p-confirmDialog width="425"></p-confirmDialog>
-        <a class="btn btn-success btn-sm" (click)="assign()"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Assign To Medical Office</span>
-       </a>
-        <a class="btn btn-danger btn-sm" (click)="dismiss()">
+        <button [disabled]="selectedReferrals == null || selectedOption == 0" class="btn btn-success btn-sm" (click)="assign()"><i class="fa fa-plus" aria-hidden="true"></i>
+            <span  class="hidden-md-down">Assign To Medical Office</span>
+        <!--<a class="btn btn-success btn-sm"  (click)="assign()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span  class="hidden-md-down">Assign To Medical Office</span>
+       </a>-->
+       </button>
+        <button [disabled]="selectedReferrals == null" class="btn btn-danger btn-sm" (click)="dismiss()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Dismiss Referral's</span>
-        </a>
+        </button>
         <a class="btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Medical Provider</span>
         </a>
@@ -74,22 +85,32 @@
 </p-dialog>
 <!--<router-outlet></router-outlet>-->
 
-<p-dialog [minWidth]="500" [width]="1200" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
-    header="Please select slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
-    [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <!--<div *ngIf="availableSlots && availableSlotsDialogVisible">
+<p-dialog [minWidth]="500" [width]="800" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
+    header="Available Slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <loader [visible]="isAvailableSlotsSavingInProgress"></loader>
+    <select *ngIf="!isAvailableSlotsSavingInProgress && selectedOption === 1" [(ngModel)]="selectedLocationId" class="select2-arrow form-control"
+        (change)="selectLocation($event)">
+            <option value="0"> -- Select Location -- </option>
+            <option *ngFor="let location of locations" [value]="location.location.id">{{location.location.name}}</option>                                       
+        </select>
+    <!--<div *ngIf="availableSlots.length > 0">
+        <pre>
+        {{availableSlots[0] | json}}
+            </pre>
     </div>-->
-    <p-carousel *ngIf="availableSlots.length > 0" headerText="" [value]="availableSlots" circular="circular">
+    <p-carousel numVisible="4" *ngIf="!isAvailableSlotsSavingInProgress && availableSlots.length > 0" headerText="" [value]="availableSlots"
+        circular="circular">
         <ng-template let-currentAvailableSlot pTemplate="item">
             <div class="ui-grid ui-grid-responsive">
 
-                <div class="ui-grid-row">
+                <div class="ui-grid-row m-l">
                     <div class="ui-grid-col-6">
                         {{currentAvailableSlot.forDate.local().format('ddd')}} {{currentAvailableSlot.forDate.local().format('MMM DD')}}
                     </div>
                 </div>
-                <div class="ui-grid-row" *ngFor="let currentSingleSlot of currentAvailableSlot.startEndTimes">
-                    <button class="btn btn-inline btn-warning ladda-button" data-style="slide-up">
+                <div class="ui-grid-row m-l" *ngFor="let currentSingleSlot of currentAvailableSlot.startAndEndTimes">
+                    <button class="btn btn-inline btn-warning ladda-button" (click)="setVisit(currentSingleSlot)">
                         <span class="ladda-label">
                             {{currentSingleSlot.start.local().format('hh:mm a')}}
                         </span>

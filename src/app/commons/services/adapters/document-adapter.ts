@@ -10,15 +10,12 @@ export class DocumentAdapter {
             documentId: data.documentId,            
             documentPath: data.documentPath,
             documentName: data.documentName,
-            documentType: data.documentType,
             status: data.status,
             message: data.message,
             createByUserID: data.createbyuserID,
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-            createdCompanyName: data.createdCompanyName,
-            createdUserName: data.createdUserName,
             originalResponse: data
         });
 

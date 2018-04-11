@@ -1,13 +1,8 @@
 <h3 class="with-border">Edit Case</h3>
 <div *ngIf="caseDetail">
     <form [formGroup]="caseform" (ngSubmit)="saveCase()">
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Case Information
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <!--<div class="col-lg-4">
+        <div class="row">
+            <!--<div class="col-lg-4">
                 <label class="form-label">Case Name
                                 <span class="color-red">*</span>
                             </label>
@@ -21,14 +16,14 @@
                     </div>
                 </div>
             </div>-->
-                    <div class="col-lg-4">
-                        <label class="form-label"> Patient Name
+            <div class="col-lg-4">
+                <label class="form-label"> Patient Name
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">
-                        </div>
-                        <!--<div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
+                <div class="form-group">
+                    <input type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">
+                </div>
+                <!--<div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                 <select formControlName="patientId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                             <option value="">-Select -</option>
                         </select>
@@ -38,46 +33,46 @@
                     </ul>
                 </div>
             </div>-->
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Case Type
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Case Type
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
-                            <select [ngModel]="caseDetail.caseTypeId" formControlName="caseTypeId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
+                <div class="form-group" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
+                    <select [ngModel]="caseDetail.caseTypeId" formControlName="caseTypeId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
                             <option value="">-Select -</option>
                             <option value="1">Nofault</option>
                             <option value="2">WC</option>
                             <option value="3">Private</option>
                             <option value="4">Lien</option>
                         </select>
-                            <div class='error-list' *ngIf="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.caseTypeId.hasError('required')">Case Type is required.</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class='error-list' *ngIf="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.caseTypeId.hasError('required')">Case Type is required.</li>
+                        </ul>
                     </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Case Status
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Case Status
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
-                            <select [ngModel]="caseDetail.caseStatusId" formControlName="caseStatusId" type="text" class="form-control" placeholder=""
-                                [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
+                <div class="form-group" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
+                    <select [ngModel]="caseDetail.caseStatusId" formControlName="caseStatusId" type="text" class="form-control" placeholder=""
+                        [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
                             <option value="1">Open</option>
                             <option value="2">Close</option>
                         </select>
-                            <div class='error-list' *ngIf="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.caseStatusId.hasError('required')">Case Status is required.</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class='error-list' *ngIf="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.caseStatusId.hasError('required')">Case Status is required.</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="row">
-                    <!--<div class="col-lg-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
                 <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -92,21 +87,24 @@
                         </ul>
                     </div>
                 </div>
-            </div>-->
-                    <div class="col-lg-4">
-                        <label class="form-label"> Carrier Case Number
+            </div>
+
+
+
+            <div class="col-lg-4">
+                <label class="form-label"> Carrier Case Number
                             </label>
-                        <div class="form-group" [class.error]="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
-                            <input [ngModel]="caseDetail.carrierCaseNo" formControlName="carrierCaseNo" type="text" class="form-control" placeholder=""
-                                [class.error]="!caseformControls.carrierCaseNo.valid">
-                            <div class='error-list' *ngIf="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.carrierCaseNo.hasError('required')">Carrier Case Number is required.</li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="form-group" [class.error]="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
+                    <input [ngModel]="caseDetail.carrierCaseNo" formControlName="carrierCaseNo" type="text" class="form-control" placeholder=""
+                        [class.error]="!caseformControls.carrierCaseNo.valid">
+                    <div class='error-list' *ngIf="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.carrierCaseNo.hasError('required')">Carrier Case Number is required.</li>
+                        </ul>
                     </div>
-                    <!--<div class="col-lg-4">
+                </div>
+            </div>
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Employer
                                 <span class="color-red">*</span>
                             </label>
@@ -122,56 +120,11 @@
                     </div>
                 </div>
             </div>-->
-                    <div class="col-lg-4">
-                        <label class="form-label">Medical Provider
-                                <!--<span class="color-red">*</span>-->
-                            </label>
-                        <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                            <!--<select [ngModel]="caseDetail.medicalProviderId" formControlName="providerId" type="text" (change)="attorneyChange($event)"
-                                class="form-control" placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                                <option value="">-Select -</option>
-                <option *ngFor="let provider of allProviders" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}} </option>
-                
-                </select>
-                            <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.providerId.hasError('required')">Medical Provider is required.</li>
-                                </ul>
-                            </div>-->
-                            <p-dropdown [options]="allProviders" [(ngModel)]="medicalProviderId" formControlName="providerId" (onChange)="providerChange($event)"
-                                [style]="{'width':'100%'}" filter="filter"></p-dropdown>
-                            <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                                <span class="color-red">Medical Provider  is required.</span>
-                            </div>
-                        </div>
-                        <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
-                            <label>{{caseDetail.medicalProviderName}}
-                 </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Case Source
-                            </label>
-                        <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
-                            <input formControlName="caseSource" [ngModel]="caseDetail.caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
-                                placeholder="" [class.error]="!caseformControls.caseSource.valid">
-                            <!--<input *ngIf="caseDetail.attorneyId" formControlName="caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">-->
-                            <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
-                            <label>{{caseDetail.orignatorCaseSource}}
-                 </label>
-                        </div>
-                    </div>
-                    <!--<div class="col-lg-4">
+            <div class="col-lg-4">
                 <label class="form-label">Attorney                              
                             </label>
                 <div class="form-group">
-                    <select [(ngModel)]="currentAttorneyId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
+                    <select [ngModel]="caseDetail.attorneyId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
                         placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                             <option value="0">-Select -</option>
                             <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>
@@ -182,65 +135,27 @@
                         </ul>
                     </div>
                 </div>
-            </div>-->
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label"> Claim Number
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> Case Source
                             </label>
-                        <div class="form-group" [class.error]="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
-                            <input [ngModel]="caseDetail.claimFileNumber" formControlName="claimNumber" type="text" class="form-control" placeholder=""
-                                [class.error]="!caseformControls.claimNumber.valid">
-                            <div class='error-list' *ngIf="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
-                                <ul>
-                                    <li *ngIf="caseformControls.claimNumber.hasError('required')">Claim Number is required.</li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <input formControlName="caseSource" (change)="casesourceChange($event)" [ngModel]="caseDetail.caseSource"
+                        type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                    <!--<input *ngIf="caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
+                        placeholder="" [class.error]="!caseformControls.caseSource.valid">-->
+
+                    <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Lien Information
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label class="form-label">Medicare       
-                                        </label>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <p-radioButton formControlName="medicare" name="medicare" value="1" label="Yes" [(ngModel)]="medicare"></p-radioButton>
-                                <p-radioButton formControlName="medicare" name="medicare" value="0" label="No" [(ngModel)]="medicare"></p-radioButton>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">Medicaid     
-                                        </label>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <p-radioButton formControlName="medicaid" name="medicaid" value="1" label="Yes" [(ngModel)]="medicaid"></p-radioButton>
-                                <p-radioButton formControlName="medicaid" name="medicaid" value="0" label="No" [(ngModel)]="medicaid"></p-radioButton>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label">SS Disability Income       
-                                        </label>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <p-radioButton formControlName="ssdisabililtyIncome" name="ssdisabililtyIncome" value="1" label="Yes" [(ngModel)]="ssdisabililtyIncome"></p-radioButton>
-                                <p-radioButton formControlName="ssdisabililtyIncome" name="ssdisabililtyIncome" value="0" label="No" [(ngModel)]="ssdisabililtyIncome"></p-radioButton>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <button *ngIf="caseDetail.caseStatusId === 1 && caseViewedByOriginator" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        </div>
+        <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
         </button>
         <a *ngIf="caseDetail.caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>

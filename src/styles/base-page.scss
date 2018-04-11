@@ -61,9 +61,6 @@ body {
             }
         }
     }
-    .ui-dialog-footer {
-        padding: 0px;
-    }
     .ui-widget-header {
         padding: 0;
         border: none;
@@ -143,41 +140,6 @@ body {
     .select-list {
         width: 300px;
     }
-
-    // Primeng selection color changes
-
-    .ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
-        background-color: blueviolet;
-        border-color: blueviolet;
-    }
-    .ui-listbox .ui-listbox-item.ui-state-highlight {
-        background-color: blueviolet;
-    }
-    .ui-listbox .ui-listbox-item.ui-state-highlight .ui-chkbox {    
-        border: 1px solid blueviolet;
-    }
-    .ui-chkbox .ui-chkbox-box.ui-state-active {        
-        border: 1px solid blueviolet;
-        background-color: blueviolet
-    }
-    .ui-state-active,.ui-state-highlight {
-        background-color: blueviolet;
-    }
-    .ui-button {
-        background-color: blueviolet;
-    }
-    .ui-radiobutton .ui-radiobutton-box.ui-state-active {
-        border: blueviolet;
-        background-color: blueviolet;
-    }
-    .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
-        background-color: blueviolet;
-    }
-    .ui-datepicker table.ui-datepicker-calendar td:not(.ui-state-disabled) a.ui-state-active {
-        background-color: blueviolet;
-    }
-    
-    //
 }
 
 .breadcrumb {
@@ -229,33 +191,27 @@ body {
     color: red;
 }
 
+// .site-header {
+//     background-color: darkred;
+// }
+
 .with-side-menu-compact .page-content {
     padding-top: inherit;
 }
-.form-label {
-    font-size: 14px;
-    font-weight: 700;
-    color: #333;
-}
-
 .site-header {
-    background-color: blueviolet;
+    background-color: darkred;
     .site-header-collapsed {
-        background: blueviolet;
+        background: darkred;
     }
 }
-// .site-header {
-//     background-color: darkolivegreen;
-// }
 
 .site-header .header-alarm {
     opacity: 0.7;
 }
 
-.btn.btn-add {
-    background-color: blueviolet;
-    border-color: blueviolet;
-    padding: .25rem .75rem;
+.btn.btn-grey {
+    background-color: #adb7be;
+    border-color: #adb7be;
 }
 
 .side-menu.side-menu-compact {

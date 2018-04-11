@@ -26,86 +26,14 @@ export class AvailableSlotsService {
         this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
-    getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: string, endDate: string): Observable<AvailableSlot[]> {
+    getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
+        let formattedStartDate: string = startDate.format('YYYY-MM-DD');
+        let formattedEndDate: string = endDate.format('YYYY-MM-DD');
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/getFreeSlotsByLocationAndDoctorId/${locationId}/${doctorId}/${startDate}/${endDate}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/GetFreeSlotsForDoctorByLocationId/${doctorId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
-                    
-                }, (error) => {
-                   let data = [
-                        {
-                            "forDate": "2017-05-02T14:00:00",
-                            "startEndTimes": [
-                                {
-                                    "start": "2017-05-02T14:30:00",
-                                    "end": "2017-05-02T15:00:00"
-                                },
-                                {
-                                    "start": "2017-05-02T15:00:00",
-                                    "end": "2017-05-02T15:30:00"
-                                },
-                                {
-                                    "start": "2017-05-02T15:30:00",
-                                    "end": "2017-05-02T16:00:00"
-                                }
-                            ]
-                        },
-                        {
-                            "forDate": "2017-05-03T14:00:00",
-                            "startEndTimes": [
-                                {
-                                    "start": "2017-05-03T14:30:00",
-                                    "end": "2017-05-03T15:00:00"
-                                },
-                                {
-                                    "$id": "7",
-                                    "start": "2017-05-03T15:00:00",
-                                    "end": "2017-05-03T15:30:00"
-                                },
-                                {
-                                    "$id": "8",
-                                    "start": "2017-05-03T15:30:00",
-                                    "end": "2017-05-03T16:00:00"
-                                }
-                            ]
-                        },
-                        {
-                            "forDate": "2017-05-04T14:00:00",
-                            "startEndTimes": [
-                                {
-                                    "start": "2017-05-04T14:30:00",
-                                    "end": "2017-05-04T15:00:00"
-                                },
-                                {
-                                    "start": "2017-05-04T15:00:00",
-                                    "end": "2017-05-04T15:30:00"
-                                },
-                                {
-                                    "start": "2017-05-04T15:30:00",
-                                    "end": "2017-05-04T16:00:00"
-                                }
-                            ]
-                        },
-                        {
-                            "forDate": "2017-05-05T14:00:00",
-                            "startEndTimes": [
-                                {
-                                    "start": "2017-05-05T14:30:00",
-                                    "end": "2017-05-05T15:00:00"
-                                },
-                                {
-                                    "start": "2017-05-05T15:00:00",
-                                    "end": "2017-05-05T15:30:00"
-                                },
-                                {
-                                    "start": "2017-05-05T15:30:00",
-                                    "end": "2017-05-05T16:00:00"
-                                }
-                            ]
-                        }
-                    ];
                     let availableSlots: AvailableSlot[] = [];
                     if (_.isArray(data)) {
                         availableSlots = (<Object[]>data).map((data: any) => {
@@ -113,6 +41,30 @@ export class AvailableSlotsService {
                         });
                     }
                     resolve(availableSlots);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<AvailableSlot[]>>Observable.fromPromise(promise);
+    }
+
+    getAvailableSlotsByLocationAndRoomId(locationId: Number, roomId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
+        let formattedStartDate: string = startDate.format('YYYY-MM-DD');
+        let formattedEndDate: string = endDate.format('YYYY-MM-DD');
+        let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let availableSlots: AvailableSlot[] = [];
+                    if (_.isArray(data)) {
+                        availableSlots = (<Object[]>data).map((data: any) => {
+                            return AvailableSlotAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(availableSlots);
+                }, (error) => {
                     reject(error);
                 });
 

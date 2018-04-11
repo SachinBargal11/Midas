@@ -10,7 +10,6 @@ import { SecurityCheckComponent } from './components/security-check';
 import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { ChangePasswordComponent } from './components/change-password';
-
 import { UserSettingsComponent } from './components/user-settings';
 import { NotificationSubscriptionComponent } from './components/notification-subscription';
 import { UserSettingsShellComponent } from './components/user-settings-shell';

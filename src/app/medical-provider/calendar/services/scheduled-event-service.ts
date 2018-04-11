@@ -15,13 +15,16 @@ export class ScheduledEventService {
     private _url: string = 'http://localhost:3004/events';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getEvents(): Observable<ScheduledEvent[]> {
         let promise: Promise<ScheduledEvent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url)
+            return this._http.get(this._url, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let events: ScheduledEvent[];
@@ -88,7 +91,9 @@ export class ScheduledEventService {
     }
     deleteEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${event.id}`)
+            return this._http.delete(`${this._url}/${event.id}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     resolve(data);

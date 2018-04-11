@@ -7,8 +7,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { AppValidators } from '../../commons/utils/AppValidators';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../services/authentication-service';
-import { environment } from '../../../environments/environment';
 
+import { environment } from '../../../environments/environment';
 @Component({
     selector: 'forgot-password',
     templateUrl: './forgot-password.html'

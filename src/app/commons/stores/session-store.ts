@@ -48,9 +48,8 @@ export class SessionStore {
 
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
-            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
 
-            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
+            if (storedAccount && storedAccessToken) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -190,6 +189,7 @@ export class SessionStore {
 
     private _resetSession() {
         this.session.account = null;
+        this.session.currentCompany = null;
         this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }
@@ -201,57 +201,26 @@ export class SessionStore {
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
     }
-
-    isOnlyAttorneyRole() {
-        let isOnlyAttorneyRole: boolean = false;
+    isOnlyDoctorRole() {
+        let isOnlyDoctorRole: boolean = false;
         let roles: UserRole[] = [];
         roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
         if (roles) {
             if (roles.length === 1) {
-                let attorneyRoleOnly = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 6;
+                let doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
                 });
-                if (attorneyRoleOnly) {
-                    isOnlyAttorneyRole = true;
+                if (doctorRoleOnly) {
+                    isOnlyDoctorRole = true;
                 } else {
-                    isOnlyAttorneyRole = false;
+                    isOnlyDoctorRole = false;
                 }
             } else {
-                let count = 0;
-                let currentcompanyrole = 0;
-                _.forEach(roles, (currentRole) => {
-                   if(currentRole.companyId == this.session.currentCompany.id)
-                   {
-                      if(currentRole.roleType === 6)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                      if(currentRole.roleType === 1)
-                      {
-                        count = count + 1;
-                        currentcompanyrole = currentRole.roleType;
-                      }
-                   }
-                });
-                if(count > 1)
-                {
-                    isOnlyAttorneyRole = false;
-                }
-                else{
-                    if(currentcompanyrole == 6)
-                    {
-                        isOnlyAttorneyRole = true;
-                    }
-                    else{
-                        isOnlyAttorneyRole = false;
-                    }
-                }
+                isOnlyDoctorRole = false;
             }
         }
-        return isOnlyAttorneyRole;
+        return isOnlyDoctorRole;
     }
-
 
     getToken() {
         var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
@@ -262,8 +231,8 @@ export class SessionStore {
 
         var state = this.rand();
         var nonce = this.rand();
-        window.localStorage.setItem(this.__state__, state);
-        window.localStorage.setItem(this.__nonce__, nonce);
+        localStorage["state"] = state;
+        localStorage["nonce"] = nonce;
 
         var url =
             authorizationUrl + "?" +
@@ -298,7 +267,6 @@ export class SessionStore {
                             environment.IDENTITY_SERVER_URL = config.identityServerUrl;
                             environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
                             environment.HOME_URL = config.home_url;
-                            environment.APP_URL = config.app_url;
                             environment.IDENTITY_SCOPE = config.identity_scope;
                             environment.CLIENT_ID = config.client_id;
                             resolve(environment);
@@ -358,7 +326,6 @@ export class SessionStore {
                             environment.IDENTITY_SERVER_URL = config.identityServerUrl;
                             environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
                             environment.HOME_URL = config.home_url;
-                            environment.APP_URL = config.app_url;
                             environment.IDENTITY_SCOPE = config.identity_scope;
                             environment.CLIENT_ID = config.client_id;
                             resolve(environment);
@@ -369,7 +336,7 @@ export class SessionStore {
                                 let storedAccountData: any = JSON.parse(storedAccount);
                                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                                 let now = moment();
-                                if (account.type == 'attorney' && account.tokenExpiresAt > now) {
+                                if (account.type == 'ancillary' && account.tokenExpiresAt > now) {
                                     this._populateSession(account)
                                     if (window.location.hash != '' && window.location.hash != '#/404' && window.location.hash != '#/') {
                                         window.location.assign(window.location.href);
@@ -397,7 +364,7 @@ export class SessionStore {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 let now = moment();
-                if (account.type == 'attorney' && account.tokenExpiresAt > now) {
+                if (account.type == 'ancillary' && account.tokenExpiresAt > now) {
                     this._populateSession(account)
                         window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
                 } else {
@@ -450,35 +417,6 @@ export class SessionStore {
         let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
         window.location.assign(url);
     }
-
-    refreshToken() {
-        var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
-        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
-        var response_type = "id_token token";
-        var scope: string = `${environment.IDENTITY_SCOPE}`;
-        var client_id: string = `${environment.CLIENT_ID}`;
-
-        let storedState: any = window.localStorage.getItem("state");
-        let storedNonce: any = window.localStorage.getItem("nonce");
-        var state = storedState;
-        var nonce = storedNonce;
-        localStorage["state"] = state;
-        localStorage["nonce"] = nonce;
-        // window.localStorage.setItem(this.__state__, state);
-        // window.localStorage.setItem(this.__nonce__, nonce);
-
-        var url =
-            authorizationUrl + "?" +
-            "client_id=" + encodeURI(client_id) + "&" +
-            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
-            "response_type=" + encodeURI(response_type) + "&" +
-            "scope=" + encodeURI(scope) + "&" +
-            "state=" + encodeURI(state) + "&" +
-            "nonce=" + encodeURI(nonce);
-        url;
-        window.location.assign(url);
-    }
-
     rand() {
         return (Date.now() + "" + Math.random()).replace(".", "");
     }

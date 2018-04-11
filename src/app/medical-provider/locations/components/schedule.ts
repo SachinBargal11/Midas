@@ -222,7 +222,7 @@ export class ScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to update schedule.';
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -260,12 +260,11 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success', 'Schedule added successfully!');
-                // this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to add schedule.';
+                let errString = 'Unable to add Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -295,12 +294,11 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success', 'Schedule updated successfully!');
-                // this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to update schedule.';
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

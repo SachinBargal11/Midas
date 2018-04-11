@@ -3,13 +3,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http } from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { SignalRModule } from 'ng2-signalr';
 import { SignalRConfiguration } from 'ng2-signalr';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
 
 import { ConfigService, configServiceFactory } from './config-service';
-import { environment } from '../environments/environment';
+
 import { AppComponent } from './app.component';
 
 import { NoContentComponent } from './no-content-component';
@@ -27,8 +26,8 @@ import { ConfirmationService } from 'primeng/primeng';
 
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
-import { ValidateAttorneySession } from './commons/guards/validate-attorney-session';
-import { ValidateInActiveAttorneySession } from './commons/guards/validate-inactiveattorney-session';
+import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
+import { ValidateInActiveDoctorSession } from './commons/guards/validate-inactivedoctor-session';
 
 import { RegistrationService } from './account/services/registration-service';
 import { CompanyStore } from './account/stores/company-store';
@@ -36,8 +35,6 @@ import { CompanyStore } from './account/stores/company-store';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { ScannerService } from './commons/services/scanner-service';
-import { InsuranceMasterTypeStore } from './commons/stores/insurance-master-type-store';
-import { InsuranceMasterTypeService } from './commons/services/insurance-master-type-service';
 import { DocumentUploadService } from './commons/services/document-upload-service';
 import { DiagnosisService } from './commons/services/diagnosis-service';
 import { DiagnosisStore } from './commons/stores/diagnosis-store';
@@ -65,11 +62,6 @@ import { NotificationsService } from 'angular2-notifications';
 import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DateFormatPipe } from './commons/pipes/date-format-pipe';
-
-import { UserSettingStore } from './commons/stores/user-setting-store';
-import { UserSettingService } from './commons/services/user-setting-service';
-import { PushNotificationStore } from './commons/stores/push-notification-store';
-import { PushNotificationService } from './commons/services/push-notification-service';
 
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
@@ -104,14 +96,13 @@ export function createConfig(): SignalRConfiguration {
     ReactiveFormsModule,
     CommonsModule,
     AppRoutingModule,
-    AmChartsModule,
     DashboardModule,
     SimpleNotificationsModule,
     EventModule,
-    // SignalRModule.forRoot(createConfig)
     SignalRModule,
-    NgIdleKeepaliveModule.forRoot()
+    // SignalRModule.forRoot(createConfig)
     // MomentModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {
@@ -156,18 +147,12 @@ export function createConfig(): SignalRConfiguration {
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DateFormatPipe,
-    ValidateAttorneySession,
-    ValidateInActiveAttorneySession,
+    ValidateDoctorSession,
+    ValidateInActiveDoctorSession,
     DiagnosisService,
     DiagnosisStore,
     ProcedureService,
     ProcedureStore,
-    UserSettingStore,
-    UserSettingService,
-    PushNotificationStore,
-    PushNotificationService,
-    InsuranceMasterTypeStore,
-    InsuranceMasterTypeService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore
   ],

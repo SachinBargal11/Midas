@@ -1,2 +1,2 @@
-cd C:\inetpub\website\dev-gb-attorney.qwinix.io
+cd C:\inetpub\website\dev-gb-ancillary.qwinix.io
 del * /S /Q

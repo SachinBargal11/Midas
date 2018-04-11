@@ -28,6 +28,7 @@ export class DignosisComponent implements OnInit {
   selectedDiagnosis: DiagnosisCode[];
 
   @Input() selectedVisit: PatientVisit;
+  @Input() routeFrom: number;
   @Output() save: EventEmitter<DiagnosisCode[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
@@ -46,22 +47,23 @@ export class DignosisComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.routeFrom;
     this.loadAllDiagnosisTypes();
-    // this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
+    this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }
 
   loadAllDiagnosisTypes() {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     let result = this._diagnosisStore.getAllDiagnosisTypes();
     result.subscribe(
       (diagnosisTypes: DiagnosisType[]) => {
         this.diagnosisTypes = diagnosisTypes;
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
 
@@ -104,6 +106,11 @@ export class DignosisComponent implements OnInit {
 
 
   saveDiagnosisCodes() {
+    // let diagnosisCodes = [];
+    // this.selectedDiagnosisCodes.forEach(currentDiagnosisCode => {
+    //   diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+    // });
+    // this.saveComplete.emit(diagnosisCodes);
     this.save.emit(this.selectedDiagnosisCodes);
   }
 

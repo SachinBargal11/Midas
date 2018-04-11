@@ -15,7 +15,7 @@ import { SignupAdapter } from '../../account-setup/services/adapters/signup-adap
 @Injectable()
 export class AuthenticationService {
     companies: any[];
-    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    // private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(private _http: Http) { }
 
@@ -279,7 +279,6 @@ export class AuthenticationService {
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-
 
     updateCompany(userDetail: Signup): Observable<Signup> {
         let promise: Promise<Signup> = new Promise((resolve, reject) => {

@@ -53,9 +53,7 @@ export class DocumentUploadService {
 
     uploadSignedDocument(url: string, signatureData: any): Promise<Document> {
         let promise: Promise<Document> = new Promise((resolve, reject) => {
-            return this._http.post(url, signatureData, {
-                headers: this._headers
-            })
+            return this._http.post(url, signatureData)
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let document: Document = DocumentAdapter.parseResponse(data);
@@ -73,6 +71,7 @@ export class DocumentUploadService {
                 headers: this._headers
             })
                 // return this._http.get(environment.SERVICE_BASE_URL + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
+                
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     // let documentType: DocumentType[] = null;

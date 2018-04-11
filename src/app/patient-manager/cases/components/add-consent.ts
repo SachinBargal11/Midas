@@ -75,7 +75,6 @@ export class AddConsentComponent implements OnInit {
     caseStatusId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
-    caseViewedByOriginator : boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -108,7 +107,6 @@ export class AddConsentComponent implements OnInit {
             } else {
                 this.caseId = this.inputCaseId;
             }
-            this.MatchCase();
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
             // this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
@@ -195,7 +193,7 @@ export class AddConsentComponent implements OnInit {
             }
             else {
                 let notification = new Notification({
-                    'title': 'Consent uploaded successfully!',
+                    'title': 'Consent Uploaded Successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -258,12 +256,12 @@ export class AddConsentComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select record to delete',
+                'title': 'select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select record to delete');
+            this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
 
@@ -275,11 +273,11 @@ export class AddConsentComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and consent data already exists.');
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
         }
         else {
             let notification = new Notification({
-                'title': 'Consent uploaded successfully!',
+                'title': 'Consent Uploaded Successfully!',
                 'type': 'SUCCESS',
                 'createdAt': moment()
             });
@@ -351,26 +349,7 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
-    MatchCase() {            
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-                this.caseStatusId = caseDetail.caseStatusId;
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
+
 }
 
 

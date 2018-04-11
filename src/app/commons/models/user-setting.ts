@@ -1,18 +1,18 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { User } from './user';
-import { CalendarView  } from './enums/calendar-view';
+import { CalendarView } from './enums/calendar-view';
 
 const UserSettingRecord = Record({
     id: 0,
     user: null,
-    userId:0,
-    companyId:0,
+    userId: 0,
+    companyId: 0,
     isPublic: false,
-    isSearchable:false,
+    isSearchable: false,
     isCalendarPublic: false,
-    SlotDuration:0,
-    calendarViewId:0,
+    SlotDuration: 0,
+    calendarViewId: 0,
     preferredUIViewId: 1
 });
 
@@ -20,20 +20,20 @@ export class UserSetting extends UserSettingRecord {
 
     id: number;
     user: User;
-    userId:number;
-    companyId:number;
+    userId: number;
+    companyId: number;
     isPublic: boolean;
     isSearchable: boolean;
     isCalendarPublic: boolean;
     SlotDuration: number;
-    calendarViewId:number;
+    calendarViewId: number;
     preferredUIViewId:number;
 
     constructor(props) {
         super(props);
     }
 
-     get calendarViewLabel(): string {
+    get calendarViewLabel(): string {
         return UserSetting.getCalendarTypeLabel(this.calendarViewId);
     }
     // tslint:disable-next-line:member-ordering

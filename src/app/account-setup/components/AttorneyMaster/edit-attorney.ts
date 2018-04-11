@@ -75,11 +75,14 @@ export class EditAttorneyComponent implements OnInit {
         this.attorneyform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
+            lastName: ['', Validators.required],         
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]]
+           
         });
+
+
         this.attorneyformControls = this.attorneyform.controls;
     }
     ngOnInit() {
@@ -98,9 +101,9 @@ export class EditAttorneyComponent implements OnInit {
             signup: new Signup({
                 company: {
                     id: this.attorney.signup.company.id,
-                    name: this.attorneyform.value.companyName,
+                    name: this.attorneyform.value.companyName,                  
                     companyType: this.attorneyform.value.companyType
-
+                    
                 },
                 user: {
                     id: this.attorney.signup.user.id,
@@ -120,12 +123,12 @@ export class EditAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.updateAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Success!', 'Preferred attorney has been updated successfully!.');
+                this._notificationsService.success('Welcome!', 'Preffered attorney has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to register user.';
+                let errString = 'Unable to Register User.';
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {

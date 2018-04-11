@@ -6,7 +6,6 @@ const UserRoleRecord = Record({
     id: 0,
     name: null,
     roleType: RoleType.REGULAR_STAFF,
-    companyId:0,
 });
 
 export class UserRole extends UserRoleRecord {
@@ -14,7 +13,6 @@ export class UserRole extends UserRoleRecord {
     id: number;
     name: string;
     roleType: RoleType;
-    companyId:number;
 
     constructor(props) {
         super(props);
@@ -32,8 +30,6 @@ export class UserRole extends UserRoleRecord {
                 return 'Billing Staff';
             case RoleType.NURSE:
                 return 'Nurse';
-            case RoleType.ATTORNEY:
-                return 'Attorney';   
         }
     }
 }

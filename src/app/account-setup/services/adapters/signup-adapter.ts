@@ -13,7 +13,7 @@ export class SignupAdapter {
                 company: CompanyAdapter.parseResponse(data.company),
                 user: UserAdapter.parseResponse(data.user),
                 contactInfo: ContactAdapter.parseResponse(data.contactInfo),
-                originalResponse: data
+                originalResponse:data
             });
         }
         return signup;

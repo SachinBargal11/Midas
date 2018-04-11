@@ -33,6 +33,7 @@ export class ImeVisitAdapter {
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+            VisitCreatedByCompanyId: data.VisitCreatedByCompanyId,
 
         });
 

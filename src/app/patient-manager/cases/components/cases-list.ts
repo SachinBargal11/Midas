@@ -21,6 +21,7 @@ import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { ConsentStore } from '../../cases/stores/consent-store';
 import { Document } from '../../../commons/models/document';
+
 @Component({
     selector: 'caseslist',
     templateUrl: './cases-list.html'
@@ -39,15 +40,11 @@ export class CasesListComponent implements OnInit {
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
-    url;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
     caseId: number;
     companyId: number;
-    selectedCaseId: number;
-    signedDocumentUploadUrl: string;
-    signedDocumentPostRequestData: any;
-    isElectronicSignatureOn: boolean = false;
-    addConsentDialogVisible: boolean = false;
-    caseViewedByOriginator: boolean = false;
+    url;
 
     constructor(
         public _route: ActivatedRoute,
@@ -59,16 +56,14 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
-        private _consentStore: ConsentStore
-    ) {
+        private _consentStore: ConsentStore,
 
-        this.companyId = this.sessionStore.session.currentCompany.id;
-        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+    ) {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
+       
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this.MatchCase();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(
                 (patient: Patient) => {
@@ -88,7 +83,7 @@ export class CasesListComponent implements OnInit {
         this.loadCases();
     }
 
-    loadCases() {
+    loadCases() {    
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
@@ -104,6 +99,7 @@ export class CasesListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
     isCurrentUser(userId): boolean {
         let isCurrentUser: boolean = false;
         _.forEach(this.cases, (currentCase: Case) => {
@@ -113,11 +109,50 @@ export class CasesListComponent implements OnInit {
         });
         return isCurrentUser;
     }
-    // downloadConsent(caseDocuments: CaseDocument[]) {
-    //     caseDocuments.forEach(caseDocument => {
-    //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+
+    // isCreatedByCompany(companyId): boolean {
+    //     let isCreatedByCompany: boolean = false;
+    //     _.forEach(this.cases, (currentCase: Case) => {
+    //         if (currentCase.createdByCompanyId === companyId) {
+    //             isCreatedByCompany = true;
+    //         }
     //     });
+    //     return isCreatedByCompany;
     // }
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible = false;
+                this.loadCases();
+            }
+        });
+        // this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
 
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
@@ -148,58 +183,60 @@ export class CasesListComponent implements OnInit {
             this._progressBarService.hide();
         });
     }
+    // consentAvailable(case1: Case) {
+    //     // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
+    //     //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
+    //     // });
+    //     if (case1.companyCaseConsentApproval.length > 0) {
+    //         let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
+    //             return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
+    //             // if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
+    //             //     return this.consentRecived = 'Yes';
+    //             // } else if (currentConsent.companyId !== this.sessionStore.session.currentCompany.id){
+    //             //     return this.consentRecived = 'No';
+    //             // }
+    //         });
+    //         if (consentAvailable) {
+    //             return this.consentRecived = 'Yes';
+    //         } else {
+    //             return this.consentRecived = 'No';
+    //         }
+    //     } else {
+    //         return this.consentRecived = 'No';
+    //     }
+    // }
 
-    consentAvailable(case1: Case) {
-        // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
-        //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
-        // });
-        if (case1.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
-                // if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
-                //     return this.consentRecived = 'Yes';
-                // } else if (currentConsent.companyId !== this.sessionStore.session.currentCompany.id){
-                //     return this.consentRecived = 'No';
-                // }
-            });
-            if (consentAvailable) {
-                return this.consentRecived = 'Yes';
-            } else {
-                return this.consentRecived = 'No';
-            }
-        } else {
-            return this.consentRecived = 'No';
-        }
-    }
+    // referralAvailable(case1: any) {
+    //     let referralOutBound;
+    //     let referralInBound;
+    //     let referralInBoundOutBound;
+    //     if (case1.referral.length > 0) {
 
-    referralAvailable(case1: any) {
-        let referralOutBound;
-        let referralInBound;
-        let referralInBoundOutBound;
-        if (case1.referral.length > 0) {
+    //         referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
+    //             return currentReferral.referredToCompanyId === this.sessionStore.session.currentCompany.id;
+    //         });
+    //         referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
+    //             return currentReferral.referringCompanyId === this.sessionStore.session.currentCompany.id;
+    //         });
+    //         if (referralInBound && referralOutBound) {
+    //             return this.referralRecived = 'InBound/OutBound';
+    //         }
+    //         else if (referralInBound) {
+    //             return this.referralRecived = 'InBound';
+    //         }
+    //         else if (referralOutBound) {
+    //             return this.referralRecived = 'OutBound';
+    //         }
+    //         else {
+    //             return this.referralRecived = '';
+    //         }
+    //     } else {
+    //         return this.referralRecived = '';
+    //     }
 
-            referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referredToCompanyId === this.sessionStore.session.currentCompany.id;
-            });
-            referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referringCompanyId === this.sessionStore.session.currentCompany.id;
-            });
-            if (referralInBound && referralOutBound) {
-                return this.referralRecived = 'InBound/OutBound';
-            }
-            else if (referralInBound) {
-                return this.referralRecived = 'InBound';
-            }
-            else if (referralOutBound) {
-                return this.referralRecived = 'OutBound';
-            }
-            else {
-                return this.referralRecived = '';
-            }
-        } else {
-            return this.referralRecived = '';
-        }
-    }
+
+    // }
+
 
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -254,126 +291,12 @@ export class CasesListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select case to delete',
+                'title': 'select case to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select case to delete');
+            this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-
-    showDialog(currentCaseId: number) {
-        this.addConsentDialogVisible = true;
-        this.selectedCaseId = currentCaseId;
-    }
-
-    documentUploadComplete(documents: Document[]) {
-        _.forEach(documents, (currentDocument: Document) => {
-            if (currentDocument.status == 'Failed') {
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message);
-            }
-            else {
-                let notification = new Notification({
-                    'title': 'Consent uploaded successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Success!', 'Consent uploaded successfully');
-                this.addConsentDialogVisible = false;
-                this.loadCases();
-            }
-
-        });
-    }
-
-    documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-    }
-
-    signedDocumentUploadComplete(document: Document) {
-        if (document.status == 'Failed') {
-            let notification = new Notification({
-                'title': document.message + '  ' + document.documentName,
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and consent data already exists.');
-        }
-        else {
-            let notification = new Notification({
-                'title': 'Consent uploaded successfully!',
-                'type': 'SUCCESS',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this.addConsentDialogVisible = false;
-            this.loadCases();
-        }
-    }
-
-    signedDocumentUploadError(error: Error) {
-        let errString = 'Not able to signed document.';
-        let notification = new Notification({
-            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-            'type': 'ERROR',
-            'createdAt': moment()
-        });
-        this._notificationsStore.addNotification(notification);
-        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    }
-
-    downloadTemplate(caseId) {
-        this._progressBarService.show();
-        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
-            .subscribe(
-            (response) => {
-                // this.document = document
-                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-            },
-            (error) => {
-                let errString = 'Unable to download';
-                let notification = new Notification({
-                    'messages': 'Unable to download',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                //this._notificationsStore.addNotification(notification);
-                this._progressBarService.hide();
-                this._notificationsService.error('Oh No!', 'Unable to download');
-
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this._progressBarService.hide();
-    }
-    MatchCase() {            
-        this._progressBarService.show();
-        let result = this._casesStore.fetchCaseById(this.caseId);
-        result.subscribe(
-            (caseDetail: Case) => {                    
-                if (caseDetail.orignatorCompanyId != this.sessionStore.session.currentCompany.id) {
-                    this.caseViewedByOriginator = false;
-                } else {
-                    this.caseViewedByOriginator = true;
-                }
-            },
-            (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
- 
-        }
 }

@@ -59,7 +59,6 @@ export class DocumentUploadComponent implements OnInit {
   @Input() isdownloadTemplate: boolean = false;
   @Output() download: EventEmitter<Document> = new EventEmitter();
   @Input() inputCaseId: number;
-  isDocumentSelected: boolean;
 
   constructor(
     private _fb: FormBuilder,
@@ -82,7 +81,7 @@ export class DocumentUploadComponent implements OnInit {
   ngOnInit() {
     this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
-      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
+      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
   }
 
@@ -147,38 +146,23 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   onBeforeSendEvent(event) {
-    if (this.isConsentDocumentOn) {
-      this.documentType = "consent";
+    debugger;
+    if (this.documentType != "") {
+      alert('please choose');
     }
 
-    if (this.documentType != "") {
-      let param: string;
-      if (this.currentId == 2) {
-        if (this.isConsentDocumentOn) {
-          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-        } else {
-          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-        }
-      } else if (this.currentId == 3) {
-        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-      } else if (this.currentId == 1) {
-        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-      } else if (this.currentId == 4) {
-        param = '{"ObjectType":"imeVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-      } else if (this.currentId == 5) {
-        param = '{"ObjectType":"euoVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-      } else if (this.currentId == 6) {
-        param = '{"ObjectType":"attorneyVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
-      } else if (this.currentId == 7) {
-        param = '{"ObjectType":"unscheduleVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id + '"}';
+    let param: string;
+    if (this.currentId == 2) {
+      if (this.isConsentDocumentOn) {
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else {
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
       }
-      event.xhr.setRequestHeader("inputjson", param);
-      event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    } else if (this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
     }
-    else {
-      this.uploadError.emit(new Error('Please select document type'));
-      this.isDocumentSelected = false;
-    }
+    event.xhr.setRequestHeader("inputjson", param);
+    event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
   }
 
   onFilesUploadComplete(event) {
@@ -187,19 +171,16 @@ export class DocumentUploadComponent implements OnInit {
       return DocumentAdapter.parseResponse(document);
     });
     this.uploadComplete.emit(documents);
-
   }
 
   onFilesUploadError(event) {
-    if (this.isDocumentSelected) {
-      this.uploadError.emit(new Error('Unable to upload selected files.'));
-    }
+    this.uploadError.emit(new Error('Unable to upload selected files.'));
   }
 
   uploadScannedDocuments() {
     let fileName = this.scannedFileName.trim();
     if (!fileName) {
-      this._notificationsService.error('File name not present', 'Please provide name of file for scanned document.');
+      this._notificationsService.error('File Name not present', 'Please provide name of file for scanned document.');
       return;
     }
     this._documentUploadService.uploadScanDocument(this.dwObject, this.url, fileName)

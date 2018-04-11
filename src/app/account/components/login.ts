@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         return false;
     }
 
-    login() {     
+    login() {
         let result;
         this.isLoginInProgress = true;
         let forceLogin = true;

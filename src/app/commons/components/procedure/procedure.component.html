@@ -1,5 +1,5 @@
 <p-confirmDialog width="425"></p-confirmDialog>
-<div *ngIf="sessionStore.isOnlyAttorneyRole()">
+<div *ngIf="sessionStore.isOnlyDoctorRole()">
   <br>
   <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
@@ -25,7 +25,7 @@
 
 <div class="input-group">
   <h3 class="with-border">Selected Procedures
-    <a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyAttorneyRole()" (click)="deleteProcedureCode()">
+    <a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <loader [visible]="isDeleteProgress"></loader>
     </a>
@@ -50,6 +50,6 @@
   </p-column>
 </p-dataTable>
 <br>
-<button *ngIf="sessionStore.isOnlyAttorneyRole()" class="btn btn-success sign-up" (click)="saveProcedures()">Save
+<button *ngIf="sessionStore.isOnlyDoctorRole()" class="btn btn-success sign-up" (click)="saveProcedures()">Save
     <loader [visible]="isSaveProgress"></loader>
 </button>

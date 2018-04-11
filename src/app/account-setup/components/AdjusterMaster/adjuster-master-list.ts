@@ -106,7 +106,7 @@ export class AdjusterMasterListComponent implements OnInit {
 
                     },
                     (error) => {
-                        let errString = 'Unable to delete adjuster';
+                        let errString = 'Unable to delete Adjuster';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -126,12 +126,12 @@ export class AdjusterMasterListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'Select adjuster to delete',
+                'title': 'select Adjuster to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select adjuster to delete');
+            this._notificationsService.error('Oh No!', 'select adjuster to delete');
         }
     }
 

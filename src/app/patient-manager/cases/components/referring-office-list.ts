@@ -81,7 +81,7 @@ export class ReferringOfficeListComponent implements OnInit {
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Referring office deleted successfully!',
+                            'title': 'Referring Office deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
@@ -90,7 +90,7 @@ export class ReferringOfficeListComponent implements OnInit {
                         this.selectedReferringOffices = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete referring office';
+                        let errString = 'Unable to delete Referring Office';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -111,12 +111,12 @@ export class ReferringOfficeListComponent implements OnInit {
              });
         } else {
             let notification = new Notification({
-                'title': 'Select referring office to delete',
+                'title': 'select Referring Office to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Select referring office to delete');
+            this._notificationsService.error('Oh No!', 'select Referring Office to delete');
         }
     }
 

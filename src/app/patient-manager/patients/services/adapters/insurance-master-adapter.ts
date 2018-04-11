@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { InsuranceMaster } from '../../models/insurance-master';
-import { InsuranceAddressAdapter } from '../../../../commons/services/adapters/insurance-address-adapter';
+import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
 import { ContactAdapter } from '../../../../commons/services/adapters/contact-adapter';
 import { AdjusterAdapter } from '../../../../account-setup/services/adapters/adjuster-adapter';
 
@@ -15,13 +15,8 @@ export class InsuranceMasterAdapter {
                 companyName: data.companyName,
                 adjusterMasters: AdjusterAdapter.parseResponse(data.adjusterMasters),
                 Contact: ContactAdapter.parseResponse(data.contactInfo),
-                InsuranceAddress: data.insuranceAddressInfo,
-                Only1500Form: data.only1500Form,
-                paperAuthorization: data.paperAuthorization,
-                priorityBilling: data.priorityBilling,
-                zeusID: data.zeusID,
-                createdByCompanyId: data.createdByCompanyId,
-                insuranceMasterTypeId : data.insuranceMasterTypeId
+                Address: AddressAdapter.parseResponse(data.addressInfo),
+           
             });
         }
         return insuranceMaster;

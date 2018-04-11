@@ -42,6 +42,32 @@ export class LocationsService {
         return <Observable<LocationDetails>>Observable.fromPromise(promise);
     }
 
+    getLocationsByCompanyId(companyId: number): Observable<LocationDetails[]> {
+        let requestData = {
+            company: {
+                id: companyId
+            }
+        };
+        let promise: Promise<LocationDetails[]> = new Promise((resolve, reject) => {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/getall', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: LocationDetails[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
     getLocations(): Observable<any[]> {
         let requestData = {
             company: {
@@ -181,6 +207,7 @@ export class LocationsService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+
     getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/Location/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
@@ -202,27 +229,6 @@ export class LocationsService {
         return <Observable<any[]>>Observable.fromPromise(promise);
     }
 
-
-    getLocationsByCompanyUserId(companyId: number, userId: number): Observable<any[]> {
-        let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Location/getByCompanyAndUserId/' + companyId + '/' + userId, {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((data: any) => {
-                    if (data.errorMessage) {
-                        reject(new Error(data.errorMessage));
-                    } else {
-                        let locations: any[] = (<Object[]>data).map((data: any) => {
-                            return LocationDetailAdapter.parseResponse(data);
-                        });
-                        resolve(locations);
-                    }
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<any[]>>Observable.fromPromise(promise);
-    }
 
 }
 

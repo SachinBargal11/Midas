@@ -9,7 +9,7 @@ import { Account } from '../models/account';
 @Injectable()
 export class RegistrationService {
     companies: any[];
-    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    // private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(private _http: Http) { }
     registerCompany(account: Account): Observable<any> {

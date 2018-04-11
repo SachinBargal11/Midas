@@ -16,7 +16,7 @@ export class Signup extends SignupRecord {
     company: Company;
     user: User;
     contactInfo: Contact;
-    originalResponse: any;
+    originalResponse: any
 
     constructor(props) {
         super(props);

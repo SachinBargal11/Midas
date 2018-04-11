@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionStore } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
@@ -15,14 +15,13 @@ import * as moment from 'moment';
 })
 
 export class AppComponent implements OnInit {
+  dateNow;
   options = {
     timeOut: 5000,
     showProgressBar: false,
     pauseOnHover: false,
-    clickToClose: false,
+    clickToClose: false
   };
-
-  dateNow;
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
@@ -33,9 +32,10 @@ export class AppComponent implements OnInit {
     public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
     public progressBarService: ProgressBarService,
+    public cdRef: ChangeDetectorRef,
     private idle: Idle,
-    private keepalive: Keepalive,
-    public cdRef: ChangeDetectorRef
+    private keepalive: Keepalive
+
   ) {
     // sets an idle timeout of 5 seconds, for testing purposes.
     // idle.setIdle(5);
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     });
 
     idle.onIdleStart.subscribe(() => {
-      // this.idleState = 'You\'ve gone idle!'  
+      // this.idleState = 'You\'ve gone idle!'
       this.idleState = ''
     });
 
@@ -99,13 +99,12 @@ export class AppComponent implements OnInit {
     // this._statesStore.getStates();
   }
   
-
-  checkValidToken() {
-    let now = moment().add(120, 'seconds');
-    if(this.sessionStore.session.tokenExpiresAt < now) {
-      this.sessionStore.refreshToken();
+    checkValidToken() {
+      let now = moment().add(120, 'seconds');
+      if(this.sessionStore.session.tokenExpiresAt < now) {
+        this.sessionStore.getToken();
+      }
     }
-  }
 
   // To remove Expression changed error
   ngAfterViewChecked() {

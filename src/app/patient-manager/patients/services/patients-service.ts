@@ -235,9 +235,10 @@ export class PatientsService {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
-    assignPatientToMedicalProvider(currentPatientId: Number, caseId: Number, providerId: Number): Observable<Patient> {
+
+    assignPatientToAttorney(currentPatientId: Number, caseId: Number, attorneyId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/associatePatientWithMedicalCompany/' + currentPatientId + '/' + caseId + '/' + providerId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + caseId + '/' + attorneyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -250,10 +251,5 @@ export class PatientsService {
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
-    
-    getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
-        return `${environment.SERVICE_BASE_URL}/documentmanager/downloadfromnoproviderblob/${documentId}`;
-    }
-
 }
 

@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Case } from '../models/case';
-import { CaseLabel } from '../models/case-label';
 import { CaseService } from '../services/cases-services';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -48,29 +47,6 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-  getCaseForCaseIdAndCompanyId(caseId: Number,companyId: number){
-         let promise = new Promise((resolve, reject) => {
-            this._casesService.getCaseForCaseIdAndCompanyId(caseId,companyId).subscribe((cases: Case) => {
-                resolve(cases);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Case>>Observable.fromPromise(promise);
-    }
-
-    getCaseReadOnly(caseId: number,companyId:number): Observable<CaseLabel> {
-        let promise = new Promise((resolve, reject) => {
-            this._casesService.getCaseReadOnly(caseId,companyId).subscribe((caseLabel: CaseLabel) => {
-                // this._cases.next(List(cases));
-                resolve(caseLabel);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<CaseLabel>>Observable.fromPromise(promise);
-    }
-
 
     getOpenCaseForPatient(patientId: number): Observable<Case[]> {
         let promise = new Promise((resolve, reject) => {
@@ -84,7 +60,7 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-
+    
     getCasesByCompany(): Observable<Case[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
@@ -164,16 +140,16 @@ export class CasesStore {
 
     fetchCaseById(id: number): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            // let matchedCase: Case = this.findCaseById(id);
-            // if (matchedCase) {
-            //     resolve(matchedCase);
-            // } else {
+            let matchedCase: Case = this.findCaseById(id);
+            if (matchedCase) {
+                resolve(matchedCase);
+            } else {
                 this._casesService.getCase(id).subscribe((caseDetail: Case) => {
                     resolve(caseDetail);
                 }, error => {
                     reject(error);
                 });
-            // }
+            }
         });
         return <Observable<Case>>Observable.fromPromise(promise);
     }
@@ -235,7 +211,7 @@ export class CasesStore {
         return <Observable<Case>>Observable.from(promise);
     }
 
-    downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+      downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.downloadDocumentForm(CaseId, documentId).subscribe((consent: Consent[]) => {
                 this._consent.next(List(consent));
@@ -245,17 +221,5 @@ export class CasesStore {
             });
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
-    }
-
-    getOpenCaseForPatientByPatientIdAndCompanyId(patientId: number): Observable<Case[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._casesService.getOpenCaseForPatientByPatientIdAndCompanyId(patientId).subscribe((cases: Case[]) => {
-                // this._cases.next(List(cases));
-                resolve(cases);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 }

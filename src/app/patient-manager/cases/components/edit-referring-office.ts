@@ -124,7 +124,7 @@ export class EditReferringOfficeComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Referring office updated successfully!',
+                    'title': 'Referring Office updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -132,7 +132,7 @@ export class EditReferringOfficeComponent implements OnInit {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update referring office.';
+                let errString = 'Unable to update Referring Office.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

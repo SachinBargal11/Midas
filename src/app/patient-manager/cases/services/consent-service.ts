@@ -130,13 +130,13 @@ export class ConsentService {
 
     getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            // return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId  +'/case').map(res => res.json())
+            // return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
-                //documentmanager/get/86/consent
+                //fileupload/get/86/consent
                 .subscribe((data: Array<any>) => {
                     let consent = null;
                     // if (data.length) {
@@ -189,14 +189,15 @@ export class ConsentService {
         return <Observable<Consent>>Observable.from(promise);
     }
 
-   downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+    downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        debugger;
         let thefile = {};
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
                 .get(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
-                headers: this._headers
-            })
+                    headers: this._headers
+                })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -204,9 +205,10 @@ export class ConsentService {
                     }
                     // If everything went fine, return the response
                     else {
-
+                        //window.location.assign.apply(this._headers);
                         window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
-                        // return res.arrayBuffer();
+                        // window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        //return res.arrayBuffer();
                     }
                 })
                 .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
@@ -215,21 +217,52 @@ export class ConsentService {
                     console.log("Error downloading the file.")
 
                 },
-                () => console.log('Completed file download.'));
+                () => {
+                    // debugger;
+                    // var blob = new Blob([thefile], { type: 'application/pdf' });
+                    // console.log(blob);
+                    // saveAs(blob, "testData.pdf");
+
+                    console.log('Completed file download.')
+                }
+
+                );
             //window.location.assign(environment.SERVICE_BASE_URL + '/fileupload/download/' + CaseId + '/' + documentId);
         });
+
+        // let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+        //     this._http
+        //         .get(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+        //             headers: this._headers
+        //         })
+        //         .map((res) => res.blob())
+        //         .subscribe(
+        //         data => {
+        //             console.log(data);
+        //             var blob = new Blob([data], { type: 'application/pdf' });
+        //             console.log(blob);
+        //             saveAs(blob, "testData.pdf");
+
+        //         },
+        //         err => console.error(err),
+        //         () => console.log('done')
+        //         );
+
+        // })
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
     getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
-        return `${environment.SERVICE_BASE_URL}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
+        return `${environment.SERVICE_BASE_URL}/CompanyCaseConsentApproval/download/${caseId}/${companyId}`;
     }
 
     downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
+                .get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId, {
+                    headers: this._headers
+                })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {

@@ -1,3 +1,4 @@
+
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -6,10 +7,9 @@ import { CaseStatus } from './enums/case-status';
 import { Company } from '../../../account/models/company';
 import { Consent } from './consent';
 import { Referral } from './referral';
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../../patients/models/patient';
 import { CaseDocument } from './case-document';
-import { CaseCompanyMapping } from './caseCompanyMapping';
-import { CompanyAdapter } from "../../../account/services/adapters/company-adapter";
 
 const CaseRecord = Record({
     id: 0,
@@ -17,14 +17,13 @@ const CaseRecord = Record({
     patient: null,
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
-    // companies: null,
+    companies: null,
     caseCompanyConsentDocument: null,
     companyCaseConsentApproval: null,
     referral: null,
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
-    claimFileNumber: 0,
     // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
@@ -33,23 +32,10 @@ const CaseRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
+    caseSource: '',
     createdByCompanyId: 0,
     createdByCompany: null,
-    caseCompanyMapping: null,
-    attorneyProviderId: 0,
-    attorneyProviderName: '',
-    medicalProviderId: 0,
-    medicalProviderName: '',
     orignatorCompanyId: 0,
-    orignatorCompanyName: '',
-    caseSource: '',
-    orignatorCaseSource: '',
-    currentCompanyId: 0,
-    patientName: '',
-    medicare: false,
-    medicaid: false,
-    ssdisabililtyIncome: false
-
 
 });
 
@@ -60,38 +46,25 @@ export class Case extends CaseRecord {
     patientId: number;
     caseName: string;
     caseTypeId: CaseType;
-    // companies: Company[];
+    companies: Company[];
     caseCompanyConsentDocument: CaseDocument[];
     companyCaseConsentApproval: Consent[];
-    referral: Referral[];
+    referral: PendingReferral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;
     // transportation: boolean;
     caseStatusId: CaseStatus;
     attorneyId: number;
-    claimFileNumber: number;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-    createdByCompanyId: number;
-    createdByCompany: Company;
-    caseCompanyMapping: CaseCompanyMapping[];
-    attorneyProviderId: number;
-    attorneyProviderName: string;
-    medicalProviderId: number;
-    medicalProviderName: string;
-    orignatorCompanyId: number;
-    orignatorCompanyName: string;
     caseSource: string;
-    orignatorCaseSource: string;
-    currentCompanyId: number;
-    patientName: string;
-    medicare: boolean;
-    medicaid: boolean;
-    ssdisabililtyIncome: boolean;
+    createdByCompanyId: Number;
+    createdByCompany: Company;
+    orignatorCompanyId: number;
     constructor(props) {
         super(props);
     }
@@ -136,6 +109,15 @@ export class Case extends CaseRecord {
         });
         return isConsentReceived;
     }
+
+    // isCreatedByCompany(companyId): boolean {
+    //     let isCreatedByCompany: boolean = false;
+    //     if (this.createdByCompany.id === companyId) {
+    //         isCreatedByCompany = true;
+    //     }
+    //     return isCreatedByCompany;
+    // }
+
     isCreatedByCompany(companyId): boolean {
         let isCreatedByCompany: boolean = false;
         if (this.orignatorCompanyId === companyId) {
@@ -144,24 +126,10 @@ export class Case extends CaseRecord {
         return isCreatedByCompany;
     }
 
-    caseLabelEditable(companyId): boolean {
-        let isCaseLabelEditable: boolean = false;
-        // _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-        //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
-        //         isCaseLabelEditable = true;
-        //     }
-        // });
-        if (this.orignatorCompanyId == companyId) {
-            return isCaseLabelEditable = true;
-        }
-        return isCaseLabelEditable;
-    }
-
-
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
-        _.forEach(this.referral, (currentReferral: Referral) => {
-            if (currentReferral.referredToCompanyId === companyId) {
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.toCompanyId === companyId) {
                 isInboundReferral = true;
             }
         });
@@ -169,8 +137,8 @@ export class Case extends CaseRecord {
     }
     getOutboundReferral(companyId): boolean {
         let isOutboundReferral: boolean = false;
-        _.forEach(this.referral, (currentReferral: Referral) => {
-            if (currentReferral.referringCompanyId === companyId) {
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.fromCompanyId === companyId) {
                 isOutboundReferral = true;
             }
         });
@@ -178,35 +146,18 @@ export class Case extends CaseRecord {
     }
     isSessionCompany(companyId): boolean {
         let isSessionCompany: boolean = false;
-        // _.forEach(this.companies, (currentCompany: any) => {
-        if (this.orignatorCompanyId === companyId) {
-            isSessionCompany = true;
-        }
-        // });
+        _.forEach(this.companies, (currentCompany: any) => {
+            if (currentCompany.id === companyId) {
+                isSessionCompany = true;
+            }
+        });
         return isSessionCompany;
     }
 
-    get caseSourceLabel(): string {        
-        return Case.getCaseSourceLabel(this.caseSource, this.orignatorCompanyName, this.orignatorCompanyId);
+    get caseSourceLabel(): string {
+        return Case.getCaseSourceLabel(this.caseSource);
     }
-    static getCaseSourceLabel(caseSource, orignatorCompanyName, orignatorCompanyId): string {
-        let storedCurrentCompany: any = JSON.parse(window.localStorage.getItem('current_company'));
-        let currentCompany: Company = CompanyAdapter.parseResponse(storedCurrentCompany);
-        if (orignatorCompanyId === currentCompany.id) {
-            return caseSource
-        } else {
-            return orignatorCompanyName;
-        }
+    static getCaseSourceLabel(caseSource): string {
+        return caseSource
     }
-
-    get caseConsentLabel(): string {  
-        let storedCurrentCompany: any = JSON.parse(window.localStorage.getItem('current_company'));
-        let currentCompany: Company = CompanyAdapter.parseResponse(storedCurrentCompany);
-        if (this.isConsentReceived(currentCompany.id)) {
-            return 'Yes'
-        } else {
-            return 'Upload Consent Form';
-        }      
-    }
-
 }
