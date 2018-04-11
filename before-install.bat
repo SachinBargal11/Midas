@@ -1,2 +1,2 @@
-cd C:\inetpub\website\dev-gb-ancillary.qwinix.io
+cd C:\inetpub\website\qa-gb-ancillary.qwinix.io
 del * /S /Q

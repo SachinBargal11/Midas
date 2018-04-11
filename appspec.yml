@@ -2,7 +2,7 @@ version: 0.0
 os: windows
 files:
   - source: dist
-    destination: C:\inetpub\website\dev-gb-ancillary.qwinix.io\
+    destination: C:\inetpub\website\qa-gb-ancillary.qwinix.io\
 hooks:
    BeforeInstall:
      - location: before-install.bat
